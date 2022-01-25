@@ -57,4 +57,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: 'main'
           target_branch: 'develop'
-          commit_message_template: 'Merge branch {source_ref} into {target_branch} [skip release]'
+          commit_message_template: 'Merge branch {source_ref} into {target_branch} [skip release] [skip ci]'
