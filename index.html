@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Chapter 1</title>
+        <title>About</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">2.</strong> Chapter 1</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,75 +144,34 @@
                     <main>
                         <ul>
 <li><a href="#preface">Preface</a></li>
-<li><a href="#usage">Usage</a>
-<ul>
-<li><a href="#configuration">Configuration</a>
-<ul>
-<li><a href="#api">API</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a href="#about">About</a></li>
 </ul>
 <h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
-<p>This books acts currently as a draft. It is not yet complete and may change in the future.</p>
-<h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
-<p>This chapter is about the basic setup of the plugin.</p>
-<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
-<pre><code class="language-php">$profile = Impex::getInstance()-&gt;Export-&gt;addProfile('my-profile');
-$profile-&gt;setDescription('Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic] if these plugins are enabled');
-
-// export pages/posts/comments/block patterns/templates/template parts/reusable blocks
-$profile-&gt;addTask('wordpress content', ContentExporter::PROVIDER_NAME);
-
-// export uploads
-$profile-&gt;addTask('wordpress attachments (uploads)', AttachmentsExporter::PROVIDER_NAME);
-
-// export cm4all-wordpress related tables/options if active
-if (\is_plugin_active(&quot;cm4all-wordpress/plugin.php&quot;)) {
-  $profile-&gt;addTask('cm4all-wordpress wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR =&gt; ['myplugin-*',]]);
-}
-
-// export complianz related tables/options if active
-if (\is_plugin_active(&quot;complianz-gdpr/complianz-gpdr.php&quot;)) {
-  $profile-&gt;addTask(&quot;complianz-gdpr db tables&quot;, DbTablesExporter::PROVIDER_NAME, [DbTablesExporter::OPTION_SELECTOR =&gt; 'cmplz_*',]);
-  $profile-&gt;addTask('complianz-gdpr wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR =&gt; ['cmplz_*','complianz_*']]);
-}
-
-// export ninja-forms related tables/options if active
-if (\is_plugin_active(&quot;ninja-forms/ninja-forms.php&quot;)) {
-  $profile-&gt;addTask(&quot;ninja-forms db tables (nf3_*)&quot;, DbTablesExporter::PROVIDER_NAME, [DbTablesExporter::OPTION_SELECTOR =&gt; 'nf3_*',]);
-  $profile-&gt;addTask('ninja-forms wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR =&gt; ['ninja_*', 'nf_*', 'wp_nf_*','widget_ninja_*']]);
-}
-
-// export ultimate_maps related tables/options if active
-if (\is_plugin_active(&quot;ultimate-maps-by-supsystic/ums.php&quot;)) {
-  $profile-&gt;addTask(&quot;ultimate_maps db tables (ums_*)&quot;, DbTablesExporter::PROVIDER_NAME, [DbTablesExporter::OPTION_SELECTOR =&gt; 'ums_*',]);
-  $profile-&gt;addTask('ultimate_maps wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR =&gt; ['ums_*', 'wp_ums_*',]]);
-}
-</code></pre>
-<h3 id="api"><a class="header" href="#api">API</a></h3>
-<p>An example diagram.</p>
-<pre class="mermaid">graph TD;
-    A--&gt;B;
-    A--&gt;C;
-    B--&gt;D;
-    C--&gt;D;
-</pre>
+<p><strong>This books acts currently as a draft. It is not yet complete and may change in the future.</strong></p>
+<h1 id="about"><a class="header" href="#about">About</a></h1>
+<p>The Impex plugin provides a modern way to import and export data from WordPress.</p>
+<p>It provides</p>
 <ul>
 <li>
-<p>there is</p>
+<p>a <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a> extension for importing and exporting data</p>
 </li>
 <li>
-<p>more to come :-)</p>
+<p>a user interface for interacting with the Impex <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a>.</p>
+</li>
+<li>
+<p>an easy way to extend the import/export capabilities by third party plugins based on Wordpress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
 </li>
 </ul>
+<p><img src="./impex-screenshot.png" alt="Impex UI" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
+                            <a rel="next" href="chapter_1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -221,6 +180,9 @@ if (\is_plugin_active(&quot;ultimate-maps-by-supsystic/ums.php&quot;)) {
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
+                    <a rel="next" href="chapter_1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
