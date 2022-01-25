@@ -1,3 +1,10 @@
+### [1.0.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.0...1.0.1) (2022-01-25)
+
+
+### Bug Fixes
+
+* fixed typo for impex plugin field "Description" ([4e674f3](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/4e674f3105fa6f22fdf808eddad55f12caf22afe))
+
 ## 1.0.0 (2022-01-25)
 
 

@@ -1,9 +1,5 @@
 <!-- toc -->
 
-# Preface
-
-This books acts currently as a draft. It is not yet complete and may change in the future.
-
 # Usage
 
 This chapter is about the basic setup of the plugin.
