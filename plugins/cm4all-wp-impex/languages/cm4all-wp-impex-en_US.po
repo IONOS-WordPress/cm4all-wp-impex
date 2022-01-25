@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cm4all-wp-impex 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cm4all-wp-impex\n"
-"POT-Creation-Date: 2022-01-24T08:24:24+00:00\n"
+"POT-Creation-Date: 2022-01-25T12:37:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,10 @@ msgstr ""
 
 #. Plugin URI of the plugin
 msgid "http://dev.intern.cm-ag/trinity/research/cm4all-wp-impex"
+msgstr ""
+
+#. Description of the plugin
+msgid "Impex contributes extendable Import / Export functionality to WordPress"
 msgstr ""
 
 #. Author of the plugin
