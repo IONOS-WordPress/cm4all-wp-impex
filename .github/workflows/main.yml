@@ -11,6 +11,8 @@ jobs:
   main: 
     name: semantic-release
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     if: "!contains(github.event.head_commit.message, 'skip release')"
     steps:
 #      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -55,4 +57,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: 'main'
           target_branch: 'develop'
-          commit_message_template: 'Merge branch {source_ref} into {target_branch} [skip ci]'
+          commit_message_template: 'Merge branch {source_ref} into {target_branch} [skip release]'
