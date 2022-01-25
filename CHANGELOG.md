@@ -1,3 +1,11 @@
+### [1.0.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.1...1.0.2) (2022-01-25)
+
+
+### Bug Fixes
+
+* "Merge main back into develop" task of github release action fixed ([e2e4632](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/e2e463239bbbdc14c414ad1b8354b5e4693634a5))
+* github release action fixed ([f26da00](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f26da00011498e24ee816c20cdb11ca4b7559674))
+
 ### [1.0.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.0...1.0.1) (2022-01-25)
 
 
