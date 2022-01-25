@@ -1,0 +1,93 @@
+=== ${PLUGIN_NAME} ===
+Contributors:      ${CONTRIBUTORS}
+Plugin Name:       ${PLUGIN_NAME}
+Plugin URI:        ${PLUGIN_URI}
+Tags:              ${TAGS}
+Requires at least: ${REQUIRES_AT_LEAST}
+Tested up to:      ${REQUIRES_AT_LEAST}
+Stable tag:        ${VERSION}
+Version:           ${VERSION}
+Requires PHP:      ${REQUIRES_PHP}
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Author:            ${AUTHOR}
+Author URI:        ${AUTHOR_URI}
+
+${DESCRIPTION}
+
+== Description ==
+
+Impex is a Wordpress plugin that allows you to import and export data from your WordPress site.
+
+The primary goal for Impex is to provide a **true Open Source Wordpress Plugin** for importing/exporting your Wordpress data (including data from third party plugins/themes).
+
+**This plugin is in a early (but working) stage.**
+
+Impex provides : 
+
+* Wordpress hooks for third party plugins to expose their own data to Impex Import / Export without being dependant to Impex.
+
+* a (semi) streaming architecture for large data exports/imports.
+
+* Definition of configurable import/export profiles defining data providers to use and configuration of these data providers
+
+  * A user interface for importing / exporting data via Impex WP admin screen
+
+* the Impex API is designed to support resumable/abortable imports and exports.
+
+* Impex provides also a REST API seamlessy integrated into Wordpress
+
+* Impex is explicitly designed for use in managed Wordpress instances
+
+* Impex development relies heavily on PHP unit testing its feature sset to be stable and consistent.
+
+**Your help is welcome !!**
+
+== Frequently Asked Questions ==
+
+= Why is that Plugin written in PHP 8 ? =
+
+Because PHP 8 
+
+* is much faster than any previous PHP Version
+
+* allows a much cleaner PHP code
+
+  => We will investigate into transpiling the Plugin to PHP 7.4 in the future.
+
+= Whats the current feature set ? =
+
+* Impex provides right now generic providers for 
+
+  * import/export Wordpress posts/pages **including attachments/uploads** and custom post types
+
+  * import/export configurable database tables (can be used export data from third party plugins/themes)
+
+  * import/export configurable wp_options (can be used export data from third party plugins/themes)
+
+* Impex imports and exports data as plain files directly to your local filesystem so that you can operate on the exported data (and attachments) without hassle.
+
+* Impex supports snapshots to allow you to rollback to a previous state of your data without downloading the whole data to your local machine
+
+= Whats planned for the future ? =
+
+* developer documentation integrating your plugin / theme into Impex 
+
+* a intuitive user interface allowing to configure import/export profiles and configuration of the used data providers based on React and JSON Schema
+
+* user documentation 
+
+* monthly releases
+
+== Screenshots ==
+
+1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
+2. This is the second screen shot
+
+== Changelog ==
+
+${CHANGELOG}
+
+== Upgrade Notice ==
+
+There is currently no upgrade needed.

@@ -1,0 +1,10 @@
+div {
+  button {
+    background: green;
+  }
+
+  // this is for the red button
+  &.isRed {
+    background: red;
+  }
+}

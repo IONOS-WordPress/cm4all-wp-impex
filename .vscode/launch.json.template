@@ -1,0 +1,57 @@
+{
+  // THIS FILE IS MACHINE GENERATED!  DO NOT EDIT!
+  // the template will be substituded with the active wp-env configuration (see Makefile)
+  // If you want to make changes -=> edit the "launch.json.template" file
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "impex xdebug (phpunit)",
+      "type": "php",
+      "request": "launch",
+      "port": 9004,
+      //"stopOnEntry": true,
+      //"log": true,
+      "pathMappings": {
+        // imported from .wp-env.override.json by Makefile
+  $WP_ENV_OVERRIDE_MAPPINGS
+        // --
+        "/var/www/html/wp-content/plugins/cm4all-wp-impex": "${workspaceRoot}/plugins/cm4all-wp-impex",
+        "/var/www/html/wp-content/plugins/cm4all-wp-impex-example": "${workspaceRoot}/plugins/cm4all-wp-impex-example",
+        "/var/www/html": "${workspaceRoot}/$WP_ENV_ROOT/WordPress"
+      }
+    },
+    {
+      "name": "impex xdebug (wp-env)",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      //"stopOnEntry": true,
+      //"log": true,
+      "pathMappings": {
+        // imported from .wp-env.override.json by Makefile
+        // (replace "../" with "${workspaceRoot}/../" for paths outside the project directory)
+  $WP_ENV_OVERRIDE_MAPPINGS
+        // --
+  			"/var/www/html/wp-content/plugins/cm4all-wp-impex": "${workspaceRoot}/plugins/cm4all-wp-impex",
+  			"/var/www/html/wp-content/plugins/cm4all-wp-impex-example": "${workspaceRoot}/plugins/cm4all-wp-impex-example",
+        "/var/www/html/wp-content/plugins": "${workspaceRoot}/$WP_ENV_ROOT",
+        "/var/www/html/wp-content/themes": "${workspaceRoot}/packages/wordpress/wp-content/themes",
+        "/var/www/html/wp-config.php": "${workspaceRoot}/$WP_ENV_ROOT/WordPress/wp-config.php",
+        "/var/www/html": "${workspaceRoot}/$WP_ENV_ROOT/WordPress"
+      }
+    },
+    {
+      "name": "impex esbuild-bundle test",
+      "program": "${workspaceFolder}/bin/esbuild-bundle.mjs",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node",
+      "args": [
+        "--debug",
+        "--global-name='example.versions[\"1.0\"]'",
+        "tests/esbuild-bundle/screen.mjs",
+        "tests/esbuild-bundle/dist/screen.js"
+      ]
+    }
+  ]
+}

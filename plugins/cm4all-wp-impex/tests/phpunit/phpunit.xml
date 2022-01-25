@@ -1,0 +1,29 @@
+<phpunit
+	bootstrap="./bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="cm4all-wp-impex">
+			<directory prefix="test-" suffix=".php">./</directory>
+		</testsuite>
+    <testsuite name="cm4all-wp-impex-example">
+			<directory prefix="test-" suffix=".php">./../../../cm4all-wp-impex-example/tests/phpunit</directory>
+		</testsuite>
+	</testsuites>
+
+  <php>
+    <!-- force is required in our case : https://github.com/kenjis/ci-phpunit-test/issues/215 -->
+    <env name="WP_PHPUNIT__TESTS_CONFIG" value="/var/www/html/wp-content/plugins/cm4all-wp-impex/tests/phpunit/wp-tests-config.php" force="true"/>
+  </php>
+<!--
+  <groups>
+		<exclude>
+			<group>restapi</group>
+		</exclude>
+	</groups>
+-->
+</phpunit>

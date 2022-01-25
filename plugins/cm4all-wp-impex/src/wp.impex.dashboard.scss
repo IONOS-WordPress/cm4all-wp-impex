@@ -1,0 +1,63 @@
+.wrap {
+  //background-color: cyan;
+}
+
+button > svg {
+  width: 21px;
+}
+
+.components-modal__screen-overlay {
+  &.blocking {
+    cursor: wait;
+  }
+
+  PROGRESS {
+    width: 100%;
+  }
+
+  .components-text-control__input,
+  .components-textarea-control__input {
+    // fix input widths in rename export modal
+    width: calc(100% - 16px) !important;
+  }
+}
+
+.components-panel.export,
+.components-panel.import {
+  margin-top: 12px;
+
+  .create-export-form,
+  .upload-import-form {
+    background-color: rgb(240, 240, 241);
+
+    .components-panel__body-title {
+      pointer-events: none;
+
+      .components-panel__body-toggle > * {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+///     background-color: rgb(240, 240, 241);
+///
+///
+
+#cm4all_wp_impex_wp_admin_dashboard {
+  /*
+  background-color: yellow;
+  color: blue;
+  .components-button {
+    background: green !important;
+
+    &.is-primary {
+      background: red;
+    }
+  }
+
+  button.components-button.is-primary {
+    background-color: silver !important;
+  }
+  */
+}

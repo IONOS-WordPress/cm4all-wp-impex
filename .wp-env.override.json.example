@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/gutenberg.12.4.1.zip",
+    "https://downloads.wordpress.org/plugin/complianz-gdpr.6.0.6.zip",
+    "https://downloads.wordpress.org/plugin/ultimate-maps-by-supsystic.1.2.8.zip",
+    "https://downloads.wordpress.org/plugin/ninja-forms.3.6.7.zip",
+    "https://downloads.wordpress.org/plugin/wp-api-swaggerui.1.1.2.zip",
+    "./plugins/cm4all-wp-impex",
+    "./plugins/cm4all-wp-impex-example"
+  ],
+  "mappings": {
+    "wp-content/plugins/cm4all-wordpress": "../cm4all-wordpress/packages/wordpress/wp-content/plugins/cm4all-wordpress",
+    "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core"
+  }
+}

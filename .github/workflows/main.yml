@@ -1,0 +1,58 @@
+name: CI
+on: 
+  push: 
+    branches: 
+      - main
+      - alpha
+      - beta
+  workflow_dispatch:
+  
+jobs:
+  main: 
+    name: semantic-release
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip release')"
+    steps:
+#      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+#      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+#      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+#      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+#      - name: List files in the repository
+#        run: |
+#          ls ${{ github.workspace }}
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-core ca-certificates curl make gettext php8.0
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+      - name: run semantic-release
+        env:
+# enable next line when using the action in a public github repo
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# enable next line when using the action in a private github repo
+#          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        shell: bash
+        run: |
+          export NVM_DIR="$HOME/.nvm" 
+          . "$NVM_DIR/nvm.sh" && nvm install && npm -q ci && npx semantic-release
+#      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      - name: deploy documentation (gp-pages)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/gh-pages/book
+
+      - name: Merge main back into develop
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: everlytic/branch-merge@1.1.2
+        with:
+# enable next line when using the action in a private github repo
+#          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_ref: 'main'
+          target_branch: 'develop'
+          commit_message_template: 'Merge branch {source_ref} into {target_branch} [skip ci]'

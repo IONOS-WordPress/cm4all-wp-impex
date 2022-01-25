@@ -1,0 +1,17 @@
+{
+  "core": "WordPress/WordPress#5.8.3",
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/gutenberg.12.3.2.zip",
+    "./plugins/cm4all-wp-impex",
+    "./plugins/cm4all-wp-impex-example"
+  ],
+  "phpVersion": "8.0",
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true,
+    "WP_DEBUG_LOG": true,
+    "SAVEQUERIES": true,
+    "FS_METHOD": "direct"
+  },
+  "themes": ["https://downloads.wordpress.org/theme/tt1-blocks.0.4.7.zip"]
+}

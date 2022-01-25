@@ -1,0 +1,19 @@
+/node_modules
+dist
+/tmp
+/docs/**/*.mmd.svg
+/plugins/*
+!/plugins/cm4all-wp-impex
+!/plugins/cm4all-wp-impex-example  
+/plugins/cm4all-wp-impex/vendor/*
+/plugins/cm4all-wp-impex/languages/*.pot
+/plugins/cm4all-wp-impex/languages/*.json
+/plugins/cm4all-wp-impex/languages/*.mo
+/wp-env-home
+# !/plugins/cm4all-wp-impex/vendor/Slimdown.php
+/.vscode/launch.json
+/.wp-env.override.json
+/cm4all-wp-impex.code-workspace
+/docs/gh-pages/book
+/*.code-workspace
+/Makefile-wp-env.postinit.sh

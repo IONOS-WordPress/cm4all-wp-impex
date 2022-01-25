@@ -1,0 +1,22 @@
+
+#!/usr/bin/env bash
+
+#
+# this script can be used to customize the created wp-env instance
+# 
+# just remove the ".example" suffix from the file name and edit the script. It will be called whenever 
+# the wp-env instance gets rolled out
+#
+# Node: Script is now executed in CI environment
+#
+
+echo "WP_ENV_HOME=$WP_ENV_HOME"
+
+../cm4all-wordpress/scripts/wp-env/wp-create-roles.sh
+../cm4all-wordpress/scripts/wp-env/wp-create-users.sh
+
+PATH=./node_modules/.bin/:$PATH
+
+wp-env run cli "plugin activate cm4all-wordpress"
+wp-env run cli "theme activate trinity-core"
+
