@@ -1,3 +1,10 @@
+### [1.0.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.3...1.0.4) (2022-01-26)
+
+
+### Bug Fixes
+
+* improved github action semantic-release ([feeeb53](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/feeeb5315898c058af8c59015c662e069a127ccc))
+
 ### [1.0.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.2...1.0.3) (2022-01-26)
 
 
