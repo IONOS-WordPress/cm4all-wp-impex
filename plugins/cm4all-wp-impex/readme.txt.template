@@ -4,7 +4,7 @@ Plugin Name:       ${PLUGIN_NAME}
 Plugin URI:        ${PLUGIN_URI}
 Tags:              ${TAGS}
 Requires at least: ${REQUIRES_AT_LEAST}
-Tested up to:      ${REQUIRES_AT_LEAST}
+Tested up to:      ${TESTED_UP_TO}
 Stable tag:        ${VERSION}
 Version:           ${VERSION}
 Requires PHP:      ${REQUIRES_PHP}
@@ -17,7 +17,7 @@ ${DESCRIPTION}
 
 == Description ==
 
-Impex is a Wordpress plugin that allows you to import and export data from your WordPress site.
+Impex is a Wordpress plugin that allows you to import and export data from and to your WordPress installation.
 
 The primary goal for Impex is to provide a **true Open Source Wordpress Plugin** for importing/exporting your Wordpress data (including data from third party plugins/themes).
 
