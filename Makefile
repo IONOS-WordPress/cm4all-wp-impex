@@ -200,6 +200,8 @@ package-lock.json: package.json
 
 docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE)
 > $(DOCKER_MDBOOK) build
+# configure github to bypass jekyll processing on github pages
+> touch docs/gh-pages/book/.nojekyll
 > @touch -m docs/gh-pages/book
 
 HELP: build docs
