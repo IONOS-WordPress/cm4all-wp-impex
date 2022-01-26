@@ -1,3 +1,10 @@
+### [1.0.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.2...1.0.3) (2022-01-26)
+
+
+### Bug Fixes
+
+* added missing "Tested up to" metdata to plugin.php and readme.txt template ([270355e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/270355e71c1c89cb3b29958116b2b43ca5b80f18))
+
 ### [1.0.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.1...1.0.2) (2022-01-25)
 
 
