@@ -126,6 +126,8 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 
 .ONESHELL:
 $(WP_ENV_HOME): node_modules 
+# if a executable "Makefile-wp-env.preinit.sh" exists, call it now
+> [ -x ./Makefile-wp-env.preinit.sh ] && WP_ENV_HOME="$(WP_ENV_HOME)" ./Makefile-wp-env.preinit.sh
 > wp-env start --update --xdebug
 # skip further wp-env configuration if target was started in github action context
 > echo "GITHUB_ACTIONS=$${GITHUB_ACTIONS:-false}"
@@ -234,7 +236,7 @@ clean:
 # remove everything matching .gitignore entries (-f is force, you can add -q to suppress command output, exclude node_modules and node_modules/**)
 # -ff is for plugins/cm4all-wp-impex/vendor/anthonykgross/dependency-resolver which is a git repository: 
 #   => If an untracked directory is managed by a different git repository, it is not removed by default. Use -f option twice if you really want to remove such a directory.
-> git clean -Xffd -e '!/Makefile-wp-env.postinit.sh' -e '!/*.code-workspace' -e '!/node_modules/' -e '!/node_modules/**' -e '!/.wp-env.override.json' -e '!/cm4all-wp-impex.code-workspace'
+> git clean -Xffd -e '!/Makefile-wp-env.postinit.sh' -e '!/Makefile-wp-env.preinit.sh' -e '!/*.code-workspace' -e '!/node_modules/' -e '!/node_modules/**' -e '!/.wp-env.override.json' -e '!/cm4all-wp-impex.code-workspace'
 
 # delete all files in the current directory (or created by this makefile) that are created by configuring or building the program.
 # see https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html 

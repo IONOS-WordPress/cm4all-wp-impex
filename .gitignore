@@ -17,3 +17,4 @@ dist
 /docs/gh-pages/book
 /*.code-workspace
 /Makefile-wp-env.postinit.sh
+/Makefile-wp-env.preinit.sh

@@ -1,0 +1,31 @@
+
+#!/usr/bin/env bash
+
+#
+# this script can be used to prepare the start of the wp-env instance
+# 
+# just remove the ".example" suffix from the file name and edit the script. It will be called before  
+# the wp-env instance gets started
+#
+# Node: Script is now executed in CI environment
+#
+
+echo "WP_ENV_HOME=$WP_ENV_HOME"
+
+PATH=./node_modules/.bin/:$PATH
+
+mkdir -p dist/cm4all-wp-impex-7.4.0
+
+cat << EOF > dist/cm4all-wp-impex-7.4.0/plugin.php
+<?php
+/**
+ * Plugin Name: cm4all-wp-impex-7.4.0
+ **/
+
+namespace cm4all\wp\impex_7_4_0;
+
+// Exit if accessed directly.
+if (!defined('ABSPATH')) {
+  exit();
+}
+EOF
