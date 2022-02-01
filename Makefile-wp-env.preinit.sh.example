@@ -14,18 +14,11 @@ echo "WP_ENV_HOME=$WP_ENV_HOME"
 
 PATH=./node_modules/.bin/:$PATH
 
-mkdir -p dist/cm4all-wp-impex-7.4.0
+mkdir -p dist/cm4all-wp-impex-php7.4.0
 
-cat << EOF > dist/cm4all-wp-impex-7.4.0/plugin.php
+cat << EOF > dist/cm4all-wp-impex-php7.4.0/plugin.php
 <?php
 /**
- * Plugin Name: cm4all-wp-impex-7.4.0
+ * Plugin Name: cm4all-wp-impex-php7.4.0
  **/
-
-namespace cm4all\wp\impex_7_4_0;
-
-// Exit if accessed directly.
-if (!defined('ABSPATH')) {
-  exit();
-}
 EOF

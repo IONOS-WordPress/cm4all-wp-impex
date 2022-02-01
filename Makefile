@@ -126,6 +126,14 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 
 .ONESHELL:
 $(WP_ENV_HOME): node_modules 
+> mkdir -p dist/cm4all-wp-impex-php7.4.0
+> cat << EOF > dist/cm4all-wp-impex-php7.4.0/plugin.php
+> <?php
+> /**
+>  * dummy plugin placeholder for wp-env
+>  * Plugin Name: cm4all-wp-impex-php7.4.0
+>  **/
+> EOF
 # if a executable "Makefile-wp-env.preinit.sh" exists, call it now
 > [ -x ./Makefile-wp-env.preinit.sh ] && WP_ENV_HOME="$(WP_ENV_HOME)" ./Makefile-wp-env.preinit.sh
 > wp-env start --update --xdebug
@@ -384,8 +392,19 @@ wp-env-tests-mysql-shell: $(WP_ENV_HOME) ## open mysql shell connected to wp-env
 
 .PHONY: dist
 #HELP: * produce release artifacts
-dist: i18n dist/docs dist/cm4all-wp-impex.zip dist/cm4all-wp-impex-example.zip dist/cm4all-wp-impex-gh-pages.zip 
-> @touch -m $@
+dist: i18n dist/docs dist/cm4all-wp-impex.zip dist/cm4all-wp-impex-example.zip dist/cm4all-wp-impex-gh-pages.zip dist/cm4all-wp-impex-php7.4.0.zip
+> @touch -m '$@'
+
+dist/cm4all-wp-impex-php7.4.0: dist/cm4all-wp-impex tmp/composer.phar
+> mkdir -p '$@'
+> rsync -rc dist/cm4all-wp-impex/ $@/
+# rename dummy plugin to cm4all-wp-impex-php7.4.0
+> sed -i 's/Plugin Name: cm4all-wp-impex/Plugin Name: cm4all-wp-impex-php7.4.0/g' $@/plugin.php
+> sed -i 's/Requires PHP: 8.0/Requires PHP: 7.4/' $@/plugin.php
+> mkdir -p 'tmp/rector'
+> (cd 'tmp/rector' && php ../composer.phar require rector/rector --dev)
+# > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./tmp/rector/vendor/rector/rector/config/set/downgrade-php80.php --no-progress-bar process .
+> tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./rector.php --no-progress-bar process .
 
 .ONESHELL :
 dist/cm4all-wp-impex: build

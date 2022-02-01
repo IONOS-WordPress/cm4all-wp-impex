@@ -3,7 +3,8 @@
   "plugins": [
     "https://downloads.wordpress.org/plugin/gutenberg.12.3.2.zip",
     "./plugins/cm4all-wp-impex",
-    "./plugins/cm4all-wp-impex-example"
+    "./plugins/cm4all-wp-impex-example",
+    "./dist/cm4all-wp-impex-php7.4.0"
   ],
   "phpVersion": "8.0",
   "config": {
