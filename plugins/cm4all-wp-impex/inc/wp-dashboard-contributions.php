@@ -20,8 +20,8 @@ define('IMPEX_SCREEN_PAGE_SLUG', str_replace("\\", '_', __NAMESPACE__));
 const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
 
 \add_action(
-  hook_name: "admin_menu",
-  callback: function () {
+  "admin_menu",
+  function () {
     $submenu_page_hook_suffix = \add_submenu_page('tools.php', TITLE, TITLE, 'manage_options', IMPEX_SCREEN_PAGE_SLUG, function () {
       require_once ABSPATH . 'wp-admin/admin-header.php';
 
@@ -31,8 +31,8 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
     }, 0);
 
     \add_action(
-      hook_name: 'load-' . $submenu_page_hook_suffix,
-      callback: function () {
+      'load-' . $submenu_page_hook_suffix,
+      function () {
         \get_current_screen()->add_help_tab(
           [
             'id'      => 'help-overview',
@@ -83,31 +83,31 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
         $IN_FOOTER = true;
         $IMPEX_CLIENT_HANDLE = enqueueClientAssets($IN_FOOTER);
         \cm4all\wp\impex\wp_enqueue_script(
-          handle: IMPEX_SCREEN_PAGE_SLUG,
-          pluginRelativePath: 'dist/wp.impex.dashboard.js',
-          deps: [$IMPEX_CLIENT_HANDLE, 'wp-element', 'wp-api-fetch', 'wp-url', 'wp-i18n', 'wp-components', 'wp-data', 'wp-core-data'],
-          in_footer: $IN_FOOTER
+          IMPEX_SCREEN_PAGE_SLUG,
+          'dist/wp.impex.dashboard.js',
+          [$IMPEX_CLIENT_HANDLE, 'wp-element', 'wp-api-fetch', 'wp-url', 'wp-i18n', 'wp-components', 'wp-data', 'wp-core-data'],
+          $IN_FOOTER
         );
         \wp_set_script_translations(
-          handle: IMPEX_SCREEN_PAGE_SLUG,
-          domain: $IMPEX_CLIENT_HANDLE,
-          path: plugin_dir_path(__DIR__) . 'languages'
+          IMPEX_SCREEN_PAGE_SLUG,
+          $IMPEX_CLIENT_HANDLE,
+          plugin_dir_path(__DIR__) . 'languages'
         );
 
         \cm4all\wp\impex\wp_enqueue_style(
-          handle: IMPEX_SCREEN_PAGE_SLUG,
-          pluginRelativePath: 'dist/wp.impex.dashboard.css',
-          deps: [$IMPEX_CLIENT_HANDLE, 'wp-components']
+          IMPEX_SCREEN_PAGE_SLUG,
+          'dist/wp.impex.dashboard.css',
+          [$IMPEX_CLIENT_HANDLE, 'wp-components']
         );
 
         /* 
-      prevent loading wp admin forms.css since it breaks gutenberg component styles
-      wp_register_style doesnt overwrite exiting style registrations so that we need to 
-      - remove the original style 
-      - add a dummy style handle for 'forms'
-    */
-        \wp_deregister_style(handle: 'forms');
-        \wp_register_style(handle: 'forms', src: '');
+          prevent loading wp admin forms.css since it breaks gutenberg component styles
+          wp_register_style doesnt overwrite exiting style registrations so that we need to 
+          - remove the original style 
+          - add a dummy style handle for 'forms'
+        */
+        \wp_deregister_style('forms');
+        \wp_register_style('forms', '');
       },
     );
   },

@@ -284,8 +284,8 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
     // register a WP_FILTER_EXPORT_SLICE_REST_MARSHAL filter
     $SELF_HREF_BASE = 'https://example.com/';
     \add_filter(
-      hook_name: ImpexExportRESTController::WP_FILTER_EXPORT_SLICE_REST_MARSHAL,
-      callback: function (array $serialized_slice, ImpexExportTransformationContext $transformationContext) use ($SELF_HREF_BASE) {
+      ImpexExportRESTController::WP_FILTER_EXPORT_SLICE_REST_MARSHAL,
+      function (array $serialized_slice, ImpexExportTransformationContext $transformationContext) use ($SELF_HREF_BASE) {
         if (
           $serialized_slice[Impex::SLICE_TAG] === self::EXPORT_PROVIDER_SLICE_TAG
         ) {
@@ -301,7 +301,8 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
         }
         return $serialized_slice;
       },
-      accepted_args: 2,
+      10,
+      2,
     );
 
     $export_id = Impex::getInstance()->Export->save($profile)->id;

@@ -408,8 +408,8 @@ class ImpexExportRESTController extends \WP_REST_Controller implements ImpexRest
 }
 
 \add_action(
-  hook_name: 'rest_api_init',
-  callback: function () {
+  'rest_api_init',
+  function () {
     $controller = new ImpexExportRESTController();
     $controller->register_routes();
   },

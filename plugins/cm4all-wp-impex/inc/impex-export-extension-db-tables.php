@@ -127,6 +127,6 @@ function __registerDbTablesExportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerDbTablesExportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerDbTablesExportProvider',
 );

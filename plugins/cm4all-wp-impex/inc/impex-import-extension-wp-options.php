@@ -45,6 +45,6 @@ function __registerWpOptionsImportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerWpOptionsImportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerWpOptionsImportProvider',
 );

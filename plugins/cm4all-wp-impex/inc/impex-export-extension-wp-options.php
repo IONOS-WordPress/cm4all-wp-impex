@@ -100,6 +100,6 @@ function __registerWpOptionsExportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerWpOptionsExportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerWpOptionsExportProvider',
 );

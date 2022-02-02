@@ -24,8 +24,8 @@ class ImpexExportProfileRESTController extends ImpexProfileRESTController
 };
 
 \add_action(
-  hook_name: 'rest_api_init',
-  callback: function () {
+  'rest_api_init',
+  function () {
     $controller = new ImpexExportProfileRESTController();
     $controller->register_routes();
   },

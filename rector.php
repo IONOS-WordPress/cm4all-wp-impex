@@ -10,6 +10,7 @@ use Rector\Set\ValueObject\DowngradeSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Set\ValueObject\DowngradeLevelSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\DowngradePhp80\Rector\MethodCall\DowngradeNamedArgumentRector;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
   // get parameters
@@ -25,7 +26,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
   $containerConfigurator->import(DowngradeSetList::PHP_80);
 
   // get services (needed for register a single rule)
-  // $services = $containerConfigurator->services();
+  //$services = $containerConfigurator->services();
+  //$services->set(DowngradeNamedArgumentRector::class);
+
 
   // register a single rule
   // $services->set(TypedPropertyRector::class);

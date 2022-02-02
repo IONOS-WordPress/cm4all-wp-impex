@@ -155,8 +155,8 @@ class TestImpexImportExtensionAttachment extends ImpexUnitTestcase
   {
     // we patch the upload dir to have the same subdir as our imported content
     \add_filter(
-      hook_name: 'upload_dir',
-      callback: function ($uploads) {
+      'upload_dir',
+      function ($uploads) {
         $uploads['subdir'] = '/2021/06';
         $uploads['path'] = $uploads['basedir'] . $uploads['subdir'];
         $uploads['url'] = $uploads['baseurl'] . $uploads['subdir'];

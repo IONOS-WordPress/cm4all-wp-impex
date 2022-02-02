@@ -53,8 +53,8 @@ function __registerAttachmentImportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerAttachmentImportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerAttachmentImportProvider',
 );
 
 class __AttachmentImporter
@@ -219,12 +219,12 @@ class __AttachmentImporter
 }
 
 \add_action(
-  hook_name: 'rest_api_init',
-  callback: function () {
+  'rest_api_init',
+  function () {
     require_once __DIR__ . '/class-impex-import-rest-controller.php';
     \add_filter(
-      hook_name: ImpexImportRESTController::WP_FILTER_IMPORT_REST_SLICE_UPLOAD,
-      callback: function (array $slice, ImpexImportTransformationContext $transformationContext, \WP_REST_Request $request) {
+      ImpexImportRESTController::WP_FILTER_IMPORT_REST_SLICE_UPLOAD,
+      function (array $slice, ImpexImportTransformationContext $transformationContext, \WP_REST_Request $request) {
         if (
           $slice[Impex::SLICE_TAG] === AttachmentsExporter::SLICE_TAG
         ) {
@@ -251,20 +251,21 @@ class __AttachmentImporter
         }
         return $slice;
       },
-      accepted_args: 3,
+      10,
+      3,
     );
   },
 );
 
 \add_action(
-  hook_name: Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
-  callback: function ($client_asset_handle, $in_footer) {
+  Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
+  function ($client_asset_handle, $in_footer) {
     $HANDLE = strtolower(str_replace('\\', '-', AttachmentImporter::PROVIDER_NAME));
     \cm4all\wp\impex\wp_enqueue_script(
-      handle: $HANDLE,
-      deps: [$client_asset_handle, $client_asset_handle . '-debug'],
-      pluginRelativePath: 'dist/wp.impex.extension.import.attachment.js',
-      in_footer: $in_footer
+      $HANDLE,
+      'dist/wp.impex.extension.import.attachment.js',
+      [$client_asset_handle, $client_asset_handle . '-debug'],
+      $in_footer
     );
 
     \wp_add_inline_script(
@@ -272,5 +273,6 @@ class __AttachmentImporter
       sprintf('wp.impex.extension.import.attachment.WP_FILTER_IMPORT_REST_SLICE_UPLOAD_FILE=%s;', \wp_json_encode(AttachmentImporter::WP_FILTER_IMPORT_REST_SLICE_UPLOAD_FILE)),
     );
   },
-  accepted_args: 2,
+  10,
+  2,
 );

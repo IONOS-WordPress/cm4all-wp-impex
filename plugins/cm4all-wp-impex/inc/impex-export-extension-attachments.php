@@ -65,18 +65,18 @@ function __registerAttachmentsExportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerAttachmentsExportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerAttachmentsExportProvider',
 );
 
 \add_action(
-  hook_name: 'rest_api_init',
-  callback: function () {
+  'rest_api_init',
+  function () {
     require_once __DIR__ . '/class-impex-export-rest-controller.php';
 
     \add_filter(
-      hook_name: ImpexExportRESTController::WP_FILTER_EXPORT_SLICE_REST_MARSHAL,
-      callback: function (array $serialized_slice, ImpexExportTransformationContext $transformationContext) {
+      ImpexExportRESTController::WP_FILTER_EXPORT_SLICE_REST_MARSHAL,
+      function (array $serialized_slice, ImpexExportTransformationContext $transformationContext) {
         if (
           $serialized_slice[Impex::SLICE_TAG] === AttachmentsExporter::SLICE_TAG &&
           $serialized_slice[Impex::SLICE_META][Impex::SLICE_META_ENTITY] === AttachmentsExporter::SLICE_META_ENTITY_ATTACHMENT &&
@@ -94,20 +94,22 @@ function __registerAttachmentsExportProvider()
         }
         return $serialized_slice;
       },
-      accepted_args: 2,
+      10,
+      2,
     );
   },
 );
 
 \add_action(
-  hook_name: Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
-  callback: function ($client_asset_handle, $in_footer) {
+  Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
+  function ($client_asset_handle, $in_footer) {
     \cm4all\wp\impex\wp_enqueue_script(
-      handle: strtolower(str_replace('\\', '-', AttachmentsExporter::PROVIDER_NAME)),
-      deps: [$client_asset_handle, $client_asset_handle . '-debug'],
-      pluginRelativePath: 'dist/wp.impex.extension.export.attachments.js',
+      strtolower(str_replace('\\', '-', AttachmentsExporter::PROVIDER_NAME)),
+      'dist/wp.impex.extension.export.attachments.js',
+      [$client_asset_handle, $client_asset_handle . '-debug'],
       in_footer: $in_footer
     );
   },
-  accepted_args: 2,
+  10,
+  2,
 );
