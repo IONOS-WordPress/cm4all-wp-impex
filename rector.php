@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
   $parameters->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_80);
 
   // Define what rule sets will be applied
+  // $containerConfigurator->import(SetList::CODE_QUALITY);
   $containerConfigurator->import(DowngradeLevelSetList::DOWN_TO_PHP_80);
   $containerConfigurator->import(DowngradeSetList::PHP_80);
 
