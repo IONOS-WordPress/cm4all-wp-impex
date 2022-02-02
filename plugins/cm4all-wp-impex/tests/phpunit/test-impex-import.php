@@ -24,8 +24,8 @@ class TestImpexImport extends ImpexUnitTestcase
     }
 
     \add_filter(
-      hook_name: 'import_allow_create_users',
-      callback: '__return_true',
+      'import_allow_create_users',
+      '__return_true',
     );
 
     global $wpdb;

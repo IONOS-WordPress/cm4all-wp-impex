@@ -1,3 +1,11 @@
+## [1.1.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.4...1.1.0) (2022-02-02)
+
+
+### Features
+
+* impex for php 7.4 infrastructure added ([60d9ee5](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/60d9ee548cbcf3eadf4e9a80dbf9bfc712fce3d9))
+* implex plugin for php 7.4 will be generated ([af7a393](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/af7a39316d062643ee8386be280587aac492cc4c))
+
 ### [1.0.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.3...1.0.4) (2022-01-26)
 
 

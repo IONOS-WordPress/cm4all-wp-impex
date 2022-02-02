@@ -4,7 +4,7 @@
  * Plugin Name: cm4all-wp-impex
  * Plugin URI: http://dev.intern.cm-ag/trinity/research/cm4all-wp-impex
  * Description: Impex contributes extendable Import / Export functionality to WordPress
- * Version: 1.0.4
+ * Version: 1.1.0
  * Tags: import, export, migration
  * Requires PHP: 8.0
  * Requires at least: 5.7
@@ -59,8 +59,8 @@ if (str_ends_with($_SERVER['SERVER_NAME'] ?? '', '.s-cm4all.cloud')) {
 }
 
 \add_action(
-  hook_name: 'plugins_loaded',
-  callback: function () {
+  'plugins_loaded',
+  function () {
     if (\get_option('impex_version') !== Impex::VERSION) {
       Impex::getInstance()->__install();
     }
@@ -77,28 +77,29 @@ function enqueueClientAssets(bool $in_footer): string
   if (!is_string($CLIENT_ASSET_HANDLE)) {
     $CLIENT_ASSET_HANDLE = str_replace('\\', '-', __NAMESPACE__);
     \add_action(
-      hook_name: Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
-      callback: function ($client_asset_handle, $in_footer) {
+      Impex::WP_ACTION_ENQUEUE_IMPEX_PROVIDER_SCRIPT,
+      function ($client_asset_handle, $in_footer) {
         \cm4all\wp\impex\wp_enqueue_script(
-          handle: $client_asset_handle,
-          pluginRelativePath: 'dist/wp.impex.js',
-          in_footer: $in_footer
+          $client_asset_handle,
+          'dist/wp.impex.js',
+          [],
+          $in_footer
         );
 
         $DEBUG_HANDLE = $client_asset_handle . '-debug';
         \cm4all\wp\impex\wp_enqueue_script(
-          handle: $DEBUG_HANDLE,
-          pluginRelativePath: 'dist/wp.impex.debug.js',
-          deps: [$client_asset_handle],
-          in_footer: $in_footer
+          $DEBUG_HANDLE,
+          'dist/wp.impex.debug.js',
+          [$client_asset_handle],
+          $in_footer
         );
 
         $STORE_HANDLE = $client_asset_handle . '-store';
         \cm4all\wp\impex\wp_enqueue_script(
-          handle: $STORE_HANDLE,
-          pluginRelativePath: 'dist/wp.impex.store.js',
-          deps: [$client_asset_handle, $DEBUG_HANDLE, 'wp-api-fetch', 'wp-data', 'wp-hooks'],
-          in_footer: $in_footer
+          $STORE_HANDLE,
+          'dist/wp.impex.store.js',
+          [$client_asset_handle, $DEBUG_HANDLE, 'wp-api-fetch', 'wp-data', 'wp-hooks'],
+          $in_footer
         );
 
         // prefetch initial impex data 
@@ -162,13 +163,14 @@ function enqueueClientAssets(bool $in_footer): string
 
         //echo (__('huhu !', 'cm4all-wp-impex'));
       },
-      accepted_args: 2,
+      10,
+      2,
     );
 
     // register dummy style 
     wp_register_style(
-      handle: $CLIENT_ASSET_HANDLE,
-      pluginRelativePath: 'dist/wp.impex.css'
+      $CLIENT_ASSET_HANDLE,
+      'dist/wp.impex.css'
     );
   }
 
@@ -179,9 +181,9 @@ function enqueueClientAssets(bool $in_footer): string
 }
 
 \add_action(
-  hook_name: 'init',
-  callback: function () {
-    \load_plugin_textdomain(domain: 'cm4all-wp-impex', plugin_rel_path: basename(__DIR__) . '/languages/');
+  'init',
+  function () {
+    \load_plugin_textdomain('cm4all-wp-impex', false, basename(__DIR__) . '/languages/');
   },
 );
 

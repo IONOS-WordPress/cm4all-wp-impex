@@ -144,8 +144,8 @@ function __registerContentExportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerContentExportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerContentExportProvider',
 );
 
 function _export_wp(array $options, int $chunk_max_items = ContentExporter::OPTION_SLICE_MAX_ITEMS)

@@ -262,7 +262,7 @@ abstract class ImpexImport extends ImpexPart
 
         // remove export specific uploads directory
         if ($wp_filesystem->exists($transformationContext->path)) {
-          $wp_filesystem->rmdir(path: $transformationContext->path, recursive: true);
+          $wp_filesystem->rmdir($transformationContext->path, true);
         }
 
         $removedItems = array_splice($imports, $index, 1);

@@ -53,21 +53,27 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
               // (optional) drop table
               if ($option_db_overwrite_definition) {
                 $queryRetval = $target_wpdb->query("DROP TABLE IF EXISTS $target_table_name");
-                $queryRetval === false && throw new RollbackSignal();
+                if ($queryRetval === false) {
+                  throw new RollbackSignal();
+                }
 
                 $log(sprintf('%s : %s', $target_wpdb->last_query, $queryRetval));
               }
 
               // create table if not exists
               $queryRetval = $target_wpdb->query(strtr($ddl, ['%prefix%' => $option_db_tableprefix]));
-              $queryRetval === false && throw new RollbackSignal();
+              if ($queryRetval === false) {
+                throw new RollbackSignal();
+              }
 
               $log(sprintf('%s : %s', $target_wpdb->last_query, $queryRetval));
 
               // (optional) truncate data 
               if (!$option_db_overwrite_definition && $option_db_truncate) {
                 $queryRetval = $target_wpdb->query($target_wpdb->prepare('TRUNCATE TABLE %s', $target_table_name));
-                $queryRetval === false && throw new RollbackSignal();
+                if ($queryRetval === false) {
+                  throw new RollbackSignal();
+                }
 
                 $log(sprintf('%s : %s', $target_wpdb->last_query, $queryRetval));
               }
@@ -93,7 +99,9 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
                     '%source_table%' => $options[DbTableImporter::OPTION_COPY_DATA_FROM_TABLE_WITH_PREFIX] . $slice_meta['name'],
                   ]
                 ));
-                $queryRetval === false && throw new RollbackSignal();
+                if ($queryRetval === false) {
+                  throw new RollbackSignal();
+                }
 
                 $log(sprintf('%s : %s', $target_wpdb->last_query, $queryRetval));
               }
@@ -202,6 +210,6 @@ function __registerDbTableImportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerDbTableImportProvider',
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerDbTableImportProvider',
 );

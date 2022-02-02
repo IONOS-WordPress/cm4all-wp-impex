@@ -845,6 +845,6 @@ function __registerContentImportProvider()
 }
 
 \add_action(
-  hook_name: Impex::WP_ACTION_REGISTER_PROVIDERS,
-  callback: __NAMESPACE__ . '\__registerContentImportProvider'
+  Impex::WP_ACTION_REGISTER_PROVIDERS,
+  __NAMESPACE__ . '\__registerContentImportProvider'
 );
