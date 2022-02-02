@@ -39,11 +39,19 @@ Impex provides :
 
 * Impex is explicitly designed for use in managed Wordpress instances
 
-* Impex development relies heavily on PHP unit testing its feature sset to be stable and consistent.
+* Impex development relies heavily on PHP unit testing its feature set to be stable and consistent.
 
 **Your help is welcome !!**
 
 == Frequently Asked Questions ==
+
+= Where can I find the Impex documentation ? =
+
+Documentation is in a very early stage and is not yet complete.
+
+It's available at the [Impex Plugin GitHub pages](https://ionos-wordpress.github.io/cm4all-wp-impex/)
+
+Please file bugs and feature requests at the [Impex Plugin GitHub issues](https://github.com/IONOS-WordPress/cm4all-wp-impex/issues)
 
 = Why is that Plugin written in PHP 8 ? =
 
@@ -53,7 +61,9 @@ Because PHP 8
 
 * allows a much cleaner PHP code
 
-  => We will investigate into transpiling the Plugin to PHP 7.4 in the future.
+The Plugin version available here (at Wordpress plugin directory) is transpiled down to PHP 7.4
+
+If you prefer to use the PHP 8 version, you can download it from the [GitHub Impex plugin repository](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
 = Whats the current feature set ? =
 

@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: cm4all-wp-impex
- * Plugin URI: http://dev.intern.cm-ag/trinity/research/cm4all-wp-impex
+ * Plugin URI: https://github.com/IONOS-WordPress/cm4all-wp-impex
  * Description: Impex contributes extendable Import / Export functionality to WordPress
  * Version: 1.1.0
  * Tags: import, export, migration
