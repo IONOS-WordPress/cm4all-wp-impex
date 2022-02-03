@@ -182,9 +182,7 @@ function enqueueClientAssets(bool $in_footer): string
 
 \add_action(
   'init',
-  function () {
-    \load_plugin_textdomain('cm4all-wp-impex', false, basename(__DIR__) . '/languages/');
-  },
+  fn () => \load_plugin_textdomain('cm4all-wp-impex', false, basename(__DIR__) . '/languages/'),
 );
 
 \add_action(Impex::WP_ACTION_REGISTER_PROFILES, function () {

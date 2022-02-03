@@ -178,7 +178,7 @@ abstract class ImpexExport extends ImpexPart
       if ($export['id'] === $export_id) {
         foreach ($data as $key => $value) {
           // prevent updating 'id', 'options', 'profile', 'user', 'created'
-          if (array_search($key, ['id', 'options', 'profile', 'user', 'created']) === false) {
+          if (!in_array($key, ['id', 'options', 'profile', 'user', 'created'])) {
             if ($value === null) {
               unset($export[$key]);
             } else {

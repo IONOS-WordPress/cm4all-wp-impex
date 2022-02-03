@@ -22,7 +22,7 @@ function __ContentExporterProviderCallback(array $options, ImpexExportTransforma
 
   $chunks[] = _export_wp($options, $chunk_max_items);
 
-  if (count($current_chunk) > 0) {
+  if ($current_chunk !== []) {
     $chunks[] = $current_chunk;
   }
 

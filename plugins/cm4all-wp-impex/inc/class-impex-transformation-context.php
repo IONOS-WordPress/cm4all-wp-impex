@@ -63,7 +63,7 @@ abstract class ImpexTransformationContext implements \JsonSerializable
     if (false === \get_user_by('login', $this->_user_login))
       throw new ImpexRuntimeException(sprintf('user "%s" not found', $this->_user_login));
 
-    if ($name === null || strlen($name) === 0) {
+    if ($name === null || $name === '') {
       $this->_name = ($this->_isExportPart ? 'Export' : 'Import') . " '{$profile_name}' created by user '{$this->_user_login}' at {$this->_created}";
     } else {
       $this->_name = $name;

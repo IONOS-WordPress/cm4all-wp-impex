@@ -162,16 +162,16 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
       // => skip post import
       $comment_post_id = $post_exists;
       $post_id         = $post_exists;
-      $processed_posts[intval($post[ContentExporter::SLICE_DATA_POSTS_ID])] = intval($post_exists);
+      $processed_posts[(int)$post[ContentExporter::SLICE_DATA_POSTS_ID]] = (int)$post_exists;
     } else {
       $post_parent = (int) $post[ContentExporter::SLICE_DATA_POSTS_PARENT];
-      if ($post_parent) {
+      if ($post_parent !== 0) {
         // if we already know the parent, map it to the new local ID
         if (isset($processed_posts[$post_parent])) {
           $post_parent = $processed_posts[$post_parent];
           // otherwise record the parent for later
         } else {
-          $post_orphans[intval($post['post_id'])] = $post_parent;
+          $post_orphans[(int)$post['post_id']] = $post_parent;
           $featured_images = [];
           $post_parent = 0;
         }
@@ -244,7 +244,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
     }
 
     // map pre-import ID to local ID
-    $processed_posts[intval($post[ContentExporter::SLICE_DATA_POSTS_ID])] = (int) $post_id;
+    $processed_posts[(int)$post[ContentExporter::SLICE_DATA_POSTS_ID]] = (int) $post_id;
 
     $post[ContentExporter::SLICE_DATA_POSTS_TAXONOMY_TERMS] ??= [];
 
@@ -270,7 +270,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
           );
         }
       }
-      $terms_to_set[$taxonomy][] = intval($term_id);
+      $terms_to_set[$taxonomy][] = (int)$term_id;
     }
 
     foreach ($terms_to_set as $tax => $ids) {
@@ -353,8 +353,8 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
       $value = false;
 
       if ('_edit_last' == $key) {
-        if (isset($processed_authors[intval(ContentExporter::SLICE_DATA_TERMS_META_VALUE)])) {
-          $value = $processed_authors[intval(ContentExporter::SLICE_DATA_TERMS_META_VALUE)];
+        if (isset($processed_authors[(int)ContentExporter::SLICE_DATA_TERMS_META_VALUE])) {
+          $value = $processed_authors[(int)ContentExporter::SLICE_DATA_TERMS_META_VALUE];
         } else {
           $key = false;
         }
@@ -439,20 +439,20 @@ function _process_menu_item($item, array $processed_terms, array $processed_post
     ${$meta[ContentExporter::SLICE_DATA_TERMS_META_KEY]} = $meta[ContentExporter::SLICE_DATA_TERMS_META_VALUE];
   }
 
-  if ('taxonomy' == $_menu_item_type && isset($processed_terms[intval($_menu_item_object_id)])) {
-    $_menu_item_object_id = $processed_terms[intval($_menu_item_object_id)];
-  } elseif ('post_type' == $_menu_item_type && isset($processed_posts[intval($_menu_item_object_id)])) {
-    $_menu_item_object_id = $processed_posts[intval($_menu_item_object_id)];
+  if ('taxonomy' == $_menu_item_type && isset($processed_terms[(int)$_menu_item_object_id])) {
+    $_menu_item_object_id = $processed_terms[(int)$_menu_item_object_id];
+  } elseif ('post_type' == $_menu_item_type && isset($processed_posts[(int)$_menu_item_object_id])) {
+    $_menu_item_object_id = $processed_posts[(int)$_menu_item_object_id];
   } elseif ('custom' != $_menu_item_type) {
     // associated object is missing or not imported yet, we'll retry later
     $missing_menu_items[] = $item;
     return;
   }
 
-  if (isset($processed_menu_items[intval($_menu_item_menu_item_parent)])) {
-    $_menu_item_menu_item_parent = $processed_menu_items[intval($_menu_item_menu_item_parent)];
+  if (isset($processed_menu_items[(int)$_menu_item_menu_item_parent])) {
+    $_menu_item_menu_item_parent = $processed_menu_items[(int)$_menu_item_menu_item_parent];
   } elseif ($_menu_item_menu_item_parent) {
-    $menu_item_orphans[intval($item['post_id'])] = (int) $_menu_item_menu_item_parent;
+    $menu_item_orphans[(int)$item['post_id']] = (int) $_menu_item_menu_item_parent;
     $_menu_item_menu_item_parent = 0;
   }
 
@@ -466,7 +466,7 @@ function _process_menu_item($item, array $processed_terms, array $processed_post
     'menu-item-object-id'   => $_menu_item_object_id,
     'menu-item-object'      => $_menu_item_object,
     'menu-item-parent-id'   => $_menu_item_menu_item_parent,
-    'menu-item-position'    => intval($item[ContentExporter::SLICE_DATA_POSTS_MENU_ORDER]),
+    'menu-item-position'    => (int)$item[ContentExporter::SLICE_DATA_POSTS_MENU_ORDER],
     'menu-item-type'        => $_menu_item_type,
     'menu-item-title'       => $item[ContentExporter::SLICE_DATA_POSTS_TITLE],
     'menu-item-url'         => $_menu_item_url,
@@ -480,7 +480,7 @@ function _process_menu_item($item, array $processed_terms, array $processed_post
 
   $id = \wp_update_nav_menu_item($menu_id, 0, $args);
   if ($id && !is_wp_error($id)) {
-    $processed_menu_items[intval($item[ContentExporter::SLICE_DATA_POSTS_ID])] = (int) $id;
+    $processed_menu_items[(int)$item[ContentExporter::SLICE_DATA_POSTS_ID]] = (int) $id;
   }
 
   return [$missing_menu_items, $processed_menu_items, $menu_item_orphans];
@@ -523,7 +523,7 @@ function _import_tags(array $options, array $slice): array
         $term_id = $term_id['term_id'];
       }
       if (isset($tag[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($tag[ContentExporter::SLICE_DATA_TERMS_ID])] = (int)$term_id;
+        $processed_terms[(int)$tag[ContentExporter::SLICE_DATA_TERMS_ID]] = (int)$term_id;
       }
       continue;
     }
@@ -537,7 +537,7 @@ function _import_tags(array $options, array $slice): array
     $term_id = \wp_insert_term(\wp_slash($tag[ContentExporter::SLICE_DATA_TERMS_NAME]), 'post_tag', $args);
     if (!is_wp_error($term_id)) {
       if (isset($tag[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($tag[ContentExporter::SLICE_DATA_TERMS_ID])] = $term_id['term_id'];
+        $processed_terms[(int)$tag[ContentExporter::SLICE_DATA_TERMS_ID]] = $term_id['term_id'];
       }
     } else {
       throw new ImpexImportRuntimeException("Failed to create term(tag_name==='{$tag[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}");
@@ -566,7 +566,7 @@ function _import_terms(array $options, array $slice): array
         $term_id = $term_id['term_id'];
       }
       if (isset($term[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($term[ContentExporter::SLICE_DATA_TERMS_ID])] = (int) $term_id;
+        $processed_terms[(int)$term[ContentExporter::SLICE_DATA_TERMS_ID]] = (int) $term_id;
       }
       continue;
     }
@@ -590,7 +590,7 @@ function _import_terms(array $options, array $slice): array
     $term_id = wp_insert_term(wp_slash($term[ContentExporter::SLICE_DATA_TERMS_NAME]), $term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY], $args);
     if (!is_wp_error($term_id)) {
       if (isset($term[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($term[ContentExporter::SLICE_DATA_TERMS_ID])] = $term_id['term_id'];
+        $processed_terms[(int)$term[ContentExporter::SLICE_DATA_TERMS_ID]] = $term_id['term_id'];
       }
     } else {
       throw new ImpexImportRuntimeException("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}");
@@ -620,7 +620,7 @@ function _import_categories(array $options, array $slice): array
         $term_id = $term_id['term_id'];
       }
       if (isset($category[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($category[ContentExporter::SLICE_DATA_TERMS_ID])] = (int)$term_id;
+        $processed_terms[(int)$category[ContentExporter::SLICE_DATA_TERMS_ID]] = (int)$term_id;
       }
       continue;
     }
@@ -639,7 +639,7 @@ function _import_categories(array $options, array $slice): array
 
     if (!\is_wp_error($category_id) && $category_id > 0) {
       if (isset($category[ContentExporter::SLICE_DATA_TERMS_ID])) {
-        $processed_terms[intval($category[ContentExporter::SLICE_DATA_TERMS_ID])] = $category_id;
+        $processed_terms[(int)$category[ContentExporter::SLICE_DATA_TERMS_ID]] = $category_id;
       }
     } else {
       throw new ImpexImportRuntimeException("Failed to create category(category_nicename==='{$category['category_nicename']}') : {$category_id->get_error_message()}");

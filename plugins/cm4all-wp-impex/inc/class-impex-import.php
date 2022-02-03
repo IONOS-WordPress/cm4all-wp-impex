@@ -204,7 +204,7 @@ abstract class ImpexImport extends ImpexPart
       }
 
       if (!$consumed) {
-        array_push($uncomsumed_slices, $slice);
+        $uncomsumed_slices[] = $slice;
       }
     }
 
@@ -224,7 +224,7 @@ abstract class ImpexImport extends ImpexPart
       if ($import['id'] === $import_id) {
         foreach ($data as $key => $value) {
           // prevent updating 'id', 'options', 'profile', 'user', 'created'
-          if (array_search($key, ['id', 'options', 'profile', 'user', 'created']) === false) {
+          if (!in_array($key, ['id', 'options', 'profile', 'user', 'created'])) {
             if ($value === null) {
               unset($import[$key]);
             } else {

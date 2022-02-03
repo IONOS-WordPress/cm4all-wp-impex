@@ -33,7 +33,9 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
      * @var callable $log
      */
     $log = function (string $message, mixed $context = null) use ($options) {
-      isset($options[Impex::OPTION_LOG]) && call_user_func($options[Impex::OPTION_LOG], $message, $context);
+      if (isset($options[Impex::OPTION_LOG])) {
+        call_user_func($options[Impex::OPTION_LOG], $message, $context);
+      }
     };
 
     $slice_meta = $slice[Impex::SLICE_META];
@@ -127,7 +129,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
             $rows = $slice[Impex::SLICE_DATA];
 
             // TODO: implement optimized in-db-copy procedure when special option provided
-            if (count($rows)) {
+            if (count($rows) > 0) {
               $table_column_names = implode('`, `', array_keys((array)$rows[0]));
 
               /* 

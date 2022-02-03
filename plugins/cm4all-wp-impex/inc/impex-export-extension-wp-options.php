@@ -37,7 +37,7 @@ function __WpOptionsExporterProviderCallback(array $options, ImpexExportTransfor
   $selector = $options[WpOptionsExporter::OPTION_SELECTOR] ?? null;
 
   // ensure selector is valid
-  if (!(is_array($selector) || is_string($selector))) {
+  if (!is_array($selector) && !is_string($selector)) {
     throw new ImpexExportRuntimeException(sprintf('dont know how to handle export option WpOptionsExporter::OPTION_SELECTOR(=%s)', json_encode($selector)));
   }
 
@@ -59,7 +59,7 @@ function __WpOptionsExporterProviderCallback(array $options, ImpexExportTransfor
     }
   }
 
-  if (count($current_chunk) > 0) {
+  if ($current_chunk !== []) {
     $chunks[] = $current_chunk;
   }
 

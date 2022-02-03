@@ -27,7 +27,7 @@ function __DbTablesExportProviderCallback(array $options, ImpexExportTransformat
   $selectors = $options[DbTablesExporter::OPTION_SELECTOR] ?? null;
 
   // ensure selector is valid
-  if (!(is_array($selectors) || is_string($selectors))) {
+  if (!is_array($selectors) && !is_string($selectors)) {
     throw new ImpexExportRuntimeException(sprintf('dont know how to handle export option DbTablesExporter::OPTION_SELECTOR(=%s)', json_encode($selectors)));
   }
 
