@@ -7,7 +7,9 @@
     "https://downloads.wordpress.org/plugin/wp-api-swaggerui.1.1.2.zip",
     "./plugins/cm4all-wp-impex",
     "./plugins/cm4all-wp-impex-example",
+    "./dist/cm4all-wp-impex-php7.4.0"
   ],
+  "phpVersion": "7.4",
   "mappings": {
     "wp-content/plugins/cm4all-wordpress": "../cm4all-wordpress/packages/wordpress/wp-content/plugins/cm4all-wordpress",
     "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core"

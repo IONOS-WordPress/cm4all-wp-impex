@@ -1,10 +1,9 @@
 {
   "core": "WordPress/WordPress#5.9",
   "plugins": [
-    "https://downloads.wordpress.org/plugin/gutenberg.12.3.2.zip",
+    "https://downloads.wordpress.org/plugin/gutenberg.zip",
     "./plugins/cm4all-wp-impex",
-    "./plugins/cm4all-wp-impex-example",
-    "./dist/cm4all-wp-impex-php7.4.0"
+    "./plugins/cm4all-wp-impex-example"
   ],
   "phpVersion": "8.0",
   "config": {
@@ -14,5 +13,8 @@
     "SAVEQUERIES": true,
     "FS_METHOD": "direct"
   },
-  "themes": ["https://downloads.wordpress.org/theme/tt1-blocks.0.4.7.zip"]
+  "themes": [
+    "https://downloads.wordpress.org/theme/tt1-blocks.zip",
+    "https://downloads.wordpress.org/theme/twentytwentytwo.zip"
+  ]
 }

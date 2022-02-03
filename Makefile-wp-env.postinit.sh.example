@@ -20,3 +20,5 @@ PATH=./node_modules/.bin/:$PATH
 wp-env run cli "plugin activate cm4all-wordpress"
 wp-env run cli "theme activate trinity-core"
 
+
+
