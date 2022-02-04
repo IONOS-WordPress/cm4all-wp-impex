@@ -396,6 +396,7 @@ dist: i18n dist/docs dist/cm4all-wp-impex.zip dist/cm4all-wp-impex-example.zip d
 > @touch -m '$@'
 
 dist/cm4all-wp-impex-php7.4.0: dist/cm4all-wp-impex tmp/composer.phar
+#HELP: * generate PHP 7.4 flavor of impex plugin
 > mkdir -p '$@'
 > rsync -rc dist/cm4all-wp-impex/ $@/
 # rename dummy plugin to cm4all-wp-impex-php7.4.0
@@ -405,6 +406,10 @@ dist/cm4all-wp-impex-php7.4.0: dist/cm4all-wp-impex tmp/composer.phar
 > (cd 'tmp/rector' && php ../composer.phar require rector/rector --dev)
 # > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./tmp/rector/vendor/rector/rector/config/set/downgrade-php80.php --no-progress-bar process .
 > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./rector.php --no-progress-bar process .
+
+.PHONY: deploy-to-wordpress
+#HELP: * deploy impex plugin to wordpress.org
+deploy-to-wordpress: dist/cm4all-wp-impex-php7.4.0
 
 .ONESHELL :
 dist/cm4all-wp-impex: build
