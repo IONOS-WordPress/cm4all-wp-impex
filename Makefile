@@ -408,8 +408,46 @@ dist/cm4all-wp-impex-php7.4.0: dist/cm4all-wp-impex tmp/composer.phar
 > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./rector.php --no-progress-bar process .
 
 .PHONY: deploy-to-wordpress
-#HELP: * deploy impex plugin to wordpress.org
-deploy-to-wordpress: dist/cm4all-wp-impex-php7.4.0
+#HELP: * package and deploy impex plugin to wordpress.org
+deploy-to-wordpress: # dist # dist/cm4all-wp-impex-php7.4.0
+# see https://github.com/10up/action-wordpress-plugin-deploy/blob/develop/deploy.sh
+ifndef SVN_TAG
+>	  $(error "$(@) : SVN_TAG is not set")
+endif
+ifndef SVN_USERNAME
+>	  $(error "$(@) : SVN_USERNAME is not set")
+endif
+ifndef SVN_PASSWORD
+>	  $(error "$(@) : SVN_PASSWORD is not set")
+endif
+ifeq ($(wildcard dist/cm4all-wp-impex-php7.4.0), )
+>	  $(error "$(@) : directory dist/cm4all-wp-impex-php7.4.0 doesnt not yet exist. Please run 'make dist' first.")
+endif
+# next steps requires apt packages ["svn","librsvg2-bin","convert" to be installed
+# checkout just trunk and assets for efficiency
+# tagging will be handled on the svn level
+> (cd dist && svn checkout --depth immediates https://plugins.svn.wordpress.org/cm4all-wp-impex wordpress.org-svn)
+> (cd dist/wordpress.org-svn && svn update --set-depth infinity assets && svn update --set-depth infinity trunk)
+> rsync -rc docs/wordpress.org-svn/ dist/wordpress.org-svn/assets/ --delete
+# create wordpress png icons from svg
+> (cd dist/wordpress.org-svn/assets && convert -density 300 -define icon:auto-resize=128 -background none icon.svg icon-128x128.png)
+> (cd dist/wordpress.org-svn/assets && convert -density 300 -define icon:auto-resize=256 -background none icon.svg icon-256x256.png)
+# copy plugin to svn
+> rsync -rc dist/cm4all-wp-impex-php7.4.0/ dist/wordpress.org-svn/trunk/ --delete
+# add files to svn
+> (cd dist/wordpress.org-svn && svn add . --force)
+# remove deleted files from svn
+> (cd dist/wordpress.org-svn && svn status | grep '^\!' | sed 's/! *//' | xargs -I% svn rm %@ > /dev/null) || true
+# copy tag locally to make this a single commit
+> (cd dist/wordpress.org-svn && svn cp "trunk" "tags/$(SVN_TAG)")
+# fix screenshots getting force downloaded when clicking them
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.png' -exec svn propset svn:mime-type 'image/png' *.png \; -quit)
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.jpg' -exec svn propset svn:mime-type 'image/jpeg' *.jpg \; -quit)
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -exec svn propset svn:mime-type 'image/x-icon' *.ico \; -quit)
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -exec svn propset svn:mime-type 'image/gif' *.gif \; -quit)
+> (cd dist/wordpress.org-svn && svn status)
+> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $SVN_TAG from GitHub" --no-auth-cache --non-interactive --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+> echo "$@ tagged svn to $(SVN_TAG)"
 
 .ONESHELL :
 dist/cm4all-wp-impex: build

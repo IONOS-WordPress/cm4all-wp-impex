@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-core ca-certificates curl make gettext php8.0
+          sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-core ca-certificates curl make gettext php8.0 svn librsvg2-bin convert
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
       - name: run semantic-release
         env:
@@ -38,6 +38,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # enable next line when using the action in a private github repo
 #          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         shell: bash
         run: |
           export NVM_DIR="$HOME/.nvm" 

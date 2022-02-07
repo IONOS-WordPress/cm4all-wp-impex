@@ -25,6 +25,8 @@ module.exports = {
       {
         prepareCmd:
           "sed -i 's/Version:\\(.*\\)/Version: ${nextRelease.version}/' plugins/*/plugin.php && make dist",
+        publishCmd:
+          "SVN_TAG='${nextRelease.version}' SVN_USERNAME='${process.env.SVN_USERNAME}' SVN_PASSWORD='${process.env.SVN_PASSWORD}' make deploy-to-wordpress",
       },
     ],
     [
