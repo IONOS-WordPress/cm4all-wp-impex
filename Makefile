@@ -423,7 +423,7 @@ endif
 ifeq ($(wildcard dist/cm4all-wp-impex-php7.4.0), )
 >	  $(error "$(@) : directory dist/cm4all-wp-impex-php7.4.0 doesnt not yet exist. Please run 'make dist' first.")
 endif
-# next steps requires apt packages ["svn","librsvg2-bin","convert" to be installed
+# next steps requires apt packages ["subversion","librsvg2-bin","imagemagick" (=>convert) to be installed
 # checkout just trunk and assets for efficiency
 # tagging will be handled on the svn level
 > (cd dist && svn checkout --depth immediates https://plugins.svn.wordpress.org/cm4all-wp-impex wordpress.org-svn)
@@ -446,7 +446,7 @@ endif
 > (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -exec svn propset svn:mime-type 'image/x-icon' *.ico \; -quit)
 > (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -exec svn propset svn:mime-type 'image/gif' *.gif \; -quit)
 > (cd dist/wordpress.org-svn && svn status)
-> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $SVN_TAG from GitHub" --no-auth-cache --non-interactive --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
 > echo "$@ tagged svn to $(SVN_TAG)"
 
 .ONESHELL :
