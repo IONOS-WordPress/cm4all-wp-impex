@@ -1,3 +1,10 @@
+### [1.1.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.1...1.1.2) (2022-02-08)
+
+
+### Bug Fixes
+
+* Makefile target "deploy-to-wordpress" - fixed typo in svn commit message ([e5edf8b](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/e5edf8b8dd51ea5de40fef6a05d9702b66662d5c))
+
 ### [1.1.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.0...1.1.1) (2022-02-08)
 
 
