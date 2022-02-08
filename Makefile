@@ -452,7 +452,7 @@ endif
 > (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.ico' -quit -exec svn propset svn:mime-type 'image/x-icon' *.ico \; )
 > (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.gif' -quit -exec svn propset svn:mime-type 'image/gif' *.gif \; )
 > (cd $(WORDPRESS_ORG_SVN_DIR) && svn status)
-> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$$SVN_USERNAME" --password "$$SVN_PASSWORD")
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$$SVN_USERNAME" --password "$$SVN_PASSWORD")
 > echo "$@ tagged svn to $(SVN_TAG)"
 
 .ONESHELL :
