@@ -65,6 +65,11 @@ DOCKER_MDBOOK := docker run --rm -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(
 IMPEX_PLUGIN_NAME := cm4all-wp-impex
 IMPEX_PLUGIN_DIR := ./plugins/$(IMPEX_PLUGIN_NAME)
 
+# location of the on-the-fly subversion directory used to upload to wordpress.org
+WORDPRESS_ORG_SVN_DIR := dist/wordpress.org-svn
+# plugin name prefix for the downgraded impex version uploaded at wordpress.org
+DOWNGRADED_PLUGIN_DIR := dist/cm4all-wp-impex-php7.4.0
+
 # javascript 
 SCRIPT_SOURCES := $(wildcard $(IMPEX_PLUGIN_DIR)/src/*.mjs)
 SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
@@ -86,6 +91,8 @@ DOCS_MARKDOWN_TARGETS := $(patsubst %.md,dist/%.pdf,$(wildcard $(DOCS_MARKDOWN_F
 
 DOCS_MERMAID_FILES := docs/**/*.mmd
 DOCS_MERMAID_TARGETS := $(patsubst %.mmd,%.mmd.svg,$(wildcard $(DOCS_MERMAID_FILES)))
+
+.ONESHELL:
 
 .PHONY: all 
 #HELP: * build sources and spin up wp-env instance
@@ -124,14 +131,13 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 # # development version
 # >  sass --embed-sources --embed-source-map $< $@
 
-.ONESHELL:
 $(WP_ENV_HOME): node_modules 
-> mkdir -p dist/cm4all-wp-impex-php7.4.0
-> cat << EOF > dist/cm4all-wp-impex-php7.4.0/plugin.php
+> mkdir -p $(DOWNGRADED_PLUGIN_DIR)
+> cat << EOF > $(DOWNGRADED_PLUGIN_DIR)/plugin.php
 > <?php
 > /**
 >  * dummy plugin placeholder for wp-env
->  * Plugin Name: cm4all-wp-impex-php7.4.0
+>  * Plugin Name: $$(basename $(DOWNGRADED_PLUGIN_DIR))
 >  **/
 > EOF
 # if a executable "Makefile-wp-env.preinit.sh" exists, call it now
@@ -217,7 +223,6 @@ docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE)
 HELP: build docs
 dist/docs : node_modules $(DOCS_MERMAID_TARGETS) $(DOCS_MARKDOWN_TARGETS) docs/gh-pages/book
 
-.ONESHELL:
 dist/cm4all-wp-impex-gh-pages: docs/gh-pages/book/
 > rsync -rupE $< $@/
 
@@ -229,7 +234,6 @@ $(DOCS_MERMAID_TARGETS) : $(DOCS_MERMAID_FILES)
 > mkdir -p $(dir $@) && mmdc -i $< -o $@
 
 .PHONY: clean
-.ONESHELL:
 #HELP: * clean up wp-env and intermediate files
 clean:
 > if [ -d "$$WP_ENV_HOME" ] && [ -d "node_modules/" ]; then
@@ -392,24 +396,24 @@ wp-env-tests-mysql-shell: $(WP_ENV_HOME) ## open mysql shell connected to wp-env
 
 .PHONY: dist
 #HELP: * produce release artifacts
-dist: i18n dist/docs dist/cm4all-wp-impex.zip dist/cm4all-wp-impex-example.zip dist/cm4all-wp-impex-gh-pages.zip dist/cm4all-wp-impex-php7.4.0.zip
+dist: i18n dist/docs dist/cm4all-wp-impex.zip dist/cm4all-wp-impex-example.zip dist/cm4all-wp-impex-gh-pages.zip $(DOWNGRADED_PLUGIN_DIR).zip
 > @touch -m '$@'
 
-dist/cm4all-wp-impex-php7.4.0: dist/cm4all-wp-impex tmp/composer.phar
-#HELP: * generate PHP 7.4 flavor of impex plugin
+$(DOWNGRADED_PLUGIN_DIR): dist/cm4all-wp-impex tmp/composer.phar
+#HELP: * generate downgraded PHP flavor of impex plugin
 > mkdir -p '$@'
 > rsync -rc dist/cm4all-wp-impex/ $@/
-# rename dummy plugin to cm4all-wp-impex-php7.4.0
-> sed -i 's/Plugin Name: cm4all-wp-impex/Plugin Name: cm4all-wp-impex-php7.4.0/g' $@/plugin.php
-> sed -i 's/Requires PHP: 8.0/Requires PHP: 7.4/' $@/plugin.php
+# rename dummy plugin for downgraded plugin variant
+> sed -i "s/Plugin Name: cm4all-wp-impex/Plugin Name: $$(basename $(DOWNGRADED_PLUGIN_DIR))/g" $@/plugin.php
+> sed -i 's/Requires PHP:[[:space:]]\+8.0/Requires PHP: 7.4/' $@/plugin.php $@/readme.txt
 > mkdir -p 'tmp/rector'
 > (cd 'tmp/rector' && php ../composer.phar require rector/rector --dev)
-# > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./tmp/rector/vendor/rector/rector/config/set/downgrade-php80.php --no-progress-bar process .
-> tmp/rector/vendor/bin/rector --clear-cache --working-dir ./dist/cm4all-wp-impex-php7.4.0 --config ./rector.php --no-progress-bar process .
+# > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./$(DOWNGRADED_PLUGIN_DIR) --config ./tmp/rector/vendor/rector/rector/config/set/downgrade-php80.php --no-progress-bar process .
+> tmp/rector/vendor/bin/rector --clear-cache --working-dir ./$(DOWNGRADED_PLUGIN_DIR) --config ./rector.php --no-progress-bar process .
 
 .PHONY: deploy-to-wordpress
 #HELP: * package and deploy impex plugin to wordpress.org
-deploy-to-wordpress: # dist # dist/cm4all-wp-impex-php7.4.0
+deploy-to-wordpress: 
 # see https://github.com/10up/action-wordpress-plugin-deploy/blob/develop/deploy.sh
 ifndef SVN_TAG
 >	  $(error "$(@) : SVN_TAG is not set")
@@ -420,35 +424,36 @@ endif
 ifndef SVN_PASSWORD
 >	  $(error "$(@) : SVN_PASSWORD is not set")
 endif
-ifeq ($(wildcard dist/cm4all-wp-impex-php7.4.0), )
->	  $(error "$(@) : directory dist/cm4all-wp-impex-php7.4.0 doesnt not yet exist. Please run 'make dist' first.")
+ifeq ($(wildcard $(DOWNGRADED_PLUGIN_DIR)), )
+>	  $(error "$(@) : directory $(DOWNGRADED_PLUGIN_DIR) doesnt not yet exist. Please run 'make dist' first.")
 endif
 # next steps requires apt packages ["subversion","librsvg2-bin","imagemagick" (=>convert) to be installed
 # checkout just trunk and assets for efficiency
 # tagging will be handled on the svn level
-> (cd dist && svn checkout --depth immediates https://plugins.svn.wordpress.org/cm4all-wp-impex wordpress.org-svn)
-> (cd dist/wordpress.org-svn && svn update --set-depth infinity assets && svn update --set-depth infinity trunk)
-> rsync -rc docs/wordpress.org-svn/ dist/wordpress.org-svn/assets/ --delete
+> svn checkout --depth immediates https://plugins.svn.wordpress.org/cm4all-wp-impex $(WORDPRESS_ORG_SVN_DIR)
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn update --set-depth infinity assets && svn update --set-depth infinity trunk)
+> rsync -rc docs/wordpress.org-svn/ $(WORDPRESS_ORG_SVN_DIR)/assets/ --delete
 # create wordpress png icons from svg
-> (cd dist/wordpress.org-svn/assets && convert -density 300 -define icon:auto-resize=128 -background none icon.svg icon-128x128.png)
-> (cd dist/wordpress.org-svn/assets && convert -density 300 -define icon:auto-resize=256 -background none icon.svg icon-256x256.png)
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && convert -density 300 -define icon:auto-resize=128 -background none icon.svg icon-128x128.png)
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && convert -density 300 -define icon:auto-resize=256 -background none icon.svg icon-256x256.png)
 # copy plugin to svn
-> rsync -rc dist/cm4all-wp-impex-php7.4.0/ dist/wordpress.org-svn/trunk/ --delete
+> rsync -rc $(DOWNGRADED_PLUGIN_DIR)/ $(WORDPRESS_ORG_SVN_DIR)/trunk/ --delete
+# rename downgraded plugin to original plugin name
+> sed -i "s/Plugin Name: $$(basename $(DOWNGRADED_PLUGIN_DIR))/Plugin Name: cm4all-wp-impex/g" $(WORDPRESS_ORG_SVN_DIR)/trunk/plugin.php
 # add files to svn
-> (cd dist/wordpress.org-svn && svn add . --force)
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn add . --force)
 # remove deleted files from svn
-> (cd dist/wordpress.org-svn && svn status | grep '^\!' | sed 's/! *//' | xargs -I% svn rm %@ > /dev/null) || true
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn status | grep '^\!' | sed 's/! *//' | xargs -I% svn rm %@ > /dev/null) || true
 # copy tag locally to make this a single commit
-> (cd dist/wordpress.org-svn && svn cp "trunk" "tags/$(SVN_TAG)")
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn cp "trunk" "tags/$(SVN_TAG)")
 # fix screenshots getting force downloaded when clicking them
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.png' -quit -exec svn propset svn:mime-type 'image/png' *.png \; )
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.jpg' -quit -exec svn propset svn:mime-type 'image/jpeg' *.jpg \; )
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -quit -exec svn propset svn:mime-type 'image/x-icon' *.ico \; )
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -quit -exec svn propset svn:mime-type 'image/gif' *.gif \; )
-> (cd dist/wordpress.org-svn && svn status)
-> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$(SVN_USERNAME)" --password "$(SVN_PASSWORD)"
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.png' -quit -exec svn propset svn:mime-type 'image/png' *.png \; )
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.jpg' -quit -exec svn propset svn:mime-type 'image/jpeg' *.jpg \; )
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.ico' -quit -exec svn propset svn:mime-type 'image/x-icon' *.ico \; )
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && find . -maxdepth 1 -name '*.gif' -quit -exec svn propset svn:mime-type 'image/gif' *.gif \; )
+> (cd $(WORDPRESS_ORG_SVN_DIR) && svn status)
+> (cd $(WORDPRESS_ORG_SVN_DIR)/assets && svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$$SVN_USERNAME" --password "$$SVN_PASSWORD")
 > echo "$@ tagged svn to $(SVN_TAG)"
-
 
 .ONESHELL :
 dist/cm4all-wp-impex: build
@@ -475,7 +480,6 @@ dist/cm4all-wp-impex: build
 > envsubst < plugins/cm4all-wp-impex/readme.txt.template > $@/readme.txt
 > touch -m $@
 
-.ONESHELL:
 dist/cm4all-wp-impex-example: build
 > mkdir -p '$@'
 > rsync -rupE plugins/cm4all-wp-impex-example/{plugin.php,inc} $@/
@@ -489,7 +493,6 @@ dist/%.zip: dist/%
 
 # see https://gist.github.com/Olshansk/689fc2dee28a44397c6e31a0776ede30
 .PHONY: help
-.ONESHELL:
 #HELP: * prints this screen
 help: 
 > @printf "Available targets\n\n"
