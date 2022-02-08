@@ -446,7 +446,7 @@ endif
 > (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -exec svn propset svn:mime-type 'image/x-icon' *.ico \; -quit)
 > (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -exec svn propset svn:mime-type 'image/gif' *.gif \; -quit)
 > (cd dist/wordpress.org-svn && svn status)
-> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+> (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$(SVN_USERNAME)" --password "$(SVN_PASSWORD)"
 > echo "$@ tagged svn to $(SVN_TAG)"
 
 .ONESHELL :
