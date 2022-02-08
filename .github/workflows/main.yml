@@ -42,7 +42,9 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         shell: bash
         run: |
-          export NVM_DIR="$HOME/.nvm" 
+          export NVM_DIR="$HOME/.nvm"
+          export SVN_USERNAME
+          export SVN_PASSWORD
           . "$NVM_DIR/nvm.sh" && nvm install && npm -q ci && npx semantic-release
 #      - run: echo "🍏 This job's status is ${{ job.status }}."
 
