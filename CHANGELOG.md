@@ -1,3 +1,10 @@
+### [1.1.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.2...1.1.3) (2022-02-08)
+
+
+### Bug Fixes
+
+* Makefile target "deploy-to-wordpress" - fixed SVN_* variable provisioning ([4c7d229](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/4c7d2293656759e95d136454cb4ff009421e80b7))
+
 ### [1.1.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.1...1.1.2) (2022-02-08)
 
 
