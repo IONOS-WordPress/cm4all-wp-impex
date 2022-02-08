@@ -1,3 +1,14 @@
+### [1.1.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.6...1.1.7) (2022-02-08)
+
+
+### Bug Fixes
+
+* fixed wordpress.org subversion commit command in Makefile ([3d7baa5](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/3d7baa5e4d141a4dccc5a10839a26c801ed5d6c7))
+* improved Makefile ([8272a02](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/8272a02ff8335561e4e9d89495c6a32970f3b80a))
+* Makefile target "deploy-to-wordpress" - fixed SVN_* variable provisioning ([d639f59](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/d639f594f49313d5ad21e7d50bf3b41bc4239972))
+* Makefile target "deploy-to-wordpress" - fixed typo in svn commit message ([baedfde](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/baedfde7018598b55e7158ce12754a8555699792))
+* Makefile target "deploy-to-wordpress" - SNV_* parameter provisioning ([636ec30](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/636ec30623b8f5d4b01e2917fca33c49c6f5604e))
+
 ### [1.1.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.5...1.1.6) (2022-02-08)
 
 
