@@ -1,3 +1,10 @@
+### [1.1.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.4...1.1.5) (2022-02-08)
+
+
+### Bug Fixes
+
+* improved Makefile ([0bafa03](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/0bafa033bcdbbc51d3c612b34caa4b9ba9030d0f))
+
 ### [1.1.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.3...1.1.4) (2022-02-08)
 
 
