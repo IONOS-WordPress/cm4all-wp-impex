@@ -1,3 +1,11 @@
+### [1.1.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.0...1.1.1) (2022-02-08)
+
+
+### Bug Fixes
+
+* fixed installation of convert in github action dependencies ([52e319c](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/52e319cc9122f7c27acb39e8dabda78a12a6a840))
+* fixed installation of github action dependencies ([b4a7072](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/b4a70727946905a2a2367faa9fd863ed31abd33c))
+
 ## [1.1.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.0.4...1.1.0) (2022-02-02)
 
 
