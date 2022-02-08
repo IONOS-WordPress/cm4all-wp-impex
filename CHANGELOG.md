@@ -1,3 +1,10 @@
+### [1.1.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.5...1.1.6) (2022-02-08)
+
+
+### Bug Fixes
+
+* fixed wordpress.org subversion commit command in Makefile ([c098eb9](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c098eb9bd4c4241b091842e183e585c1e90ee8c0))
+
 ### [1.1.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.4...1.1.5) (2022-02-08)
 
 
