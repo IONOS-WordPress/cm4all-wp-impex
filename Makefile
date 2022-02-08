@@ -441,13 +441,14 @@ endif
 # copy tag locally to make this a single commit
 > (cd dist/wordpress.org-svn && svn cp "trunk" "tags/$(SVN_TAG)")
 # fix screenshots getting force downloaded when clicking them
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.png' -exec svn propset svn:mime-type 'image/png' *.png \; -quit)
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.jpg' -exec svn propset svn:mime-type 'image/jpeg' *.jpg \; -quit)
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -exec svn propset svn:mime-type 'image/x-icon' *.ico \; -quit)
-> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -exec svn propset svn:mime-type 'image/gif' *.gif \; -quit)
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.png' -quit -exec svn propset svn:mime-type 'image/png' *.png \; )
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.jpg' -quit -exec svn propset svn:mime-type 'image/jpeg' *.jpg \; )
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.ico' -quit -exec svn propset svn:mime-type 'image/x-icon' *.ico \; )
+> (cd dist/wordpress.org-svn/assets && find . -maxdepth 1 -name '*.gif' -quit -exec svn propset svn:mime-type 'image/gif' *.gif \; )
 > (cd dist/wordpress.org-svn && svn status)
 > (cd dist/wordpress.org-svn/assets svn commit -m "Update to version $(SVN_TAG) from GitHub" --no-auth-cache --non-interactive --username "$(SVN_USERNAME)" --password "$(SVN_PASSWORD)"
 > echo "$@ tagged svn to $(SVN_TAG)"
+
 
 .ONESHELL :
 dist/cm4all-wp-impex: build
