@@ -60,6 +60,7 @@ On every change to the JS/CSS files in the plugin the transpiled files are gener
 - nvm (**optional**)
 - `entr`, `xdotool` and `google-chrome` for `make dev` (reload chrome browser tab after rebuild)
 - `msgmerge`, `msginit` and `msgfmt` for i18n resource building (usually contained in \*nix package `gettext`)
+- `subversion`, `librsvg2-bin` and `imagemagick` for wordpress.org deployment
 
 ### Update nodejs dependencies
 
