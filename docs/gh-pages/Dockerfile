@@ -1,4 +1,4 @@
-FROM rust:1-slim
+FROM rust:latest
 
 # see https://github.com/hrektts/docker-mdbook/blob/master/Dockerfile
 ARG MDBOOK_VERSION="0.4.13"
