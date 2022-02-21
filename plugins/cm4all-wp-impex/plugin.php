@@ -58,6 +58,24 @@ if (str_ends_with($_SERVER['SERVER_NAME'] ?? '', '.s-cm4all.cloud')) {
   \add_filter('pre_site_transient_update_core', '\__return_null');
 }
 
+\add_filter('plugin_action_links_' . plugin_basename(__FILE__), function ($links) {
+  array_unshift(
+    $links,
+    sprintf(
+      '<a href="%s">%s</a>',
+      \admin_url('tools.php?page=cm4all_wp_impex_wp_admin_dashboard'),
+      \__('Settings', 'cm4all-wp-impex')
+    ),
+    sprintf(
+      '<a target="_blank" href="%s">%s</a>',
+      'https://github.com/IONOS-WordPress/cm4all-wp-impex/issues',
+      \__('Support', 'cm4all-wp-impex')
+    ),
+  );
+
+  return $links;
+});
+
 \add_action(
   'plugins_loaded',
   function () {
