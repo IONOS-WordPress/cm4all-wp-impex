@@ -5,6 +5,30 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "impex xdebug (cli)",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceFolder}/impex-cli/impex-cli.php",
+      "cwd": "${workspaceFolder}/impex-cli",
+      "port": 0,
+      "runtimeArgs": ["-dxdebug.start_with_request=yes"],
+      "env": {
+        "XDEBUG_MODE": "debug,develop",
+        "XDEBUG_CONFIG": "client_port=${port}"
+      },
+      "args": [
+        "export",
+        "-H=bzzle",
+        "-H=izzle",
+        "-foo=bar",
+        "-foo=haar",
+        "-billy=kid",
+        "-verbose",
+        "-verbose",
+        "my-directory"
+      ]
+    },
+    {
       "name": "impex xdebug (phpunit)",
       "type": "php",
       "request": "launch",
