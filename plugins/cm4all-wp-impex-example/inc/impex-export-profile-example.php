@@ -11,7 +11,6 @@ use cm4all\wp\impex\AttachmentsExporter;
 use cm4all\wp\impex\ContentExporter;
 use cm4all\wp\impex\DbTablesExporter;
 use cm4all\wp\impex\Impex;
-use cm4all\wp\impex\ImpexImport;
 use cm4all\wp\impex\WpOptionsExporter;
 
 require_once(ABSPATH . 'wp-admin/includes/plugin.php');

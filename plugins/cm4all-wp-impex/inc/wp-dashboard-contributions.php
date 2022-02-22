@@ -45,7 +45,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
           Impex supports a pluggable provider interface to export / import custom data. Impex export and import can be customized ab applying filters.
           </p>
           <p>
-          By default a self contained, streamable <a href="https://cbor.io/">CBOR</a> archive gets exported (also including media) and vice versa imported.
+          By default a self contained, streamable directory containing JSON files and media blobs gets exported and vice versa imported.
           </p>
         ',
           ]
@@ -75,8 +75,8 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
           sprintf(
             '<p><strong>%s</strong></p><p>%s</p><p>%s</p>',
             __('For more information:', 'cm4all-wp-impex'),
-            __('<a href="https://wordpress.org/support/article/tools-screen/">Documentation on Impex</a>', 'cm4all-wp-impex'),
-            __('<a href="https://wordpress.org/support/">Support</a>', 'cm4all-wp-impex')
+            __('<a href="https://ionos-wordpress.github.io/cm4all-wp-impex/">Documentation on Impex</a>', 'cm4all-wp-impex'),
+            __('<a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/issues">Support</a>', 'cm4all-wp-impex')
           )
         );
 
