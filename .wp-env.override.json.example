@@ -6,7 +6,7 @@
     "https://downloads.wordpress.org/plugin/ninja-forms.zip",
     "https://downloads.wordpress.org/plugin/wp-api-swaggerui.1.1.2.zip",
     "./plugins/cm4all-wp-impex",
-    "./plugins/cm4all-wp-impex-example",
+    "./plugins/cm4all-wp-impex-example"
   ],
   "mappings": {
     "wp-content/plugins/cm4all-wordpress": "../cm4all-wordpress/packages/wordpress/wp-content/plugins/cm4all-wordpress",
