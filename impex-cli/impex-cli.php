@@ -242,7 +242,7 @@ function export($options, $export_directory, ...$args)
   $export_directory = realpath($export_directory);
 
   _log($options, "Exporting profile(=%s) to directory(=%s)", $profile, $export_directory);
-  /*
+
   // create export
   [$result, $status, $error] = _curl(
     $options,
@@ -254,12 +254,10 @@ function export($options, $export_directory, ...$args)
   if ($error) {
     _die($options, "Export failed : HTTP status(=%s) : %s", $status, $error);
   }
-*/
 
-
-  $export_filename = "Export 'cm4all-wordpress' created by user 'admin' at 2022-02-23T11:54:16+00:00"; // $result['name']; 
+  $export_filename = $result['name'];
   $export_filename = substr(sanitizeFilename($export_filename), 0, min(32, strlen($export_filename)));
-  $export_id = '0da4ccf0-8c7a-4870-b3fe-b4ba0176c897'; // $result['id'];
+  $export_id = $result['id'];
 
   $path = "export/${export_id}/slice";
 
@@ -302,6 +300,19 @@ function export($options, $export_directory, ...$args)
       ),
       $chunk
     );
+  }
+
+  // delete export snapshot
+  [$result, $status, $error] = _curl(
+    $options,
+    // per_page=1 is a hack to get the first page of results
+    "export/$export_id",
+    null,
+    fn ($curl) => curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'DELETE')
+  );
+
+  if ($error) {
+    _die($options, "Deleting export failed : HTTP status(=%s) : %s", $status, $error);
   }
 }
 
