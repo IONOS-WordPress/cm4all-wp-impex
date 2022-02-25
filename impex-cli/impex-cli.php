@@ -49,6 +49,7 @@ function main($argv)
         case 'import':
         case 'export':
         case 'export-profile':
+        case 'import-profile':
           $operation = $argv[1];
           _parseCommandlineArguments(array_slice($argv, 2), $options, $arguments);
           break;
@@ -184,18 +185,21 @@ function _curl($options, string $endpoint, $method = null, $callback = __NAMESPA
   return [$result, $http_status, $error ?? null];
 }
 
-function import($options, ...$args)
-{
-  echo "import" . PHP_EOL;
-
-  [$result, $status] = _curl($options, 'export/profile');
-}
-
 function export_profile($options, $command = 'list', ...$args)
 {
   switch ($command) {
     case 'list':
       return _curl($options, 'export/profile');
+    default:
+      throw new \RuntimeException("Invalid command '$command'");
+  }
+}
+
+function import_profile($options, $command = 'list', ...$args)
+{
+  switch ($command) {
+    case 'list':
+      return _curl($options, 'import/profile');
     default:
       throw new \RuntimeException("Invalid command '$command'");
   }
@@ -216,6 +220,73 @@ function sanitizeFilename($string, $force_lowercase = true, $anal = false)
     mb_strtolower($clean, 'UTF-8') :
     strtolower($clean) :
     $clean;
+}
+
+function import($options, $import_directory, ...$args)
+{
+  $profile = $options['profile'] ?? null;
+  if (!$profile) {
+    _die($options, "Import failed: missing option 'profile'");
+  }
+
+  [$profiles] = import_profile($options, 'list');
+  $profiles = array_column($profiles, 'name');
+  if (!in_array($profile, $profiles)) {
+    _die(
+      $options,
+      "Import failed : Profile(=%s) does not exist. Known profiles are %s",
+      $profile,
+      $profiles
+    );
+  }
+
+  if (!is_dir($import_directory)) {
+    _die($options, "Import failed : Directory(=%s) does not exist", $import_directory);
+  };
+  $import_directory = realpath($import_directory);
+
+  _log($options, "Import directory(=%s) using profile(=%s) to ", $import_directory, $profile,);
+
+  // create import snapshot
+  [$result, $status, $error] = _curl(
+    $options,
+    'import',
+    \CURLOPT_POST,
+    fn ($curl) => curl_setopt($curl, \CURLOPT_POSTFIELDS, http_build_query(['profile' => $profile]))
+  );
+
+  if ($error) {
+    _die($options, "Creating import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+  }
+
+  $import_id = $result['id'];
+
+  // import slices
+  foreach (glob($import_directory . '/chunk-*', GLOB_ONLYDIR) as $chunk_index => $chunk_dir) {
+    var_dump([$chunk_index, $chunk_dir]);
+    foreach (array_filter(glob($chunk_dir . '/slice-*.json'), 'is_file') as $slice_index => $slice_file) {
+      var_dump([$slice_index, $slice_file]);
+
+      // POST http://localhost:8888/wp-json/cm4all-wp-impex/v1/import/e7e27062-2c53-4f3d-b056-7c2c3f9c5055/slice?position=0
+      // in: formadata slice  out; json true
+      // attachment added as form-data; name="AttachmentImporter"; filename="slice-0003-zdf-hitparade.jpg"\r\nContent-Type: image/jpeg
+    }
+  }
+
+  // POST http://localhost:8888/wp-json/cm4all-wp-impex/v1/import/4b06dc27-a5c2-40bd-b3d3-b8e93a54dfff/consume
+
+  // delete import snapshot
+  [$result, $status, $error] = _curl(
+    $options,
+    // per_page=1 is a hack to get the first page of results
+    "import/$import_id",
+    null,
+    fn ($curl) => curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'DELETE')
+  );
+
+  if ($error) {
+    _die($options, "Deleting import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+  }
 }
 
 function export($options, $export_directory, ...$args)
@@ -243,7 +314,7 @@ function export($options, $export_directory, ...$args)
 
   _log($options, "Exporting profile(=%s) to directory(=%s)", $profile, $export_directory);
 
-  // create export
+  // create export snapshot
   [$result, $status, $error] = _curl(
     $options,
     'export',
@@ -252,7 +323,7 @@ function export($options, $export_directory, ...$args)
   );
 
   if ($error) {
-    _die($options, "Export failed : HTTP status(=%s) : %s", $status, $error);
+    _die($options, "Creating export snapshot failed : HTTP status(=%s) : %s", $status, $error);
   }
 
   $export_filename = $result['name'];
@@ -261,7 +332,7 @@ function export($options, $export_directory, ...$args)
 
   $path = "export/${export_id}/slice";
 
-  // get export metadata
+  // get export snapshot metadata
   [$result, $status, $error] = _curl(
     $options,
     // per_page=1 is a hack to get the first page of results
@@ -271,7 +342,7 @@ function export($options, $export_directory, ...$args)
   );
 
   if ($error) {
-    _die($options, "Receiving export slices failed : HTTP status(=%s) : %s", $status, $error);
+    _die($options, "Downloading export slice failed : HTTP status(=%s) : %s", $status, $error);
   }
 
   // preg_match('/^X-WP-Total:\s+(\d+)/mi', $result, $matches);
@@ -289,6 +360,7 @@ function export($options, $export_directory, ...$args)
     _die($options, "Export failed : Export directory(=%s) could not created", $export_directory);
   }
 
+  // downlod slices
   for ($chunk = 1; $chunk <= $x_wp_total_pages; $chunk++) {
     _saveSlicesChunk(
       $options,
@@ -312,7 +384,7 @@ function export($options, $export_directory, ...$args)
   );
 
   if ($error) {
-    _die($options, "Deleting export failed : HTTP status(=%s) : %s", $status, $error);
+    _die($options, "Deleting export snapshot failed : HTTP status(=%s) : %s", $status, $error);
   }
 }
 
