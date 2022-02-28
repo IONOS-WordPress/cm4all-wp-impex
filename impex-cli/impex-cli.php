@@ -261,32 +261,76 @@ function import($options, $import_directory, ...$args)
 
   $import_id = $result['id'];
 
-  // import slices
-  foreach (glob($import_directory . '/chunk-*', GLOB_ONLYDIR) as $chunk_index => $chunk_dir) {
-    var_dump([$chunk_index, $chunk_dir]);
-    foreach (array_filter(glob($chunk_dir . '/slice-*.json'), 'is_file') as $slice_index => $slice_file) {
-      var_dump([$slice_index, $slice_file]);
+  $__deleteImportSnapshot = function () use ($options, $import_id) {
+    // delete import snapshot
+    [$result, $status, $error] = _curl(
+      $options,
+      "import/$import_id",
+      null,
+      fn ($curl) => curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'DELETE')
+    );
 
-      // POST http://localhost:8888/wp-json/cm4all-wp-impex/v1/import/e7e27062-2c53-4f3d-b056-7c2c3f9c5055/slice?position=0
-      // in: formadata slice  out; json true
-      // attachment added as form-data; name="AttachmentImporter"; filename="slice-0003-zdf-hitparade.jpg"\r\nContent-Type: image/jpeg
+    if ($error) {
+      _die($options, "Deleting import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+    }
+  };
+
+  // import slices
+  $position = 0;
+  foreach (glob($import_directory . '/chunk-*', GLOB_ONLYDIR) as $chunk_dir) {
+    // var_dump([$chunk_dir]);
+    foreach (array_filter(glob($chunk_dir . '/slice-*.json'), 'is_file') as $slice_file) {
+      $slice_contents = file_get_contents($slice_file);
+      $slice = json_decode($slice_contents, true);
+
+      // upload slice
+      [$result, $status, $error] = _curl(
+        $options,
+        "import/$import_id/slice?" . http_build_query(['position' => $position]),
+        \CURLOPT_POST,
+        function ($curl) use ($slice, $slice_contents, $chunk_dir, $slice_file, $options) {
+          $post_fields = [
+            'slice' => $slice_contents,
+          ];
+
+          //$headers = [...$options['header'], 'Content-type: multipart/form-data;'];
+          //        curl_setopt($curl, \CURLOPT_HTTPHEADER, $headers);
+
+          if (
+            $slice["tag"] === "attachment" &&
+            $slice["meta"]["entity"] === "attachment" &&
+            $slice["type"] === "resource"
+          ) {
+            $attachmentFile = realpath($chunk_dir . '/' . basename($slice_file, '.json') . '-' . basename($slice['data']));
+
+            $post_fields['AttachmentImporter'] = \curl_file_create($attachmentFile);
+          }
+
+          curl_setopt($curl, \CURLOPT_POSTFIELDS, $post_fields);
+        }
+      );
+
+      if ($error) {
+        $__deleteImportSnapshot();
+        _die($options, "Uploading snapshot slice failed : HTTP status(=%s) : %s", $status, $error);
+      }
+
+      $position += 1;
     }
   }
 
-  // POST http://localhost:8888/wp-json/cm4all-wp-impex/v1/import/4b06dc27-a5c2-40bd-b3d3-b8e93a54dfff/consume
-
-  // delete import snapshot
   [$result, $status, $error] = _curl(
     $options,
-    // per_page=1 is a hack to get the first page of results
-    "import/$import_id",
-    null,
-    fn ($curl) => curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'DELETE')
+    "import/$import_id/consume",
+    \CURLOPT_POST,
   );
 
   if ($error) {
-    _die($options, "Deleting import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+    $__deleteImportSnapshot();
+    _die($options, "Consuming imported snapshot failed : HTTP status(=%s) : %s", $status, $error);
   }
+
+  $__deleteImportSnapshot();
 }
 
 function export($options, $export_directory, ...$args)
@@ -459,7 +503,8 @@ main([
   "-verbose",
   "-username=admin",
   "-password=password",
-  "-rest-url=http://localhost:8888/wp-json", 
-  "my-directory",
+  "-rest-url=http://localhost:8888/wp-json",
+  "-profile=all",
+  "/home/lgersman/Downloads/snapshots/my-export",
 ]);
 */
