@@ -1,8 +1,29 @@
 #!/usr/bin/env php
 <?php
 
-// ./impex-cli.php export -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=cm4all-wordpress -overwrite -verbose  .
-// ./impex-cli.php import -H=bzzle -H=izzle -foo=bar -foo=haar -billy=kid -verbose -verbose -username=admin -password=password -rest-url=http://web.de my-directory
+// export 
+// - overwrite
+// - profile
+// base_dir
+
+// import
+// - profile
+// dir
+
+// global flags 
+// optional:
+// -verbose
+// -CURLOPT_VERBOSE
+// -H[header=value] 
+// required:
+// -username=
+// -password=
+// -rest-url=
+
+// make wp-env-wp-restore
+// make wp-env-wp-backup
+// ./impex-cli/impex-cli.php export -username=admin -password=password -rest-url=http://localhost:8888/wp-json -verbose -overwrite -profile=cm4all-wordpress ~/tmp
+// ./impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ~/Sync/tmp/snapshots/my-export/
 // curl -q -X 'GET'   'http://localhost:8888/wp-json/cm4all-wp-impex/v1/export/profile'   -H 'accept: application/json'   -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ=' | jq
 
 namespace cm4all\wp\impex\cli;
@@ -160,7 +181,7 @@ function _curl($options, string $endpoint, $method = null, $callback = __NAMESPA
 
   curl_setopt($curl, \CURLOPT_HTTPHEADER, $options['header']);
 
-  if (isset($options['verbose'])) {
+  if (isset($options['CURLOPT_VERBOSE'])) {
     curl_setopt($curl, \CURLOPT_VERBOSE, 1);
   }
 
@@ -216,10 +237,8 @@ function sanitizeFilename($string, $force_lowercase = true, $anal = false)
   $clean = preg_replace('/\s+/', "-", $clean);
   $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean;
   return ($force_lowercase) ?
-    (function_exists('mb_strtolower')) ?
-    mb_strtolower($clean, 'UTF-8') :
-    strtolower($clean) :
-    $clean;
+    ((function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean))
+    : $clean;
 }
 
 function import($options, $import_directory, ...$args)
@@ -245,7 +264,7 @@ function import($options, $import_directory, ...$args)
   };
   $import_directory = realpath($import_directory);
 
-  _log($options, "Import directory(=%s) using profile(=%s) to ", $import_directory, $profile,);
+  _log($options, "Import directory(=%s) using profile(=%s) to %s", $import_directory, $profile, $options['rest-url']);
 
   // create import snapshot
   [$result, $status, $error] = _curl(
@@ -293,8 +312,7 @@ function import($options, $import_directory, ...$args)
             'slice' => $slice_contents,
           ];
 
-          //$headers = [...$options['header'], 'Content-type: multipart/form-data;'];
-          //        curl_setopt($curl, \CURLOPT_HTTPHEADER, $headers);
+          _log($options, "Uploading %s slice(=%s)", $slice["tag"], $slice_file);
 
           if (
             $slice["tag"] === "attachment" &&
@@ -356,7 +374,7 @@ function export($options, $export_directory, ...$args)
   };
   $export_directory = realpath($export_directory);
 
-  _log($options, "Exporting profile(=%s) to directory(=%s)", $profile, $export_directory);
+  _log($options, "Exporting %s using profile(=%s) to directory(=%s)", $options['rest-url'], $profile, $export_directory);
 
   // create export snapshot
   [$result, $status, $error] = _curl(
@@ -430,6 +448,8 @@ function export($options, $export_directory, ...$args)
   if ($error) {
     _die($options, "Deleting export snapshot failed : HTTP status(=%s) : %s", $status, $error);
   }
+
+  echo "$export_directory\n";
 }
 
 function _saveSlicesChunk($options, $export_directory, $response, $chunk)
@@ -448,6 +468,8 @@ function _saveSlicesChunk($options, $export_directory, $response, $chunk)
 
   foreach ($slices as $index => $slice) {
     $slice_file = $chunk_directory . '/slice-' . str_pad($index, 4, '0', STR_PAD_LEFT) . '.json';
+
+    _log($options, "Downloading %s to file(=%s)", $slice["tag"], $slice_file);
 
     if (
       $slice["tag"] === "attachment" &&
@@ -505,6 +527,6 @@ main([
   "-password=password",
   "-rest-url=http://localhost:8888/wp-json",
   "-profile=all",
-  "/home/lgersman/Downloads/snapshots/my-export",
+  "~/Sync/tmp/snapshots/my-export",
 ]);
 */
