@@ -349,14 +349,39 @@ wp-env-mysql-import: $(WP_ENV_HOME)
 > < "$(file)"
 
 .PHONY: wp-env-wp-cli
+# .SILENT prevents the output of the command which is useful for mysql dump
+.SILENT: wp-env-wp-cli
 #HELP: execute command in wp-env cli container \n Example: List installed plugins\n make wp-env-wp-cli ARGS='plugin list'
 wp-env-wp-cli: $(WP_ENV_HOME) ## execute wp-cli command in wp-env
+> $(eval ARGS ?= '')
 > wp-env run cli 'wp $(ARGS)'
 
 .PHONY: wp-env-wp-cli-sh
 #HELP: open shell in wp-env cli container \n Example: Delete all pages/posts (bypassing trash)\n make wp-env-wp-cli-sh <<< "wp post list --field=ID --post_type=page,post,attachment | xargs wp post delete --force"
 wp-env-wp-cli-sh: $(WP_ENV_HOME)
 > wp-env run cli 'sh'
+
+.PHONY: wp-env-wp-backup
+#HELP: creates a backup of the wordpress database and uploads directory
+wp-env-wp-backup: $(WP_ENV_HOME)
+> $(eval $@_BACKUP_DIR = ./tmp/wp-env-wp-backup)
+> rm -rf "$($@_BACKUP_DIR)"
+> mkdir -p "$($@_BACKUP_DIR)"
+> $(MAKE) -s wp-env-wp-cli ARGS='db export -' > "$($@_BACKUP_DIR)/db.sql"
+> docker cp $$(docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml ps -q wordpress):/var/www/html/wp-content/uploads "$($@_BACKUP_DIR)"
+
+.PHONY: wp-env-wp-restore
+#HELP: restores a backup create using 'make wp-env-wp-backup' of the wordpress database and uploads directory
+wp-env-wp-restore: $(WP_ENV_HOME)
+> $(eval $@_BACKUP_DIR = ./tmp/wp-env-wp-backup)
+> echo "$($@_BACKUP_DIR)"
+> if [[ -d "$($@_BACKUP_DIR)" ]]; then
+>   docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml exec -T wordpress rm -rf /var/www/html/wp-content/uploads
+>   $(MAKE) wp-env-wp-cli ARGS='db import -' < "$($@_BACKUP_DIR)/db.sql"
+>   docker cp "$($@_BACKUP_DIR)/uploads" $$(docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml ps -q wordpress):/var/www/html/wp-content
+> else
+>   >&2 echo "wordpress snapshot directory(='$($@_BACKUP_DIR)') does not exist"
+> fi
 
 # see https://developer.wordpress.org/block-editor/how-to-guides/internationalization/#create-translation-file
 $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot: $(WP_ENV_HOME) $(SCRIPT_TARGETS) $(PHP_SOURCES) 
