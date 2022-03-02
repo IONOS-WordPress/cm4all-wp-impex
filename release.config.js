@@ -55,6 +55,10 @@ module.exports = {
             label: "Impex plugin for PHP 7.4",
           },
           {
+            path: "dist/cm4all-wp-impex-cli-v*.zip",
+            label: "Impex CLI",
+          },
+          {
             path: "dist/cm4all-wp-impex-example-v*.zip",
             label: "optional third-party Impex integration example plugin",
           },

@@ -8,6 +8,41 @@ Using this tool you can import and export data from and to a remote wordpress in
 
 > impex-cli works also fine at _most_ managed wordpress installations since it does'nt need direct Wordpress access like [wp-cli](https://wp-cli.org/).
 
+# Prerequisities
+
+Impex CLI requires PHP 7.4 or higher and the `php-curl` extension.
+
+## Installation
+
+Impex CLI is available at the [Impex release page](https://github.com/IONOS-WordPress/cm4all-wp-impex/releases/latest).
+
+Download the 'Impex CLI' archive and extract its contents.
+
+The Impex CLI is provided in 2 flavors :
+
+- `impex-cli.php` needs at least PHP 8.0
+
+- `impex-cli-php7.4.0.php` is transpiled to be PHP 7.4 compatible
+
+> Linux/MacOS Users may mark the impex-cli files as executable by running `chmod +x *.php` for better usability.
+
+If you don't have the right PHP version installed on your machine but want to play with the Impex CLI you can give the official PHP Docker image a try
+_(Assuming your working dir contains the extracted impex-cli php files and impex-cli options needs to be adjusted to your needs)_ :
+
+Using the official PHP 7.4 Docker image :
+
+```sh
+docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.4-cli php \
+impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+```
+
+Alternatively using the PHP 8.0 image:
+
+```sh
+docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:8.0-cli php \
+impex-cli.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+```
+
 ## Syntax
 
 impex-cli.php `operation` `sub-operation?` `-rest-url=[wordpress-restapi-url]` [options] [arguments]?

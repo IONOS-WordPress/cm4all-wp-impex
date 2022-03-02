@@ -7,7 +7,7 @@
 # 
 # Usage: see impex-cli/impex-cli.php help 
 #
-# Requires: php(>=8.0), php-curl extension
+# Requires PHP: 8.0, php-curl extension
 # Author: Lars Gersmann<lars.gersmann@gmail.com>
 # Created: 2022-02-21
 # Repository: https://github.com/IONOS-WordPress/cm4all-wp-impex
