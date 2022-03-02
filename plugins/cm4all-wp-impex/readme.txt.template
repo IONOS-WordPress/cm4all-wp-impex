@@ -41,6 +41,9 @@ Impex provides :
 
 * Impex development relies heavily on PHP unit testing its feature set to be stable and consistent.
 
+* a [CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) for importing/exporting data via Impex REST interface.
+  The Impex CLI can be used as alternative to the Impex WP admin screen. 
+
 **Your help is welcome !!**
 
 == Frequently Asked Questions ==
