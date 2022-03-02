@@ -364,7 +364,7 @@ wp-env-wp-cli-sh: $(WP_ENV_HOME)
 .PHONY: wp-env-wp-backup
 #HELP: creates a backup of the wordpress database and uploads directory
 wp-env-wp-backup: $(WP_ENV_HOME)
-> $(eval $@_BACKUP_DIR = ./tmp/wp-env-wp-backup)
+> $(eval $@_BACKUP_DIR := ./tmp/wp-env-wp-backup)
 > rm -rf "$($@_BACKUP_DIR)"
 > mkdir -p "$($@_BACKUP_DIR)"
 > $(MAKE) -s wp-env-wp-cli ARGS='db export -' > "$($@_BACKUP_DIR)/db.sql"
@@ -373,7 +373,7 @@ wp-env-wp-backup: $(WP_ENV_HOME)
 .PHONY: wp-env-wp-restore
 #HELP: restores a backup create using 'make wp-env-wp-backup' of the wordpress database and uploads directory
 wp-env-wp-restore: $(WP_ENV_HOME)
-> $(eval $@_BACKUP_DIR = ./tmp/wp-env-wp-backup)
+> $(eval $@_BACKUP_DIR := ./tmp/wp-env-wp-backup)
 > echo "$($@_BACKUP_DIR)"
 > if [[ -d "$($@_BACKUP_DIR)" ]]; then
 >   docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml exec -T wordpress rm -rf /var/www/html/wp-content/uploads
