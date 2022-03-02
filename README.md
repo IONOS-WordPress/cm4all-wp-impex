@@ -36,6 +36,14 @@ primary targets you may want to execute.
 
 On every change to the JS/CSS files in the plugin the transpiled files are generated in the `dist` folder and the recent browser tab gets reloaded.
 
+## gh_pages
+
+gh_pages is done using [mdbook](https://github.com/rust-lang/mdBook).
+
+- start `make dev-gh-pages`
+
+On every change the book gets rebuild and immediately rerendered in your browser.
+
 ## Debugging
 
 - Ensure the VSCode PHP Debug extension (https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug) is installed
