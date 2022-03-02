@@ -1,30 +1,18 @@
 #!/usr/bin/env php
 <?php
 
-// export 
-// - overwrite
-// - profile
-// base_dir
-
-// import
-// - profile
-// dir
-
-// global flags 
-// optional:
-// -verbose
-// -CURLOPT_VERBOSE
-// -H[header=value] 
-// required:
-// -username=
-// -password=
-// -rest-url=
-
-// make wp-env-wp-restore
-// make wp-env-wp-backup
-// ./impex-cli/impex-cli.php export -username=admin -password=password -rest-url=http://localhost:8888/wp-json -verbose -overwrite -profile=cm4all-wordpress ~/tmp
-// ./impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ~/Sync/tmp/snapshots/my-export/
-// curl -q -X 'GET'   'http://localhost:8888/wp-json/cm4all-wp-impex/v1/export/profile'   -H 'accept: application/json'   -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ=' | jq
+# Description: commandline tool to import/export wordpress data by interacting with the cm4all-wp-impex wordpress plugin
+#
+# This file is part of cm4all-wp-impex.
+# 
+# Usage: see impex-cli/impex-cli.php help 
+#
+# Requires: php(>=8.0), php-curl extension
+# Author: Lars Gersmann<lars.gersmann@gmail.com>
+# Created: 2022-02-21
+# Repository: https://github.com/IONOS-WordPress/cm4all-wp-impex
+# License: See repository LICENSE file.
+# Tags: #wordpress,#cli,#impex
 
 namespace cm4all\wp\impex\cli;
 
@@ -73,8 +61,37 @@ function main($argv)
         case 'import-profile':
           $operation = $argv[1];
           _parseCommandlineArguments(array_slice($argv, 2), $options, $arguments);
+
+          [$result, $status, $error] = _curl(
+            $options,
+            "",
+            null,
+            fn ($curl) => curl_setopt($curl, \CURLOPT_URL, $options['rest-url'])
+          );
+
+
+          // ensure we can connect to the wordpress rest api
+          if ($error) {
+            _die(
+              $options,
+              "Could not connect to wordpress rest endpoint(='%s'): %s\nEnsure param '-rest-url' is correct.\nCheck wordpress rest api is enabled.\n",
+              $options['rest-url'],
+              $error
+            );
+          } else {
+            // ensure impex plugin rest namespace is available
+            if (!in_array('cm4all-wp-impex/v1', $result['namespaces'])) {
+              _die(
+                $options,
+                "Wordpress plugin cm4all-wp-impex seems not to be installed in the wordpress instance - expected rest endpoint(='cm4all-wp-impex/v1') is not available : Available rest endpoints %s'\n",
+                json_encode($result['namespaces'])
+              );
+            }
+          }
+
           break;
         case 'help':
+        case '--help':
           break;
         default:
           $arguments[] = sprintf("Invalid option(s): %s", join(' ', array_slice($argv, 1)));
@@ -136,7 +153,9 @@ function _parseCommandlineArguments($argv, &$options, &$arguments)
     unset($options['password']);
   }
 
-  $options['rest-url'] ??= 'http://localhost:8888/wp-json';
+  if (!isset($options['rest-url'])) {
+    _die($options, "Missing required option '-rest-url'\n");
+  }
 
   $accept_header_defined = false;
   foreach ($options['header'] as $header) {
@@ -156,9 +175,45 @@ function help($options, $message = null, ...$args)
     printf($message . PHP_EOL, ...$args);
   }
 
-  echo "Usage: impex-cli.php [operation] [options]
-  
-  ";
+  echo "Usage: impex-cli.php [operation] [sub-operation?] -rest-url=[wordpress-restapi-url] [options] [arguments]
+
+operation: 
+  help                                                  show this help
+
+  export                                                export wordpress data using the impex wordpress plugin to a directory
+    options:
+      -profile=[export-profile]                         (required) export profile to use
+    arguments:
+      [directory]                                       (required) directory to export to
+
+  import                                                import wordpress data exported by impex from a directory 
+    options:
+      -profile=[export-profile]                         (required) export profile to use
+    arguments:
+      [directory]                                       (required) impex export directory to import from
+
+  export-profile 
+    sub-operations:                                     (required)
+      list                                              json list of known impex export profiles 
+
+  import-profile                                     
+    sub-operations:                                     (required)
+      list                                              json list of known impex import profiles 
+
+global options:
+  -username=[wordpress-username]    
+  -password=[wordpress-password]    
+  -rest-url=[wordpress-restapi-url]                     (required) url of wordpress rest endpoint
+                                                        example: -rest-url=http://localhost:8888/wp-json
+
+  -verbose                                              prints additional informations to stderr
+  -CURLOPT_VERBOSE                                      prints additional php-curl debug informations stderr
+  -H=[header]                                           additional header to send to the wordpress rest api
+                                                        may occur multiple times
+                                                        example: -H='x-foo: bar' 
+
+see https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html for more.
+";
 }
 
 function _log($options, $message, ...$args)
@@ -192,6 +247,17 @@ function _curl($options, string $endpoint, $method = null, $callback = __NAMESPA
   $result = curl_exec($curl);
   $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
+  if (((string)$http_status)[0] !== '2') {
+    _log(
+      $options,
+      "accessing '%s' returned http statuscode(=%s) : %s",
+      curl_getinfo($curl, CURLINFO_EFFECTIVE_URL),
+      $http_status,
+      curl_error($curl),
+    );
+    $error = curl_error($curl);
+  }
+
   if (curl_errno($curl)) {
     $error = curl_error($curl);
     if (isset($options['verbose'])) {
@@ -210,7 +276,11 @@ function export_profile($options, $command = 'list', ...$args)
 {
   switch ($command) {
     case 'list':
-      return _curl($options, 'export/profile');
+      [$result, $http_status, $error] = _curl($options, 'export/profile');
+      if ($error) {
+        _die($options, "Failed to get impex export profiles(=%s) : %s\n", $http_status, $error);
+      }
+      return [$result, $http_status, $error];
     default:
       throw new \RuntimeException("Invalid command '$command'");
   }
@@ -220,7 +290,11 @@ function import_profile($options, $command = 'list', ...$args)
 {
   switch ($command) {
     case 'list':
-      return _curl($options, 'import/profile');
+      [$result, $http_status, $error] = _curl($options, 'import/profile');
+      if ($error) {
+        _die($options, "Failed to get impex import profiles(=%s) : %s\n", $http_status, $error);
+      }
+      return [$result, $http_status, $error];
     default:
       throw new \RuntimeException("Invalid command '$command'");
   }
@@ -510,7 +584,7 @@ main([
   "-overwrite",
   "-username=admin",
   "-password=password",
-  "-rest-url=http://localhost:8888/wp-json",
+  "-rest-url=",
   "-profile=cm4all-wordpress",
   ".",
 ]);
@@ -525,7 +599,7 @@ main([
   "-verbose",
   "-username=admin",
   "-password=password",
-  "-rest-url=http://localhost:8888/wp-json",
+  "-rest-url=",
   "-profile=all",
   "~/Sync/tmp/snapshots/my-export",
 ]);
