@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-        <meta name="robots" content="noindex" />
+        <title>CLI</title>
 
 
         <!-- Custom HTML head -->
@@ -82,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html" class="active"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,79 +143,55 @@
                 <div id="content" class="content">
                     <main>
                         <ul>
-<li><a href="about.html#preface">Preface</a></li>
-<li><a href="about.html#about">About</a></li>
-</ul>
-<h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
-<p><strong>This books acts currently as a draft. It is not yet complete and may change in the future.</strong></p>
-<h1 id="about"><a class="header" href="#about">About</a></h1>
-<p>The Impex plugin provides a modern way to import and export data from WordPress.</p>
-<p>It provides</p>
+<li><a href="#cli">CLI</a></li>
+<li><a href="#prerequisities">Prerequisities</a>
 <ul>
-<li>
-<p>a <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a> extension for importing and exporting data</p>
-</li>
-<li>
-<p>a user interface for interacting with the Impex <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a>.</p>
-</li>
-<li>
-<p>a <a href="./impex-cli.html">CLI</a> for importing and exporting data from the commandline. You can use the <a href="./impex-cli.html">CLI</a> to interact with a remote wordpress installation.</p>
-</li>
-<li>
-<p>an easy way to extend the import/export capabilities by third party plugins based on Wordpress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
-</li>
-</ul>
-<p><img src="./impex-screenshot.png" alt="Impex UI" /></p>
-<div style="break-before: page; page-break-before: always;"></div><ul>
-<li><a href="impex-cli.html#cli">CLI</a></li>
-<li><a href="impex-cli.html#prerequisities">Prerequisities</a>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#syntax">Syntax</a></li>
+<li><a href="#common-options-and-flags">Common Options and Flags</a>
 <ul>
-<li><a href="impex-cli.html#installation">Installation</a></li>
-<li><a href="impex-cli.html#syntax">Syntax</a></li>
-<li><a href="impex-cli.html#common-options-and-flags">Common Options and Flags</a>
+<li><a href="#options">Options</a>
 <ul>
-<li><a href="impex-cli.html#options">Options</a>
-<ul>
-<li><a href="impex-cli.html#rest-url"><code>rest-url</code></a></li>
-<li><a href="impex-cli.html#username-and-password"><code>username</code> and <code>password</code></a></li>
-<li><a href="impex-cli.html#http-headers">HTTP Headers</a></li>
+<li><a href="#rest-url"><code>rest-url</code></a></li>
+<li><a href="#username-and-password"><code>username</code> and <code>password</code></a></li>
+<li><a href="#http-headers">HTTP Headers</a></li>
 </ul>
 </li>
-<li><a href="impex-cli.html#flags">Flags</a>
+<li><a href="#flags">Flags</a>
 <ul>
-<li><a href="impex-cli.html#verbose"><code>verbose</code></a></li>
-<li><a href="impex-cli.html#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></li>
+<li><a href="#verbose"><code>verbose</code></a></li>
+<li><a href="#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="impex-cli.html#authentication">Authentication</a></li>
-<li><a href="impex-cli.html#operations">Operations</a>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#operations">Operations</a>
 <ul>
-<li><a href="impex-cli.html#export"><code>export</code></a>
+<li><a href="#export"><code>export</code></a>
 <ul>
-<li><a href="impex-cli.html#profile-option"><code>profile</code> option</a></li>
-<li><a href="impex-cli.html#overwrite-flag"><code>overwrite</code> flag</a></li>
-<li><a href="impex-cli.html#directory-argument"><code>directory</code> argument</a></li>
+<li><a href="#profile-option"><code>profile</code> option</a></li>
+<li><a href="#overwrite-flag"><code>overwrite</code> flag</a></li>
+<li><a href="#directory-argument"><code>directory</code> argument</a></li>
 </ul>
 </li>
-<li><a href="impex-cli.html#import"><code>import</code></a>
+<li><a href="#import"><code>import</code></a>
 <ul>
-<li><a href="impex-cli.html#profile-option-1"><code>profile</code> option</a></li>
-<li><a href="impex-cli.html#directory-argument-1"><code>directory</code> argument</a></li>
+<li><a href="#profile-option-1"><code>profile</code> option</a></li>
+<li><a href="#directory-argument-1"><code>directory</code> argument</a></li>
 </ul>
 </li>
-<li><a href="impex-cli.html#export-profiles"><code>export-profiles</code></a>
+<li><a href="#export-profiles"><code>export-profiles</code></a>
 <ul>
-<li><a href="impex-cli.html#list"><code>list</code></a></li>
+<li><a href="#list"><code>list</code></a></li>
 </ul>
 </li>
-<li><a href="impex-cli.html#import-profiles"><code>import-profiles</code></a>
+<li><a href="#import-profiles"><code>import-profiles</code></a>
 <ul>
-<li><a href="impex-cli.html#list-1"><code>list</code></a></li>
+<li><a href="#list-1"><code>list</code></a></li>
 </ul>
 </li>
-<li><a href="impex-cli.html#help"><code>help</code></a></li>
+<li><a href="#help"><code>help</code></a></li>
 </ul>
 </li>
 </ul>
@@ -368,7 +343,7 @@ managers like Windows Explorer.</p>
 <h4 id="profile-option"><a class="header" href="#profile-option"><code>profile</code> option</a></h4>
 <p>An Impex export profile defines what data should be exported. It can be a predefined profile or a custom profile.</p>
 <blockquote>
-<p>To get a list of available Impex export profiles see impex-cli operation <a href="impex-cli.html#export-profiles"><code>export-profiles</code></a></p>
+<p>To get a list of available Impex export profiles see impex-cli operation <a href="#export-profiles"><code>export-profiles</code></a></p>
 </blockquote>
 <p>You will usually use the predefined 'base' export profile exporting pages/posts/attachments and all FSE data like templates/reusable blocks and stuff.</p>
 <h4 id="overwrite-flag"><a class="header" href="#overwrite-flag"><code>overwrite</code> flag</a></h4>
@@ -397,7 +372,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <h4 id="profile-option-1"><a class="header" href="#profile-option-1"><code>profile</code> option</a></h4>
 <p>An Impex import profile defines what data should be imported.</p>
 <blockquote>
-<p>To get a list of available Impex import profiles see impex-cli operation <a href="impex-cli.html#export-profiles"><code>import-profiles</code></a></p>
+<p>To get a list of available Impex import profiles see impex-cli operation <a href="#export-profiles"><code>import-profiles</code></a></p>
 </blockquote>
 <p>You will usualy use the predefined <code>all</code> import profile.</p>
 <h4 id="directory-argument-1"><a class="header" href="#directory-argument-1"><code>directory</code> argument</a></h4>
@@ -451,203 +426,18 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 </code></pre>
 <h3 id="help"><a class="header" href="#help"><code>help</code></a></h3>
 <p>Prints the impex-cli help.</p>
-<div style="break-before: page; page-break-before: always;"></div><ul>
-<li><a href="configuration.html#usage">Usage</a>
-<ul>
-<li><a href="configuration.html#configuration">Configuration</a></li>
-<li><a href="configuration.html#custom-profile-configuration">Custom profile configuration</a>
-<ul>
-<li><a href="configuration.html#export">Export</a></li>
-<li><a href="configuration.html#import">Import</a></li>
-<li><a href="configuration.html#api">(API)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
-<p>This chapter is about the basic setup of the plugin.</p>
-<p>You can use this plugin <strong>out of the box</strong> to export/import</p>
-<ul>
-<li>
-<p>content (posts/pages/nav_menu and media assets)</p>
-</li>
-<li>
-<p>FSE content (Full Site Editing assets like blocks, templates, template parts, reusable blocks and theme settings)</p>
-</li>
-</ul>
-<p>For everything else (third-party plugin settings for example) you need to provide custom export/import profile(s).</p>
-<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
-<p>Impex import and export can be customized by providing <strong>Profiles</strong>.</p>
-<p>An <strong>Export profile</strong> defines the Wordpress data to export.</p>
-<p>An <strong>Import profile</strong> declares how and which exported data should be consumed.</p>
-<h2 id="custom-profile-configuration"><a class="header" href="#custom-profile-configuration">Custom profile configuration</a></h2>
-<p><strong>Profiles</strong> are configured and registered using a custom Impex <a href="https://developer.wordpress.org/plugins/hooks/actions/">Wordpress action</a> :</p>
-<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
-  // your Impex profile registration goes here
-  ...
-});
-</code></pre>
-<p>Using a <a href="https://developer.wordpress.org/plugins/hooks/actions/">Wordpress action</a> for Impex profile registration guarantees that the action callback is only executed if the Impex plugin is activated.</p>
-<blockquote>
-<p>Implementing a Impex profile in your plugin does not make Impex a required dependency for your plugin since the code is only executed if Impex is avalable and active.</p>
-</blockquote>
-<h3 id="export-1"><a class="header" href="#export-1">Export</a></h3>
-<p>Let's say you want to export the core Wordpress contents (pages/posts/attachments and stuff) but also</p>
-<ul>
-<li>
-<p><a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form</a> contents and settings</p>
-</li>
-<li>
-<p><a href="https://wordpress.org/plugins/ultimate-maps-by-supsystic/">Ultimate Maps by Supsystic</a> contents and settings</p>
-</li>
-<li>
-<p><a href="https://wordpress.org/plugins/complianz-gdpr/">Complianz GDPR</a> contents and settings</p>
-</li>
-<li>
-<p>some options of your own plugin</p>
-</li>
-</ul>
-<p>To do so you need to create a <strong>Export profile</strong>.</p>
-<p>Fortunately Impex provides some low level building blocks called <strong>ExportProvider</strong> to make our Impex Profile declaration piece of cake :</p>
-<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
-  // ensure admin plugin functions are available
-  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-
-  // register a new export profile
-  $profile = Impex::getInstance()-&gt;Export-&gt;addProfile('impex-export-profile-example');
-  // give the profile a senseful description
-  $profile-&gt;setDescription('Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic]');
-
-  // export pages/posts/comments/block patterns/templates/template parts/reusable blocks
-  $profile-&gt;addTask(
-    'wordpress content',
-    cm4all\wp\impex\ContentExporter::PROVIDER_NAME
-  );
-
-  // export media
-  $profile-&gt;addTask(
-    'wordpress attachments (uploads)',
-    cm4all\wp\impex\AttachmentsExporter::PROVIDER_NAME
-  );
-
-  // export ninja-forms related tables/options if active
-  $plugin_ninjaforms_disabled = !is_plugin_active(&quot;ninja-forms/ninja-forms.php&quot;);
-  $profile-&gt;addTask(
-    &quot;ninja-forms db tables (nf3_*)&quot;,
-    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR =&gt; 'nf3_*',]
-  )-&gt;disabled = $plugin_ninjaforms_disabled;
-  $profile-&gt;addTask(
-    'ninja-forms wp_options',
-    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*']]
-  )-&gt;disabled = $plugin_ninjaforms_disabled;
-
-  // export ultimate_maps related tables/options
-  $plugin_ultimatemaps_disabled = !is_plugin_active(&quot;ultimate-maps-by-supsystic/ums.php&quot;);
-  $profile-&gt;addTask(
-    &quot;ultimate_maps db tables (ums_*)&quot;,
-    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR =&gt; 'ums_*',]
-  )-&gt;disabled = $plugin_ultimatemaps_disabled;
-  $profile-&gt;addTask(
-    'ultimate_maps wp_options',
-    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['ums_*', 'wp_ums_*',]]
-  )-&gt;disabled = $plugin_ultimatemaps_disabled;
-
-  // export complianz related tables/options
-  $plugin_complianz_disabled = !is_plugin_active(&quot;complianz-gdpr/complianz-gpdr.php&quot;);
-  $profile-&gt;addTask(
-    &quot;complianz-gdpr db tables&quot;,
-    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
-    [DbTablesExporter::OPTION_SELECTOR =&gt; 'cmplz_*',]
-  )-&gt;disabled = $plugin_complianz_disabled;
-  $profile-&gt;addTask(
-    'complianz-gdpr wp_options',
-    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['cmplz_*', 'complianz_*']]
-  )-&gt;disabled = $plugin_complianz_disabled;
-
-  // export our own plugin uses wp_options starting with `foo-` or `bar*`
-  $profile-&gt;addTask(
-    'custom plugin options',
-    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['foo-*','bar-*']]
-  )-&gt;disabled = !is_plugin_active(&quot;cm4all-wordpress/plugin.php&quot;);
-});
-</code></pre>
-<p>That's it !</p>
-<p>Now you can trigger the export using this Impex export configuration in the Impex screen at WP dashboard (or even using the <a href="./impex-cli.html">Impex CLI</a>)</p>
-<h3 id="import-1"><a class="header" href="#import-1">Import</a></h3>
-<p>Thanks to Impex architecture you normally don't need to define a custom import configuration.</p>
-<p>Impex sports a generic <code>all</code> import provider and profile importing <strong>anything</strong> exported using the Impex building blocks.</p>
-<blockquote>
-<p>As long as you use the <strong>Exporter</strong> provided by Impex in your custom Export profile, you don't need to define an matching custom import profile.</p>
-</blockquote>
-<p>But sometimes there exist some etch cases when you need to execude PHP code after the import to get everything working.</p>
-<p>In our export profile example above we implemented support for <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form</a>. Unfortunately the forms will be in maintenance mode after importing them.</p>
-<p>To fix this we need to execute some PHP code (<code>WPN_Helper::set_forms_maintenance_mode(0)</code> from the <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form Plugin</a>) after the import.</p>
-<p>Impex provides <strong>Events</strong> for exactly that purpose :</p>
-<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
-  // ensure admin plugin functions are available
-  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-
-  // get the 'all' profile
-  $profile = Impex::getInstance()-&gt;Import-&gt;getProfile('all');
-
-  // attach a listener callback for the `EVENT_IMPORT_END` event
-  $profile-&gt;events(ImpexImport::EVENT_IMPORT_END)-&gt;addListener(
-    'reset ninja forms mainentance mode',
-    fn () =&gt; method_exists('WPN_Helper', 'set_forms_maintenance_mode') &amp;&amp; WPN_Helper::set_forms_maintenance_mode(0)
-  );
-});
-</code></pre>
-<p>Tada - thats it !</p>
-<p>There ist just one caveat ... what if the Impex 'all' profile gets disabled by someone else ?
-To work around this we can also introduce a custom import profile utilizing the 'all' import provider:</p>
-<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
-  // ensure admin plugin functions are available
-  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-
-  // create a new import profile
-  $profile = Impex::getInstance()-&gt;Import-&gt;addProfile('impex-import-profile-example');
-  $profile-&gt;setDescription('Import everything example with event listener');
-
-  // reuse the 'all' import provider registered by the 'all' import profile
-  $profile-&gt;addTask('main', Impex::getInstance()-&gt;Import-&gt;getProvider('all')-&gt;name);
-
-  // attach a listener callback for the `EVENT_IMPORT_END` event
-  $profile-&gt;events(ImpexImport::EVENT_IMPORT_END)-&gt;addListener(
-    'reset ninja forms mainentance mode',
-    fn () =&gt; method_exists('WPN_Helper', 'set_forms_maintenance_mode') &amp;&amp; WPN_Helper::set_forms_maintenance_mode(0)
-  );
-});
-</code></pre>
-<h3 id="api"><a class="header" href="#api">(API)</a></h3>
-<p><strong>THIS IS JUST DUMNMY CONTENT</strong></p>
-<p>An example diagram.</p>
-<pre class="mermaid">graph TD;
-    A--&gt;B;
-    A--&gt;C;
-    B--&gt;D;
-    C--&gt;D;
-</pre>
-<ul>
-<li>
-<p>there is</p>
-</li>
-<li>
-<p>more to come :-)</p>
-</li>
-</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="about.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next" href="configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -655,7 +445,13 @@ To work around this we can also introduce a custom import profile utilizing the 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="about.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next" href="configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -680,11 +476,6 @@ To work around this we can also introduce a custom import profile utilizing the 
         <script type="text/javascript" src="mermaid.min.js"></script>
         <script type="text/javascript" src="mermaid-init.js"></script>
 
-        <script type="text/javascript">
-        window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
-        });
-        </script>
 
     </body>
 </html>
