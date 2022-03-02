@@ -1,3 +1,19 @@
+## [1.2.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.7...1.2.0) (2022-03-02)
+
+
+### Features
+
+* impex-cli import and export finally works ([482c87e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/482c87e3025bfcfe0168c966594d360d547d0906))
+
+
+### Bug Fixes
+
+* added additional links to impex plugin entry in plugins.php ([4bd2a8a](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/4bd2a8a53ac2afc86b0ac5db1ea2980d37be6cf3))
+* fixed mdbook image generation ([2f613fa](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/2f613fa01bdb869474295961b6ae99452db9c551))
+* fixed typo in .wp-env.override.json ([8b9227d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/8b9227d69b9f7a7337cb321e68a7e72192bdf0c5))
+* impex plugin readme template updated ([56344dd](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/56344ddab6e3d15ab96b37de8664a4fc1a5d000d))
+* **impex-cli:** improved impex-cli logging ([8476260](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/84762600997a825d2aed9045d4990b42e8b5f630))
+
 ### [1.1.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.6...1.1.7) (2022-02-08)
 
 
