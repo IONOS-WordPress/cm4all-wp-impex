@@ -312,7 +312,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
 
     foreach ($newcomments as $key => $comment) {
       // if this is a new post we can skip the comment_exists() check
-      if (!$post_exists || !comment_exists($comment['comment_author'], $comment['comment_date'])) {
+      if (!$post_exists || !\comment_exists($comment['comment_author'], $comment['comment_date'])) {
         if (isset($inserted_comments[$comment['comment_parent']])) {
           $comment['comment_parent'] = $inserted_comments[$comment['comment_parent']];
         }
