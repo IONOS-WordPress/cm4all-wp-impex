@@ -590,7 +590,9 @@ main([
 ]);
 */
 
-main($argv);
+if (php_sapi_name() == "cli") {
+  main($argv);
+} 
 
 /*
 main([
