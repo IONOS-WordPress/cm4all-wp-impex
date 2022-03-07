@@ -10,6 +10,7 @@
   ],
   "mappings": {
     "wp-content/plugins/cm4all-wordpress": "../cm4all-wordpress/packages/wordpress/wp-content/plugins/cm4all-wordpress",
-    "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core"
+    "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core",
+    "usr/local/impex-cli": "./impex-cli"
   }
 }

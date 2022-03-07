@@ -36,71 +36,89 @@ function rmdir_r($dir)
   }
 }
 
+class DieException extends \RuntimeException
+{
+  function __construct($message, $code = 0, \Exception $previous = null)
+  {
+    parent::__construct($message, $code, $previous);
+  }
+}
+
 function _die($options, $message, ...$args)
 {
-  fprintf(STDERR, $message, ...array_map(fn ($_) => is_array($_) || is_object($_) ? json_encode($_) : $_, $args));
-  exit(1);
+  $message = sprintf($message, ...array_map(fn ($_) => is_array($_) || is_object($_) ? json_encode($_) : $_, $args));
+
+  throw new DieException($message, 1);
 }
 
 function main($argv)
 {
-  $argc = count($argv);
+  try {
+    $argc = count($argv);
 
-  $operation = 'help';
-  $options = ['header' => []];
-  $arguments = [];
+    $operation = 'help';
+    $options = ['header' => []];
+    $arguments = [];
 
-  switch ($argc) {
-    case 1:
-      break;
-    default:
-      switch ($argv[1]) {
-        case 'import':
-        case 'export':
-        case 'export-profile':
-        case 'import-profile':
-          $operation = $argv[1];
-          _parseCommandlineArguments(array_slice($argv, 2), $options, $arguments);
+    switch ($argc) {
+      case 1:
+        break;
+      default:
+        switch ($argv[1]) {
+          case 'import':
+          case 'export':
+          case 'export-profile':
+          case 'import-profile':
+            $operation = $argv[1];
+            _parseCommandlineArguments(array_slice($argv, 2), $options, $arguments);
 
-          [$result, $status, $error] = _curl(
-            $options,
-            "",
-            null,
-            fn ($curl) => curl_setopt($curl, \CURLOPT_URL, $options['rest-url'])
-          );
-
-
-          // ensure we can connect to the wordpress rest api
-          if ($error) {
-            _die(
+            [$result, $status, $error] = _curl(
               $options,
-              "Could not connect to wordpress rest endpoint(='%s'): %s\nEnsure param '-rest-url' is correct.\nCheck wordpress rest api is enabled.\n",
-              $options['rest-url'],
-              $error
+              "",
+              null,
+              fn ($curl) => curl_setopt($curl, \CURLOPT_URL, $options['rest-url'])
             );
-          } else {
-            // ensure impex plugin rest namespace is available
-            if (!in_array('cm4all-wp-impex/v1', $result['namespaces'])) {
+
+
+            // ensure we can connect to the wordpress rest api
+            if ($error) {
               _die(
                 $options,
-                "Wordpress plugin cm4all-wp-impex seems not to be installed in the wordpress instance - expected rest endpoint(='cm4all-wp-impex/v1') is not available : Available rest endpoints %s'\n",
-                json_encode($result['namespaces'])
+                "Could not connect to wordpress rest endpoint(='%s'): %s\nEnsure param '-rest-url' is correct.\nCheck wordpress rest api is enabled.\n",
+                $options['rest-url'],
+                $error
               );
+            } else {
+              // ensure impex plugin rest namespace is available
+              if (!in_array('cm4all-wp-impex/v1', $result['namespaces'])) {
+                _die(
+                  $options,
+                  "Wordpress plugin cm4all-wp-impex seems not to be installed in the wordpress instance - expected rest endpoint(='cm4all-wp-impex/v1') is not available : Available rest endpoints %s'\n",
+                  json_encode($result['namespaces'])
+                );
+              }
             }
-          }
 
-          break;
-        case 'help':
-        case '--help':
-          break;
-        default:
-          $arguments[] = sprintf("Invalid option(s): %s", join(' ', array_slice($argv, 1)));
-      }
-  };
+            break;
+          case 'help':
+          case '--help':
+            break;
+          default:
+            _die($options, "Invalid option(s): %s", join(' ', array_slice($argv, 1)));
+        }
+    };
 
-  [$json, $status] = call_user_func(__NAMESPACE__ . '\\' . str_replace(['-'], ['_'], $operation), $options, ...$arguments);
-  if ($status === 200) {
-    echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+    [$json, $status] = call_user_func(__NAMESPACE__ . '\\' . str_replace(['-'], ['_'], $operation), $options, ...$arguments);
+    if ($status === 200) {
+      echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+    }
+  } catch (DieException $ex) {
+    if (php_sapi_name() === "cli" && !str_ends_with($_SERVER['argv'][0], 'phpunit')) {
+      fprintf(STDERR, $ex->getMessage());
+      exit(1);
+    } else {
+      throw $ex;
+    }
   }
 }
 
@@ -142,8 +160,7 @@ function _parseCommandlineArguments($argv, &$options, &$arguments)
   if (isset($options['username']) && isset($options['password'])) {
     foreach ($options['header'] as $header) {
       if (preg_match('/^authorization: Basic$/', $header, $matches)) {
-        fprintf(STDERR, "Can't use both username and password options and Authorization header\n");
-        exit(1);
+        _die($options, "Can't use both username and password options and Authorization header\n");
       }
     }
 
@@ -590,7 +607,8 @@ main([
 ]);
 */
 
-if (php_sapi_name() == "cli") {
+// if we are running in cli mode and not as phpunit test then run main
+if (php_sapi_name() === "cli" && !str_ends_with($_SERVER['argv'][0], 'phpunit')) {
   main($argv);
 } 
 

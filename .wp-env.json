@@ -16,5 +16,8 @@
   "themes": [
     "https://downloads.wordpress.org/theme/tt1-blocks.zip",
     "https://downloads.wordpress.org/theme/twentytwentytwo.zip"
-  ]
+  ],
+  "mappings": {
+    "usr/local/impex-cli": "./impex-cli"
+  }
 }
