@@ -277,7 +277,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
 
     global $wpdb;
     $inserted_slices = absint($wpdb->get_var(
-      $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . ImpexImport::DB_CHUNKS_TABLENAME . ' WHERE import_id=%s', $import_id)
+      $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME . ' WHERE snapshot_id=%s', $import_id)
     ));
     $this->assertEquals(count($slice_filenames), $inserted_slices, 'all uploaded chunks should be in the database');
 
@@ -318,7 +318,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
 
     global $wpdb;
     $inserted_slices = absint($wpdb->get_var(
-      $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . ImpexImport::DB_CHUNKS_TABLENAME . ' WHERE import_id=%s', $import_id)
+      $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME . ' WHERE snapshot_id=%s', $import_id)
     ));
     $this->assertEquals(count($slice_filenames), $inserted_slices, 'uploaded chunks should be replaced in the database (but not newly inserted)');
   }

@@ -57,7 +57,7 @@ class TestImpexTransformationContext extends ImpexUnitTestcase
       ],
     );
     $this->assertStringStartsWith('Export ', $context->name);
-    $this->assertStringStartsWith('/var/www/html/wp-content/uploads/impex/export/', $context->path);
+    $this->assertStringStartsWith('/var/www/html/wp-content/uploads/impex/snapshots/', $context->path);
   }
 
   function testSerialization(): void
@@ -101,7 +101,7 @@ class TestImpexTransformationContext extends ImpexUnitTestcase
 
     $this->assertInstanceOf(ImpexImportTransformationContext::class, $context,);
     $this->assertStringStartsWith('Import ', $context->name);
-    $this->assertStringStartsWith('/var/www/html/wp-content/uploads/impex/import/', $context->path);
+    $this->assertStringStartsWith('/var/www/html/wp-content/uploads/impex/snapshots/', $context->path);
 
     $json = $context->jsonSerialize();
 

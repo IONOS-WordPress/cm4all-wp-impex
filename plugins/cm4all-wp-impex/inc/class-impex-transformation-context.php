@@ -69,7 +69,7 @@ abstract class ImpexTransformationContext implements \JsonSerializable
       $this->_name = $name;
     }
     $this->_description = $description ?? '';
-    $this->_uploads_subpath ??= 'impex/' . ($this->_isExportPart ? 'export/' : 'import/') . $this->_id;
+    $this->_uploads_subpath ??= 'impex/snapshots/' . $this->_id;
 
     $this->_options = $options ?? [];
 

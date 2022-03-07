@@ -57,13 +57,17 @@ class Impex
   protected $_export = null;
   protected $_import = null;
 
+  const DB_SNAPSHOTS_TABLENAME = 'impex_snapshots';
+
   protected function __construct()
   {
-    $this->_export = new class extends ImpexExport
+    global $wpdb;
+    $_db_chunks_tablename = $wpdb->prefix . self::DB_SNAPSHOTS_TABLENAME;
+    $this->_export = new class($_db_chunks_tablename) extends ImpexExport
     {
     };
 
-    $this->_import = new class extends ImpexImport
+    $this->_import = new class($_db_chunks_tablename) extends ImpexImport
     {
     };
   }
@@ -82,7 +86,42 @@ class Impex
     /* @var string */
     $installed_version = \get_option('impex_version');
 
-    $successful = $this->Export->__install($installed_version) && $this->Import->__install($installed_version);
+    global $wpdb;
+
+    if ($installed_version === false) {
+      // plugin was newly installed
+      $charset_collate = $wpdb->get_charset_collate();
+
+      $_db_chunks_tablename = "{$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME;
+
+      $sql = "CREATE TABLE {$_db_chunks_tablename} (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        snapshot_id CHAR(36) NOT NULL,
+        position mediumint(9) NOT NULL,
+        slice json NOT NULL,
+        PRIMARY KEY  (id)
+      ) $charset_collate;";
+
+      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+      \dbDelta($sql);
+    } else if ($installed_version !== Impex::VERSION) {
+      // new plugin version is now installed, try to upgrade
+      /*
+      $sql = "CREATE TABLE {$this->_db_chunks_tablename} (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+        name tinytext NOT NULL,
+        text text NOT NULL,
+        url varchar(100) DEFAULT '' NOT NULL,
+        PRIMARY KEY  (id)
+      );";
+  
+      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+      dbDelta($sql);
+      */
+    }
+
+    $successful = $this->__install_data($installed_version);
 
     if ($installed_version === false) {
       \add_option('impex_version', Impex::VERSION);
@@ -91,6 +130,27 @@ class Impex
     }
 
     return $successful;
+  }
+
+  protected function __install_data(string|bool $installed_version): bool
+  {
+    /*
+    global $wpdb;
+
+    $welcome_name = 'Mr. WordPress';
+    $welcome_text = 'Congratulations, you just completed the installation!';
+
+    $wpdb->insert(
+      $this->_db_chunks_tablename,
+      [
+        'time' => current_time('mysql'),
+        'name' => $welcome_name,
+        'text' => $welcome_text,
+      ]
+    );
+    */
+
+    return true;
   }
 }
 

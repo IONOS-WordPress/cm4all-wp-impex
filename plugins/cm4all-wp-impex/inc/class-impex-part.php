@@ -19,7 +19,7 @@ abstract class ImpexPart
 
   protected /* ImpexSet */ $_profiles;
 
-  public function __construct()
+  public function __construct(protected string $_db_chunks_tablename)
   {
     $this->_providers = new class implements \IteratorAggregate
     {
@@ -97,8 +97,6 @@ abstract class ImpexPart
   {
     return $this->_profiles->remove($name);
   }
-
-  public abstract function __install(string|bool $installed_version): bool;
 
   /*
     make it not serializable 

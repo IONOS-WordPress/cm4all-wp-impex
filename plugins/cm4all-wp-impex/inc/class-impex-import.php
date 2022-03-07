@@ -15,20 +15,9 @@ require_once __DIR__ . '/class-impex-import-profile.php';
 require_once __DIR__ . '/class-impex-import-runtime-exception.php';
 abstract class ImpexImport extends ImpexPart
 {
-  const DB_CHUNKS_TABLENAME = 'impex_import_chunks';
   const WP_OPTION_IMPORTS = 'impex_imports';
 
   const EVENT_IMPORT_END = 'cm4all_wp_import_end';
-
-  protected string $_db_chunks_tablename;
-
-  public function __construct()
-  {
-    parent::__construct();
-
-    global $wpdb;
-    $this->_db_chunks_tablename = $wpdb->prefix . self::DB_CHUNKS_TABLENAME;
-  }
 
   protected function _createProvider(string $name, callable $cb): ImpexImportProvider
   {
@@ -52,66 +41,7 @@ abstract class ImpexImport extends ImpexPart
     };
   }
 
-  public function  __install(string|bool $installed_version): bool
-  {
-    global $wpdb;
-
-    if ($installed_version === false) {
-      // plugin was newly installed
-      $charset_collate = $wpdb->get_charset_collate();
-
-      $sql = "CREATE TABLE {$this->_db_chunks_tablename} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        import_id CHAR(36) NOT NULL,
-        position mediumint(9) NOT NULL,
-        slice json NOT NULL,
-        PRIMARY KEY  (id)
-      ) $charset_collate;";
-
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      \dbDelta($sql);
-    } else if ($installed_version !== Impex::VERSION) {
-      // new plugin version is now installed, try to upgrade
-      /*
-      $sql = "CREATE TABLE {$this->_db_chunks_tablename} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-        name tinytext NOT NULL,
-        text text NOT NULL,
-        url varchar(100) DEFAULT '' NOT NULL,
-        PRIMARY KEY  (id)
-      );";
-  
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      dbDelta($sql);
-      */
-    }
-
-    return $this->__install_data($installed_version);
-  }
-
-  protected function __install_data(string|bool $installed_version): bool
-  {
-    /*
-    global $wpdb;
-
-    $welcome_name = 'Mr. WordPress';
-    $welcome_text = 'Congratulations, you just completed the installation!';
-
-    $wpdb->insert(
-      $this->_db_chunks_tablename,
-      [
-        'time' => current_time('mysql'),
-        'name' => $welcome_name,
-        'text' => $welcome_text,
-      ]
-    );
-    */
-
-    return true;
-  }
-
-  function _upsert_slice(string $import_id, int $position, array $slice): bool
+  function _upsert_slice(string $snapshot_id, int $position, array $slice): bool
   {
     $json = json_encode($slice);
     if ($json === false) {
@@ -123,12 +53,12 @@ abstract class ImpexImport extends ImpexPart
 
     $data = [
       'position' => $position,
-      'import_id' => $import_id,
+      'snapshot_id' => $snapshot_id,
       'slice' => $json,
     ];
 
     $existing_id = $wpdb->get_var(
-      $wpdb->prepare("SELECT DISTINCT id from {$this->_db_chunks_tablename} WHERE import_id=%s and position=%d", $import_id, $position)
+      $wpdb->prepare("SELECT DISTINCT id from {$this->_db_chunks_tablename} WHERE snapshot_id=%s and position=%d", $snapshot_id, $position)
     );
 
     if ($existing_id !== null) {
@@ -162,12 +92,12 @@ abstract class ImpexImport extends ImpexPart
   /**
    * @return Generator|array[]
    */
-  function get_slices(string $import_id, int $limit = PHP_INT_MAX, int $offset = 0): \Generator
+  function get_slices(string $snapshot_id, int $limit = PHP_INT_MAX, int $offset = 0): \Generator
   {
     global $wpdb;
 
     $rows = $wpdb->get_results(
-      $wpdb->prepare("SELECT * from {$this->_db_chunks_tablename} WHERE import_id=%s ORDER BY position LIMIT %d OFFSET %d", $import_id, $limit, $offset)
+      $wpdb->prepare("SELECT * from {$this->_db_chunks_tablename} WHERE snapshot_id=%s ORDER BY position LIMIT %d OFFSET %d", $snapshot_id, $limit, $offset)
     );
     foreach ($rows as $row) {
       yield json_decode($row->slice, JSON_OBJECT_AS_ARRAY);
@@ -217,11 +147,11 @@ abstract class ImpexImport extends ImpexPart
     return $uncomsumed_slices;
   }
 
-  function update(string $import_id, array $data): array|bool
+  function update(string $snapshot_id, array $data): array|bool
   {
     $imports = \get_option(self::WP_OPTION_IMPORTS, []);
     foreach ($imports as &$import) {
-      if ($import['id'] === $import_id) {
+      if ($import['id'] === $snapshot_id) {
         foreach ($data as $key => $value) {
           // prevent updating 'id', 'options', 'profile', 'user', 'created'
           if (!in_array($key, ['id', 'options', 'profile', 'user', 'created'])) {
@@ -242,11 +172,11 @@ abstract class ImpexImport extends ImpexPart
     return false;
   }
 
-  function remove(string $import_id): bool|array
+  function remove(string $snapshot_id): bool|array
   {
     $imports = \get_option(self::WP_OPTION_IMPORTS, []);
     foreach ($imports as $index => $import) {
-      if ($import['id'] === $import_id) {
+      if ($import['id'] === $snapshot_id) {
         $transformationContext = ImpexImportTransformationContext::fromJson($import);
 
         global $wpdb;
@@ -255,7 +185,7 @@ abstract class ImpexImport extends ImpexPart
         \WP_Filesystem();
 
         // remove matching export table rows
-        $rowsDeleted = $wpdb->delete($this->_db_chunks_tablename, ['import_id' => $import_id,]);
+        $rowsDeleted = $wpdb->delete($this->_db_chunks_tablename, ['snapshot_id' => $snapshot_id,]);
         if ($rowsDeleted === false) {
           throw new ImpexExportRuntimeException(sprintf('failed to delete jsonized slices from database : %s', $wpdb->last_error));
         }

@@ -15,20 +15,9 @@ require_once __DIR__ . '/class-impex-export-runtime-exception.php';
 
 abstract class ImpexExport extends ImpexPart
 {
-  const DB_CHUNKS_TABLENAME = 'impex_export_chunks';
   const WP_OPTION_EXPORTS = 'impex_exports';
   const WP_FILTER_SLICE_SERIALIZE = 'impex_export_filter_serialize';
   const WP_FILTER_SLICE_DESERIALIZE = 'impex_export_filter_deserialize';
-
-  protected string $_db_chunks_tablename;
-
-  public function __construct()
-  {
-    parent::__construct();
-
-    global $wpdb;
-    $this->_db_chunks_tablename = $wpdb->prefix . self::DB_CHUNKS_TABLENAME;
-  }
 
   protected function _createProvider(string $name, callable $cb): ImpexExportProvider
   {
@@ -50,65 +39,6 @@ abstract class ImpexExport extends ImpexPart
         parent::__construct($name, $context);
       }
     };
-  }
-
-  public function  __install(string|bool $installed_version): bool
-  {
-    global $wpdb;
-
-    if ($installed_version === false) {
-      // plugin was newly installed
-      $charset_collate = $wpdb->get_charset_collate();
-
-      $sql = "CREATE TABLE {$this->_db_chunks_tablename} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        export_id CHAR(36) NOT NULL,
-        position mediumint(9) NOT NULL,
-        slice json NOT NULL,
-        PRIMARY KEY  (id)
-      ) $charset_collate;";
-
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      \dbDelta($sql);
-    } else if ($installed_version !== Impex::VERSION) {
-      // new plugin version is now installed, try to upgrade
-      /*
-      $sql = "CREATE TABLE {$this->_db_chunks_tablename} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-        name tinytext NOT NULL,
-        text text NOT NULL,
-        url varchar(100) DEFAULT '' NOT NULL,
-        PRIMARY KEY  (id)
-      );";
-  
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      dbDelta($sql);
-      */
-    }
-
-    return $this->__install_data($installed_version);
-  }
-
-  protected function __install_data(string|bool $installed_version): bool
-  {
-    /*
-    global $wpdb;
-
-    $welcome_name = 'Mr. WordPress';
-    $welcome_text = 'Congratulations, you just completed the installation!';
-
-    $wpdb->insert(
-      $this->_db_chunks_tablename,
-      [
-        'time' => current_time('mysql'),
-        'name' => $welcome_name,
-        'text' => $welcome_text,
-      ]
-    );
-    */
-
-    return true;
   }
 
   function extract(ImpexExportTransformationContext $transformationContext): \Generator
@@ -152,7 +82,7 @@ abstract class ImpexExport extends ImpexPart
         $this->_db_chunks_tablename,
         [
           'position' => $position,
-          'export_id' => $transformationContext->id,
+          'snapshot_id' => $transformationContext->id,
           'slice' => $json,
         ]
       );
@@ -171,11 +101,11 @@ abstract class ImpexExport extends ImpexPart
     return $transformationContext;
   }
 
-  function update(string $export_id, array $data): array|bool
+  function update(string $snapshot_id, array $data): array|bool
   {
     $exports = \get_option(self::WP_OPTION_EXPORTS, []);
     foreach ($exports as &$export) {
-      if ($export['id'] === $export_id) {
+      if ($export['id'] === $snapshot_id) {
         foreach ($data as $key => $value) {
           // prevent updating 'id', 'options', 'profile', 'user', 'created'
           if (!in_array($key, ['id', 'options', 'profile', 'user', 'created'])) {
@@ -196,12 +126,12 @@ abstract class ImpexExport extends ImpexPart
     return false;
   }
 
-  function remove(string $export_id): bool|array
+  function remove(string $snapshot_id): bool|array
   {
     /* @var array<array> */
     $exports = \get_option(self::WP_OPTION_EXPORTS, []);
     foreach ($exports as $index => $export) {
-      if ($export['id'] === $export_id) {
+      if ($export['id'] === $snapshot_id) {
         $transformationContext = ImpexExportTransformationContext::fromJson($export);
 
         global $wpdb;
@@ -210,7 +140,7 @@ abstract class ImpexExport extends ImpexPart
         \WP_Filesystem();
 
         // remove matching export table rows
-        $rowsDeleted = $wpdb->delete($this->_db_chunks_tablename, ['export_id' => $transformationContext->id,]);
+        $rowsDeleted = $wpdb->delete($this->_db_chunks_tablename, ['snapshot_id' => $transformationContext->id,]);
         if ($rowsDeleted === false) {
           throw new ImpexExportRuntimeException(sprintf('failed to delete jsonized slices from database : %s', $wpdb->last_error));
         }

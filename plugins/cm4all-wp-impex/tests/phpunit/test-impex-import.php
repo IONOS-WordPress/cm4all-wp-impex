@@ -43,7 +43,7 @@ class TestImpexImport extends ImpexUnitTestcase
      => so we need to drop the table manually to have a consistent setup
     */
     global $wpdb;
-    $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . ImpexImport::DB_CHUNKS_TABLENAME);
+    $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME);
 
     $this->user = $this->factory->user->create(['role' => 'administrator', 'user_login' => 'test-admin']);
   }
@@ -176,7 +176,7 @@ class TestImpexImport extends ImpexUnitTestcase
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.
       that's why we "test" the existence of a table using SELECT COUNT (=> which returns null / error in case the temporary table doesnt exists)
     */
-    $db_chunks_tablename = $wpdb->prefix . ImpexImport::DB_CHUNKS_TABLENAME;
+    $db_chunks_tablename = $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME;
     $db_chunks_tablename_rowCount = $wpdb->get_var("SELECT COUNT(*) FROM $db_chunks_tablename");
     $this->assertNotNull($db_chunks_tablename_rowCount, "ensure $db_chunks_tablename exists");
   }
@@ -232,9 +232,9 @@ class TestImpexImport extends ImpexUnitTestcase
     global $wpdb;
 
     foreach ($slices as $position => $slice) {
-      $wpdb->insert($wpdb->prefix . ImpexImport::DB_CHUNKS_TABLENAME, [
+      $wpdb->insert($wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME, [
         'position' => $position,
-        'import_id' => $importTransformationContext->id,
+        'snapshot_id' => $importTransformationContext->id,
         'slice' => json_encode($slice),
       ]);
     }

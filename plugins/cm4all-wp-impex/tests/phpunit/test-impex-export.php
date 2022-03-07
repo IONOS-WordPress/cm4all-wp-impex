@@ -25,7 +25,7 @@ class TestImpexExport extends ImpexUnitTestcase
      => so we need to drop the table manually to have a consistent setup
     */
     global $wpdb;
-    $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . ImpexExport::DB_CHUNKS_TABLENAME);
+    $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME);
   }
 
   function tearDown()
@@ -98,7 +98,7 @@ class TestImpexExport extends ImpexUnitTestcase
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.
       that's why we "test" the existence of a table using SELECT COUNT (=> which returns null / error in case the temporary table doesnt exists)
     */
-    $db_chunks_tablename = $wpdb->prefix . ImpexExport::DB_CHUNKS_TABLENAME;
+    $db_chunks_tablename = $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME;
     $db_chunks_tablename_rowCount = $wpdb->get_var("SELECT COUNT(*) FROM $db_chunks_tablename");
     $this->assertNotNull($db_chunks_tablename_rowCount, "ensure $db_chunks_tablename exists");
   }
@@ -223,7 +223,7 @@ class TestImpexExport extends ImpexUnitTestcase
     ], $wp_option_exports[0], 'wp_options item created by save() matches the expected');
 
     global $wpdb;
-    $rows = $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . ImpexExport::DB_CHUNKS_TABLENAME, ARRAY_A);
+    $rows = $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME, ARRAY_A);
 
     $this->assertCount(count($matchingWpOptions), $rows, 'for each generated slice a row should be created');
 
@@ -258,7 +258,7 @@ class TestImpexExport extends ImpexUnitTestcase
     $transformationContext = Impex::getInstance()->Export->save($profile);
 
     global $wpdb;
-    $rows = $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . ImpexExport::DB_CHUNKS_TABLENAME, ARRAY_A);
+    $rows = $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME, ARRAY_A);
 
     $this->assertCount(count($upload_names), $rows, 'for each attachment a slice(and also a row) should be created');
 

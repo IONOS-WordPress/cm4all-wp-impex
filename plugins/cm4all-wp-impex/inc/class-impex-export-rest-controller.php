@@ -117,7 +117,7 @@ class ImpexExportRESTController extends \WP_REST_Controller implements ImpexRest
         global $wpdb;
 
         $rows = $wpdb->get_results(
-          $wpdb->prepare("SELECT * from {$wpdb->prefix}" . ImpexExport::DB_CHUNKS_TABLENAME . ' WHERE export_id=%s ORDER BY position LIMIT %d OFFSET %d', $id, $per_page, $page * $per_page + $offset)
+          $wpdb->prepare("SELECT * from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME . ' WHERE snapshot_id=%s ORDER BY position LIMIT %d OFFSET %d', $id, $per_page, $page * $per_page + $offset)
         );
         $data = [];
         foreach ($rows as $row) {
@@ -128,7 +128,7 @@ class ImpexExportRESTController extends \WP_REST_Controller implements ImpexRest
         }
 
         $total = absint($wpdb->get_var(
-          $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . ImpexExport::DB_CHUNKS_TABLENAME . ' WHERE export_id=%s', $id)
+          $wpdb->prepare("SELECT COUNT(*) from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME . ' WHERE snapshot_id=%s', $id)
         ));
         $total_pages = ceil($total / $per_page);
 

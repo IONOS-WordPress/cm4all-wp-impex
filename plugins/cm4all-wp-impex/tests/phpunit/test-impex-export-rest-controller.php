@@ -203,7 +203,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
     $create_response = $this->server->dispatch($request);
 
     global $wpdb;
-    $rows = $wpdb->get_results("SELECT * from {$wpdb->prefix}" . ImpexExport::DB_CHUNKS_TABLENAME);
+    $rows = $wpdb->get_results("SELECT * from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME);
     $this->assertCount(1, $rows, 'one slice should be exported');
 
     // delete export
@@ -214,8 +214,8 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
     $exports = \get_option(ImpexExport::WP_OPTION_EXPORTS, []);
     $this->assertCount(0, $exports, 'no exports should be avaliable');
 
-    $rows = $wpdb->get_results("SELECT * from {$wpdb->prefix}" . ImpexExport::DB_CHUNKS_TABLENAME);
-    $this->assertCount(0, $rows, 'table ' . $wpdb->prefix . ImpexExport::DB_CHUNKS_TABLENAME . ' should be empty');
+    $rows = $wpdb->get_results("SELECT * from {$wpdb->prefix}" . Impex::DB_SNAPSHOTS_TABLENAME);
+    $this->assertCount(0, $rows, 'table ' . $wpdb->prefix . Impex::DB_SNAPSHOTS_TABLENAME . ' should be empty');
   }
 
   public function test_get_item_slices()

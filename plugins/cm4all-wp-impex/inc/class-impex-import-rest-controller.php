@@ -160,9 +160,9 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
     global $wpdb;
 
     /** @var string */
-    $import_id = $request->get_param('id');
+    $snapshot_id = $request->get_param('id');
     foreach (\get_option(ImpexImport::WP_OPTION_IMPORTS, []) as $import) {
-      if ($import['id'] === $import_id) {
+      if ($import['id'] === $snapshot_id) {
         $transformationContext = ImpexImportTransformationContext::fromJson($import);
 
         $position = $request->get_param('position');
@@ -175,7 +175,7 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
 
         $slice = \apply_filters(self::WP_FILTER_IMPORT_REST_SLICE_UPLOAD, $slice, $transformationContext, $request);
 
-        $success = Impex::getInstance()->Import->_upsert_slice($import_id, $position, $slice);
+        $success = Impex::getInstance()->Import->_upsert_slice($snapshot_id, $position, $slice);
 
         if ($success === false) {
           throw new ImpexImportRuntimeException(sprintf('failed to insert/update jsonized slice(=%s) to database : %s', $slice, $wpdb->last_error));
@@ -192,14 +192,14 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
   public function consume($request)
   {
     //$profile = Impex::getInstance()->Import->getProfile($request->get_param('profile'));
-    $import_id = $request->get_param('id');
+    $snapshot_id = $request->get_param('id');
     //$options = $request->get_json_params();
 
     $limit = $request->get_param('limit');
     $offset = $request->get_param('offset');
 
     foreach (\get_option(ImpexImport::WP_OPTION_IMPORTS, []) as $import) {
-      if ($import['id'] === $import_id) {
+      if ($import['id'] === $snapshot_id) {
         $transformationContext = ImpexImportTransformationContext::fromJson($import);
 
         $notConsumedSlices = Impex::getInstance()->Import->consume($transformationContext, $limit, $offset);
