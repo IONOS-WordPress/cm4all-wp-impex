@@ -78,5 +78,7 @@ class TestImpexCLI extends ImpexUnitTestcase
     );
 
     $this->assertEquals(1, $result['exit_code'], 'should fail because of missing options');
+
+    // TODO: add username / password of created user to impex_cli
   }
 }
