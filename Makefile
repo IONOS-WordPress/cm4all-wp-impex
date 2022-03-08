@@ -361,6 +361,17 @@ wp-env-wp-cli: $(WP_ENV_HOME) ## execute wp-cli command in wp-env
 wp-env-wp-cli-sh: $(WP_ENV_HOME)
 > wp-env run cli 'sh'
 
+.PHONY: wp-env-clean
+# .SILENT: wp-env-clean
+#HELP: deletes all posts/pages/...
+wp-env-clean: $(WP_ENV_HOME)
+> wp-env run cli 'bash' <<-EOF
+> 	wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
+> 	wp option update fresh_site '1' ||:
+> 	wp menu list --format=ids | xargs wp menu delete 1>/dev/null ||:
+> EOF
+# wp post list --field=ID --post_type=page,post,attachment | xargs wp post delete --force
+
 .PHONY: wp-env-wp-backup
 #HELP: creates a backup of the wordpress database and uploads directory
 wp-env-wp-backup: $(WP_ENV_HOME)
