@@ -104,7 +104,7 @@ function main($argv)
           case '--help':
             break;
           default:
-            _die($options, "Invalid option(s): %s", join(' ', array_slice($argv, 1)));
+            _die($options, "Invalid operation: %s", join(' ', array_slice($argv, 1)));
         }
     };
 
