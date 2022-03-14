@@ -9,7 +9,8 @@ use cm4all\wp\impex\ImpexImport;
 use cm4all\wp\impex\ImpexImportTransformationContext;
 use cm4all\wp\impex\ImpexPart;
 
-require_once ABSPATH . 'usr/local/impex-cli/impex-cli.php';
+require_once ABSPATH . 'impex-cli/impex-cli.php';
+
 
 function impex_cli($operation, ...$args): array
 {
@@ -23,13 +24,12 @@ function impex_cli($operation, ...$args): array
 
   try {
     \cm4all\wp\impex\cli\main([
-      ABSPATH . 'usr/local/impex-cli/impex-cli.php',
+      ABSPATH . 'impex-cli/impex-cli.php',
       $operation,
       //  '-username=' . TestImpexCLI::IMPEX_USER_LOGIN,
       //  '-password=' . TestImpexCLI::IMPEX_USER_PASS,
       '-username=admin',
       '-password=password',
-
       ...$args,
     ]);
   } catch (\cm4all\wp\impex\cli\DieException $ex) {
@@ -50,6 +50,12 @@ class TestImpexCLI extends ImpexUnitTestcase
   function setUp()
   {
     parent::setUp();
+
+    $all_plugins = array_keys(\get_plugins());
+    \activate_plugins($all_plugins);
+
+    \update_option('permalink_structure', '/%postname%');
+    \update_option('siteurl', 'http://tests-Wordpress');
 
     // global $wpdb;
     // // crude but effective: make sure there's no residual data in the main tables
@@ -75,6 +81,13 @@ class TestImpexCLI extends ImpexUnitTestcase
   {
     parent::tearDown();
 
+    $all_plugins = array_keys(\get_plugins());
+    \activate_plugins($all_plugins);
+
+    \update_option('permalink_structure', '/%postname%');
+    \update_option('siteurl', 'http://tests-Wordpress');
+    \WP_UnitTestCase_Base::flush_cache();
+
     // // in case of broken phpunit calls old uploads may exist within $ignored_files (populated in setUp)
     // // to ensure these will be cleaned up properly we force to forget about these intermediate file uploads
     // self::$ignore_files = [];
@@ -83,7 +96,7 @@ class TestImpexCLI extends ImpexUnitTestcase
     // $this->remove_added_uploads();
   }
 
-  function testInvalidoptions(): void
+  function _testInvalidoptions(): void
   {
     $result = impex_cli(
       '-overwrite',
@@ -95,16 +108,25 @@ class TestImpexCLI extends ImpexUnitTestcase
     // TODO: add username / password of created user to impex_cli
   }
 
-  function testImport(): void
+  function testImportProfiles(): void
   {
-    $rest_url = \get_rest_url();
+    $all_plugins = array_keys(\get_plugins());
+    \activate_plugins($all_plugins);
 
-    $rest_url = "http://wordpress/wp-json";
-    $rest_url = "http://tests-wordpress/wp-json";
+    \update_option('permalink_structure', '/%postname%');
+    \update_option('siteurl', 'http://tests-Wordpress');
+
+    \wp_cache_flush();
+
+    $active_plugins = \get_option('active_plugins');
+
+    // curl -v 'http://localhost:8888/wp-json/cm4all-wp-impex/v1/export/profile' -H 'accept: application/json' -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
+    $rest_url = \get_rest_url();
 
     $result = impex_cli(
       'import-profile',
       "-rest-url=$rest_url",
+      "-CURLOPT_VERBOSE",
       "-verbose",
       // __DIR__ . '/fixtures/impex-cli/simple-snapshot',
     );

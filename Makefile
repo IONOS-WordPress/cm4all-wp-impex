@@ -177,13 +177,13 @@ $(WP_ENV_HOME): node_modules
 > cp $$WORDPRESS_DIR/.htaccess $$(echo wp-env-home/*)/tests-WordPress/
 >
 > for instance_prefix in '' 'tests-' ; do
->   CLI_CONTAINER="${instance_prefix}cli" 
->   WORDPRESS_CONTAINER="${instance_prefix}wordpress" 
+>   CLI_CONTAINER="$${instance_prefix}cli" 
+>   WORDPRESS_CONTAINER="$${instance_prefix}wordpress" 
 >
 >   wp-env run $$CLI_CONTAINER rewrite flush
 >   wp-env run $$CLI_CONTAINER rewrite structure '/%postname%'
 >  
->   wp-env run $$WORDPRESS_CONTAINER 'bash -c "chown www-data wp-content/{upgrade,themes,plugins}"'
+>   wp-env run $$WORDPRESS_CONTAINER 'bash -c "chown www-data wp-content/{upgrade,themes,plugins} || true"'
 > done
 >
 > WP_ENV_OVERRIDE_MAPPINGS=$$(test -f .wp-env.override.json && jq '.mappings' .wp-env.override.json)
@@ -367,12 +367,13 @@ wp-env-wp-cli-sh: $(WP_ENV_HOME)
 # .SILENT: wp-env-clean
 #HELP: deletes all posts/pages/...
 wp-env-clean: $(WP_ENV_HOME)
-> wp-env run cli 'bash' <<-EOF
-> 	wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
-> 	wp option update fresh_site '1' ||:
-> 	wp menu list --format=ids | xargs wp menu delete 1>/dev/null ||:
-> EOF
-# wp post list --field=ID --post_type=page,post,attachment | xargs wp post delete --force
+> for instance_prefix in '' 'tests-' ; do
+> 	wp-env run "${instance_prefix}cli" 'bash' <<-EOF
+> 		wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
+> 		wp option update fresh_site '1' ||:
+> 		wp menu list --format=ids | xargs wp menu delete 1>/dev/null ||:
+> 	EOF
+> done
 
 .PHONY: wp-env-wp-backup
 #HELP: creates a backup of the wordpress database and uploads directory

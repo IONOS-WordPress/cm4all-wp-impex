@@ -89,13 +89,22 @@ function main($argv)
                 $error
               );
             } else {
-              // ensure impex plugin rest namespace is available
-              if (!in_array('cm4all-wp-impex/v1', $result['namespaces'])) {
+              if (is_string($result) && $status === 301) {
                 _die(
                   $options,
-                  "Wordpress plugin cm4all-wp-impex seems not to be installed in the wordpress instance - expected rest endpoint(='cm4all-wp-impex/v1') is not available : Available rest endpoints %s'\n",
-                  json_encode($result['namespaces'])
+                  "Wordpress JSON Rest API Endpoint is probably misconfigured - request returned(http status='%s') : %s'\n",
+                  $status,
+                  'HTTP/1.1 301 Moved Permanently'
                 );
+              } else {
+                // ensure impex plugin rest namespace is available
+                if (!in_array('cm4all-wp-impex/v1', $result['namespaces'])) {
+                  _die(
+                    $options,
+                    "Wordpress plugin cm4all-wp-impex seems not to be installed in the wordpress instance - expected rest endpoint(='cm4all-wp-impex/v1') is not available : Available rest endpoints %s'\n",
+                    json_encode($result['namespaces'])
+                  );
+                }
               }
             }
 
@@ -267,7 +276,7 @@ function _curl($options, string $endpoint, $method = null, $callback = __NAMESPA
   if (((string)$http_status)[0] !== '2') {
     _log(
       $options,
-      "accessing '%s' returned http statuscode(=%s) : %s",
+      "accessing '%s' returned http status code(=%s) : %s",
       curl_getinfo($curl, CURLINFO_EFFECTIVE_URL),
       $http_status,
       curl_error($curl),
