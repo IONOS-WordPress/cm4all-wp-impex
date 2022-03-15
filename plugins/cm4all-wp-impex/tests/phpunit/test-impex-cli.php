@@ -51,11 +51,10 @@ class TestImpexCLI extends ImpexUnitTestcase
   {
     parent::setUp();
 
-    $all_plugins = array_keys(\get_plugins());
-    \activate_plugins($all_plugins);
+    // $all_plugins = array_keys(\get_plugins());
+    // \activate_plugins($all_plugins);
 
-    \update_option('permalink_structure', '/%postname%');
-    \update_option('siteurl', 'http://tests-Wordpress');
+    $this->set_permalink_structure('/%postname%/');
 
     // global $wpdb;
     // // crude but effective: make sure there's no residual data in the main tables
@@ -81,13 +80,6 @@ class TestImpexCLI extends ImpexUnitTestcase
   {
     parent::tearDown();
 
-    $all_plugins = array_keys(\get_plugins());
-    \activate_plugins($all_plugins);
-
-    \update_option('permalink_structure', '/%postname%');
-    \update_option('siteurl', 'http://tests-Wordpress');
-    \WP_UnitTestCase_Base::flush_cache();
-
     // // in case of broken phpunit calls old uploads may exist within $ignored_files (populated in setUp)
     // // to ensure these will be cleaned up properly we force to forget about these intermediate file uploads
     // self::$ignore_files = [];
@@ -108,20 +100,14 @@ class TestImpexCLI extends ImpexUnitTestcase
     // TODO: add username / password of created user to impex_cli
   }
 
-  function testImportProfiles(): void
+  function _testImportProfiles(): void
   {
-    $all_plugins = array_keys(\get_plugins());
-    \activate_plugins($all_plugins);
-
-    \update_option('permalink_structure', '/%postname%');
-    \update_option('siteurl', 'http://tests-Wordpress');
-
-    \wp_cache_flush();
-
     $active_plugins = \get_option('active_plugins');
 
+    $permalink_structure = \get_option('permalink_structure',);
+
     // curl -v 'http://localhost:8888/wp-json/cm4all-wp-impex/v1/export/profile' -H 'accept: application/json' -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
-    $rest_url = \get_rest_url();
+    $rest_url = 'http://tests-wordpress/wp-json/'; // cm4all_wordpress rewrites the rest url ... so we cannot use \get_rest_url();
 
     $result = impex_cli(
       'import-profile',
