@@ -7,6 +7,9 @@ button > svg {
 }
 
 .components-modal__screen-overlay {
+  // do not span over the wp admin menu on the left
+  margin-left: 160px;
+
   &.blocking {
     cursor: wait;
   }
