@@ -33,7 +33,7 @@ export default function () {
         {!isFileystemApiAvailable && (
           <components.Modal
             title="Ouch - your browser does not support the File System Access API :-("
-            onRequestClose={() => {}}
+            isDismissible={false}
           >
             <p>
               Impex Import / Export requires a browser implementing the{" "}
