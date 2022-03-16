@@ -36,7 +36,6 @@
         // --
         "/var/www/html/wp-content/plugins/cm4all-wp-impex": "${workspaceRoot}/plugins/cm4all-wp-impex",
         "/var/www/html/wp-content/plugins/cm4all-wp-impex-example": "${workspaceRoot}/plugins/cm4all-wp-impex-example",
-        "/var/www/html/impex-cli": "${workspaceRoot}/impex-cli",
         "/var/www/html": "${workspaceRoot}/$WP_ENV_ROOT/WordPress"
       }
     },

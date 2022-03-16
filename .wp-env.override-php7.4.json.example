@@ -12,7 +12,6 @@
   "phpVersion": "7.4",
   "mappings": {
     "wp-content/plugins/cm4all-wordpress": "../cm4all-wordpress/packages/wordpress/wp-content/plugins/cm4all-wordpress",
-    "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core",
-    "impex-cli": "./impex-cli"
+    "wp-content/themes/trinity-core": "../cm4all-wordpress/packages/wordpress/wp-content/themes/trinity-core"
   }
 }

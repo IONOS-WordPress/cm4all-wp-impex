@@ -22,4 +22,4 @@ php.ini : `/etc/php8/php.ini`
 
 # Usage
 
-`docker run -it -v $(pwd)/..:/workdir --rm cm4all-wp-impex/impex-cli-phpunit phpunit .`
+`docker run --add-host=host.docker.internal:host-gateway -it -v $(pwd)/..:/workdir --rm cm4all-wp-impex/impex-cli-phpunit phpunit .`

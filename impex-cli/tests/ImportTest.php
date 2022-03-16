@@ -1,19 +1,14 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use cm4all\wp\impex\tests\phpunit\AbstractImpexCLITestCase;
 
-final class ImportTest extends TestCase
+use function cm4all\wp\impex\tests\phpunit\impex_cli;
+
+require_once __DIR__ . "/abstract-impex-cli-testcase.php";
+final class ImportTest extends AbstractImpexCLITestCase
 {
-  public function testPushAndPop(): void
+  function testSimpleImport()
   {
-    $stack = [];
-    $this->assertSame(0, count($stack));
-
-    array_push($stack, 'foo');
-    $this->assertSame('foo', $stack[count($stack) - 1]);
-    $this->assertSame(1, count($stack));
-
-    $this->assertSame('foo', array_pop($stack));
-    $this->assertSame(0, count($stack));
+    $this->assertEquals(1, 1,);
   }
 }
