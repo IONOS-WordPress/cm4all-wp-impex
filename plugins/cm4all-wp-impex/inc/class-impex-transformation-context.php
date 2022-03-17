@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 require_once __DIR__ . '/class-impex-part.php';
 require_once __DIR__ . '/class-impex-runtime-exception.php';
-
+require_once ABSPATH . 'wp-admin/includes/file.php';
 /**
  * ImpexTransformationContext is a superset of ImpexImportTransformationContext and ImpexExportTransformationContext
  * 
