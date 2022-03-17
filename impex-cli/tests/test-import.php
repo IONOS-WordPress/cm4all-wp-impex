@@ -5,8 +5,7 @@ use cm4all\wp\impex\tests\phpunit\AbstractImpexCLITestCase;
 use function cm4all\wp\impex\tests\phpunit\impex_cli;
 
 require_once __DIR__ . "/abstract-impex-cli-testcase.php";
-
-final class ImportProfileTest extends AbstractImpexCLITestCase
+final class ImportTest extends AbstractImpexCLITestCase
 {
   function testInvalidOptions()
   {
@@ -18,18 +17,29 @@ final class ImportProfileTest extends AbstractImpexCLITestCase
     $this->assertEquals(1, $result['exit_code'], 'should fail because of misplaced options/arguments');
   }
 
-  function testImportProfiles()
+  function testImportEmptySnapshotDirectory()
   {
-    // curl -v 'http://host.docker.internal:8889/wp-json/cm4all-wp-impex/v1/export/profile' -H 'accept: application/json' -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
-
     $result = impex_cli(
-      'import-profile',
-      // '-CURLOPT_VERBOSE',
-      // '-verbose',
-      // __DIR__ . '/fixtures/impex-cli/simple-snapshot',
+      'import',
+      '-overwrite',
+      '-profile=all',
+      __DIR__ . '/fixtures/empty-snapshot',
     );
 
-    $this->assertEquals('', $result['stderr'], 'stderr should be empty');
+    $this->assertEquals(0, $result['exit_code'], 'should succeed');
+  }
+
+  function testSimpleImport()
+  {
+    $result = impex_cli(
+      'import',
+      '-overwrite',
+      '-profile=all',
+      __DIR__ . '/fixtures/simple-import',
+    );
+
+    var_dump($result);
+
     $this->assertEquals(0, $result['exit_code'], 'should succeed');
   }
 }

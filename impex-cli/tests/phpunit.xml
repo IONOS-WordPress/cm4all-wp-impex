@@ -1,0 +1,21 @@
+<phpunit
+  backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+  cacheResult="false"
+>
+	<testsuites>
+		<testsuite name="impex-cli">
+			<directory 
+        phpVersion="8.0.0" 
+        phpVersionOperator=">=" 
+        prefix="test-" 
+        suffix=".php"
+      >
+        ./
+      </directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

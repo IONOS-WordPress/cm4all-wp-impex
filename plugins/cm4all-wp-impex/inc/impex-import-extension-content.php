@@ -116,7 +116,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
     // @TODO: should we do it (adapted from wp importer) ? it makes actually no sense since the given data is different ...
     $post = \apply_filters('wp_import_post_data_raw', $post);
 
-    if (!\post_type_exists($post[ContentExporter::SLICE_DATA_POSTS_TYPE])) {
+    if (!\post_type_exists($post[ContentExporter::SLICE_DATA_POSTS_TYPE] ?? 'post')) {
       throw new ImpexImportRuntimeException(
         "Failed to create post(title='{$post['post_title']}, post_type={$post['post_title']}') : post_type does not exist."
       );
@@ -181,6 +181,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
       $author = \sanitize_user($post[ContentExporter::SLICE_DATA_POSTS_CREATOR], true);
       $author = $author_mapping[$author] ?? (int) get_current_user_id();
 
+      // see defaults here : https://developer.wordpress.org/reference/functions/wp_insert_post/
       $postdata = [
         'import_id'      => $post[ContentExporter::SLICE_DATA_POSTS_ID],
         'post_author'    => $author,
@@ -199,6 +200,13 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
         'post_type'      => $post[ContentExporter::SLICE_DATA_POSTS_TYPE],
         'post_password'  => $post[ContentExporter::SLICE_DATA_POSTS_PASSWORD],
       ];
+
+      // filter out undefined properties
+      foreach ($postdata as $key => $value) {
+        if ($value === null) {
+          unset($postdata[$key]);
+        }
+      }
 
       $original_post_id = $post[ContentExporter::SLICE_DATA_POSTS_ID];
       $postdata = \apply_filters('wp_import_post_data_processed', $postdata, $post);

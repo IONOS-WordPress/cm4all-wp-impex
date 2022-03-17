@@ -80,7 +80,7 @@ FROM alpine:latest
 COPY --from=builder / /
 
 VOLUME ["/workdir"]
-WORKDIR /workdir
+WORKDIR /workdir/tests
 
 # add a entrypoint script to enable CTRL-C abortion in terminal
 # (see https://stackoverflow.com/a/57526365/1554103)

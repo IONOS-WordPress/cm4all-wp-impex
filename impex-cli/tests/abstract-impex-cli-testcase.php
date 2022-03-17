@@ -35,7 +35,7 @@ function impex_cli($operation, ...$args): array
   return $retval;
 }
 
-class AbstractImpexCLITestCase extends TestCase
+abstract class AbstractImpexCLITestCase extends TestCase
 {
   function setUp(): void
   {

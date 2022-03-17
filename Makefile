@@ -62,6 +62,8 @@ MDBOOK_TARGETS := $(subst /src/,/book/,$(MDBOOK_SOURCES))
 DOCKER_MDBOOK_IMAGE := cm4all-wp-impex/mdbook
 DOCKER_MDBOOK := docker run --rm -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook
 
+DOCKER_IMPEXCLI_PHPUNIT_IMAGE := cm4all-wp-impex/impex-cli-phpunit
+
 IMPEX_PLUGIN_NAME := cm4all-wp-impex
 IMPEX_PLUGIN_DIR := ./plugins/$(IMPEX_PLUGIN_NAME)
 
@@ -280,6 +282,26 @@ distclean: clean
 # .PHONY: lint-fix 
 # lint-fix: lint-fix-php ## fix linter problems in sources
 
+.PHONY: test-impexcli
+#HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
+test-impexcli: node_modules $(WP_ENV_HOME)
+# build impex cli docker image if needed 
+> @if [[ "$$(docker images $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
+>   cd impex-cli/tests && DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) .
+> fi
+# if test-phpunit twas run before the test wp instance might be in inconstistent state
+> wp-env run "tests-cli" bash <<-EOF
+> 	set +e
+>   wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
+> 	rm -rf /var/www/html/wp-content/uploads/*
+>   wp rewrite structure /%postname%
+>   wp theme activate trinity-core 1>/dev/null ||:
+>   wp plugin activate --all								 	  
+> EOF
+# run tests
+> $(eval ARGS ?= '')
+> docker run --add-host=host.docker.internal:host-gateway -it -v $(PWD)/impex-cli:/workdir --rm $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) phpunit $(ARGS)
+
 .PHONY: test-phpunit
 #HELP: execute phpunit tests\n Example: run filtered tests\n make test-phpunit ARGS='--verbose --filter=TestImpexExportAdapterDb'\n Example : run filtered tests with phpunit debug information\n make test-phpunit ARGS='--debug --filter=TestImpexExportAdapterDb::test_wordpress_and_plugin_are_loaded'
 test-phpunit: node_modules $(WP_ENV_HOME) plugins/cm4all-wp-impex/vendor/autoload.php
@@ -368,7 +390,7 @@ wp-env-wp-cli-sh: $(WP_ENV_HOME)
 #HELP: deletes all posts/pages/...
 wp-env-clean: $(WP_ENV_HOME)
 > for instance_prefix in '' 'tests-' ; do
-> 	wp-env run "${instance_prefix}cli" 'bash' <<-EOF
+> 	wp-env run "$${instance_prefix}cli" 'bash' <<-EOF
 > 		wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
 > 		wp option update fresh_site '1' ||:
 > 		wp menu list --format=ids | xargs wp menu delete 1>/dev/null ||:
