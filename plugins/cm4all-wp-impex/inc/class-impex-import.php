@@ -111,7 +111,7 @@ abstract class ImpexImport extends ImpexPart
    */
   function consume(ImpexImportTransformationContext $transformationContext, int $limit = PHP_INT_MAX, int $offset = 0): array
   {
-    $uncomsumed_slices = [];
+    $unconsumed_slices = [];
 
     $options = $transformationContext->options;
     $profile = $transformationContext->profile;
@@ -134,17 +134,17 @@ abstract class ImpexImport extends ImpexPart
       }
 
       if (!$consumed) {
-        $uncomsumed_slices[] = $slice;
+        $unconsumed_slices[] = $slice;
       }
     }
 
     $profile->events(self::EVENT_IMPORT_END)($transformationContext, [
-      'uncomsumed_slices' => &$uncomsumed_slices,
+      'unconsumed_slices' => &$unconsumed_slices,
       'limit' => $limit,
       'offset' => $offset,
     ]);
 
-    return $uncomsumed_slices;
+    return $unconsumed_slices;
   }
 
   function update(string $snapshot_id, array $data): array|bool
