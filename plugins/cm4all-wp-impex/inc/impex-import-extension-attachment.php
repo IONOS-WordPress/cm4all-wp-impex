@@ -97,7 +97,12 @@ class __AttachmentImporter
     }
 
     $post = $this->slice[Impex::SLICE_META]['data'];
-    $url = $post['guid'];
+    $url = $post['guid'] ?? null;
+    if ($url === null) {
+      $path = $this->slice[Impex::SLICE_DATA];
+      $fileExtension = pathinfo($path, PATHINFO_EXTENSION);
+      $url = './' . \sanitize_title($post['post_title'] ?? pathinfo($path, PATHINFO_FILENAME)) . '.' . $fileExtension;
+    }
 
     /* 
       code more or less duplicated from wordpress-importer function process_attachment
@@ -111,6 +116,19 @@ class __AttachmentImporter
 
     $post['guid'] = $upload['url'];
     unset($post['ID']);
+
+    // if post_mime_type is not set the media will not appear correctly resized within media uploader
+    if (!isset($post['post_mime_type'])) {
+      $post_mime_type = \wp_get_image_mime($upload['file']);
+
+      if (!$post_mime_type) {
+        $post_mime_type = mime_content_type(basename($upload['file']));
+      }
+
+      if (is_string($post_mime_type)) {
+        $post['post_mime_type'] = $post_mime_type;
+      }
+    }
 
     // as per wp-admin/includes/upload.php
     $post_id = \wp_insert_attachment($post, $upload['file']);
@@ -152,7 +170,7 @@ class __AttachmentImporter
     // Extract the file name from the URL.
     $file_name = basename(parse_url($url, PHP_URL_PATH));
 
-    $uploads = wp_upload_dir($post['post_date']);
+    $uploads = wp_upload_dir($post['post_date'] ?? null);
     if (!($uploads && false === $uploads['error'])) {
       return new \WP_Error('upload_dir_error', $uploads['error']);
     }
