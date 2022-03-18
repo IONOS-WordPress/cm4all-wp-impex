@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "type": "php",
+  "tag": "content-exporter",
+  "meta": {
+    "entity": "content-exporter"
+  },
+  "data": {
+    "posts": [
+      {
+        "wp:status": "publish",
+        "wp:post_type": "page",
+        "wp:post_name": "page-with-gallery-multiple-images",
+        "wp:post_id": 4,
+        "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->\n<!-- wp:gallery -->\n<figure class=\"wp-block-gallery has-nested-images columns-default is-cropped\">\n  <!-- wp:image -->\n  <figure class=\"wp-block-image\"><img src=\"./james-wheeler-unsplash.jpg\"/></figure>\n  <!-- /wp:image -->\n\n  <!-- wp:image -->\n  <figure class=\"wp-block-image\"><img src=\"./greysen-johnson-unsplash.jpg\"/></figure>\n  <!-- /wp:image -->\n\n  <!-- wp:image -->\n  <figure class=\"wp-block-image\"><img src=\"./wes-walker-unsplash.jpg\"/></figure>\n  <!-- /wp:image -->\n</figure>\n<!-- /wp:gallery -->",
+        "title": "A page with gallery block."
+      }
+    ]
+  }
+}

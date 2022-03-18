@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "type": "resource",
+  "tag": "attachment",
+  "meta": {
+    "entity": "attachment"
+  },
+  "data": "./greysen-johnson-unsplash.jpg"
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "type": "resource",
+  "tag": "attachment",
+  "meta": {
+    "entity": "attachment"
+  },
+  "data": "./wes-walker-unsplash.jpg"
+}

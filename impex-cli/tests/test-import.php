@@ -38,8 +38,6 @@ final class ImportTest extends AbstractImpexCLITestCase
       __DIR__ . '/fixtures/simple-import',
     );
 
-    var_dump($result);
-
     $this->assertEquals(0, $result['exit_code'], 'should succeed');
   }
 }
