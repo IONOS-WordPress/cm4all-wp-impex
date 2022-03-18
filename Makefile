@@ -289,14 +289,14 @@ test-impexcli: node_modules $(WP_ENV_HOME)
 > @if [[ "$$(docker images $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
 >   cd impex-cli/tests && DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) .
 > fi
-# if test-phpunit twas run before the test wp instance might be in inconstistent state
+# if test-phpunit was run before the test wp instance might be in inconstistent state => so we need to reset the test instance to a safe state
 > wp-env run "tests-cli" bash <<-EOF
-> 	set +e
->   wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
-> 	rm -rf /var/www/html/wp-content/uploads/*
->   wp rewrite structure /%postname%
->   wp theme activate trinity-core 1>/dev/null ||:
->   wp plugin activate --all								 	  
+> 	set +e 																																																# ignore errors
+>   wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null # delete all posts/pages and attachments
+> 	rm -rf /var/www/html/wp-content/uploads/*																															# delete all uploaded files
+>   wp rewrite structure /%postname%																																			# set permalink structure to /%postname%
+>   wp theme activate trinity-core 1>/dev/null																														# activate trinity-core theme
+>   wp plugin activate --all								 	  																													# activate all installed plugins
 > EOF
 # run tests
 > $(eval ARGS ?= '')
@@ -390,10 +390,10 @@ wp-env-wp-cli-sh: $(WP_ENV_HOME)
 #HELP: deletes all posts/pages/...
 wp-env-clean: $(WP_ENV_HOME)
 > for instance_prefix in '' 'tests-' ; do
-> 	wp-env run "$${instance_prefix}cli" 'bash' <<-EOF
-> 		wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null ||:
-> 		wp option update fresh_site '1' ||:
-> 		wp menu list --format=ids | xargs wp menu delete 1>/dev/null ||:
+> 	wp-env run "$${instance_prefix}cli" bash <<-EOF
+> 		wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null || :
+> 		wp option update fresh_site '1' || : 
+> 		wp menu list --format=ids | xargs wp menu delete 1>/dev/null || : 
 > 	EOF
 > done
 
