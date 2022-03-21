@@ -8,9 +8,6 @@
   "data": {
     "posts": [
       {
-        "wp:status": "publish",
-        "wp:post_type": "post",
-        "wp:post_name": "hello-world-first-post",
         "wp:post_id": 1,
         "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello from first imported post !</p>\n<!-- /wp:paragraph -->",
         "title": "Hello first post!"
