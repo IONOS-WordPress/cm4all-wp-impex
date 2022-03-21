@@ -13,4 +13,12 @@
     "**/dist/**"
   ],
   "git.ignoreLimitWarning": true
+  /*
+  "json.schemas": [
+    {
+      "fileMatch": ["slice-*.json"],
+      "url": "${workspaceFolder}/docs/jsonschema/slice-content.json"
+    }
+  ]
+  */
 }

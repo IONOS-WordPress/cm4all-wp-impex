@@ -1,0 +1,27 @@
+{
+  "$schema": "slice-content.json",
+  "type": "php",
+  "version": "1.0.0",
+  "tag": "content-exporter",
+  "meta": {
+    "entity": "content-exporter"
+  },
+  "data": {
+    "posts": [
+      {
+        "wp:post_id": 1,
+        "title": "Hello world!",
+        "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello from first imported post !</p>\n<!-- /wp:paragraph -->"
+      },
+      {
+        "wp:post_id": 1,
+        "wp:post_type": "post",
+        "wp:status": "publish",
+        "wp:post_name": "home",
+        "wp:post_parent": 1,
+        "title": "Home",
+        "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:html -->\n<p>A bit of custom html utilizing the Gutenberg html block</p>\n<ul>\n  <li>hi</li>\n  <li>ho</li>\n  <li>howdy</li>\n</ul><!-- /wp:html -->"
+      }
+    ]
+  }
+}
