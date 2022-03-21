@@ -286,7 +286,7 @@ distclean: clean
 #HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
 test-impexcli: node_modules $(WP_ENV_HOME)
 # build impex cli docker image if needed 
-> @if [[ "$$(docker images $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
+> if [[ "$$(docker images -q $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
 >   cd impex-cli/tests && DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) .
 > fi
 # if test-phpunit was run before the test wp instance might be in inconstistent state => so we need to reset the test instance to a safe state
