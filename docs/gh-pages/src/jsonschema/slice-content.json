@@ -52,34 +52,34 @@
   "required": ["version", "type", "tag", "meta", "data"],
   "definitions": {
     "posts-item": {
-      "title": "Wordpress posts stored in this this Impex slice",
+      "title": "WordPress posts stored in this this Impex slice",
       "type": "object",
       "properties": {
         "wp:post_id": {
           "type": "integer",
           "minimum": 1,
-          "title": "Wordpress post_id",
-          "description": "The unique Wordpress post id of the post"
+          "title": "WordPress post_id",
+          "description": "The unique WordPress post id of the post"
         },
         "title": {
           "type": "string",
           "minLength": 1,
-          "title": "Wordpress post title",
-          "description": "The title of the Wordpress post as it is stored in the database"
+          "title": "WordPress post title",
+          "description": "The title of the WordPress post as it is stored in the database"
         },
         "wp:post_content": {
           "type": "string",
           "minLength": 1,
-          "title": "Wordpress post content",
-          "description": "The content of the Wordpress post",
+          "title": "WordPress post content",
+          "description": "The content of the WordPress post",
           "examples": [
             "<!-- wp:paragraph -->\n<p>Hello from first imported post !</p>\n<!-- /wp:paragraph -->",
             "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:html -->\n<p>A bit of custom html utilizing the Gutenberg html block</p>\n<ul>\n  <li>hi</li>\n  <li>ho</li>\n  <li>howdy</li>\n</ul><!-- /wp:html -->"
           ]
         },
         "wp:post_type": {
-          "title": "Wordpress post type",
-          "description": "The type of the Wordpress post.\nCcontent related post types are 'post' and 'page'.\nIf not declared, type 'post' will be assumed.",
+          "title": "WordPress post type",
+          "description": "The type of the WordPress post.\nCcontent related post types are 'post' and 'page'.\nIf not declared, type 'post' will be assumed.",
           "type": "string",
           "enum": [
             "post",
@@ -94,22 +94,22 @@
         },
         "wp:status": {
           "type": "string",
-          "title": "Wordpress post status",
-          "description": "The Wordpress post status (https://wordpress.org/support/article/post-status/)",
+          "title": "WordPress post status",
+          "description": "The WordPress post status (https://wordpress.org/support/article/post-status/)",
           "enum": ["publish", "future", "draft", "pending", "private"],
           "default": "draft"
         },
         "wp:post_name": {
           "type": "string",
-          "title": "Wordpress post slug",
+          "title": "WordPress post slug",
           "description": "Used to generate the permalink. If not given, the sanitized post title will be used instead.",
           "minLength": 1
         },
         "wp:post_parent": {
           "type": "integer",
           "minimum": 1,
-          "title": "Wordpress post parent id",
-          "description": "The Wordpress post id of the parent post.\n If not given, the post will be created as a top level post."
+          "title": "WordPress post parent id",
+          "description": "The WordPress post id of the parent post.\n If not given, the post will be created as a top level post."
         }
       },
       "required": ["wp:post_id", "title", "wp:post_content"],

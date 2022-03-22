@@ -2,11 +2,11 @@
 
 # CLI
 
-Impex provides a commandline tool to interact with the Impex plugin remotely using Wordpress HTTP REST API.
+Impex provides a commandline tool to interact with the Impex plugin remotely using WordPress HTTP REST API.
 
 Using this tool you can import and export data from and to a remote wordpress installation.
 
-> impex-cli works also fine at _most_ managed wordpress installations since it does'nt need direct Wordpress access like [wp-cli](https://wp-cli.org/).
+> impex-cli works also fine at _most_ managed wordpress installations since it does'nt need direct WordPress access like [wp-cli](https://wp-cli.org/).
 
 # Prerequisities
 
@@ -33,14 +33,14 @@ Using the official PHP 7.4 Docker image :
 
 ```sh
 docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.4-cli php \
-impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli-php7.4.0.php export-profile list -username=<adminuser> -password=<password> -rest-url=http://localhost:8888/wp-json
 ```
 
 Alternatively using the PHP 8.0 image:
 
 ```sh
 docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:8.0-cli php \
-impex-cli.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli.php export-profile list -username=<adminuser> -password=<password> -rest-url=http://localhost:8888/wp-json
 ```
 
 ## Syntax
@@ -73,8 +73,8 @@ Example:
 
 ```sh
 impex-cli.php export-profile \
--username=admin \
--password='password' \
+-username=<adminuser> \
+-password='<password>' \
 -rest-url=http://example.com/wp-json
 ```
 
@@ -90,7 +90,7 @@ Example:
 impex-cli.php export-profile \
 -H="X-foo=bar" \
 -H="X-myrealm=cheers" \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://example.com/wp-json
 ```
 
@@ -107,7 +107,7 @@ Example:
 ```sh
 impex-cli.php export-profile \
 -verbose \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://example.com/wp-json
 ```
 
@@ -120,7 +120,7 @@ Example:
 ```sh
 impex-cli.php export-profile \
 -CURLOPT_VERBOSE \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://example.com/wp-json
 ```
 
@@ -148,7 +148,7 @@ A Impex export results in a directory structure containing
 
 - JSON Files for structured data
 
-  Wordpress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.
+  WordPress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.
 
 - Blobs for attachments/media
 
@@ -158,7 +158,7 @@ Example:
 
 ```sh
 impex-cli.php export \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://localhost:8888/wp-json \
 -overwrite \
 -profile=base \
@@ -175,7 +175,7 @@ export-cm4all-wordpress-created-
 │   ├── slice-0001-logo-fabrics.png
 │   ├── slice-0002-johny-goerend-ou-GkKJm3fc-unsplash.jpg
 │   ├── slice-0002.json
-│   ├── slice-0003.json
+│   └── slice-0003.json
 ...
 ├── chunk-0006
 │   ├── slice-0000.json
@@ -231,7 +231,7 @@ Example usage:
 
 ```sh
 impex-cli.php import \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://localhost:8888/wp-json \
 -profile=all \
 ~/tmp/my-export
@@ -263,7 +263,7 @@ Example usage:
 
 ```sh
 impex-cli.php export-profile list \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://localhost:8888/wp-json
 ```
 
@@ -296,7 +296,7 @@ Example usage:
 
 ```sh
 impex-cli.php import-profile list \
--username=admin -password='password' \
+-username=<adminuser> -password='<password>' \
 -rest-url=http://localhost:8888/wp-json
 ```
 
