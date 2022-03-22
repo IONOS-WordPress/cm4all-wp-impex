@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Impex Content Slice",
+  "description": "a Impex slice containing content",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The JSON schema for this slice"
+    },
+    "version": {
+      "title": "Impex Provider content version",
+      "description": "Version will be used by Impex to know what data format to expect",
+      "const": "1.0.0"
+    },
+    "type": {
+      "title": "Impex slice type",
+      "description": "Value will be used by Impex to know the content type of the slice",
+      "const": "php"
+    },
+    "tag": {
+      "title": "Impex slice tag",
+      "description": "The Impex slice tag contains information about the responsible Impex provider for this slice",
+      "const": "attachment"
+    },
+    "meta": {
+      "title": "Metadata for the slice",
+      "description": "Metadata is a JSON object used to store additional information about the slice",
+      "const": {
+        "entity": "attachment"
+      }
+    },
+    "data": {
+      "format": "uri-template",
+      "type": "string",
+      "title": "Data portion of this Impex slice",
+      "description": "Attachment slice data is expected to be a URI to the attachment file.\nFor media it has to be the URI to the image.\nURI can be absolute or relative.",
+      "examples": [
+        "./media/image.jpg",
+        "https://www.example.com/attachment.jpg"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["version", "type", "tag", "meta", "data"]
+}

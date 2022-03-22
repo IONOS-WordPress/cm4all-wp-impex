@@ -25,7 +25,7 @@
     },
     "meta": {
       "title": "Metadata for the slice",
-      "description": "Metadata is a JSON object that used to store additional information about the slice",
+      "description": "Metadata is a JSON object used to store additional information about the slice",
       "const": {
         "entity": "content-exporter"
       }
