@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html" class="active"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html" class="active"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">3.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">4.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">4.1.</strong> Configuration</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -198,10 +198,10 @@
 </li>
 </ul>
 <h1 id="cli"><a class="header" href="#cli">CLI</a></h1>
-<p>Impex provides a commandline tool to interact with the Impex plugin remotely using Wordpress HTTP REST API.</p>
+<p>Impex provides a commandline tool to interact with the Impex plugin remotely using WordPress HTTP REST API.</p>
 <p>Using this tool you can import and export data from and to a remote wordpress installation.</p>
 <blockquote>
-<p>impex-cli works also fine at <em>most</em> managed wordpress installations since it does'nt need direct Wordpress access like <a href="https://wp-cli.org/">wp-cli</a>.</p>
+<p>impex-cli works also fine at <em>most</em> managed wordpress installations since it does'nt need direct WordPress access like <a href="https://wp-cli.org/">wp-cli</a>.</p>
 </blockquote>
 <h1 id="prerequisities"><a class="header" href="#prerequisities">Prerequisities</a></h1>
 <p>Impex CLI requires PHP 7.4 or higher and the <code>php-curl</code> extension.</p>
@@ -224,11 +224,11 @@
 <em>(Assuming your working dir contains the extracted impex-cli php files and impex-cli options needs to be adjusted to your needs)</em> :</p>
 <p>Using the official PHP 7.4 Docker image :</p>
 <pre><code class="language-sh">docker run -it --network host --rm -v &quot;$PWD&quot;:/usr/src/myapp -w /usr/src/myapp php:7.4-cli php \
-impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli-php7.4.0.php export-profile list -username=&lt;adminuser&gt; -password=&lt;password&gt; -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Alternatively using the PHP 8.0 image:</p>
 <pre><code class="language-sh">docker run -it --network host --rm -v &quot;$PWD&quot;:/usr/src/myapp -w /usr/src/myapp php:8.0-cli php \
-impex-cli.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli.php export-profile list -username=&lt;adminuser&gt; -password=&lt;password&gt; -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <p>impex-cli.php <code>operation</code> <code>sub-operation?</code> <code>-rest-url=[wordpress-restapi-url]</code> [options] [arguments]?</p>
@@ -247,8 +247,8 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>If you can access your wordpress installation using <code>username</code> and <code>password</code> credentials and HTTP Basic Auth, you can use the <code>--username</code> and <code>--password</code> options to specify them.</p>
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
--username=admin \
--password='password' \
+-username=&lt;adminuser&gt; \
+-password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <blockquote>
@@ -260,7 +260,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <pre><code class="language-sh">impex-cli.php export-profile \
 -H=&quot;X-foo=bar&quot; \
 -H=&quot;X-myrealm=cheers&quot; \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h3 id="flags"><a class="header" href="#flags">Flags</a></h3>
@@ -270,7 +270,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
 -verbose \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h4 id="curlopt_verbose"><a class="header" href="#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></h4>
@@ -278,7 +278,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
 -CURLOPT_VERBOSE \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h2 id="authentication"><a class="header" href="#authentication">Authentication</a></h2>
@@ -296,7 +296,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <ul>
 <li>
 <p>JSON Files for structured data</p>
-<p>Wordpress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.</p>
+<p>WordPress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.</p>
 </li>
 <li>
 <p>Blobs for attachments/media</p>
@@ -305,7 +305,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 </ul>
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json \
 -overwrite \
 -profile=base \
@@ -319,7 +319,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 │   ├── slice-0001-logo-fabrics.png
 │   ├── slice-0002-johny-goerend-ou-GkKJm3fc-unsplash.jpg
 │   ├── slice-0002.json
-│   ├── slice-0003.json
+│   └── slice-0003.json
 ...
 ├── chunk-0006
 │   ├── slice-0000.json
@@ -363,7 +363,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 </blockquote>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php import \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json \
 -profile=all \
 ~/tmp/my-export
@@ -385,7 +385,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>Lists all available export profiles in JSON format.</p>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php export-profile list \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Example output (<em>may vary for your installation</em>):</p>
@@ -409,7 +409,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>Lists all available import profiles in JSON format.</p>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php import-profile list \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Example output (<em>may vary for your installation</em>):</p>
@@ -435,7 +435,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="migrating-content.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -449,7 +449,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="migrating-content.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

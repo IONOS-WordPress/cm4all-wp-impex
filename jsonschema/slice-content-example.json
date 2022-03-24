@@ -1,0 +1,23 @@
+{
+  "$schema": "slice-content.json",
+  "version": "1.0.0",
+  "type": "php",
+  "tag": "content-exporter",
+  "meta": {
+    "entity": "content-exporter"
+  },
+  "data": {
+    "posts": [
+      {
+        "wp:post_id": 1,
+        "title": "Home",
+        "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello from first imported post !</p>\n<!-- /wp:paragraph -->"
+      },
+      {
+        "wp:post_id": 2,
+        "title": "About",
+        "wp:post_content": "<!-- wp:paragraph -->\n<p>Hello from \"second imported post\" !</p>\n<!-- /wp:paragraph -->"
+      }
+    ]
+  }
+}

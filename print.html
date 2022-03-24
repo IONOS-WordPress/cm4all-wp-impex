@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">2.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">3.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">4.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">4.1.</strong> Configuration</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,27 +146,30 @@
                         <ul>
 <li><a href="about.html#preface">Preface</a></li>
 <li><a href="about.html#about">About</a></li>
+<li><a href="about.html#development">Development</a></li>
 </ul>
 <h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
-<p><strong>This books acts currently as a draft. It is not yet complete and may change in the future.</strong></p>
+<p><strong>This books act's currently as a draft. It is not yet complete and may change in the future.</strong></p>
 <h1 id="about"><a class="header" href="#about">About</a></h1>
 <p>The Impex plugin provides a modern way to import and export data from WordPress.</p>
 <p>It provides</p>
 <ul>
 <li>
-<p>a <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a> extension for importing and exporting data</p>
+<p>a <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a> extension for importing and exporting data</p>
 </li>
 <li>
-<p>a user interface for interacting with the Impex <a href="https://developer.wordpress.org/rest-api/">Wordpress REST API</a>.</p>
+<p>a user interface for interacting with the Impex <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a>.</p>
 </li>
 <li>
 <p>a <a href="./impex-cli.html">CLI</a> for importing and exporting data from the commandline. You can use the <a href="./impex-cli.html">CLI</a> to interact with a remote wordpress installation.</p>
 </li>
 <li>
-<p>an easy way to extend the import/export capabilities by third party plugins based on Wordpress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
+<p>an easy way to extend the import/export capabilities by third party plugins based on WordPress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
 </li>
 </ul>
 <p><img src="./impex-screenshot.png" alt="Impex UI" /></p>
+<h1 id="development"><a class="header" href="#development">Development</a></h1>
+<p>The sources of this plugin are maintained at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">cm4all-wp-impex Plugin GitHub repository</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
 <li><a href="impex-cli.html#cli">CLI</a></li>
 <li><a href="impex-cli.html#prerequisities">Prerequisities</a>
@@ -223,10 +226,10 @@
 </li>
 </ul>
 <h1 id="cli"><a class="header" href="#cli">CLI</a></h1>
-<p>Impex provides a commandline tool to interact with the Impex plugin remotely using Wordpress HTTP REST API.</p>
+<p>Impex provides a commandline tool to interact with the Impex plugin remotely using WordPress HTTP REST API.</p>
 <p>Using this tool you can import and export data from and to a remote wordpress installation.</p>
 <blockquote>
-<p>impex-cli works also fine at <em>most</em> managed wordpress installations since it does'nt need direct Wordpress access like <a href="https://wp-cli.org/">wp-cli</a>.</p>
+<p>impex-cli works also fine at <em>most</em> managed wordpress installations since it does'nt need direct WordPress access like <a href="https://wp-cli.org/">wp-cli</a>.</p>
 </blockquote>
 <h1 id="prerequisities"><a class="header" href="#prerequisities">Prerequisities</a></h1>
 <p>Impex CLI requires PHP 7.4 or higher and the <code>php-curl</code> extension.</p>
@@ -249,11 +252,11 @@
 <em>(Assuming your working dir contains the extracted impex-cli php files and impex-cli options needs to be adjusted to your needs)</em> :</p>
 <p>Using the official PHP 7.4 Docker image :</p>
 <pre><code class="language-sh">docker run -it --network host --rm -v &quot;$PWD&quot;:/usr/src/myapp -w /usr/src/myapp php:7.4-cli php \
-impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli-php7.4.0.php export-profile list -username=&lt;adminuser&gt; -password=&lt;password&gt; -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Alternatively using the PHP 8.0 image:</p>
 <pre><code class="language-sh">docker run -it --network host --rm -v &quot;$PWD&quot;:/usr/src/myapp -w /usr/src/myapp php:8.0-cli php \
-impex-cli.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
+impex-cli.php export-profile list -username=&lt;adminuser&gt; -password=&lt;password&gt; -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <p>impex-cli.php <code>operation</code> <code>sub-operation?</code> <code>-rest-url=[wordpress-restapi-url]</code> [options] [arguments]?</p>
@@ -272,8 +275,8 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>If you can access your wordpress installation using <code>username</code> and <code>password</code> credentials and HTTP Basic Auth, you can use the <code>--username</code> and <code>--password</code> options to specify them.</p>
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
--username=admin \
--password='password' \
+-username=&lt;adminuser&gt; \
+-password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <blockquote>
@@ -285,7 +288,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <pre><code class="language-sh">impex-cli.php export-profile \
 -H=&quot;X-foo=bar&quot; \
 -H=&quot;X-myrealm=cheers&quot; \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h3 id="flags"><a class="header" href="#flags">Flags</a></h3>
@@ -295,7 +298,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
 -verbose \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h4 id="curlopt_verbose"><a class="header" href="#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></h4>
@@ -303,7 +306,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export-profile \
 -CURLOPT_VERBOSE \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://example.com/wp-json
 </code></pre>
 <h2 id="authentication"><a class="header" href="#authentication">Authentication</a></h2>
@@ -321,7 +324,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 <ul>
 <li>
 <p>JSON Files for structured data</p>
-<p>Wordpress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.</p>
+<p>WordPress content will be stored in JSON files. This gives you also the option to tranform the content locally before re-importing them somewehere else.</p>
 </li>
 <li>
 <p>Blobs for attachments/media</p>
@@ -330,7 +333,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 </ul>
 <p>Example:</p>
 <pre><code class="language-sh">impex-cli.php export \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json \
 -overwrite \
 -profile=base \
@@ -344,7 +347,7 @@ impex-cli.php export-profile list -username=admin -password=password -rest-url=h
 │   ├── slice-0001-logo-fabrics.png
 │   ├── slice-0002-johny-goerend-ou-GkKJm3fc-unsplash.jpg
 │   ├── slice-0002.json
-│   ├── slice-0003.json
+│   └── slice-0003.json
 ...
 ├── chunk-0006
 │   ├── slice-0000.json
@@ -388,7 +391,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 </blockquote>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php import \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json \
 -profile=all \
 ~/tmp/my-export
@@ -410,7 +413,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>Lists all available export profiles in JSON format.</p>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php export-profile list \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Example output (<em>may vary for your installation</em>):</p>
@@ -434,7 +437,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>Lists all available import profiles in JSON format.</p>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php import-profile list \
--username=admin -password='password' \
+-username=&lt;adminuser&gt; -password='&lt;password&gt;' \
 -rest-url=http://localhost:8888/wp-json
 </code></pre>
 <p>Example output (<em>may vary for your installation</em>):</p>
@@ -452,14 +455,372 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <h3 id="help"><a class="header" href="#help"><code>help</code></a></h3>
 <p>Prints the impex-cli help.</p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
-<li><a href="configuration.html#usage">Usage</a>
+<li><a href="migrating-content.html#migrating-content">Migrating content</a>
 <ul>
-<li><a href="configuration.html#configuration">Configuration</a></li>
-<li><a href="configuration.html#custom-profile-configuration">Custom profile configuration</a>
+<li><a href="migrating-content.html#preparation">Preparation</a></li>
+<li><a href="migrating-content.html#data-files">Data files</a>
 <ul>
-<li><a href="configuration.html#export">Export</a></li>
-<li><a href="configuration.html#import">Import</a></li>
-<li><a href="configuration.html#api">(API)</a></li>
+<li><a href="migrating-content.html#content-aka-wordpress-postspages">Content (aka WordPress posts/pages)</a></li>
+<li><a href="migrating-content.html#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a></li>
+<li><a href="migrating-content.html#other-data">Other data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="migrating-content"><a class="header" href="#migrating-content">Migrating content</a></h1>
+<p>Migrating existing content into WordPress is a very common task.</p>
+<p>Impex provides tooling support for migrating your content to WordPress.</p>
+<h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
+<p>Impex imports data from a directory containing JSON files grouped in <code>chunk-\*</code> sub directories.</p>
+<pre><code>my-exported-website
+├── chunk-0001
+│   ├── slice-0001.json
+│   ├── slice-0002.json
+│   ├── slice-0003.json
+│   ├── slice-0004.json
+│   └── slice-0005.json
+├── chunk-0002
+│   ├── slice-0001.json
+│   ├── slice-0001-wes-walker-unsplash.jpg
+│   ├── slice-0002-greysen-johnson-unsplash.jpg
+│   ├── slice-0002.json
+│   ├── slice-0003-james-wheeler-unsplash.jpg
+│   └── slice-0003.json
+...
+</code></pre>
+<blockquote>
+<p>Why that <em>chunk-*</em> sub directory structure ?</p>
+<p>Organizing thousands of content documents and hundreds of images/videos in a single directory slows down file managers like Windows Explorer. That's the one and only reason for <code>chunk-\*</code> sub directories.</p>
+</blockquote>
+<p>Both <em>chunk-*</em> sub directories and the JSON files are suffixed by a 4 digit number.</p>
+<p>Impex imports slice files ordered by name. So the slices in sub directory <code>chunk-0001</code> will be imported first, then the slices in <code>chunk-0002</code> and so on.</p>
+<p>Same rule for <code>slice-*.json</code> files within the same <code>chunk-\*</code> sub directory : <code>slice-0001.json</code> will be imported before <code>slice-0002.json</code> and so on.</p>
+<blockquote>
+<p>Know that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links. Impex will rewrite/fix media links in the content if you <strong>import content as first and media afterwards.</strong></p>
+</blockquote>
+<p>Have a look at this <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import">sample Impex export</a> provided by the Impex plugin to get a clue about a minimal working impex export containing content and referencing images.</p>
+<h2 id="data-files"><a class="header" href="#data-files">Data files</a></h2>
+<p><code>slice-*.json</code> files are JSON files containing data.</p>
+<p>The real data is stored in the <code>data</code> property.</p>
+<p>The data might be anything expressed in textual form. Beside the data itself, each <code>slice-*.json</code> file contains some json data describing the data so that Impex knows how to import.</p>
+<p>An minimal slice file transporting a single Wordpress post looks like this:</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;php&quot;,
+  &quot;tag&quot;: &quot;content-exporter&quot;,
+  &quot;meta&quot;: {
+    &quot;entity&quot;: &quot;content-exporter&quot;
+  },
+  &quot;data&quot;: {
+    &quot;posts&quot;: [
+      {
+        &quot;wp:post_id&quot;: 1,
+        &quot;wp:post_content&quot;: &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello from first imported post !&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;&quot;,
+        &quot;title&quot;: &quot;Hello first post!&quot;
+      }
+    ]
+  }
+}
+</code></pre>
+<p>As you can see the real content is located in the <code>data</code> property.</p>
+<p>Everything except the <code>data</code> property are used for versioning and content identification.</p>
+<h3 id="content-aka-wordpress-postspages"><a class="header" href="#content-aka-wordpress-postspages">Content (aka WordPress posts/pages)</a></h3>
+<p>Content slice files wrap regular WordPress <em>posts</em> and <em>pages</em>.</p>
+<p>Content slices may also transport further content like comments, custom fields, terms, taxonomies, categories, FSE templates/template-parts, global styles and so on. But that's another story.</p>
+<blockquote>
+<p>To get a clue about the power of content slices by exporting a FSE enabled WordPress instance and inspecting the resulting <code>slice-_.json</code> files.</p>
+</blockquote>
+<p>Below is a <a href="https://json-schema.org/">JSONschema</a> describing the content slice file format.</p>
+<p>Download <a href="https://json-schema.org/">JSONschema</a> definition for content slices : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">slice-content.json</a></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema&quot;,
+  &quot;title&quot;: &quot;Impex Content Slice&quot;,
+  &quot;description&quot;: &quot;a Impex slice containing content&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;$schema&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;The JSON schema for this slice&quot;
+    },
+    &quot;version&quot;: {
+      &quot;title&quot;: &quot;Impex Provider content version&quot;,
+      &quot;description&quot;: &quot;Version will be used by Impex to know what data format to expect&quot;,
+      &quot;const&quot;: &quot;1.0.0&quot;
+    },
+    &quot;type&quot;: {
+      &quot;title&quot;: &quot;Impex slice type&quot;,
+      &quot;description&quot;: &quot;Value will be used by Impex to know the content type of the slice&quot;,
+      &quot;const&quot;: &quot;php&quot;
+    },
+    &quot;tag&quot;: {
+      &quot;title&quot;: &quot;Impex slice tag&quot;,
+      &quot;description&quot;: &quot;The Impex slice tag contains information about the responsible Impex provider for this slice&quot;,
+      &quot;const&quot;: &quot;content-exporter&quot;
+    },
+    &quot;meta&quot;: {
+      &quot;title&quot;: &quot;Metadata for the slice&quot;,
+      &quot;description&quot;: &quot;Metadata is a JSON object used to store additional information about the slice&quot;,
+      &quot;const&quot;: {
+        &quot;entity&quot;: &quot;content-exporter&quot;
+      }
+    },
+    &quot;data&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;posts&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/posts-item&quot;
+          },
+          &quot;minItems&quot;: 1,
+          &quot;$comment&quot;: &quot;@TODO: unique ids are not yet supported by jsonschema&quot;,
+          &quot;uniqueItems&quot;: true
+        }
+      },
+      &quot;title&quot;: &quot;Data portion of this Impex slice&quot;,
+      &quot;description&quot;: &quot;data contains the real Impex data.&quot;,
+      &quot;required&quot;: [&quot;posts&quot;]
+    }
+  },
+  &quot;additionalProperties&quot;: false,
+  &quot;required&quot;: [&quot;version&quot;, &quot;type&quot;, &quot;tag&quot;, &quot;meta&quot;, &quot;data&quot;],
+  &quot;definitions&quot;: {
+    &quot;posts-item&quot;: {
+      &quot;title&quot;: &quot;WordPress posts stored in this this Impex slice&quot;,
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;wp:post_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;minimum&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post_id&quot;,
+          &quot;description&quot;: &quot;The unique WordPress post id of the post&quot;
+        },
+        &quot;title&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;minLength&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post title&quot;,
+          &quot;description&quot;: &quot;The title of the WordPress post as it is stored in the database&quot;
+        },
+        &quot;wp:post_content&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;minLength&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post content&quot;,
+          &quot;description&quot;: &quot;The content of the WordPress post&quot;,
+          &quot;examples&quot;: [
+            &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello from first imported post !&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;&quot;,
+            &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello world&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;\n\n&lt;!-- wp:html --&gt;\n&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;\n&lt;ul&gt;\n  &lt;li&gt;hi&lt;/li&gt;\n  &lt;li&gt;ho&lt;/li&gt;\n  &lt;li&gt;howdy&lt;/li&gt;\n&lt;/ul&gt;&lt;!-- /wp:html --&gt;&quot;
+          ]
+        },
+        &quot;wp:post_type&quot;: {
+          &quot;title&quot;: &quot;WordPress post type&quot;,
+          &quot;description&quot;: &quot;The type of the WordPress post.\nCcontent related post types are 'post' and 'page'.\nIf not declared, type 'post' will be assumed.&quot;,
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;post&quot;,
+            &quot;page&quot;,
+            &quot;nav_menu_item&quot;,
+            &quot;wp_template&quot;,
+            &quot;wp_template_part&quot;,
+            &quot;wp_block&quot;,
+            &quot;wp_global_styles&quot;
+          ],
+          &quot;default&quot;: &quot;page&quot;
+        },
+        &quot;wp:status&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;title&quot;: &quot;WordPress post status&quot;,
+          &quot;description&quot;: &quot;The WordPress post status (https://wordpress.org/support/article/post-status/)&quot;,
+          &quot;enum&quot;: [&quot;publish&quot;, &quot;future&quot;, &quot;draft&quot;, &quot;pending&quot;, &quot;private&quot;],
+          &quot;default&quot;: &quot;draft&quot;
+        },
+        &quot;wp:post_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;title&quot;: &quot;WordPress post slug&quot;,
+          &quot;description&quot;: &quot;Used to generate the permalink. If not given, the sanitized post title will be used instead.&quot;,
+          &quot;minLength&quot;: 1
+        },
+        &quot;wp:post_parent&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;minimum&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post parent id&quot;,
+          &quot;description&quot;: &quot;The WordPress post id of the parent post.\n If not given, the post will be created as a top level post.&quot;
+        }
+      },
+      &quot;required&quot;: [&quot;wp:post_id&quot;, &quot;title&quot;, &quot;wp:post_content&quot;],
+      &quot;additionalProperties&quot;: false
+    }
+  }
+}
+</code></pre>
+<p>A content slice may contain any number of WordPress posts/pages/etc.</p>
+<blockquote>
+<p>When generating a content slice file, it's best to embed only a single page/post per <code>slice-_.json</code> file</p>
+</blockquote>
+<p>Each content document is identified by a unique <code>wp:post_id</code> property.</p>
+<p>The <code>title</code> property is used as the title.</p>
+<p><code>wp:post_content</code> transports the content.</p>
+<p><em>See the Content slice <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">JSONSchema definition</a> for all supported properties.</em></p>
+<p>Since WordPress expects <a href="https://wordpress.com/support/wordpress-editor/blocks/">block-annotated HTML</a> you need to transform your HTML content into <a href="https://wordpress.com/support/wordpress-editor/blocks/">block-annotated HTML</a>.</p>
+<p>There are 2 options to do that :</p>
+<ul>
+<li>
+<p><strong>The gold solution</strong> : annotate almost every HTML tag with the matching <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Gutenberg block</a>.</p>
+<pre><code class="language-html">&lt;!-- wp:paragraph --&gt;
+&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;
+&lt;!-- /wp:paragraph --&gt;
+
+&lt;!-- wp:list --&gt;
+&lt;ul&gt;
+  &lt;li&gt;hi&lt;/li&gt;
+  &lt;li&gt;ho&lt;/li&gt;
+  &lt;li&gt;howdy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- /wp:list --&gt;
+
+&lt;!-- wp:image --&gt;
+&lt;figure class=&quot;wp-block-image&quot;&gt;
+  &lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+  &lt;figcaption&gt;Fly fishing&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- /wp:image --&gt;
+</code></pre>
+</li>
+<li>
+<p>the quick and dirty solution : wrap the whole html content into a WordPress <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Custom HTML block</a> :</p>
+<pre><code class="language-html">&lt;!-- wp:html --&gt;
+&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;hi&lt;/li&gt;
+  &lt;li&gt;ho&lt;/li&gt;
+  &lt;li&gt;howdy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+  &lt;figcaption&gt;Fly fishing&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- /wp:html --&gt;
+</code></pre>
+<p><em>Why is this solution dirty ?</em></p>
+<p><em>=&gt; If you open up a page/post containing a - the quick and dirty solution : wrap the whole html content into a WordPress <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Custom HTML block</a> in the Gutenberg editor, you will see just the HTML content but its not rendered</em>. So the quick and dirty solution is actually a no-go from a designers perspective.</p>
+</li>
+</ul>
+<p>The HTML content must be encoded as JSON string in the slice file. See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/impex-cli/tests/fixtures/simple-import/chunk-0001/slice-0005.json">this example content slice</a>.</p>
+<p>See <a href="migrating-content.html#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a> for importing referenced media files.</p>
+<h3 id="attachments-like-pictures-and-videos"><a class="header" href="#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a></h3>
+<p>Attachments a binary files like images/videos or anything else stored in the WordPress <code>uploads</code> directory.</p>
+<p>Such binary data is handled a bit differently than textual - because it cannot be easily embedded into a JSON file.</p>
+<p>Below is a <a href="https://json-schema.org/">JSONschema</a> describing the attachment slice file format.</p>
+<p>Download <a href="https://json-schema.org/">JSONschema</a> definition for media files : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">slice-attachment.json</a></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema&quot;,
+  &quot;title&quot;: &quot;Impex Content Slice&quot;,
+  &quot;description&quot;: &quot;a Impex slice containing content&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;$schema&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;The JSON schema for this slice&quot;
+    },
+    &quot;version&quot;: {
+      &quot;title&quot;: &quot;Impex Provider content version&quot;,
+      &quot;description&quot;: &quot;Version will be used by Impex to know what data format to expect&quot;,
+      &quot;const&quot;: &quot;1.0.0&quot;
+    },
+    &quot;type&quot;: {
+      &quot;title&quot;: &quot;Impex slice type&quot;,
+      &quot;description&quot;: &quot;Value will be used by Impex to know the content type of the slice&quot;,
+      &quot;const&quot;: &quot;php&quot;
+    },
+    &quot;tag&quot;: {
+      &quot;title&quot;: &quot;Impex slice tag&quot;,
+      &quot;description&quot;: &quot;The Impex slice tag contains information about the responsible Impex provider for this slice&quot;,
+      &quot;const&quot;: &quot;attachment&quot;
+    },
+    &quot;meta&quot;: {
+      &quot;title&quot;: &quot;Metadata for the slice&quot;,
+      &quot;description&quot;: &quot;Metadata is a JSON object used to store additional information about the slice&quot;,
+      &quot;const&quot;: {
+        &quot;entity&quot;: &quot;attachment&quot;
+      }
+    },
+    &quot;data&quot;: {
+      &quot;format&quot;: &quot;uri-template&quot;,
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;title&quot;: &quot;Data portion of this Impex slice&quot;,
+      &quot;description&quot;: &quot;Attachment slice data is expected to be a URI to the attachment file.\nFor media it has to be the URI to the image.\nURI can be absolute or relative.&quot;,
+      &quot;examples&quot;: [
+        &quot;./media/image.jpg&quot;,
+        &quot;https://www.example.com/attachment.jpg&quot;
+      ]
+    }
+  },
+  &quot;additionalProperties&quot;: false,
+  &quot;required&quot;: [&quot;version&quot;, &quot;type&quot;, &quot;tag&quot;, &quot;meta&quot;, &quot;data&quot;]
+}
+</code></pre>
+<p>Let's say you have a reference to an image in your content :</p>
+<pre><code class="language-html">&lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+</code></pre>
+<p>So you need to import the image into your WordPress instance. To do so, you need to</p>
+<ul>
+<li>
+<p>create a <code>slice-*json</code> file (let's name it <code>slice-0002.json</code>) declaring the attachment :</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;resource&quot;,
+  &quot;tag&quot;: &quot;attachment&quot;,
+  &quot;meta&quot;: {
+    &quot;entity&quot;: &quot;attachment&quot;
+  },
+  &quot;data&quot;: &quot;./greysen-johnson-unsplash.jpg&quot;
+}
+</code></pre>
+<p>As you can see, there is actually only the <code>data</code> property referencing the image. Rest of the slice file is just boilerplate code.</p>
+</li>
+<li>
+<p>provide the image in the same chunk directory as it's slice json file and <strong>prefixed</strong> with the slice json file name (<code>slice-0002.json</code>) :</p>
+<pre><code>slice-0002-greysen-johnson-unsplash.jpg
+</code></pre>
+</li>
+</ul>
+<p>Thats it ! If you import the slice file using Impex, the image will appear in the WordPress <code>uploads</code> directory and in the WordPress media page. If you referenced the image in your content, it will also appear in your imported pages/posts.</p>
+<blockquote>
+<p>Remember: Content slices referencing media files should <strong>ALWAYS</strong> be imported <strong>before</strong> the attachment slices.</p>
+<p>This can be achieved by naming content slicing with a lower number than the media slices or - much simpler - keeping the content slices in a lower numbered <code>chunk-*</code> directory than the attachments.</p>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import">simple-import</a> example for a full featured generated import at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Impex Github page</a>.</p>
+</blockquote>
+<h3 id="other-data"><a class="header" href="#other-data">Other data</a></h3>
+<p>Although Impex provides a simple way to import content and media, you may also want to import more advanced data like database tables or settings into WordPress.</p>
+<p>Impex can import</p>
+<ul>
+<li>
+<p>relational data like database tables</p>
+</li>
+<li>
+<p>key/value based settings</p>
+</li>
+</ul>
+<p>into WordPress.</p>
+<p>@TODO: Add JSONSchema / examples for other data.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="api"><a class="header" href="#api">API</a></h1>
+<h2 id="a-hrefapiconfigurationhtmlconfigurationa"><a class="header" href="#a-hrefapiconfigurationhtmlconfigurationa"><a href="api/./configuration.html">Configuration</a></a></h2>
+<h2 id="rest-api"><a class="header" href="#rest-api">REST API</a></h2>
+<p>All Impex features are exposed by a REST API smoothly integrated into WordPress Rest API.</p>
+<p>The REST API is available at <code>/wp-json/cm4all-wp-impex/v1/</code>.</p>
+<p>You can explore the Impex Rest API using any HTTP Rest API Client.</p>
+<blockquote>
+<p>Our favorite is the <a href="https://wordpress.org/plugins/wp-api-swaggerui/">&quot;WP API SwaggerUI&quot; WordPress Plugin</a> since it's perfectly integrated into WordPress.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="api/configuration.html#usage">Usage</a>
+<ul>
+<li><a href="api/configuration.html#configuration">Configuration</a></li>
+<li><a href="api/configuration.html#custom-profile-configuration">Custom profile configuration</a>
+<ul>
+<li><a href="api/configuration.html#export">Export</a></li>
+<li><a href="api/configuration.html#import">Import</a></li>
+<li><a href="api/configuration.html#api">(API)</a></li>
 </ul>
 </li>
 </ul>
@@ -479,21 +840,21 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>For everything else (third-party plugin settings for example) you need to provide custom export/import profile(s).</p>
 <h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
 <p>Impex import and export can be customized by providing <strong>Profiles</strong>.</p>
-<p>An <strong>Export profile</strong> defines the Wordpress data to export.</p>
+<p>An <strong>Export profile</strong> defines the WordPress data to export.</p>
 <p>An <strong>Import profile</strong> declares how and which exported data should be consumed.</p>
 <h2 id="custom-profile-configuration"><a class="header" href="#custom-profile-configuration">Custom profile configuration</a></h2>
-<p><strong>Profiles</strong> are configured and registered using a custom Impex <a href="https://developer.wordpress.org/plugins/hooks/actions/">Wordpress action</a> :</p>
+<p><strong>Profiles</strong> are configured and registered using a custom Impex <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress action</a> :</p>
 <pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
   // your Impex profile registration goes here
   ...
 });
 </code></pre>
-<p>Using a <a href="https://developer.wordpress.org/plugins/hooks/actions/">Wordpress action</a> for Impex profile registration guarantees that the action callback is only executed if the Impex plugin is activated.</p>
+<p>Using a <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress action</a> for Impex profile registration guarantees that the action callback is only executed if the Impex plugin is activated.</p>
 <blockquote>
 <p>Implementing a Impex profile in your plugin does not make Impex a required dependency for your plugin since the code is only executed if Impex is avalable and active.</p>
 </blockquote>
 <h3 id="export-1"><a class="header" href="#export-1">Export</a></h3>
-<p>Let's say you want to export the core Wordpress contents (pages/posts/attachments and stuff) but also</p>
+<p>Let's say you want to export the core WordPress contents (pages/posts/attachments and stuff) but also</p>
 <ul>
 <li>
 <p><a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form</a> contents and settings</p>
@@ -579,7 +940,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 });
 </code></pre>
 <p>That's it !</p>
-<p>Now you can trigger the export using this Impex export configuration in the Impex screen at WP dashboard (or even using the <a href="./impex-cli.html">Impex CLI</a>)</p>
+<p>Now you can trigger the export using this Impex export configuration in the Impex screen at WP dashboard (or even using the <a href="api/./impex-cli.html">Impex CLI</a>)</p>
 <h3 id="import-1"><a class="header" href="#import-1">Import</a></h3>
 <p>Thanks to Impex architecture you normally don't need to define a custom import configuration.</p>
 <p>Impex sports a generic <code>all</code> import provider and profile importing <strong>anything</strong> exported using the Impex building blocks.</p>
@@ -625,7 +986,7 @@ To work around this we can also introduce a custom import profile utilizing the 
   );
 });
 </code></pre>
-<h3 id="api"><a class="header" href="#api">(API)</a></h3>
+<h3 id="api-1"><a class="header" href="#api-1">(API)</a></h3>
 <p><strong>THIS IS JUST DUMNMY CONTENT</strong></p>
 <p>An example diagram.</p>
 <pre class="mermaid">graph TD;
