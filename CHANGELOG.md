@@ -1,3 +1,15 @@
+### [1.2.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.2.0...1.2.1) (2022-03-24)
+
+
+### Bug Fixes
+
+* assert that WP_Filesystem() is already declared ([5ff641f](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/5ff641fe6b7bf2a9defbd9d6e6e0d84b216b3aff))
+* fixed impexcli docker image build ([ce435ee](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ce435eef11bab073d8bd8e5656688a9831ff285c))
+* fixed variable naming typo ([e408ade](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/e408ade71ca093675bd55bea5b366f7ca8980577))
+* **impex-cli-test:** fixed paths to impex-cli ([170af21](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/170af2149611847171fd2d63b36fef49c48c3ec7))
+* import php namespace issue fixed ([342e5bd](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/342e5bd643b56fa4f383b11093a7faa933bd2f76))
+* **wp-env:** htaccess gets also deployed to test-Wordpress ([993b275](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/993b2758d4c343e015a9fd2fb16ecbe2fa2b7e90))
+
 ## [1.2.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.1.7...1.2.0) (2022-03-02)
 
 
