@@ -1,6 +1,6 @@
 {
   "name": "cm4all-wp-impex",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "dev": "make dev",
     "build": "make",
