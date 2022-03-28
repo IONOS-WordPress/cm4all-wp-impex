@@ -5,9 +5,19 @@ import process from "process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { readFile } from "fs/promises";
-import "jsdom-global";
-
-// import polyfillLibrary from "polyfill-library";
+import "jsdom-global/register.js";
+// import React from "react";
+/**
+ * Load polyfills required for WordPress Blocks loading
+ */
+import "polyfill-library/polyfills/__dist/requestAnimationFrame/raw.js";
+import "polyfill-library/polyfills/__dist/matchMedia/raw.js";
+/**
+ * WordPress Blocks dependencies
+ */
+import { registerCoreBlocks } from "@wordpress/block-library";
+import { rawHandler, serialize } from "@wordpress/blocks";
+registerCoreBlocks();
 
 const package_json = JSON.parse(
   await readFile(new URL("./../package.json", import.meta.url))
@@ -81,20 +91,18 @@ if (fileURLToPath(import.meta.url) === process.argv[1]) {
 
         console.log(global.document);
 
-        //global.self = document;
+        document.documentElement.innerHTML = html;
 
-        /**
-         * Load polyfills required for WordPress Blocks loading
-         */
-        // await import("polyfill-library/polyfills/__dist/matchMedia/raw.js");
-        //import "polyfill-library/polyfills/__dist/requestAnimationFrame/raw.js";
+        const content = global.document.querySelector("body").innerHTML;
 
-        /**
-         * WordPress Blocks dependencies
-         */
-        // const { registerCoreBlocks } = require('@wordpress/block-library')
-        // const { rawHandler, serialize } = require('@wordpress/blocks')
-        // registerCoreBlocks();
+        console.log(content);
+
+        const blocks = rawHandler({
+          HTML: content,
+        });
+
+        const serialized = serialize(blocks);
+        console.log(serialized);
       },
     })
     .demandCommand(1)
