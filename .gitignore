@@ -18,3 +18,4 @@ dist
 /*.code-workspace
 /Makefile-wp-env.postinit.sh
 /Makefile-wp-env.preinit.sh
+/impex-transform/node_modules

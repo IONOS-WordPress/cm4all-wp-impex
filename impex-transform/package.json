@@ -1,0 +1,31 @@
+{
+  "name": "cm4all-wp-impex-transform",
+  "version": "1.0.0.",
+  "description": "cm4all-wp-impex transformation suite. contains tools to transform html to gutenberg blocks and so on.",
+  "tags": [
+    "cm4all-wp-impex",
+    "transform",
+    "gutenberg",
+    "html",
+    "blocks"
+  ],
+  "engines": {
+    "node": ">=16.13.0",
+    "npm": ">=7.0.0"
+  },
+  "type": "module",
+  "main": "./src/impex-transform.js",
+  "bin": "./src/impex-transform.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lars Gersmann <lars.gersmann@cm4all.com>",
+  "license": "GPL",
+  "dependencies": {
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2",
+    "yargs": "^17.4.0",
+    "polyfill-library": "^3.111.0"
+  },
+  "devDependencies": {}
+}
