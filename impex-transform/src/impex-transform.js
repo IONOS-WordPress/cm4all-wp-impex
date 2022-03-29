@@ -5,23 +5,63 @@ import process from "process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { readFile } from "fs/promises";
-import "jsdom-global/register.js";
+import "global-jsdom/register";
+
 // import React from "react";
-/**
- * Load polyfills required for WordPress Blocks loading
- */
-import "polyfill-library/polyfills/__dist/requestAnimationFrame/raw.js";
 import "polyfill-library/polyfills/__dist/matchMedia/raw.js";
-/**
- * WordPress Blocks dependencies
- */
 import { registerCoreBlocks } from "@wordpress/block-library";
 import { rawHandler, serialize } from "@wordpress/blocks";
-registerCoreBlocks();
 
 const package_json = JSON.parse(
   await readFile(new URL("./../package.json", import.meta.url))
 );
+
+function ImpexTransformFactory(configuration = {}) {
+  const VERBOSE = configuration?.verbose ?? false;
+
+  console.log(configuration);
+
+  global.CSS = {
+    escape(ident) {
+      return "";
+    },
+    supports(property, value) {
+      return true;
+    },
+    supports(conditionText) {
+      return true;
+    },
+  };
+
+  return {
+    transform(html, options = {}) {
+      VERBOSE && console.log(html);
+
+      document.documentElement.innerHTML = html;
+
+      const content = global.document.querySelector("body").innerHTML;
+
+      VERBOSE && console.log(content);
+
+      const blocks = rawHandler({
+        HTML: content,
+      });
+
+      const serialized = serialize(blocks);
+      VERBOSE && console.log(serialized);
+
+      document.documentElement.innerHTML = "";
+
+      return serialized;
+    },
+    VERSION: package_json.version,
+    cleanup() {
+      window.close();
+    },
+  };
+}
+
+registerCoreBlocks();
 
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
   console.log("running standalone");
@@ -75,34 +115,12 @@ if (fileURLToPath(import.meta.url) === process.argv[1]) {
       // Function for your command
       async handler(args) {
         const html = await readFile(args.input, "utf8");
-        console.log(html);
 
-        global.CSS = {
-          escape(ident) {
-            return "";
-          },
-          supports(property, value) {
-            return true;
-          },
-          supports(conditionText) {
-            return true;
-          },
-        };
+        const impexTransform = ImpexTransformFactory(args);
+        impexTransform.transform(html, args);
 
-        console.log(global.document);
-
-        document.documentElement.innerHTML = html;
-
-        const content = global.document.querySelector("body").innerHTML;
-
-        console.log(content);
-
-        const blocks = rawHandler({
-          HTML: content,
-        });
-
-        const serialized = serialize(blocks);
-        console.log(serialized);
+        impexTransform.cleanup();
+        process.exit(0);
       },
     })
     .demandCommand(1)
@@ -113,8 +131,4 @@ if (fileURLToPath(import.meta.url) === process.argv[1]) {
   console.log("running embedded");
 }
 
-const ImpexTransform = {
-  foo: "bar",
-};
-
-export default ImpexTransform;
+export default ImpexTransformFactory;
