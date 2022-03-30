@@ -19,7 +19,7 @@ const package_json = JSON.parse(
 function ImpexTransformFactory(configuration = {}) {
   const VERBOSE = configuration?.verbose ?? false;
 
-  console.log(configuration);
+  // console.log(configuration);
 
   global.CSS = {
     escape(ident) {
@@ -64,7 +64,7 @@ function ImpexTransformFactory(configuration = {}) {
 registerCoreBlocks();
 
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
-  console.log("running standalone");
+  //console.log("running standalone");
 
   // const args = yargs(hideBin(process.argv)).argv;
   // console.log(args);
@@ -128,7 +128,7 @@ if (fileURLToPath(import.meta.url) === process.argv[1]) {
 
   // console.log({ args });
 } else {
-  console.log("running embedded");
+  //console.log("running embedded");
 }
 
 export default ImpexTransformFactory;
