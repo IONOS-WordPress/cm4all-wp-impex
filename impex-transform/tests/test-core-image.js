@@ -106,7 +106,7 @@ test("custom core/image transform : takeover img[@title] as figcaption", async (
   impexTransform.setup({
     verbose: true,
     onRegisterCoreBlocks() {
-      // same as first filter but implemented by reusing first from transform of core/image
+      // same as first transforms from filter but implemented by reusing first from transform of core/image
       addFilter(
         "blocks.registerBlockType",
         "prepend-custom-image-transform",

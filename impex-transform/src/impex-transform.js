@@ -5,6 +5,7 @@ import process from "process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { readFile } from "fs/promises";
+import cloneDeepWith from "lodash.clonedeepwith";
 import "global-jsdom/register";
 
 // import React from "react";
@@ -32,10 +33,13 @@ function ImpexTransformFactory(configuration) {
   // @TODO: preserve transforms ssection of blocks between setup() calls
   const coreBlocks = __experimentalGetCoreBlocks();
 
-  const originalBlockTransforms = coreBlocks.filter(Boolean).map((block) => ({
-    name: block.name,
-    settings: { transforms: block.settings.transforms },
-  }));
+  const originalBlockTransforms = coreBlocks
+    // array contains null values for some reason 🤷‍♀️
+    .filter(Boolean)
+    .map((block) => ({
+      name: block.name,
+      settings: { transforms: block.settings.transforms },
+    }));
 
   const setup = (configuration = {}) => {
     verbose = configuration?.verbose ?? false;
@@ -54,9 +58,14 @@ function ImpexTransformFactory(configuration) {
       // reset possibly mutated transforms
       originalBlockTransforms.forEach((originalBlockTransform) => {
         coreBlocks.find(
-          (coreBlock) => coreBlock.name === originalBlockTransform.name
-        ).settings.transforms = structuredClone(
-          originalBlockTransform.settings.transforms
+          (coreBlock) => coreBlock?.name === originalBlockTransform?.name
+        ).settings.transforms = cloneDeepWith(
+          originalBlockTransform.settings.transforms,
+          (value, indexOrKey, stack) => {
+            if (indexOrKey === "schema") {
+              return value;
+            }
+          }
         );
       });
       registerCoreBlocks(coreBlocks);
