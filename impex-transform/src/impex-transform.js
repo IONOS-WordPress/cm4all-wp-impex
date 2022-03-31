@@ -9,15 +9,46 @@ import "global-jsdom/register";
 
 // import React from "react";
 import "polyfill-library/polyfills/__dist/matchMedia/raw.js";
-import { registerCoreBlocks } from "@wordpress/block-library";
+import {
+  registerCoreBlocks,
+  __experimentalGetCoreBlocks,
+} from "@wordpress/block-library";
 import { rawHandler, serialize } from "@wordpress/blocks";
+
+import { unregisterBlockType, getBlockTypes } from "@wordpress/blocks";
+import { removeAllFilters } from "@wordpress/hooks";
 
 const package_json = JSON.parse(
   await readFile(new URL("./../package.json", import.meta.url))
 );
 
-function ImpexTransformFactory(configuration = {}) {
-  const VERBOSE = configuration?.verbose ?? false;
+function noop(arg) {
+  return arg;
+}
+
+function ImpexTransformFactory(configuration) {
+  let verbose, onLoad, onDomReady, onRegisterCoreBlocks, onSerialize;
+
+  // @TODO: preserve transforms ssection of blocks between setup() calls
+  const coreBlocks = __experimentalGetCoreBlocks();
+
+  const setup = (configuration = {}) => {
+    verbose = configuration?.verbose ?? false;
+    onLoad = configuration?.onLoad ?? noop;
+    onDomReady = configuration?.onDomReady ?? noop;
+    onRegisterCoreBlocks = configuration?.onRegisterCoreBlocks ?? noop;
+    onSerialize = configuration?.onSerialize ?? noop;
+
+    // reset (possibly mutated) core blocks after each test
+    removeAllFilters("blocks.registerBlockType");
+    for (const blockType of getBlockTypes()) {
+      unregisterBlockType(blockType.name);
+    }
+
+    if (onRegisterCoreBlocks() !== false) {
+      registerCoreBlocks(structuredClone(coreBlocks));
+    }
+  };
 
   // console.log(configuration);
 
@@ -33,22 +64,27 @@ function ImpexTransformFactory(configuration = {}) {
     },
   };
 
-  return {
-    transform(html, options = {}) {
-      VERBOSE && console.log(html);
+  setup(configuration);
 
-      document.documentElement.innerHTML = html;
+  return {
+    setup,
+    transform(html, options = {}) {
+      verbose && console.log(html);
+
+      document.documentElement.innerHTML = onLoad(html);
 
       const content = global.document.querySelector("body").innerHTML;
 
-      VERBOSE && console.log(content);
+      onDomReady(document);
+
+      verbose && console.log(content);
 
       const blocks = rawHandler({
         HTML: content,
       });
 
-      const serialized = serialize(blocks);
-      VERBOSE && console.log(serialized);
+      const serialized = serialize(onSerialize(blocks));
+      verbose && console.log(serialized);
 
       document.documentElement.innerHTML = "";
 
