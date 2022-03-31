@@ -32,6 +32,11 @@ function ImpexTransformFactory(configuration) {
   // @TODO: preserve transforms ssection of blocks between setup() calls
   const coreBlocks = __experimentalGetCoreBlocks();
 
+  const originalBlockTransforms = coreBlocks.filter(Boolean).map((block) => ({
+    name: block.name,
+    settings: { transforms: block.settings.transforms },
+  }));
+
   const setup = (configuration = {}) => {
     verbose = configuration?.verbose ?? false;
     onLoad = configuration?.onLoad ?? noop;
@@ -46,7 +51,15 @@ function ImpexTransformFactory(configuration) {
     }
 
     if (onRegisterCoreBlocks() !== false) {
-      registerCoreBlocks(structuredClone(coreBlocks));
+      // reset possibly mutated transforms
+      originalBlockTransforms.forEach((originalBlockTransform) => {
+        coreBlocks.find(
+          (coreBlock) => coreBlock.name === originalBlockTransform.name
+        ).settings.transforms = structuredClone(
+          originalBlockTransform.settings.transforms
+        );
+      });
+      registerCoreBlocks(coreBlocks);
     }
   };
 
