@@ -119,7 +119,8 @@ test("custom core/image transform : takeover img[@title] as figcaption", async (
               ...from,
               transform(node) {
                 const block = from.transform(node);
-                // take over block attribute title as caption
+
+                // copy img[@title] over as block attribute caption (=> results in <figcation> tag)
                 block.attributes.caption = block.attributes.title;
                 return block;
               },

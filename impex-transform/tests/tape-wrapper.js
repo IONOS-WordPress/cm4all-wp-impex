@@ -54,6 +54,15 @@ export default function (...args) {
         `${JSON.stringify(haystack)} should include ${JSON.stringify(needle)}`
       );
     },
+    doesNotInclude(haystack, needle) {
+      return this.doesNotMatch(
+        haystack,
+        new RegExp(escapeRegex(needle)),
+        `${JSON.stringify(haystack)} should not include ${JSON.stringify(
+          needle
+        )}`
+      );
+    },
   });
 
   return test(...args);
