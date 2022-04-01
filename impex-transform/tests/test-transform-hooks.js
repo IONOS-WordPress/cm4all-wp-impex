@@ -8,8 +8,12 @@ import {
   createBlock,
 } from "@wordpress/blocks";
 
+import { traverseBlocks } from "../src/impex-transform.js";
+
+const VERBOSE = true;
+
 test("test 'core/image' transform", async (t, impexTransform) => {
-  impexTransform.setup({ verbose: true });
+  impexTransform.setup({ verbose: VERBOSE });
   const transformed = impexTransform.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing">
@@ -21,9 +25,9 @@ test("test 'core/image' transform", async (t, impexTransform) => {
   t.match(transformed, /<!-- \/wp:image -->$/);
 });
 
-test("custom core/image transform : takeover img[@title] as figcaption", async (t, impexTransform) => {
+test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t, impexTransform) => {
   impexTransform.setup({
-    verbose: true,
+    verbose: VERBOSE,
     onRegisterCoreBlocks() {
       // copied from https://github.com/WordPress/gutenberg/blob/3da717b8d0ac7d7821fc6d0475695ccf3ae2829f/packages/block-library/src/image/transforms.js#L74
       // except one line (see below)
@@ -104,7 +108,7 @@ test("custom core/image transform : takeover img[@title] as figcaption", async (
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
 
   impexTransform.setup({
-    verbose: true,
+    verbose: VERBOSE,
     onRegisterCoreBlocks() {
       // same as first transforms from filter but implemented by reusing first from transform of core/image
       addFilter(
@@ -134,4 +138,29 @@ test("custom core/image transform : takeover img[@title] as figcaption", async (
 
   transformed = impexTransform.transform(HTML);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
+});
+
+test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
+  impexTransform.setup({
+    verbose: VERBOSE,
+    onSerialize(blocks) {
+      // takeover img[@title] as figcaption in every block
+      for (const block of traverseBlocks(blocks)) {
+        if (block.name === "core/image") {
+          block.attributes.caption = block.attributes.title;
+        }
+      }
+
+      return blocks;
+    },
+  });
+  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  <body>
+      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing">
+  </body>
+</html>`);
+
+  t.match(transformed, /^<!-- wp:image -->/);
+  t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
+  t.match(transformed, /<!-- \/wp:image -->$/);
 });

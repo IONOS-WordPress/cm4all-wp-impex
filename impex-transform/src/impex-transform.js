@@ -23,6 +23,22 @@ const package_json = JSON.parse(
   await readFile(new URL("./../package.json", import.meta.url))
 );
 
+/**
+ * Traverses the given blocks including its children recursively
+ *
+ * @param {Block[]}
+ * @generator
+ * @yields {Block}
+ */
+export function* traverseBlocks(blocks) {
+  for (const block of blocks) {
+    yield block;
+    if (Array.isArray(block.innerBlocks)) {
+      yield* traverseBlocks(block.innerBlocks);
+    }
+  }
+}
+
 function noop(arg) {
   return arg;
 }
@@ -41,6 +57,7 @@ function ImpexTransformFactory(configuration) {
       settings: { transforms: block.settings.transforms },
     }));
 
+  // setup is required to be called multiple times for testing purposes
   const setup = (configuration = {}) => {
     verbose = configuration?.verbose ?? false;
     onLoad = configuration?.onLoad ?? noop;
@@ -93,6 +110,11 @@ function ImpexTransformFactory(configuration) {
     transform(html, options = {}) {
       verbose && console.log(html);
 
+      const _html = onLoad(html);
+      if (typeof _html !== "string") {
+        throw new Error("onLoad hook must return a string");
+      }
+
       document.documentElement.innerHTML = onLoad(html);
 
       const content = global.document.querySelector("body").innerHTML;
@@ -105,7 +127,12 @@ function ImpexTransformFactory(configuration) {
         HTML: content,
       });
 
-      const serialized = serialize(onSerialize(blocks));
+      const _blocks = onSerialize(blocks);
+      if (!Array.isArray(_blocks)) {
+        throw new Error("onSerialize hook must return an array");
+      }
+
+      const serialized = serialize(_blocks);
       verbose && console.log(serialized);
 
       document.documentElement.innerHTML = "";
