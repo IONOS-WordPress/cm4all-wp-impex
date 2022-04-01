@@ -108,21 +108,22 @@ function ImpexTransformFactory(configuration) {
   return {
     setup,
     transform(html, options = {}) {
-      verbose && console.log(html);
+      verbose && console.log("\ntransform(html):\n%s\n", html);
 
       const _html = onLoad(html);
       if (typeof _html !== "string") {
         throw new Error("onLoad hook must return a string");
       }
 
-      document.documentElement.innerHTML = onLoad(html);
-
-      const content = global.document.querySelector("body").innerHTML;
+      document.documentElement.innerHTML = _html;
+      verbose &&
+        console.log("\nonLoad:\n%s\n", document.documentElement.outerHTML);
 
       onDomReady(document);
+      verbose &&
+        console.log("\nonDomReady:\n%s\n", document.documentElement.outerHTML);
 
-      verbose && console.log(content);
-
+      const content = global.document.querySelector("body").innerHTML;
       const blocks = rawHandler({
         HTML: content,
       });
@@ -131,9 +132,10 @@ function ImpexTransformFactory(configuration) {
       if (!Array.isArray(_blocks)) {
         throw new Error("onSerialize hook must return an array");
       }
+      verbose && console.log("\nonSerialize:\n%O\n", blocks);
 
       const serialized = serialize(_blocks);
-      verbose && console.log(serialized);
+      verbose && console.log("\nserialized:\n%s\n", serialized);
 
       document.documentElement.innerHTML = "";
 

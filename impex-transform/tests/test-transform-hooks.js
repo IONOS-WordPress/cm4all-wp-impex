@@ -16,7 +16,7 @@ test("test 'core/image' transform", async (t, impexTransform) => {
   impexTransform.setup({ verbose: VERBOSE });
   const transformed = impexTransform.transform(`<!DOCTYPE html>
   <body>
-      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing">
+      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/
   </body>
 </html>`);
 
@@ -85,6 +85,7 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
                 // this is the line that is modified
                 // take over image[@title] as caption
                 attributes.caption = attributes.title;
+                delete attributes.title;
 
                 return createBlock("core/image", attributes);
               },
@@ -102,8 +103,6 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
   </body>
   </html>`;
 
-  t.comment(HTML);
-
   let transformed = impexTransform.transform(HTML);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
 
@@ -116,16 +115,21 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
         "prepend-custom-image-transform",
         (blockType) => {
           if (blockType.name === "core/image") {
+            @TODO: BUG - will be called multiple times !!!!!
+
             // grab the first transform from core/image
             const from = blockType.transforms.from[0];
+            const orig_transform = blockType.transforms.from[0].transform;
 
             blockType.transforms.from.unshift({
               ...from,
               transform(node) {
-                const block = from.transform(node);
+                const block = orig_transform(node);
 
-                // copy img[@title] over as block attribute caption (=> results in <figcation> tag)
+                // move img[@title] over as block attribute caption (=> results in <figcation> tag)
                 block.attributes.caption = block.attributes.title;
+                delete block.attributes.title;
+
                 return block;
               },
             });
@@ -148,6 +152,7 @@ test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
       for (const block of traverseBlocks(blocks)) {
         if (block.name === "core/image") {
           block.attributes.caption = block.attributes.title;
+          delete block.attributes.title;
         }
       }
 
@@ -156,10 +161,42 @@ test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
   });
   const transformed = impexTransform.transform(`<!DOCTYPE html>
   <body>
-      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing">
+    <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
 </html>`);
 
+  t.match(transformed, /^<!-- wp:image -->/);
+  t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
+  t.match(transformed, /<!-- \/wp:image -->$/);
+});
+
+test("onSerialize hook : surround <img> with <figure>", async (t, impexTransform) => {
+  impexTransform.setup({
+    verbose: VERBOSE,
+    onDomReady(document) {
+      // @TODO: this looks a bit hacky and not very elegant but is the owed the limiting css / dom support of jsdom
+      for (const IMG of Array.from(document.querySelectorAll("img"))) {
+        if (IMG.hasAttribute("title")) {
+          const FIGURE = document.createElement("figure");
+          FIGURE.setAttribute("class", "wp-block-image");
+          const _IMG = IMG.cloneNode(true);
+          _IMG.removeAttribute("title");
+          FIGURE.appendChild(_IMG);
+          const FIGCAPTION = document.createElement("figcaption");
+          FIGCAPTION.textContent = IMG.getAttribute("title");
+          FIGURE.appendChild(FIGCAPTION);
+          IMG.replaceWith(FIGURE);
+        }
+      }
+    },
+  });
+  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  <body>
+      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
+  </body>
+</html>`);
+
+  t.doesNotInclude(transformed, 'title="Fly fishing"');
   t.match(transformed, /^<!-- wp:image -->/);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
   t.match(transformed, /<!-- \/wp:image -->$/);
