@@ -1,11 +1,10 @@
 # todo
 
-- add testcase core/image injecting <figure>...<figcaption> using onLoad hook
-
-  - markdown to HTML using onLoad hook
+- markdown to HTML using onLoad hook
 
 - generating impex slice
 
+  - add "wp:post_excerpt" to json schema
   - add api
   - add testcase
 

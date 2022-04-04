@@ -106,6 +106,10 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
   let transformed = impexTransform.transform(HTML);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
 
+  // CAVEAT: our "blocks.registerBlockType" filter callback will be called multiple times under some circumstances
+  // (see https://github.com/WordPress/gutenberg/blob/fb8a732f00dd76e62eb0c6119ec99bd85db91e64/packages/blocks/src/store/actions.js#L56)
+  // we need to ensure that its executed only once
+  let patchCoreImageBlock = true;
   impexTransform.setup({
     verbose: VERBOSE,
     onRegisterCoreBlocks() {
@@ -114,9 +118,7 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
         "blocks.registerBlockType",
         "prepend-custom-image-transform",
         (blockType) => {
-          if (blockType.name === "core/image") {
-            @TODO: BUG - will be called multiple times !!!!!
-
+          if (blockType.name === "core/image" && patchCoreImageBlock) {
             // grab the first transform from core/image
             const from = blockType.transforms.from[0];
             const orig_transform = blockType.transforms.from[0].transform;
@@ -133,6 +135,8 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
                 return block;
               },
             });
+
+            patchCoreImageBlock = false;
           }
           return blockType;
         }
@@ -174,20 +178,48 @@ test("onSerialize hook : surround <img> with <figure>", async (t, impexTransform
   impexTransform.setup({
     verbose: VERBOSE,
     onDomReady(document) {
-      // @TODO: this looks a bit hacky and not very elegant but is the owed the limiting css / dom support of jsdom
+      // @TODO: this looks a bit hacky and not very elegant but is the owed the limiting css query support of jsdom
       for (const IMG of Array.from(document.querySelectorAll("img"))) {
         if (IMG.hasAttribute("title")) {
           const FIGURE = document.createElement("figure");
-          FIGURE.setAttribute("class", "wp-block-image");
-          const _IMG = IMG.cloneNode(true);
-          _IMG.removeAttribute("title");
-          FIGURE.appendChild(_IMG);
-          const FIGCAPTION = document.createElement("figcaption");
-          FIGCAPTION.textContent = IMG.getAttribute("title");
-          FIGURE.appendChild(FIGCAPTION);
           IMG.replaceWith(FIGURE);
+
+          FIGURE.innerHTML = `<img src="${IMG.src}"/><figcaption>${IMG.title}</figcaption>`;
         }
       }
+    },
+  });
+  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  <body>
+      <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
+  </body>
+</html>`);
+
+  t.doesNotInclude(transformed, 'title="Fly fishing"');
+  t.match(transformed, /^<!-- wp:image -->/);
+  t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
+  t.match(transformed, /<!-- \/wp:image -->$/);
+});
+
+test("onLoad hook : surround <img> with <figure>", async (t, impexTransform) => {
+  impexTransform.setup({
+    verbose: VERBOSE,
+    onLoad(html) {
+      // replace <img> with <figure> by dumb regex replace operations
+      return html.replace(/<img([^>]*)\/>/g, (img, attributes) => {
+        const attributesMap = [
+          ...attributes.matchAll(/\s*(?<name>[^=]+)="(?<value>[^"]+)"/g),
+        ]
+          .map((match) => match.groups)
+          .reduce((map, { name, value }) => {
+            map[name] = value;
+            return map;
+          }, {});
+
+        if (attributesMap.src && attributesMap.title) {
+          return `<figure><img src="${attributesMap.src}"/><figcaption>${attributesMap.title}</figcaption></figure>`;
+        }
+      });
     },
   });
   const transformed = impexTransform.transform(`<!DOCTYPE html>

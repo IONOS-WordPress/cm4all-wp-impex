@@ -148,8 +148,6 @@ function ImpexTransformFactory(configuration) {
   };
 }
 
-registerCoreBlocks();
-
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
   //console.log("running standalone");
 
