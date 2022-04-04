@@ -1,7 +1,5 @@
 # todo
 
-- markdown to HTML using onLoad hook
-
 - generating impex slice
 
   - add "wp:post_excerpt" to json schema
