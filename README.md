@@ -1,6 +1,6 @@
 # General
 
-** 🚧🚧 This project is under development! Source code and API may change often. 🚧🚧 **
+**🚧🚧 This project is under development! Source code and API may change often. 🚧🚧**
 
 The official [cm4all-wp-impex Wordpress Plugin for PHP 7.4](https://wordpress.org/plugins/cm4all-wp-impex/) can be downloaded from the [Wordpress Plugin directory](https://wordpress.org/plugins/cm4all-wp-impex/).
 
