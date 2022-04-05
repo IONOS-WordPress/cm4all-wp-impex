@@ -1,12 +1,10 @@
 # todo
 
-- refactor TransformerFactory to be a singleton named "Transformer" providing just 2 functions:
+- rename impex-transform to impex-content-transform ?
 
-  - setup(configuration)
+- find a better name for ImpexSlice
 
-  - transform(input)
-
-- generating Impex slice
+- generating Impex slices
 
   - add API
   - add test case
