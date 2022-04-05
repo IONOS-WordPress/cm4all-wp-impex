@@ -10,11 +10,11 @@ import {
 
 import { traverseBlocks } from "../src/impex-transform.js";
 
-const VERBOSE = true;
+const VERBOSE = false;
 
-test("test 'core/image' transform", async (t, impexTransform) => {
-  impexTransform.setup({ verbose: VERBOSE });
-  const transformed = impexTransform.transform(`<!DOCTYPE html>
+test("test 'core/image' transform", async (t, transformer) => {
+  transformer.setup({ verbose: VERBOSE });
+  const transformed = transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/
   </body>
@@ -25,8 +25,8 @@ test("test 'core/image' transform", async (t, impexTransform) => {
   t.match(transformed, /<!-- \/wp:image -->$/);
 });
 
-test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t, impexTransform) => {
-  impexTransform.setup({
+test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t, transformer) => {
+  transformer.setup({
     verbose: VERBOSE,
     onRegisterCoreBlocks() {
       // copied from https://github.com/WordPress/gutenberg/blob/3da717b8d0ac7d7821fc6d0475695ccf3ae2829f/packages/block-library/src/image/transforms.js#L74
@@ -103,14 +103,14 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
   </body>
   </html>`;
 
-  let transformed = impexTransform.transform(HTML);
+  let transformed = transformer.transform(HTML);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
 
   // CAVEAT: our "blocks.registerBlockType" filter callback will be called multiple times under some circumstances
   // (see https://github.com/WordPress/gutenberg/blob/fb8a732f00dd76e62eb0c6119ec99bd85db91e64/packages/blocks/src/store/actions.js#L56)
   // we need to ensure that its executed only once
   let patchCoreImageBlock = true;
-  impexTransform.setup({
+  transformer.setup({
     verbose: VERBOSE,
     onRegisterCoreBlocks() {
       // same as first transforms from filter but implemented by reusing first from transform of core/image
@@ -144,12 +144,12 @@ test("onRegisterCoreBlocks hook : takeover img[@title] as figcaption", async (t,
     },
   });
 
-  transformed = impexTransform.transform(HTML);
+  transformed = transformer.transform(HTML);
   t.includes(transformed, "<figcaption>Fly fishing</figcaption>");
 });
 
-test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
-  impexTransform.setup({
+test("onSerialize hook : 'core/image' transform", async (t, transformer) => {
+  transformer.setup({
     verbose: VERBOSE,
     onSerialize(blocks) {
       // takeover img[@title] as figcaption in every block
@@ -163,7 +163,7 @@ test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
       return blocks;
     },
   });
-  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  const transformed = transformer.transform(`<!DOCTYPE html>
   <body>
     <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
@@ -174,8 +174,8 @@ test("onSerialize hook : 'core/image' transform", async (t, impexTransform) => {
   t.match(transformed, /<!-- \/wp:image -->$/);
 });
 
-test("onSerialize hook : surround <img> with <figure>", async (t, impexTransform) => {
-  impexTransform.setup({
+test("onSerialize hook : surround <img> with <figure>", async (t, transformer) => {
+  transformer.setup({
     verbose: VERBOSE,
     onDomReady(document) {
       // @TODO: this looks a bit hacky and not very elegant but is the owed the limiting css query support of jsdom
@@ -189,7 +189,7 @@ test("onSerialize hook : surround <img> with <figure>", async (t, impexTransform
       }
     },
   });
-  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  const transformed = transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
@@ -201,8 +201,8 @@ test("onSerialize hook : surround <img> with <figure>", async (t, impexTransform
   t.match(transformed, /<!-- \/wp:image -->$/);
 });
 
-test("onLoad hook : surround <img> with <figure>", async (t, impexTransform) => {
-  impexTransform.setup({
+test("onLoad hook : surround <img> with <figure>", async (t, transformer) => {
+  transformer.setup({
     verbose: VERBOSE,
     onLoad(html) {
       // replace <img> with <figure> by dumb regex replace operations
@@ -222,7 +222,7 @@ test("onLoad hook : surround <img> with <figure>", async (t, impexTransform) => 
       });
     },
   });
-  const transformed = impexTransform.transform(`<!DOCTYPE html>
+  const transformed = transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>

@@ -8,9 +8,9 @@ import {
   createBlock,
 } from "@wordpress/blocks";
 
-test("ensure impex-transform.setup(...) will provide a clean reset'ed block.settings.transforms", (t, impexTransform) => {
-  impexTransform.setup({
-    verbose: true,
+test("ensure impex-transform.setup(...) will provide a clean reset'ed block.settings.transforms", (t, transformer) => {
+  transformer.setup({
+    verbose: false,
     onRegisterCoreBlocks() {
       addFilter(
         "blocks.registerBlockType",
@@ -41,14 +41,14 @@ test("ensure impex-transform.setup(...) will provide a clean reset'ed block.sett
   </body>
   </html>`;
 
-  let transformed = impexTransform.transform(HTML);
+  let transformed = transformer.transform(HTML);
   t.includes(transformed, "<figcaption>our-customized-caption</figcaption>");
 
-  impexTransform.setup({
-    verbose: true,
+  transformer.setup({
+    verbose: false,
   });
 
-  transformed = impexTransform.transform(HTML);
+  transformed = transformer.transform(HTML);
   t.doesNotInclude(
     transformed,
     "<figcaption>our-customized-caption</figcaption>"

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/*
+  provides functions related to transforming html to WordPress Gutenberg [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/)
+*/
+
 import { fileURLToPath } from "url";
 import process from "process";
 import yargs from "yargs";
@@ -43,10 +47,32 @@ function noop(arg) {
   return arg;
 }
 
-function ImpexTransformFactory(configuration) {
+/**
+ * Creates a new ImpexTransform instance. Using this instance you can transform html into
+ * WordPress Gutenberg [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/)
+ * or even Impex compatible slice files.
+ *
+ * @param   {object}  configuration a object hooks and properties to configure the instance
+ *                                  - hooks:
+ *                                    - onLoad(string : html) : string
+ *                                      may be used to mutate the html before it gets parsed
+ *                                    - onDomReady(Document : document) : void
+ *                                      may be used to mutate the html after it was parsed be mutating the document parameter
+ *                                    - onRegisterCoreBlocks() : boolean
+ *                                      may be used to register gutenberg blocks or modify block specs using filter "blocks.registerBlockType"
+ *                                    - onSerialize(Block[] : blocks) : Block[]
+ *                                      may be used to mutate the gutenberg blocks before they get serialized to
+ *                                      [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/)
+ *                                   - properties:
+ *                                    - verbose: boolean
+ *                                      (default: false) if true, the instance will print out the steps it takes to transform the html
+ *
+ * @return  {object}  providing functions to do html transformation
+ */
+function ImpexTransformFactory(configuration = {}) {
   let verbose, onLoad, onDomReady, onRegisterCoreBlocks, onSerialize;
 
-  // @TODO: preserve transforms ssection of blocks between setup() calls
+  // @TODO: preserve transforms section of blocks between setup() calls
   const coreBlocks = __experimentalGetCoreBlocks();
 
   const originalBlockTransforms = coreBlocks
@@ -107,6 +133,14 @@ function ImpexTransformFactory(configuration) {
 
   return {
     setup,
+    /**
+     * transforms html input to WordPress Gutenberg [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/)
+     *
+     * @param   {string}  html     html page (including <html><head>...</head><body>...</body></html>)
+     * @param   {object}  options  options influencing the transformation process
+     *
+     * @return  {string}           the html page content transformed to WordPress Gutenberg [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/)
+     */
     transform(html, options = {}) {
       verbose && console.log("\ntransform(html):\n%s\n", html);
 
@@ -201,10 +235,10 @@ if (fileURLToPath(import.meta.url) === process.argv[1]) {
       async handler(args) {
         const html = await readFile(args.input, "utf8");
 
-        const impexTransform = ImpexTransformFactory(args);
-        impexTransform.transform(html, args);
+        const transformer = ImpexTransformFactory(args);
+        transformer.transform(html, args);
 
-        impexTransform.cleanup();
+        transformer.cleanup();
         process.exit(0);
       },
     })

@@ -1,10 +1,10 @@
 import tape from "tape";
 
-import ImpexTransform from "../src/impex-transform.js";
-const impexTransform = ImpexTransform({ __verbose: true });
+import TransformerFactory from "../src/impex-transform.js";
+const transformer = TransformerFactory({ verbose: false });
 
 tape.onFinish(() => {
-  impexTransform.cleanup();
+  transformer.cleanup();
   setTimeout(() => process.exit(0), 1000);
 });
 
@@ -23,7 +23,7 @@ const customizeTape = (test, configuration) => {
           t.test = customizeTape(t.test, configuration);
 
           try {
-            arg.call(t, t, impexTransform);
+            arg.call(t, t, transformer);
             t.end();
           } catch ($ex) {
             throw $ex;
@@ -36,7 +36,7 @@ const customizeTape = (test, configuration) => {
     test(...args);
   };
 
-  wrapper.__proto__ = test;
+  Object.setPrototypeOf(wrapper, test);
 
   return wrapper;
 };
@@ -45,7 +45,7 @@ function escapeRegex(string) {
   return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 }
 
-export default function (...args) {
+export default function Test(...args) {
   const test = customizeTape(tape, {
     includes(haystack, needle) {
       return this.match(
@@ -67,3 +67,5 @@ export default function (...args) {
 
   return test(...args);
 }
+
+Test.only = tape.only;

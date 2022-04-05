@@ -1,5 +1,11 @@
 # todo
 
+- refactor TransformerFactory to be a singleton named "Transformer" providing just 2 functions:
+
+  - setup(configuration)
+
+  - transform(input)
+
 - generating Impex slice
 
   - add API
