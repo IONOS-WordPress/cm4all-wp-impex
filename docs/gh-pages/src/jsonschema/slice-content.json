@@ -99,6 +99,12 @@
           "enum": ["publish", "future", "draft", "pending", "private"],
           "default": "draft"
         },
+        "wp:post_excerpt": {
+          "type": "string",
+          "title": "WordPress excerpt",
+          "description": "The excerpt of the post.",
+          "minLength": 1
+        },
         "wp:post_name": {
           "type": "string",
           "title": "WordPress post slug",

@@ -2,7 +2,6 @@
 
 - generating impex slice
 
-  - add "wp:post_excerpt" to json schema
   - add api
   - add testcase
 
@@ -18,4 +17,8 @@
 
 - use playwright to execute Gutenberg APIs within BrowserContext : https://playwright.dev/docs/api/class-browsercontext#browser-context-add-init-script
 
--
+# bugs
+
+- see test-transform-hhoks mutli filter issue
+
+- optimize dom manipulation in onDomReady testcase
