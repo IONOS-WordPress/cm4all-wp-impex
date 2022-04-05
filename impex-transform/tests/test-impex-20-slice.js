@@ -1,4 +1,4 @@
-import test from "./tape-wrapper.js";
+import test from "./tape-configuration.js";
 import SliceFactory from "../src/impex-slice.js";
 
 const VERBOSE = true;
@@ -32,4 +32,6 @@ test("test slice ", async (t, transformer) => {
   // const contentSlice = factory.createSlice({});
 
   t.true(true);
+
+  t.end();
 });
