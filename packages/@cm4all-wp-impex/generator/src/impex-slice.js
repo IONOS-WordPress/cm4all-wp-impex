@@ -5,6 +5,23 @@ export default class ImpexSliceFactory {
 
   #next_post_id = 1;
 
+  static #SLICE_TYPE_REGISTRY = (() => {
+    const registry = {};
+
+    registry["content-importer"] = (
+      /* ImpexSliceFactory */ factory,
+      options
+    ) => {
+      return {};
+    };
+
+    registry["attachment"] = (/* ImpexSliceFactory */ factory, options) => {
+      return {};
+    };
+
+    return registry;
+  })();
+
   #sliceTypeRegistry = {};
 
   constructor(options = {}) {
@@ -19,14 +36,40 @@ export default class ImpexSliceFactory {
     return this;
   }
 
+  getNextPostId() {
+    return this.#next_post_id++;
+  }
+
+  /**
+   * Generator function yielding relative Impex export paths.
+   * Each generator call returns the path to the next slice file.
+   *
+   * yielded example : 'chunk-0001/slice-0001.json'
+   *
+   * @param {int=10} max_slices_per_chunk defines the maximum number of slices in a chunk directory
+   *
+   * @yields {string}
+   */
+  static *PathGenerator(max_slices_per_chunk = 10) {
+    for (let chunk = 1; ; chunk++) {
+      for (let slice = 1; slice <= max_slices_per_chunk; slice++) {
+        yield path.join(
+          "chunk-" + chunk.toString().padStart(4, "0"),
+          "slice-" + slice.toString().padStart(4, "0") + ".json"
+        );
+      }
+    }
+  }
+
   createSlice(slice_type, options = {}) {
     const callback =
       this.#sliceTypeRegistry[slice_type] ||
+      ImpexSliceFactory.#SLICE_TYPE_REGISTRY[slice_type] ||
       (() => {
         throw new Error(`Slice type "${slice_type}" not registered`);
       });
 
-    const slice = callback(options);
+    const slice = callback(this, options);
 
     return slice;
   }

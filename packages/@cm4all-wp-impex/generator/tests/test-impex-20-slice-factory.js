@@ -3,6 +3,10 @@ import SliceFactory from "../src/impex-slice.js";
 
 const VERBOSE = true;
 
+test("ImpexSliceFactory: ensure blubb", (t) => {
+  t.end();
+});
+
 /*
 
 {
@@ -25,13 +29,3 @@ const VERBOSE = true;
 
 
 */
-
-test("test slice ", async (t, transformer) => {
-  const factory = new SliceFactory();
-
-  // const contentSlice = factory.createSlice({});
-
-  t.true(true);
-
-  t.end();
-});

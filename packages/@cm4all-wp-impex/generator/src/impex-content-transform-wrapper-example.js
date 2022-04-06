@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import ImpexTransform from "./impex-transform.js";
+import ImpexTransform from "./impex-content-transform.js";
 
 const impexTransform = new ImpexTransform({ verbose: true });
 
@@ -10,5 +10,4 @@ impexTransform.transform(`<!DOCTYPE html>
 </body>
 </html>`);
 
-impexTransform.cleanup();
 process.exit(0);

@@ -1,7 +1,7 @@
 {
-  "name": "cm4all-wp-impex-transform",
+  "name": "@cm4all-wp-impex/generator",
   "version": "1.0.0.",
-  "description": "cm4all-wp-impex transformation suite. contains tools to transform html to gutenberg blocks and so on.",
+  "description": "contains tools to generate wordpress content in Impex export format",
   "tags": [
     "cm4all-wp-impex",
     "transform",
@@ -14,8 +14,8 @@
     "npm": ">=7.0.0"
   },
   "type": "module",
-  "main": "./src/impex-transform.js",
-  "bin": "./src/impex-transform.js",
+  "main": "./src/index.js",
+  "bin": "./src/index.js",
   "scripts": {
     "test": "tape tests/**/test-*.js | tap-spec"
   },
