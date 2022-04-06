@@ -1,26 +1,21 @@
-import test, { includes, doesNotInclude } from "./tape-configuration.js";
+import test from "./tape-configuration.js";
 import Transformer, { traverseBlocks } from "../src/impex-content-transform.js";
 
-import { addFilter, applyFilters } from "@wordpress/hooks";
-import {
-  unregisterBlockType,
-  getBlockTypes,
-  getBlockAttributes,
-  createBlock,
-} from "@wordpress/blocks";
+import { addFilter } from "@wordpress/hooks";
+import { getBlockAttributes, createBlock } from "@wordpress/blocks";
 
 const VERBOSE = false;
 
 test("ImpexTransformer: test 'core/image' content transform", (t) => {
   Transformer.setup({ verbose: VERBOSE });
-  const transformed = transformer.transform(`<!DOCTYPE html>
+  const transformed = Transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/
   </body>
 </html>`);
 
   t.match(transformed, /^<!-- wp:image -->/);
-  includes(t, transformed, ' title="Fly fishing"/>');
+  t.ok(transformed.includes(' title="Fly fishing"/>'));
   t.match(transformed, /<!-- \/wp:image -->$/);
 
   t.end();
@@ -104,8 +99,8 @@ test("ImpexTransformer: onRegisterCoreBlocks hook : takeover img[@title] as figc
   </body>
   </html>`;
 
-  let transformed = transformer.transform(HTML);
-  includes(t, transformed, "<figcaption>Fly fishing</figcaption>");
+  let transformed = Transformer.transform(HTML);
+  t.ok(transformed.includes("<figcaption>Fly fishing</figcaption>"));
 
   // CAVEAT: our "blocks.registerBlockType" filter callback will be called multiple times under some circumstances
   // (see https://github.com/WordPress/gutenberg/blob/fb8a732f00dd76e62eb0c6119ec99bd85db91e64/packages/blocks/src/store/actions.js#L56)
@@ -145,8 +140,8 @@ test("ImpexTransformer: onRegisterCoreBlocks hook : takeover img[@title] as figc
     },
   });
 
-  transformed = transformer.transform(HTML);
-  includes(t, transformed, "<figcaption>Fly fishing</figcaption>");
+  transformed = Transformer.transform(HTML);
+  t.ok(transformed.includes("<figcaption>Fly fishing</figcaption>"));
 
   t.end();
 });
@@ -166,14 +161,14 @@ test("ImpexTransformer: onSerialize hook : 'core/image' transform", (t) => {
       return blocks;
     },
   });
-  const transformed = transformer.transform(`<!DOCTYPE html>
+  const transformed = Transformer.transform(`<!DOCTYPE html>
   <body>
     <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
 </html>`);
 
   t.match(transformed, /^<!-- wp:image -->/);
-  includes(t, transformed, "<figcaption>Fly fishing</figcaption>");
+  t.ok(transformed.includes("<figcaption>Fly fishing</figcaption>"));
   t.match(transformed, /<!-- \/wp:image -->$/);
 
   t.end();
@@ -194,15 +189,15 @@ test("ImpexTransformer: onSerialize hook : surround <img> with <figure>", (t) =>
       }
     },
   });
-  const transformed = transformer.transform(`<!DOCTYPE html>
+  const transformed = Transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
 </html>`);
 
-  doesNotInclude(t, transformed, 'title="Fly fishing"');
+  t.notOk(transformed.includes('title="Fly fishing"'));
   t.match(transformed, /^<!-- wp:image -->/);
-  includes(t, transformed, "<figcaption>Fly fishing</figcaption>");
+  t.ok(transformed.includes("<figcaption>Fly fishing</figcaption>"));
   t.match(transformed, /<!-- \/wp:image -->$/);
 
   t.end();
@@ -229,15 +224,15 @@ test("ImpexTransformer: onLoad hook : surround <img> with <figure>", (t) => {
       });
     },
   });
-  const transformed = transformer.transform(`<!DOCTYPE html>
+  const transformed = Transformer.transform(`<!DOCTYPE html>
   <body>
       <img src="./greysen-johnson-unsplash.jpg" title="Fly fishing"/>
   </body>
 </html>`);
 
-  doesNotInclude(t, transformed, 'title="Fly fishing"');
+  t.notOk(transformed.includes('title="Fly fishing"'));
   t.match(transformed, /^<!-- wp:image -->/);
-  includes(t, transformed, "<figcaption>Fly fishing</figcaption>");
+  t.ok(transformed.includes("<figcaption>Fly fishing</figcaption>"));
   t.match(transformed, /<!-- \/wp:image -->$/);
 
   t.end();

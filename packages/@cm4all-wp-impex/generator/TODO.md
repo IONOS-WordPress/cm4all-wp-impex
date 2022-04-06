@@ -1,9 +1,5 @@
 # todo
 
-- rename impex-transform to impex-content-transform ?
-
-- find a better name for ImpexSlice
-
 - generating Impex slices
 
   - add API

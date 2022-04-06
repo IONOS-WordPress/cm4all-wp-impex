@@ -1,9 +1,7 @@
 import test from "./tape-configuration.js";
-import SliceFactory from "../src/impex-slice.js";
+import SliceFactory from "../src/impex-slice-factory.js";
 
-const VERBOSE = true;
-
-test.only("ImpexSliceFactory::PathGenerator", (t) => {
+test("ImpexSliceFactory::PathGenerator", (t) => {
   let gen = SliceFactory.PathGenerator(1);
 
   t.equal(gen.next().value, "chunk-0001/slice-0001.json");

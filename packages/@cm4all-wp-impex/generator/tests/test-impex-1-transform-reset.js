@@ -1,13 +1,7 @@
-import test, { includes, doesNotInclude } from "./tape-configuration.js";
+import test from "./tape-configuration.js";
 import Transformer from "../src/impex-content-transform.js";
 
-import { addFilter, applyFilters } from "@wordpress/hooks";
-import {
-  unregisterBlockType,
-  getBlockTypes,
-  getBlockAttributes,
-  createBlock,
-} from "@wordpress/blocks";
+import { addFilter } from "@wordpress/hooks";
 
 test("ImpexTransformer: ensure setup(...) will provide a clean reset'ed block.settings.transforms", (t) => {
   Transformer.setup({
@@ -42,18 +36,16 @@ test("ImpexTransformer: ensure setup(...) will provide a clean reset'ed block.se
   </body>
   </html>`;
 
-  let transformed = transformer.transform(HTML);
-  includes(t, transformed, "<figcaption>our-customized-caption</figcaption>");
+  let transformed = Transformer.transform(HTML);
+  t.ok(transformed.includes("<figcaption>our-customized-caption</figcaption>"));
 
   Transformer.setup({
     verbose: false,
   });
 
-  transformed = transformer.transform(HTML);
-  doesNotInclude(
-    t,
-    transformed,
-    "<figcaption>our-customized-caption</figcaption>"
+  transformed = Transformer.transform(HTML);
+  t.notOk(
+    transformed.includes("<figcaption>our-customized-caption</figcaption>")
   );
 
   t.end();
