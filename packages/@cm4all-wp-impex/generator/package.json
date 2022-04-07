@@ -15,7 +15,7 @@
   },
   "type": "module",
   "main": "./src/index.js",
-  "bin": "./src/index.js",
+  "bin": "./src/impex-generator-cli.js",
   "scripts": {
     "test": "tape tests/**/test-*.js | tap-spec"
   },
@@ -27,10 +27,10 @@
     "global-jsdom": "^8.4.0",
     "jsdom": "^19.0.0",
     "polyfill-library": "^3.111.0",
-    "yargs": "^17.4.0"
+    "yargs": "^17.4.0",
+    "lodash.clonedeepwith": "^4.5.0"
   },
   "devDependencies": {
-    "lodash.clonedeepwith": "^4.5.0",
     "tap-spec": "^5.0.0",
     "tape": "^5.5.2"
   }
