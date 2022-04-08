@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kontaktieren Sie Dr Mustermann</title>
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="kontakt mustermann musterstadt" />
+    <link rel="stylesheet" href="pure-min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item">
+            <a href="index.html" class="pure-menu-link"
+              >Zahnarzt Dr. Mustermann</a
+            >
+          </li>
+          <li class="pure-menu-item">
+            <a href="office.html" class="pure-menu-link">Praxis</a>
+          </li>
+          <li
+            class="pure-menu-item pure-menu-has-children pure-menu-allow-hover"
+          >
+            <a href="#" id="menuLink1" class="pure-menu-link">Leistungen</a>
+            <ul class="pure-menu-children">
+              <li class="pure-menu-item">
+                <a href="services/prophylaxis.html" class="pure-menu-link"
+                  >Prophylaxe</a
+                >
+              </li>
+              <li class="pure-menu-item">
+                <a href="services/dental-anxiety.html" class="pure-menu-link"
+                  >Zahnarztangst</a
+                >
+              </li>
+              <li class="pure-menu-item">
+                <a
+                  href="services/conservative-dentistry.html"
+                  class="pure-menu-link"
+                  >Zahnerhaltung</a
+                >
+              </li>
+              <li class="pure-menu-item">
+                <a href="services/dentures.html" class="pure-menu-link"
+                  >Zahnersatz</a
+                >
+              </li>
+              <li class="pure-menu-item">
+                <a href="services/surgery.html" class="pure-menu-link"
+                  >Chirurgie</a
+                >
+              </li>
+              <li class="pure-menu-item">
+                <a href="services/alternative.html" class="pure-menu-link"
+                  >Alternativ</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="pure-menu-item pure-menu-selected">
+            <a href="contact.html" class="pure-menu-link">Kontakt</a>
+          </li>
+          <li class="pure-menu-item">
+            <a href="legal.html" class="pure-menu-link">Impressum</a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <section>
+      <h2>Kontaktformular</h2>
+      <p>
+        Über unser Kontaktformular können Sie uns ebefalls eine Nachricht
+        schicken.
+      </p>
+      <form
+        action="contact.php"
+        method="post"
+        class="pure-form pure-form-stacked"
+      >
+        <fieldset>
+          <legend>Füllen Sie bitte das folgende Formular aus.</legend>
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" />
+          <br />
+          <label for="email">E-Mail:</label>
+          <input type="email" name="email" id="email" />
+          <br />
+          <label for="message">Nachricht:</label>
+          <br />
+          <textarea name="message" id="message" rows="10" cols="50"></textarea>
+          <input
+            type="submit"
+            value="Absenden"
+            class="pure-button pure-button-primary"
+          />
+        </fieldset>
+      </form>
+
+      <h2>Telefon</h2>
+      <p>Sie können uns auch telefonisch erreichen.</p>
+      <p>
+        Unsere Telefonnnummer finden Sie im <a href="legal.html">Impressum</a>.
+      </p>
+    </section>
+    <footer>
+      <p>
+        Wenn Sie mit uns in Kontakt treten wollen ohne den Telefonhörer in die
+        Hand nehmen zu müssen ist dies über folgende E-Mailadresse möglich:
+      </p>
+      <p>
+        <a href="mailto:drmustermann.musterstatdt@example.com"
+          >drmustermann.musterstatdt@example.com</a
+        >
+      </p>
+    </footer>
+  </body>
+</html>
