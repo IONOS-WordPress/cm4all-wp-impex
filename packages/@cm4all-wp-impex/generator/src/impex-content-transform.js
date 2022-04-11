@@ -148,7 +148,7 @@ const ImpexTransformer = {
     const serialized = serialize(_blocks);
     verbose && console.log("\nserialized:\n%s\n", serialized);
 
-    document.documentElement.innerHTML = "";
+    // document.documentElement.innerHTML = "";
 
     return serialized;
   },
