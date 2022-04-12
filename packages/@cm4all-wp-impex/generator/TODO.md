@@ -1,9 +1,11 @@
 # todo
 
-- generating Impex slices
+- fix image refs
 
-  - add API
-  - add test case
+- homepage:
+
+  - fix figcaption
+  - fix li trim textcontent
 
 - add documentation (API + Guide)
 
