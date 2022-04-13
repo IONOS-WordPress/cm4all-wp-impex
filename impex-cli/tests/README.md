@@ -20,6 +20,20 @@ jump into : `docker run -ti --rm cm4all-wp-impex/impex-cli-phpunit bash`
 
 php.ini : `/etc/php8/php.ini`
 
-# Usage
+## phpunit
 
 `docker run --add-host=host.docker.internal:host-gateway -it -v $(pwd)/..:/workdir --rm cm4all-wp-impex/impex-cli-phpunit phpunit .`
+
+## impex-cli
+
+To import the sample export fixture (see `.impex-cli/tests/fixtures/simple-import`) into `wp-env` simply run:
+
+```
+// (optional) cleanup wordpress wp-env instance
+make wp-env-clean
+
+// start the import
+./impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ./impex-cli/tests/fixtures/simple-import
+```
+
+# Usage
