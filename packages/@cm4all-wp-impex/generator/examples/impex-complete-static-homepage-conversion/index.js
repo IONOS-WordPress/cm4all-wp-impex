@@ -90,7 +90,7 @@ async function main() {
     htmlResource.content = ImpexTransformer.transform(
       await readFile(htmlResource.resource, "utf8")
     );
-    console.log(htmlResource.content);
+    //console.log(htmlResource.content);
     htmlResource.title =
       document.querySelector("head > title")?.textContent ?? "";
     htmlResource.description =
@@ -113,6 +113,7 @@ async function main() {
         slice.data.posts[0]["wp:post_excerpt"] = htmlResource.title;
         slice.data.posts[0]["wp:post_content"] = htmlResource.content;
         // @TODO: categories (aka keywords)
+        // @TODO: add navigation
         return slice;
       }
     );
