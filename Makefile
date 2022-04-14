@@ -282,16 +282,16 @@ distclean: clean
 # .PHONY: lint-fix 
 # lint-fix: lint-fix-php ## fix linter problems in sources
 
-.PHONY: test-@cm4all-wp-impex/generator
-#HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
-test-@cm4all-wp-impex/generator: node_modules
+.PHONY: test-cm4all-wp-impex-generator
+#HELP: execute @cm4all-wp-impex/generator tests
+test-cm4all-wp-impex-generator: node_modules
 > cd packages/@cm4all-wp-impex/generator 
 > test -d "node_modules" || npm ci
 > npm run test
 
-.PHONY: test-impexcli
+.PHONY: test-impex-cli
 #HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
-test-impexcli: node_modules $(WP_ENV_HOME)
+test-impex-cli: node_modules $(WP_ENV_HOME)
 # build impex cli docker image if needed 
 > if [[ "$$(docker images -q $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
 >   cd impex-cli/tests && DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) .
@@ -328,7 +328,7 @@ test-esbuild: node_modules
 
 .PHONY: test
 #HELP: * run all tests
-test: test-esbuild test-phpunit
+test: test-esbuild test-phpunit test-impex-cli test-cm4all-wp-impex-generator
   
 .PHONY: dev-marp
 #HELP: * watch/rebuild marp slides on change
