@@ -8,6 +8,11 @@ import { resolve, join, extname, dirname, basename } from "path";
 import { readdir, readFile, mkdir, rm, writeFile, copyFile } from "fs/promises";
 import { ImpexTransformer, ImpexSliceFactory } from "../../src/index.js";
 
+const STATIC_HOMEPAGE_DIRECTORY = new URL(
+  "homepage-dr-mustermann",
+  import.meta.url
+).pathname;
+
 async function* getFiles(dir, recursive, extension) {
   const entries = await readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
@@ -20,9 +25,12 @@ async function* getFiles(dir, recursive, extension) {
   }
 }
 
+// keeps track of images and their references from html files (aka pages)
+const img2imgSrc_mappings = {};
+
 function setup() {
   ImpexTransformer.setup({
-    onDomReady(document) {
+    onDomReady(document, options = { path: null }) {
       // replace <header> elements with the <ul> child
       for (const section of document.querySelectorAll("header")) {
         const ul = document.querySelector("ul.pure-menu-list");
@@ -44,6 +52,23 @@ function setup() {
         paragraph.innerHTML = footer.innerHTML;
         footer.replaceWith(paragraph);
       }
+
+      if (options?.path) {
+        // grab all image references and remember them for later processing
+        for (const img of document.querySelectorAll("img")) {
+          const src = img.getAttribute("src");
+
+          // compute image path relative to static webpage directory
+          const imgPath = resolve(
+            join(STATIC_HOMEPAGE_DIRECTORY, src)
+          ).substring(STATIC_HOMEPAGE_DIRECTORY);
+
+          // add reference to image path
+          (
+            img2imgSrc_mappings[imgPath] || (img2imgSrc_mappings[imgPath] = [])
+          ).push(src);
+        }
+      }
     },
   });
   return new ImpexSliceFactory();
@@ -55,10 +80,7 @@ async function main() {
   // group files by type (html or attachment)
   const attachmentResources = [];
   const htmlResources = [];
-  for await (const res of getFiles(
-    new URL("homepage-dr-mustermann", import.meta.url).pathname,
-    true
-  )) {
+  for await (const res of getFiles(STATIC_HOMEPAGE_DIRECTORY, true)) {
     const resource = res.toString();
     switch (extname(res)) {
       case ".html":
@@ -88,7 +110,8 @@ async function main() {
   // transform html file content
   for (const htmlResource of htmlResources) {
     htmlResource.content = ImpexTransformer.transform(
-      await readFile(htmlResource.resource, "utf8")
+      await readFile(htmlResource.resource, "utf8"),
+      { path: htmlResource.resource }
     );
     //console.log(htmlResource.content);
     htmlResource.title =
@@ -134,6 +157,15 @@ async function main() {
         slice.data = attachmentResource.resource.substring(
           impexExportDir.length + 1
         );
+
+        // compute unique image file=>[img[@src]] mapping for this attachment
+        let img2imgSrc_mapping = [
+          ...new Set(img2imgSrc_mappings[attachmentResource.resource] ?? []),
+        ];
+
+        // add mapping to slice metadata
+        slice.meta["impex:post-references"] = img2imgSrc_mapping;
+
         return slice;
       }
     );

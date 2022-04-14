@@ -208,6 +208,47 @@ Thats it ! If you import the slice file using Impex, the image will appear in th
 >
 > See [simple-import](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) example for a full featured generated import at the [Impex Github page](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 
+#### Adjusting attachment urls
+
+If you import posts referencing an image using relative paths, you will need to adjust the image url in your imported posts to the newly imported attachment.
+
+Suppose you have a various posts referencing an image in different ways :
+
+```html
+<!-- sub/page-one.html -->
+...
+<img src="../images/greysen-johnson-unsplash.jpg" />
+
+<!-- page-two.html -->
+...
+<img src="/images/greysen-johnson-unsplash.jpg" />
+
+<!-- page-tree.html -->
+...
+<img src="./images/greysen-johnson-unsplash.jpg" />
+```
+
+After importing generated pages will referencing exactly the same IMG `src` attribute, but the url of the imported image attachment will be different.
+
+For this case you can configure replacing the original with the url of the imported image using slice `meta` property `impex:post-references`. This property tells Impex that the given references should be replaced with the url of the imported attachment file.
+
+```json
+{
+  "version": "1.0.0",
+  "type": "resource",
+  "tag": "attachment",
+  "meta": {
+    "entity": "attachment",
+    "impex:post-references": [
+      "../images/greysen-johnson-unsplash.jpg",
+      "./images/greysen-johnson-unsplash.jpg"
+      "/images/greysen-johnson-unsplash.jpg",
+    ]
+  },
+  "data": "./greysen-johnson-unsplash.jpg"
+}
+```
+
 ### Other data
 
 Although Impex provides a simple way to import content and media, you may also want to import more advanced data like database tables or settings into WordPress.

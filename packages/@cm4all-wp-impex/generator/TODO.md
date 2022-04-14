@@ -1,7 +1,5 @@
 # todo
 
-- fix image refs
-
 - homepage:
 
   - fix figcaption
@@ -9,11 +7,9 @@
 
 - add documentation (API + Guide)
 
-- complete example: generating Impex slice from static HTML website
+  - complete example: generating Impex slice from static HTML website
 
-  - including CSS variables to theme.json
-
-- complete example: generating Impex slice from markdown website
+    - including CSS variables to theme.json
 
 # links
 

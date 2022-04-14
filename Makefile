@@ -282,6 +282,13 @@ distclean: clean
 # .PHONY: lint-fix 
 # lint-fix: lint-fix-php ## fix linter problems in sources
 
+.PHONY: test-@cm4all-wp-impex/generator
+#HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
+test-@cm4all-wp-impex/generator: node_modules
+> cd packages/@cm4all-wp-impex/generator 
+> test -d "node_modules" || npm ci
+> npm run test
+
 .PHONY: test-impexcli
 #HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
 test-impexcli: node_modules $(WP_ENV_HOME)

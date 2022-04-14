@@ -44,6 +44,11 @@ interface AttachmentImporter
 
   const OPTION_OVERWRITE = 'wp-attachment-import-option-overwrite';
   const OPTION_OVERWRITE_DEFAULT = true;
+
+  // optional slice meta property of type array of string 
+  // if set in a slice, the imported attachment replace the references 
+  // of this property in the content of all posts / pages
+  const SLICE_META_POST_REFERENCES = 'impex:post-references';
 }
 
 function __registerAttachmentImportProvider()
@@ -159,6 +164,16 @@ class __AttachmentImporter
     }
 
     // @TODO: any change to do this AFTER all images are uploaded ? 
+
+    // replace default url_remap with SLICE_META_POST_REFERENCES if exists
+    $meta_post_references = $this->slice[Impex::SLICE_META][AttachmentImporter::SLICE_META_POST_REFERENCES] ?? null;
+    if (is_array($meta_post_references)) {
+      $this->url_remap = [];
+      foreach ($meta_post_references as $reference) {
+        $this->url_remap[$reference] = $upload['url'];
+      }
+    }
+
     $this->backfill_attachment_urls();
   }
 

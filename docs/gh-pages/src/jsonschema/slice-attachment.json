@@ -26,8 +26,26 @@
     "meta": {
       "title": "Metadata for the slice",
       "description": "Metadata is a JSON object used to store additional information about the slice",
-      "const": {
-        "entity": "attachment"
+      "type": "object",
+      "properties": {
+        "entity": {
+          "title": "Entity",
+          "description": "The entity type of this slice",
+          "type": "string",
+          "default": "attachment",
+          "enum": ["attachment"]
+        },
+        "impex:post-references": {
+          "title": "Array of urls referencing this attachment in posts",
+          "description": "When the attachment was imported, all references in this array will be replaces by the url of the imported attachment",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "$comment": "@TODO: unique ids are not yet supported by jsonschema",
+          "uniqueItems": true
+        }
       }
     },
     "data": {

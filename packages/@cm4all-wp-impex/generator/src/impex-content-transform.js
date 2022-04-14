@@ -130,7 +130,7 @@ const ImpexTransformer = {
     verbose &&
       console.log("\nonLoad:\n%s\n", document.documentElement.outerHTML);
 
-    onDomReady(document);
+    onDomReady(document, { path: options?.path });
     verbose &&
       console.log("\nonDomReady:\n%s\n", document.documentElement.outerHTML);
 
