@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cm4all-wp-impex 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cm4all-wp-impex\n"
-"POT-Creation-Date: 2022-03-02T15:57:31+00:00\n"
+"POT-Creation-Date: 2022-04-21T15:40:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid "https://github.com/IONOS-WordPress/cm4all-wp-impex"
 msgstr ""
 
 #. Description of the plugin
-msgid "Impex contributes extendable Import / Export functionality to WordPress"
+msgid "ImpEx contributes extendable Import / Export functionality to WordPress"
 msgstr ""
 
 #. Author of the plugin
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Human readable description of the profile."
 msgstr ""
 
-#: inc/impex-import-extension-attachment.php:233
+#: inc/impex-import-extension-attachment.php:266
 msgid "Multipart file upload is missing in request"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgstr "(en_US) Select an Export profile"
 
 #: dist/wp.impex.dashboard.js:376
 msgid ""
-"Export profiles define which Wordpress data should be extracted to the "
+"Export profiles define which WordPress data should be extracted to the "
 "snapshot"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgid "Delete export"
 msgstr ""
 
 #: dist/wp.impex.dashboard.js:464
-msgid "Importing data into Wordpress ..."
+msgid "Importing data into WordPress ..."
 msgstr ""
 
 #: dist/wp.impex.dashboard.js:511
@@ -268,7 +268,7 @@ msgstr "(en_US) Select an Export profile"
 
 #: dist/wp.impex.dashboard.js:568
 msgid ""
-"Import profiles define which Wordpress data should be consumed from the "
+"Import profiles define which WordPress data should be consumed from the "
 "snapshot"
 msgstr ""
 

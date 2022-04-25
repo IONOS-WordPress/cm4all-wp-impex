@@ -39,10 +39,10 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
             'title'   => __('Overview', 'cm4all-wp-impex'),
             'content' => '
           <p>
-          Impex provides extensible Import and Export capabilities across plugins / themes by providing a hook mechanism to 3rd-party plugins and themes.
+          ImpEx provides extensible Import and Export capabilities across plugins / themes by providing a hook mechanism to 3rd-party plugins and themes.
           </p>
           <p>
-          Impex supports a pluggable provider interface to export / import custom data. Impex export and import can be customized ab applying filters.
+          ImpEx supports a pluggable provider interface to export / import custom data. ImpEx export and import can be customized ab applying filters.
           </p>
           <p>
           By default a self contained, streamable directory containing JSON files and media blobs gets exported and vice versa imported.

@@ -36,7 +36,7 @@ export default function () {
             isDismissible={false}
           >
             <p>
-              Impex Import / Export requires a browser implementing the{" "}
+              ImpEx Import / Export requires a browser implementing the{" "}
               <a href="https://web.dev/file-system-access/">
                 File System Access API
               </a>

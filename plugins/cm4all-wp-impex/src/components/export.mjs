@@ -223,7 +223,7 @@ export default function Export() {
               disabled: _.disabled,
             }))}
             help={__(
-              "Export profiles define which Wordpress data should be extracted to the snapshot",
+              "Export profiles define which WordPress data should be extracted to the snapshot",
               "cm4all-wp-impex"
             )}
           ></wp.components.SelectControl>

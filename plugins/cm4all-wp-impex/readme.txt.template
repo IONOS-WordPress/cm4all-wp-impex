@@ -17,38 +17,38 @@ ${DESCRIPTION}
 
 == Description ==
 
-Impex is a Wordpress plugin that allows you to import and export data from and to your WordPress installation.
+ImpEx is a WordPress plugin that allows you to import and export data from and to your WordPress installation.
 
-The primary goal for Impex is to provide a **true Open Source Wordpress Plugin** for importing/exporting your Wordpress data (including data from third party plugins/themes).
+The primary goal for ImpEx is to provide a **true Open Source WordPress Plugin** for importing/exporting your WordPress data (including data from third-party plugins/themes).
 
-**This plugin is in a early (but working) stage.**
+**This plugin is in an early (but working) stage.**
 
 Impex provides : 
 
-* Wordpress hooks for third party plugins to expose their own data to Impex Import / Export without being dependant to Impex.
+* WordPress hooks for third-party plugins to expose their own data to ImpEx Import / Export without being dependent on Impex.
 
 * a (semi) streaming architecture for large data exports/imports.
 
 * Definition of configurable import/export profiles defining data providers to use and configuration of these data providers
 
-  * A user interface for importing / exporting data via Impex WP admin screen
+  * A user interface for importing / exporting data via ImpEx WP admin screen
 
-* the Impex API is designed to support resumable/abortable imports and exports.
+* the ImpEx API is designed to support resumable/abortable imports and exports.
 
-* Impex provides also a REST API seamlessy integrated into Wordpress
+* ImpEx provides a REST API integrated into WordPress
 
-* Impex is explicitly designed for use in managed Wordpress instances
+* ImpEx is explicitly designed for use in managed WordPress instances
 
-* Impex development relies heavily on PHP unit testing its feature set to be stable and consistent.
+* ImpEx development relies heavily on PHP unit testing its feature set to be stable and consistent.
 
-* a [CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) for importing/exporting data via Impex REST interface.
-  The Impex CLI can be used as alternative to the Impex WP admin screen. 
+* a [CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) for importing/exporting data via ImpEx REST interface.
+  The ImpEx CLI can be used as an alternative to the ImpEx WP admin screen. 
 
 **Your help is welcome !!**
 
 == Frequently Asked Questions ==
 
-= Where can I find the Impex documentation ? =
+= Where can I find the ImpEx documentation ? =
 
 Documentation is in a very early stage and is not yet complete.
 
@@ -56,7 +56,7 @@ It's available at the [Impex Plugin GitHub pages](https://ionos-wordpress.github
 
 Please file bugs and feature requests at the [Impex Plugin GitHub issues](https://github.com/IONOS-WordPress/cm4all-wp-impex/issues)
 
-= Why is that Plugin written in PHP 8 ? =
+= Why ImpE written in PHP 8 ? =
 
 Because PHP 8 
 
@@ -64,38 +64,33 @@ Because PHP 8
 
 * allows a much cleaner PHP code
 
-The Plugin version available here (at Wordpress plugin directory) is transpiled down to PHP 7.4
+The Plugin version available here (at WordPress plugin directory) is transpiled down to PHP 7.4
 
-If you prefer to use the PHP 8 version, you can download it from the [GitHub Impex plugin repository](https://github.com/IONOS-WordPress/cm4all-wp-impex)
+If you prefer to use the PHP 8 version, you can download it from the [ImpEx WordPress Plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
-= Whats the current feature set ? =
+= What's the current feature set ? =
 
-* Impex provides right now generic providers for 
+* ImpEx provides right now generic providers for 
 
-  * import/export Wordpress posts/pages **including attachments/uploads** and custom post types
+  * import/export WordPress posts/pages **including attachments/uploads** and custom post types
 
   * import/export configurable database tables (can be used export data from third party plugins/themes)
 
   * import/export configurable wp_options (can be used export data from third party plugins/themes)
 
-* Impex imports and exports data as plain files directly to your local filesystem so that you can operate on the exported data (and attachments) without hassle.
+* ImpEx imports and exports data as plain files directly to your local filesystem so that you can operate on the exported data (and attachments) without hassle.
 
-* Impex supports snapshots to allow you to rollback to a previous state of your data without downloading the whole data to your local machine
+* ImpEx supports snapshots to allow you to rollback to a previous state of your data without downloading the whole data to your local machine
 
-= Whats planned for the future ? =
+= What's planned for the future ? =
 
-* developer documentation integrating your plugin / theme into Impex 
+* developer documentation integrating your plugin / theme into ImpEx 
 
-* a intuitive user interface allowing to configure import/export profiles and configuration of the used data providers based on React and JSON Schema
+* an intuitive user interface allowing to configure import/export profiles and configuration of the used data providers based on React and JSON Schema
 
 * user documentation 
 
 * monthly releases
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
-2. This is the second screen shot
 
 == Changelog ==
 

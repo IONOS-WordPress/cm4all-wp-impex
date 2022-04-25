@@ -71,7 +71,7 @@ export default function Import() {
     setProgress({
       component: (
         <components.Modal
-          title={__("Importing data into Wordpress ...", "cm4all-wp-impex")}
+          title={__("Importing data into WordPress ...", "cm4all-wp-impex")}
           onRequestClose={() => {}}
           overlayClassName="blocking"
         >
@@ -216,7 +216,7 @@ export default function Import() {
               disabled: _.disabled,
             }))}
             help={__(
-              "Import profiles define which Wordpress data should be consumed from the snapshot",
+              "Import profiles define which WordPress data should be consumed from the snapshot",
               "cm4all-wp-impex"
             )}
           ></wp.components.SelectControl>
