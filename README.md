@@ -2,7 +2,7 @@
 
 **🚧🚧 This project is under development! Source code and API may change often. 🚧🚧**
 
-The official [cm4all-wp-impex Wordpress Plugin for PHP 7.4](https://wordpress.org/plugins/cm4all-wp-impex/) can be downloaded from the [Wordpress Plugin directory](https://wordpress.org/plugins/cm4all-wp-impex/).
+The official [cm4all-wp-impex WordPress Plugin for PHP 7.4](https://wordpress.org/plugins/cm4all-wp-impex/) can be downloaded from the [Wordpress Plugin directory](https://wordpress.org/plugins/cm4all-wp-impex/).
 
 If you prefer to use the PHP 8 version of the Plugin, you can download it from the [GitHub project repository releases page](https://github.com/IONOS-WordPress/cm4all-wp-impex/releases).
 
