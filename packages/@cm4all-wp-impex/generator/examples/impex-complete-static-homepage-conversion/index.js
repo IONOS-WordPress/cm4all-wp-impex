@@ -8,11 +8,23 @@ import { resolve, join, extname, dirname, basename } from "path";
 import { readdir, readFile, mkdir, rm, writeFile, copyFile } from "fs/promises";
 import { ImpexTransformer, ImpexSliceFactory } from "../../src/index.js";
 
+/**
+ * STATIC_HOMEPAGE_DIRECTORY is the directory containing the static homepage
+ */
 const STATIC_HOMEPAGE_DIRECTORY = new URL(
   "homepage-dr-mustermann",
   import.meta.url
 ).pathname;
 
+/**
+ * generator function yielding matched files recursively
+ *
+ * @param   {string}  dir directory to search
+ * @param   {boolean} recursive  whether to search recursively
+ * @param   {string|undefined}  extension file extension to match or null to match all files
+ *
+ * @yields  {string} path to file
+ */
 async function* getFiles(dir, recursive, extension) {
   const entries = await readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
@@ -25,9 +37,18 @@ async function* getFiles(dir, recursive, extension) {
   }
 }
 
-// keeps track of images and their references from html files (aka pages)
+/**
+ * keeps track of images and their references from html files (aka pages)
+ * key is image path relative to STATIC_HOMEPAGE_DIRECTORY
+ * value is array of image references
+ */
 const img2imgSrc_mappings = {};
 
+/**
+ * set up the ImpexTransformer singleton
+ *
+ * @return  {ImpexSliceFactory}
+ */
 function setup() {
   ImpexTransformer.setup({
     onDomReady(document, options = { path: null }) {
@@ -75,18 +96,24 @@ function setup() {
 }
 
 async function main() {
+  // setup ImpexTransformer singleton and get a ImpexSliceFactory instance
   const impexSliceFactory = setup();
 
   // group files by type (html or attachment)
   const attachmentResources = [];
   const htmlResources = [];
+
+  // iterate over all files recursively in STATIC_HOMEPAGE_DIRECTORY
   for await (const res of getFiles(STATIC_HOMEPAGE_DIRECTORY, true)) {
     const resource = res.toString();
+
     switch (extname(res)) {
+      // stick HTML files into htmlResources
       case ".html":
         htmlResources.push({ resource });
         console.log("HTML %s", resource);
         break;
+      // stick media files into attachmentResources
       case ".jpeg":
       case ".jpg":
       case ".gif":
@@ -97,23 +124,29 @@ async function main() {
     }
   }
 
+  // get a generator function yielding ImpEx export format conformant paths
   const slicePathGenerator = ImpexSliceFactory.PathGenerator();
-  const impexExportDir = new URL("generated-impex-export", import.meta.url)
+
+  // compute target directory
+  const IMPEX_EXPORT_DIR = new URL("generated-impex-export", import.meta.url)
     .pathname;
 
-  // recreate export directory
+  // delete already existing directory if it exists
   try {
-    await rm(impexExportDir, { recursive: true });
+    await rm(IMPEX_EXPORT_DIR, { recursive: true });
   } catch {}
-  await mkdir(impexExportDir, { recursive: true });
 
-  // transform html file content
+  // create target directory
+  await mkdir(IMPEX_EXPORT_DIR, { recursive: true });
+
+  // convert html files to gutenberg annotated block content
   for (const htmlResource of htmlResources) {
+    // transform html body to gutenberg annotated block content
     htmlResource.content = ImpexTransformer.transform(
       await readFile(htmlResource.resource, "utf8"),
       { path: htmlResource.resource }
     );
-    //console.log(htmlResource.content);
+    // remember html metadata for later processing
     htmlResource.title =
       document.querySelector("head > title")?.textContent ?? "";
     htmlResource.description =
@@ -128,6 +161,7 @@ async function main() {
       .toLowerCase()
       .split(" ");
 
+    // create ImpEx slice json content for this html file
     const slice = impexSliceFactory.createSlice(
       "content-exporter",
       (factory, slice) => {
@@ -141,21 +175,25 @@ async function main() {
       }
     );
 
-    const slicePath = join(impexExportDir, slicePathGenerator.next().value);
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
     await mkdir(dirname(slicePath), {
       recursive: true,
     });
 
+    // write json to file
     await writeFile(slicePath, JSON.stringify(slice, null, 2));
   }
 
-  // transform attachments to wordpress content
+  // make media files available as ImpEx slices
   for (const attachmentResource of attachmentResources) {
+    // create ImpEx slice json content for this media file
     const slice = impexSliceFactory.createSlice(
       "attachment",
       (factory, slice) => {
+        // apply relative path as content
         slice.data = attachmentResource.resource.substring(
-          impexExportDir.length + 1
+          IMPEX_EXPORT_DIR.length + 1
         );
 
         // compute unique image file=>[img[@src]] mapping for this attachment
@@ -170,18 +208,23 @@ async function main() {
       }
     );
 
-    const slicePath = join(impexExportDir, slicePathGenerator.next().value);
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
     await mkdir(dirname(slicePath), {
       recursive: true,
     });
 
+    // write slice json to file
     await writeFile(slicePath, JSON.stringify(slice, null, 2));
+
+    // copy attachment file to target directory with ImpEx conform file name
     await copyFile(
       attachmentResource.resource,
       slicePath.replace(".json", "-" + basename(attachmentResource.resource))
     );
   }
 
+  // JSDOM is preventing automatic process termination so we need to force it
   process.exit(0);
 }
 
