@@ -4,11 +4,11 @@
 
 Migrating existing content into WordPress is a very common task.
 
-Impex provides tooling support for migrating your content to WordPress.
+ImpEx provides tooling support for migrating data to WordPress.
 
 ## Preparation
 
-Impex imports data from a directory containing JSON files grouped in `chunk-\*` sub directories.
+ImpEx imports data from a directory containing JSON files organized in `chunk-\*` sub-directories.
 
 ```
 my-exported-website
@@ -34,13 +34,13 @@ my-exported-website
 
 Both _chunk-\*_ sub directories and the JSON files are suffixed by a 4 digit number.
 
-Impex imports slice files ordered by name. So the slices in sub directory `chunk-0001` will be imported first, then the slices in `chunk-0002` and so on.
+ImpEx imports slice files ordered by name. So the slices in sub directory `chunk-0001` will be imported first, then the slices in `chunk-0002` and so on.
 
 Same rule for `slice-*.json` files within the same `chunk-\*` sub directory : `slice-0001.json` will be imported before `slice-0002.json` and so on.
 
-> Know that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links. Impex will rewrite/fix media links in the content if you **import content as first and media afterwards.**
+> Know that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links in your posts. ImpEx will rewrite/fix media links in the content if you **import content as first and media afterwards.**
 
-Have a look at this [sample Impex export](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) provided by the Impex plugin to get a clue about a minimal working impex export containing content and referencing images.
+Have a look at this [sample ImpEx export](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) provided by the ImpEx plugin to get a clue about a minimal working ImpEx export containing content and referencing images.
 
 ## Data files
 
@@ -48,9 +48,9 @@ Have a look at this [sample Impex export](https://github.com/IONOS-WordPress/cm4
 
 The real data is stored in the `data` property.
 
-The data might be anything expressed in textual form. Beside the data itself, each `slice-*.json` file contains some json data describing the data so that Impex knows how to import.
+The data might be anything expressed in textual form. Beside the data itself, each `slice-*.json` file contains some meta-data describing the contained data so that ImpEx knows how to import.
 
-An minimal slice file transporting a single Wordpress post looks like this:
+An minimal slice file transporting a single WordPress post looks like this:
 
 ```json
 {
@@ -74,7 +74,7 @@ An minimal slice file transporting a single Wordpress post looks like this:
 
 As you can see the real content is located in the `data` property.
 
-Everything except the `data` property are used for versioning and content identification.
+Everything except the `data` property ist used for versioning and content identification.
 
 ### Content (aka WordPress posts/pages)
 
@@ -84,9 +84,9 @@ Content slices may also transport further content like comments, custom fields, 
 
 > To get a clue about the power of content slices by exporting a FSE enabled WordPress instance and inspecting the resulting `slice-_.json` files.
 
-Below is a [JSONschema](https://json-schema.org/) describing the content slice file format.
+Below is the [JSON Schema](https://json-schema.org/) describing the content slice file format.
 
-Download [JSONschema](https://json-schema.org/) definition for content slices : [slice-content.json](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json)
+Download [JSON Schema](https://json-schema.org/) definition for content slices : [slice-content.json](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json)
 
 ```json
 {{#include ./jsonschema/slice-content.json}}
@@ -104,7 +104,7 @@ The `title` property is used as the title.
 
 _See the Content slice [JSONSchema definition](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json) for all supported properties._
 
-Since WordPress expects [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/) you need to transform your HTML content into [block-annotated HTML](https://wordpress.com/support/wordpress-editor/blocks/).
+Since WordPress expects [block-annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) you need to transform your HTML content into [block-annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
 
 There are 2 options to do that :
 
@@ -162,9 +162,9 @@ Attachments a binary files like images/videos or anything else stored in the Wor
 
 Such binary data is handled a bit differently than textual - because it cannot be easily embedded into a JSON file.
 
-Below is a [JSONschema](https://json-schema.org/) describing the attachment slice file format.
+Below is a [JSON Schema](https://json-schema.org/) describing the attachment slice file format.
 
-Download [JSONschema](https://json-schema.org/) definition for media files : [slice-attachment.json](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json)
+Download [JSON Schema](https://json-schema.org/) definition for media files : [slice-attachment.json](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json)
 
 ```json
 {{#include ./jsonschema/slice-attachment.json}}
@@ -192,7 +192,7 @@ So you need to import the image into your WordPress instance. To do so, you need
   }
   ```
 
-  As you can see, there is actually only the `data` property referencing the image. Rest of the slice file is just boilerplate code.
+  As you can see, there is actually only the `data` property referencing the image. Rest of the slice file is just meta-data.
 
 - provide the image in the same chunk directory as it's slice json file and **prefixed** with the slice json file name (`slice-0002.json`) :
 
@@ -200,19 +200,19 @@ So you need to import the image into your WordPress instance. To do so, you need
   slice-0002-greysen-johnson-unsplash.jpg
   ```
 
-Thats it ! If you import the slice file using Impex, the image will appear in the WordPress `uploads` directory and in the WordPress media page. If you referenced the image in your content, it will also appear in your imported pages/posts.
+If you import the slice file using ImpEx, the image will appear in the WordPress `uploads` directory and in the WordPress media page. If you referenced the image in your content, it will also appear in your imported pages/posts.
 
 > Remember: Content slices referencing media files should **ALWAYS** be imported **before** the attachment slices.
 >
 > This can be achieved by naming content slicing with a lower number than the media slices or - much simpler - keeping the content slices in a lower numbered `chunk-*` directory than the attachments.
 >
-> See [simple-import](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) example for a full featured generated import at the [Impex Github page](https://github.com/IONOS-WordPress/cm4all-wp-impex).
+> See [simple-import](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) example for a full featured manually written import at the [ImpEx WordPress Plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 
 #### Adjusting attachment urls
 
 If you import posts referencing an image using relative paths, you will need to adjust the image url in your imported posts to the newly imported attachment.
 
-Suppose you have a various posts referencing an image in different ways :
+Suppose you have various posts referencing an image in different ways :
 
 ```html
 <!-- sub/page-one.html -->
@@ -228,9 +228,9 @@ Suppose you have a various posts referencing an image in different ways :
 <img src="./images/greysen-johnson-unsplash.jpg" />
 ```
 
-After importing generated pages will referencing exactly the same IMG `src` attribute, but the url of the imported image attachment will be different.
+After importing generated pages will reference exactly the same IMG `src` attribute, but the url of the imported image attachment will be different.
 
-For this case you can configure replacing the original with the url of the imported image using slice `meta` property `impex:post-references`. This property tells Impex that the given references should be replaced with the url of the imported attachment file.
+In this case you can configure replacing the original with the url of the imported image using slice `meta` property `impex:post-references`. This property tells ImpEx that the given references should be replaced with the url of the imported attachment file.
 
 ```json
 {
@@ -251,14 +251,12 @@ For this case you can configure replacing the original with the url of the impor
 
 ### Other data
 
-Although Impex provides a simple way to import content and media, you may also want to import more advanced data like database tables or settings into WordPress.
+Although ImpEx provides a simple way to import content and media, you may also want to import more advanced data like database tables or settings into WordPress.
 
-Impex can import
+ImpEx provides built-in support for further data :
 
 - relational data like database tables
 
-- key/value based settings
-
-into WordPress.
+- key/value based settings (aka `wp_options`)
 
 @TODO: Add JSONSchema / examples for other data.
