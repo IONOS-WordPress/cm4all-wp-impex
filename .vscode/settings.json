@@ -12,7 +12,7 @@
     // "**/vendor/**/vendor/**",
     "**/dist/**"
   ],
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
   /*
   "json.schemas": [
     {
@@ -21,4 +21,11 @@
     }
   ]
   */
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "files.associations": {
+    // prevent autoformatting of the homepage example files since it will inject unexpected linebreaks
+    "packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/homepage-dr-mustermann/**/*.html": "html"
+  }
 }
