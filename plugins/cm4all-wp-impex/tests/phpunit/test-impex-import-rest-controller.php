@@ -218,7 +218,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
   }
 
   /*
-    testcase is obsolete since it utilizes the removed Wordpress Importer 
+    testcase is obsolete since it utilizes the removed WordPress Importer 
     @TODO : adapt testcase to new ContentImporter 
   */
   public function _test_upsert_item_slices()

@@ -71,7 +71,7 @@ export default class ImpexSliceFactory {
   }
 
   /**
-   * Generator function yielding relative Impex export paths.
+   * Generator function yielding relative ImpEx export paths.
    * Each generator call returns the path to the next slice file.
    *
    * yielded example : 'chunk-0001/slice-0001.json'

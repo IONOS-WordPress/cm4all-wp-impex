@@ -18,7 +18,7 @@ class TestImpexExport extends ImpexUnitTestcase
     parent::setUp();
 
     /*
-     CAVEAT : tables created using Wordpress install/upgrade mechanism 
+     CAVEAT : tables created using WordPress install/upgrade mechanism 
      (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use 
      the wp phpunit filter making the table temporary. 
 

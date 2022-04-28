@@ -23,7 +23,7 @@ abstract class ImpexUnitTestcase extends \WP_UnitTestCase
   }
 
   /** 
-   * Triggers the Impex actions for provider and profile registration so that all by default loaded prviders and profiles will be available.
+   * Triggers the ImpEx actions for provider and profile registration so that all by default loaded prviders and profiles will be available.
    * 
    * Regularly the Implex plugin will trigger the actions
    * - Impex::WP_ACTION_REGISTER_PROVIDERS

@@ -36,7 +36,7 @@ class TestImpexImport extends ImpexUnitTestcase
     }
 
     /*
-     CAVEAT : tables created using Wordpress install/upgrade mechanism 
+     CAVEAT : tables created using WordPress install/upgrade mechanism 
      (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use 
      the wp phpunit filter making the table temporary. 
 
@@ -182,7 +182,7 @@ class TestImpexImport extends ImpexUnitTestcase
   }
 
   /*
-    testcase is obsolete since it utilizes the removed Wordpress Importer 
+    testcase is obsolete since it utilizes the removed WordPress Importer 
     @TODO : adapt testcase to new ContentImporter 
   */
   function _testConsume()
