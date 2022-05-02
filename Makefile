@@ -60,7 +60,6 @@ MDBOOK_SOURCES := $(wildcard docs/gh-pages/src/*.md)
 MDBOOK_TARGETS := $(subst /src/,/book/,$(MDBOOK_SOURCES))
 
 DOCKER_MDBOOK_IMAGE := cm4all-wp-impex/mdbook
-DOCKER_MDBOOK := docker run --rm -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook
 
 DOCKER_IMPEXCLI_PHPUNIT_IMAGE := cm4all-wp-impex/impex-cli-phpunit
 
@@ -219,7 +218,7 @@ package-lock.json: package.json
 > npm install --no-fund --package-lock-only
 
 docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE)
-> $(DOCKER_MDBOOK) build
+> docker run --rm -v $$(pwd):/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook build docs/gh-pages
 # configure github to bypass jekyll processing on github pages
 > touch docs/gh-pages/book/.nojekyll
 > @touch -m docs/gh-pages/book
@@ -348,7 +347,7 @@ endif
 .PHONY: dev-gh-pages
 #HELP: * watch/rebuild gh-pages on change
 dev-gh-pages: $(DOCKER_MDBOOK_IMAGE)
-> docker run --rm -p 3000:3000 -p 3001:3001 -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve -p 3000 -n 0.0.0.0
+> docker run --rm -p 3000:3000 -p 3001:3001 -v $$(pwd):/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve docs/gh-pages -p 3000 -n 0.0.0.0
 
 .PHONY: dev-js
 #HELP: * rebuild js/css sources on change
