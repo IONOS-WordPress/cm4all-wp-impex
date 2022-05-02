@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "title": "Impex Content Slice",
-  "description": "a Impex slice containing content",
+  "title": "ImpEx Content Slice",
+  "description": "a ImpEx slice containing content",
   "type": "object",
   "properties": {
     "$schema": {
@@ -9,18 +9,18 @@
       "description": "The JSON schema for this slice"
     },
     "version": {
-      "title": "Impex Provider content version",
-      "description": "Version will be used by Impex to know what data format to expect",
+      "title": "ImpEx Provider content version",
+      "description": "Version will be used by ImpEx to know what data format to expect",
       "const": "1.0.0"
     },
     "type": {
-      "title": "Impex slice type",
-      "description": "Value will be used by Impex to know the content type of the slice",
+      "title": "ImpEx slice type",
+      "description": "Value will be used by ImpEx to know the content type of the slice",
       "const": "php"
     },
     "tag": {
-      "title": "Impex slice tag",
-      "description": "The Impex slice tag contains information about the responsible Impex provider for this slice",
+      "title": "ImpEx slice tag",
+      "description": "The ImpEx slice tag contains information about the responsible ImpEx provider for this slice",
       "const": "attachment"
     },
     "meta": {
@@ -51,7 +51,7 @@
     "data": {
       "format": "uri-template",
       "type": "string",
-      "title": "Data portion of this Impex slice",
+      "title": "Data portion of this ImpEx slice",
       "description": "Attachment slice data is expected to be a URI to the attachment file.\nFor media it has to be the URI to the image.\nURI can be absolute or relative.",
       "examples": [
         "./media/image.jpg",
