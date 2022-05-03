@@ -19,3 +19,4 @@ dist
 /Makefile-wp-env.postinit.sh
 /Makefile-wp-env.preinit.sh
 /packages/@cm4all-wp-impex/*/node_modules
+/packages/@cm4all-wp-impex/*/*.tgz

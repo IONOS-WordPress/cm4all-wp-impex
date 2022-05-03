@@ -21,6 +21,13 @@ module.exports = {
       },
     ],
     [
+      "@semantic-release/npm",
+      {
+        npmPublish: true,
+        pkgRoot: "packages/@cm4all-wp-impex/generator",
+      },
+    ],
+    [
       "@semantic-release/exec",
       {
         prepareCmd:
@@ -37,6 +44,7 @@ module.exports = {
           "package.json",
           "plugins/cm4all-wp-impex/plugin.php",
           "plugins/cm4all-wp-impex-example/plugin.php",
+          "packages/@cm4all-wp-impex/generator/package.json",
         ],
         message:
           "chore(release): ${nextRelease.version} [skip release]\n\n${nextRelease.notes}",
@@ -60,7 +68,7 @@ module.exports = {
           },
           {
             path: "dist/cm4all-wp-impex-example-v*.zip",
-            label: "optional third-party Impex integration example plugin",
+            label: "optional third-party ImpEx integration example plugin",
           },
           {
             path: "dist/cm4all-wp-impex-gh-pages-v*.zip",
@@ -68,7 +76,7 @@ module.exports = {
           },
           {
             path: "dist/cm4all-wp-impex/readme.txt",
-            label: "Impex plugin readme for the Wordpress plugin directory",
+            label: "Impex plugin readme for the WordPress plugin directory",
           },
         ],
       },

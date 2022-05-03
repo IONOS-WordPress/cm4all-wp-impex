@@ -1,0 +1,6 @@
+examples/
+tests/
+TODO.md
+*.tgz
+src/*-cli.js
+*.log
