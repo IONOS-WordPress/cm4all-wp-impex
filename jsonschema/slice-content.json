@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "ImpEx Content Slice",
+  "description": "a ImpEx slice containing content",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The JSON schema for this slice"
+    },
+    "version": {
+      "title": "ImpEx Provider content version",
+      "description": "Version will be used by ImpEx to know what data format to expect",
+      "const": "1.0.0"
+    },
+    "type": {
+      "title": "ImpEx slice type",
+      "description": "Value will be used by ImpEx to know the content type of the slice",
+      "const": "php"
+    },
+    "tag": {
+      "title": "ImpEx slice tag",
+      "description": "The ImpEx slice tag contains information about the responsible ImpEx provider for this slice",
+      "const": "content-exporter"
+    },
+    "meta": {
+      "title": "Metadata for the slice",
+      "description": "Metadata is a JSON object used to store additional information about the slice",
+      "const": {
+        "entity": "content-exporter"
+      }
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/posts-item"
+          },
+          "minItems": 1,
+          "$comment": "@TODO: unique ids are not yet supported by jsonschema",
+          "uniqueItems": true
+        }
+      },
+      "title": "Data portion of this ImpEx slice",
+      "description": "data contains the real ImpEx data.",
+      "required": ["posts"]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["version", "type", "tag", "meta", "data"],
+  "definitions": {
+    "posts-item": {
+      "title": "WordPress posts stored in this this ImpEx slice",
+      "type": "object",
+      "properties": {
+        "wp:post_id": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "WordPress post_id",
+          "description": "The unique WordPress post id of the post"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "title": "WordPress post title",
+          "description": "The title of the WordPress post as it is stored in the database"
+        },
+        "wp:post_content": {
+          "type": "string",
+          "minLength": 1,
+          "title": "WordPress post content",
+          "description": "The content of the WordPress post",
+          "examples": [
+            "<!-- wp:paragraph -->\n<p>Hello from first imported post !</p>\n<!-- /wp:paragraph -->",
+            "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:html -->\n<p>A bit of custom html utilizing the Gutenberg html block</p>\n<ul>\n  <li>hi</li>\n  <li>ho</li>\n  <li>howdy</li>\n</ul><!-- /wp:html -->"
+          ]
+        },
+        "wp:post_type": {
+          "title": "WordPress post type",
+          "description": "The type of the WordPress post.\nCcontent related post types are 'post' and 'page'.\nIf not declared, type 'post' will be assumed.",
+          "type": "string",
+          "enum": [
+            "post",
+            "page",
+            "nav_menu_item",
+            "wp_template",
+            "wp_template_part",
+            "wp_block",
+            "wp_global_styles"
+          ],
+          "default": "page"
+        },
+        "wp:status": {
+          "type": "string",
+          "title": "WordPress post status",
+          "description": "The WordPress post status (https://wordpress.org/support/article/post-status/)",
+          "enum": ["publish", "future", "draft", "pending", "private"],
+          "default": "draft"
+        },
+        "wp:post_excerpt": {
+          "type": "string",
+          "title": "WordPress excerpt",
+          "description": "The excerpt of the post.",
+          "minLength": 1
+        },
+        "wp:post_name": {
+          "type": "string",
+          "title": "WordPress post slug",
+          "description": "Used to generate the permalink. If not given, the sanitized post title will be used instead.",
+          "minLength": 1
+        },
+        "wp:post_parent": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "WordPress post parent id",
+          "description": "The WordPress post id of the parent post.\n If not given, the post will be created as a top level post."
+        }
+      },
+      "required": ["wp:post_id", "title", "wp:post_content"],
+      "additionalProperties": false
+    }
+  }
+}
