@@ -1,3 +1,10 @@
+### [1.3.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.0...1.3.1) (2022-05-03)
+
+
+### Bug Fixes
+
+* removed obsolete files ([0bc19e6](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/0bc19e61e2e0ce815fe14fc156ab2fd4f02b55ad))
+
 ## [1.3.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.2.1...1.3.0) (2022-05-03)
 
 
