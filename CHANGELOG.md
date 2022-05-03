@@ -1,3 +1,18 @@
+## [1.3.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.2.1...1.3.0) (2022-05-03)
+
+
+### Features
+
+* added npm package [@cm4all-wp-impex](https://github.com/cm4all-wp-impex) publish informations ([c0c659a](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c0c659a53c49004b5887bab031a98acb17a2c833))
+* **attachment:** added slice property 'impex:post-references' ([fca0be4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/fca0be4ac978faa3bf8b1aeae2319429ed5e4fe3))
+
+
+### Bug Fixes
+
+* **impex-transform:** add testcase core/image injecting <figure>...<figcaption> using onLoad hook ([278a0d9](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/278a0d95df5b9060d2feef6011a05ce1336af8d3))
+* **impex-transform:** final attempt to fix resetting block transforms for tape tests ([8c793f7](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/8c793f720598ea4a2acadb9d4544781f091816af))
+* provide NPM_TOKEN to semantic-release ([5f2fed5](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/5f2fed59a76cfb1b321f1b4d2b4bc05e8c7daac3))
+
 ### [1.2.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.2.0...1.2.1) (2022-03-24)
 
 
