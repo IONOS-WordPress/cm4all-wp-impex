@@ -206,7 +206,7 @@ If you import the slice file using ImpEx, the image will appear in the WordPress
 >
 > This can be achieved by naming content slicing with a lower number than the media slices or - much simpler - keeping the content slices in a lower numbered `chunk-*` directory than the attachments.
 >
-> See [simple-import](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) example for a full featured manually written import at the [ImpEx WordPress Plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex).
+> See [simple-import](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) example for a full featured manually written import at the [ImpEx WordPress plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 
 #### Adjusting attachment urls
 

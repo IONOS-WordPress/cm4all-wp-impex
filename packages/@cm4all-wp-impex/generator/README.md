@@ -1,28 +1,25 @@
 This package provides a foundation of JavaScript functions/classes for transforming almost any kind of data into WordPress content.
 
-[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is especially useful for converting static HTML websites and website-builder/CMS generated HTML content into WordPress content.
+[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is especially useful for converting bare HTML content and website-builder/CMS generated HTML into WordPress content.
 
-The framework does not communicate with a WordPress instance.
+The framework does not require a WordPress instance. It rather offers an extensible platform for generating WordPress content consumable by the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 
-It rather offers an extensible platform for generating WordPress content consumable by the [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex).
-
-> [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) is a Open Source WordPress Plugin for importing / exporting WordPress data.
-
-_[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is part of the [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) project._
+> [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) is a Open Source WordPress plugin for importing / exporting WordPress data.
+> _[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is part of the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) project._
 
 # Details
 
-The [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) specifies a [JSON](https://www.json.org/) file [based import/export format for WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html)).
+The [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) specifies a [JSON](https://www.json.org/) file [based import/export format for WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html)).
 
 [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) provides
 
 - functionality for transforming data into [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block)
 
-- support for creating ImpEx JSON files containing [WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages) (like pages,posts,template,block patterns and so on) and [WordPress attachments](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos) like images
+- support for creating ImpEx JSON files containing [WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages) (like pages/posts/templates/blocks/ patterns and so on) and [WordPress attachments](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos) like images
 
-- functions to [create file/folder structure expected](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html) by the [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex)
+- functions to [create file/folder structure expected](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html) by the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
-Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) includes a [full featured example transforming a complete static website into a WordPress content](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) importable by [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex). The [example](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) is the perfect starting point for creating your own WordPress content generator.
+Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) includes a [full featured example transforming a complete static website into a WordPress content](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) consumable by [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex). The [example](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) is the perfect starting point for creating your own WordPress content generator.
 
 # Installation
 
@@ -30,7 +27,7 @@ Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-
 
 # Development
 
-- clone [ImpEx WordPress Plugin Git repository](https://github.com/IONOS-WordPress/cm4all-wp-impex) project : `git clone https://github.com/IONOS-WordPress/cm4all-wp-impex.git`
+- clone [ImpEx WordPress plugin Git repository](https://github.com/IONOS-WordPress/cm4all-wp-impex) project : `git clone https://github.com/IONOS-WordPress/cm4all-wp-impex.git`
 
 - cd into the `@cm4all-wp-impex/generator` sub-project : `cd packages/@cm4all-wp-impex/generator`
 
@@ -49,7 +46,7 @@ Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-
 To use the API just import the exposed API into your code.
 
 ```js
-import { ImpexTransformer, ImpexSliceFactory } from `@cm4all-wp-impex/generator`;
+import { ImpexTransformer, traverseBlocks, ImpexSliceFactory } from `@cm4all-wp-impex/generator`;
 ```
 
 ### Transforming data into WordPress content
@@ -57,15 +54,13 @@ import { ImpexTransformer, ImpexSliceFactory } from `@cm4all-wp-impex/generator`
 Data transformation into [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block)
 is done by the [`ImpexTransformer`](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/src/impex-content-transform.js) singleton.
 
-[`ImpexTransformer`](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/src/impex-content-transform.js) is configurable by it's `setup(...)` function supporting various hooks for transforming the initial data into WordPress content.
+[`ImpexTransformer`](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/src/impex-content-transform.js) can be configured by calling it's `setup(...)` function supporting various hooks for customizing the transformation.
 
-`ImpexTransformer.transform(data)` transforms the content provided in the `data` argument to [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
+`ImpexTransformer.transform(data)` transforms the content provided in the `data` argument into [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
 
 #### `ImpexTransformer.setup({/* options */})`
 
-The `setup` function configures the singleton with the given options.
-
-The following options are supported:
+##### Options
 
 - `verbose` (boolean, default : `false`) enables verbose output for debugging purposes
 
@@ -89,17 +84,17 @@ The following options are supported:
 
 - `onDomReady(Document : document) : void` (function, default : undefined) callback executed when HTML is loaded and the DOM is ready.
 
-  At this stage you can use the HTML DOM manipulation API, `querySelector` etc. to rearrange the HTML DOM the way you need.
-
-  See [tests](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js) for example usage.
+  At this stage, you can use the HTML DOM manipulation API (`querySelector` for example) to rearrange the HTML DOM the way you need.
 
   > The `Transformer` uses [JSDOM](https://www.npmjs.com/package/global-jsdom) to provide DOM capabilities to NodeJS. So you can use everything you know about DOM manipulation in NodeJS.
+
+  See [tests](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js) for example usage.
 
 - `onRegisterCoreBlocks() : boolean` (function, default : undefined) callback to register Gutenberg blocks.
 
   This callback is the power horse transforming HTML to [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
 
-  **Most transformation work is delegated to the [Block Transforms API](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/). This API processes the given DOM and applies the Gutenberg Block transformations of all registered blocks. The result is valid [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) as we want it.**
+  **Most transformation work is delegated to the [Gutenberg Block Transforms API](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/). This API processes the given DOM and applies the Gutenberg Block transformations of all registered blocks. The result is valid [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) as we want it.**
 
   Using the `onRegisterCoreBlocks` callback you can register your own Gutenberg blocks (including their [transform rules](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/)) or attach additional [transform rules](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/) to existing core Gutenberg blocks utilizing [Gutenberg filter '`blocks.registerBlockType`'](https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#blocks-registerblocktype).
 
@@ -111,9 +106,9 @@ The following options are supported:
 
 - `onSerialize(blocks : array) : array` (function, default : undefined) callback executed after the [Gutenberg block](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-library/#registercoreblocks) transform rules have been applied.
 
-  The resulting array of Gutenberg blocks is passed to the callback. The callback can modify the blocks array and is expected to return it.
+  The resulting array of Gutenberg blocks is passed to the callback. The callback can modify the blocks array and is expected to return them.
 
-  Example transforming all found `IMG.title` attributes into the caption block attribute. This will result in a `<figcaption>` element inside the block output:
+  Example transforming all [Gutenberg Image block](https://wordpress.org/support/article/image-block/) attributes into caption block attribute. This will result in a `<figcaption>` element inside the block output:
 
   ```js
   ImpexTransformer.setup({
@@ -131,19 +126,21 @@ The following options are supported:
   });
   ```
 
+  > `traverseBlocks` is a helper function exposed by this package to traverse the Gutenberg block hierarchy like a flat array.
+
   See [tests](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js) for example usage.
 
 #### `ImpexTransformer.transform(data : any) : string`
 
 The `transform` function transforms the given `data` into [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
 
-The `data` argument can be anything. All hooks configured using `ImpexTransformer.setup(...)` will be executed as described.
+The `data` argument can be anything. All hooks configured using `ImpexTransformer.setup(...)` will take effect by executing this function.
 
 The returned string is valid [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block).
 
 ### Encapsulate Gutenberg block annotated HTML in ImpEx slice JSON data structure
 
-To make [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) importable into WordPress we need to generate [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) conform JSON files wrapping the content with WordPress meta-data.
+To import the generated [Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) into WordPress we need to generate [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) conform JSON files wrapping the content with WordPress meta-data.
 
 Class `ImpexSliceFactory` provides a simple way to generate [WordPress ImpEx Slice JSON structures](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files).
 
@@ -155,13 +152,15 @@ const sliceFactory = new ImpexSliceFactory({
 });
 ```
 
-There is just one (optional) option `next_post_id : integer` (default : 1) which might be used to provide a individual start `post_id`. It is only used when creating content slices for WordPress content (like `posts` or `pages`) or media.
+There is just one (optional) option `next_post_id : integer` (default : 1) which might be used to provide a individual start `post_id`. `next_post_id` is only taken into account when creating [content slices for WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files) like `posts`/`pages` or media.
 
-_[ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) supports some more slice types for exporting whole database tables and more, but in these cases `next_post_id` is not in use._
+_The [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) supports some more slice types (for exporting whole database tables and more) but in these cases `next_post_id` is not in use._
 
-Using the `ImpexSliceFactory` instance we've created we can now generate [WordPress ImpEx Slice JSON structures](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files) for WordPress content or media by calling the `createSlice(sliceType : string, callback(factory, sliceJson : any) : any)`.
+Using the `ImpexSliceFactory` instance we've created we can now generate [WordPress ImpEx Slice JSON structures](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files) for WordPress content or media by calling function `createSlice(sliceType : string, callback(factory, sliceJson : any) : any)`.
 
-The `sliceType` argument is the type of the slice to be created. The `callback` function is called with the `ImpexSliceFactory` instance and the generated Slice JSON.
+The `sliceType` argument is the type of the slice to be created.
+
+The `callback` function is called with the `ImpexSliceFactory` instance and the generated slice JSON structure as parameters .
 
 #### Encapsulate WordPress content into [ImpEx JSON](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files)
 
@@ -204,11 +203,12 @@ const slice = sliceFactory.createSlice("attachment", (factory, slice) => {
 
 In most cases, our imported content (aka posts/pages) will reference the media in various ways like `/image/foo.jpg` or `../../images/foo.jpg` and so on.
 
-[ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) will take care about replacing image references if we provide a replacement hint `impex:post-references` (see [Attachments (like Pictures and Videos)](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos) for details).
+[ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) will take care about replacing image references in [ Gutenberg block annotated HTML](https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block) if we provide a replacement hint `impex:post-references` (see [Attachments (like Pictures and Videos)](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos) for details).
 
 ```js
 const slice = sliceFactory.createSlice("attachment", (factory, slice) => {
   slice.data = "./foo.jpg";
+  // will result in replacing all matching references in posts of the WordPress instance with the link to the imported image
   slice.meta["impex:post-references"] = [
     "/image/foo.jpg",
     "../../images/foo.jpg",
@@ -220,11 +220,13 @@ const slice = sliceFactory.createSlice("attachment", (factory, slice) => {
 
 ### Generate filenames for the JSON slice data in [ImpEx Export format](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation)
 
-The [ImpEx WordPress Plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) imports and exports data into a directory structure according to the [ImpEx Export format](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html).
+The [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) imports and exports data into a directory structure according to the [ImpEx Export format](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html).
 
-[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) supports creating the correct paths within the export directory by providing a static generator function `SliceFactory.PathGenerator()`.
+[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) supports creating the correct paths by providing a static generator function `SliceFactory.PathGenerator()`.
 
 This function returns a [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) function yielding a new relative path each time it's `next()` function is called.
+
+The optional `SliceFactory.PathGenerator(max_slices_per_chunk : integer = 10)` function parameter may be used to limit the number of slices per chunk directory to a custom value.
 
 ```js
 import { ImpexSliceFactory } from "@cm4all-wp-impex/generator";
@@ -233,6 +235,7 @@ import { ImpexSliceFactory } from "@cm4all-wp-impex/generator";
 const pathGenerator = ImpexSliceFactory.PathGenerator();
 ...
 
+// 2  => only 2 slice files per chunk directory
 const gen = SliceFactory.PathGenerator(2);
 
 console.log(gen.next().value); // => "chunk-0001/slice-0001.json"

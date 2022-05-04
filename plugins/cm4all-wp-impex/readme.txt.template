@@ -52,9 +52,9 @@ Impex provides :
 
 Documentation is in a very early stage and is not yet complete.
 
-It's available at the [Impex Plugin GitHub pages](https://ionos-wordpress.github.io/cm4all-wp-impex/)
+It's available at the [Impex plugin GitHub pages](https://ionos-wordpress.github.io/cm4all-wp-impex/)
 
-Please file bugs and feature requests at the [Impex Plugin GitHub issues](https://github.com/IONOS-WordPress/cm4all-wp-impex/issues)
+Please file bugs and feature requests at the [Impex plugin GitHub issues](https://github.com/IONOS-WordPress/cm4all-wp-impex/issues)
 
 = Why ImpE written in PHP 8 ? =
 
@@ -64,9 +64,9 @@ Because PHP 8
 
 * allows a much cleaner PHP code
 
-The Plugin version available here (at WordPress plugin directory) is transpiled down to PHP 7.4
+The plugin version available here (at WordPress plugin directory) is transpiled down to PHP 7.4
 
-If you prefer to use the PHP 8 version, you can download it from the [ImpEx WordPress Plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex)
+If you prefer to use the PHP 8 version, you can download it from the [ImpEx WordPress plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
 = What's the current feature set ? =
 

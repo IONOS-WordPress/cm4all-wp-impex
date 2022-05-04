@@ -22,4 +22,4 @@ It provides
 
 # Development
 
-The sources of this plugin are maintained at the [Impex WordPress Plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex).
+The sources of this plugin are maintained at the [Impex WordPress plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex).
