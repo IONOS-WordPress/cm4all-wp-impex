@@ -2,7 +2,7 @@
 
 # Usage
 
-You can use this plugin **out of the box** to export/import
+ImpEx supports **out of the box** the export/import of
 
 - content (posts/pages/nav_menu and media assets)
 
@@ -12,11 +12,11 @@ For everything else (third-party plugin settings for example) you can provide cu
 
 ## Configuration
 
-ImpEx import and export can be customized by providing **Profiles**.
+ImpEx can be customized by providing **Profiles**.
 
 An **Export profile** defines the WordPress data to export.
 
-An **Import profile** declares how and which export data can be imported.
+An **Import profile** declares how and which export data could be imported.
 
 ## Custom profile configuration
 
@@ -57,7 +57,7 @@ Fortunately ImpEx already provides some low level building blocks called **Expor
   // register a new export profile with a unique name
   $profile = Impex::getInstance()->Export->addProfile('impex-export-profile-example');
   // give the profile a senseful description
-  $profile->setDescription('Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic]');
+  $profile->setDescription('Exports posts/pages/media-assets and plugin data of complianz-gdpr,ninja-forms and ultimate-maps-by-supsystic');
 
   // export pages/posts/comments/block patterns/templates/template parts/reusable blocks
   $profile->addTask(
@@ -77,13 +77,15 @@ Fortunately ImpEx already provides some low level building blocks called **Expor
     "ninja-forms db tables (nf3_*)",
     cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
     // ninja-forms stores data in custom tables prefixed with 'nf_3'
-    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR => 'nf3_*',]
+    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR => 'nf3_*']
   )->disabled = $plugin_ninjaforms_disabled;
   $profile->addTask(
     'ninja-forms wp_options',
     cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
     // ninja-forms stores it options prefixed with 'ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*'
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*']]
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*']
+    ]
   )->disabled = $plugin_ninjaforms_disabled;
 
   // export ultimate_maps related tables/options
@@ -92,13 +94,15 @@ Fortunately ImpEx already provides some low level building blocks called **Expor
     "ultimate_maps db tables (ums_*)",
     cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
     // ultimate maps stores data in custom tables prefixed with 'ums_'
-    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR => 'ums_*',]
+    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR => 'ums_*']
   )->disabled = $plugin_ultimatemaps_disabled;
   $profile->addTask(
     'ultimate_maps wp_options',
     cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
     // ultimate maps stores data in wp options prefixed with 'ums_*', 'wp_ums_*'
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['ums_*', 'wp_ums_*',]]
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['ums_*', 'wp_ums_*']
+    ]
   )->disabled = $plugin_ultimatemaps_disabled;
 
   // export complianz related tables/options
@@ -113,15 +117,10 @@ Fortunately ImpEx already provides some low level building blocks called **Expor
     'complianz-gdpr wp_options',
     cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
     // complianz stores data in wp options prefixed with 'cmplz_*', 'complianz_*'
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['cmplz_*', 'complianz_*']]
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['cmplz_*', 'complianz_*']
+    ]
   )->disabled = $plugin_complianz_disabled;
-
-  // export our own plugin uses wp_options starting with `foo-` or `bar*`
-  $profile->addTask(
-    'custom plugin options',
-    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
-    [cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR => ['foo-*','bar-*']]
-  )->disabled = !is_plugin_active("cm4all-wordpress/plugin.php");
 });
 ```
 
@@ -163,7 +162,7 @@ ImpEx provides **Events** for exactly that purpose :
 });
 ```
 
-Tada - thats it !
+Tada - that's it !
 
 There ist just one caveat ... what if the ImpEx 'all' profile gets disabled by someone else ?
 To work around this we can also introduce a custom import profile utilizing the 'all' import provider:
