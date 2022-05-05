@@ -38,7 +38,7 @@ ImpEx imports slice files ordered by name. So the slices in sub directory `chunk
 
 Same rule for `slice-*.json` files within the same `chunk-\*` sub directory : `slice-0001.json` will be imported before `slice-0002.json` and so on.
 
-> Know that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links in your posts. ImpEx will rewrite/fix media links in the content if you **import content as first and media afterwards.**
+> Knowing that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links in your posts. ImpEx will rewrite/fix media links in the content if you **import content as first and media afterwards.**
 
 Have a look at this [sample ImpEx export](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import) provided by the ImpEx plugin to get a clue about a minimal working ImpEx export containing content and referencing images.
 
