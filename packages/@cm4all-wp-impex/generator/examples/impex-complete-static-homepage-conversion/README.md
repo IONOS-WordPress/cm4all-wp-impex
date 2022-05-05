@@ -1,18 +1,21 @@
 # About
 
-This is a full featured example of converting a regular static website of a fictive dentist to a WordPress site.
+This is a full featured example of converting a regular static website of a fictional german dentist to a WordPress site.
 
-The web site is available offline at folder `./homepage-dr-mustermann`.
+The web site is available offline at directory `./homepage-dr-mustermann`.
 
-You can view the website by starting the PHP built-in webserver (`php -S localhost:8080 -t homepage-dr-mustermann/`) and open the browser to `http://localhost:8080/`.
+You can view the website by
+
+- starting the PHP built-in webserver : `php -S localhost:8080 -t homepage-dr-mustermann/`
+- and open the website in your browser : `http://localhost:8080/`.
 
 # Conversion process
 
 The conversion process is implemented in a single file `./index.js` :
 
-- reading the html and media files from the filesystem using plain NodeJS
+- scanning for html and media files from the filesystem using plain NodeJS
 
-- converting the HTML files to [ImpEx slice JSON](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages) using `ImpexTransformer` and `ImpexSliceFactory` from package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator). The HTML transformation is set up in the `setup(...)` function.
+- converting the HTML files to [ImpEx slice JSON](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages) using `ImpexTransformer` and `ImpexSliceFactory` from package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator). The HTML transformation is customized in the `setup(...)` function.
 
 - creating [ImpEx slice JSON](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos) for the media files using `ImpexSliceFactory` from package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator)
 
@@ -20,11 +23,13 @@ The conversion process is implemented in a single file `./index.js` :
 
   - the media files are saved to the filesystem using paths adapted from the `ImpexSliceFactory.PathGenerator` generated paths for the slice files (as expected by the [ImpEx Export format](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos)).
 
-The conversion is implemented in less than 240 lines of code thanks to package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator).
+The conversion process is implemented in less than 240 lines of code thanks to package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator).
 
-You can run the conversion script by executing `./index.js` (don't forget to activate the right nodejs version before using `nvm use` and to install the required NodeJS dependencies using `npm ci`).
+You can run the conversion script by executing `./index.js`
 
-The result is a folder `generated-impex-import/` containing the the[ImpEx export folder layout](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation) including the generated ImpEx slice JSON files and media files.
+> Ensure the right nodejs version is active before using `nvm install` and to install the required NodeJS dependencies using `npm ci`.
+
+The result is a folder `generated-impex-import/` containing the generated [ImpEx export folder layout](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation) containing the ImpEx slice JSON files and media files.
 
 This export can now be imported into WordPress using [ImpEx CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) :
 
@@ -34,7 +39,7 @@ impex-cli.php import -username=<adminusername> -password=<adminpassword> -rest-u
 
 _(Replace the `<placeholder>` with your own values.)_
 
-> Ensure your WordPress instance is empty (does not have any pages/posts/media).
+> Ensure your WordPress instance is empty (does not contain any pages/posts/media).
 
 After executing the command the website contents are imported into your WordPress instance.
 
@@ -54,13 +59,15 @@ Possible improvements:
 
 - The navigation bar could be converted to a custom WordPress nav_menu.
 
-  But : navigation is different handled in FSE and classic themes. In a FSE you would generate a [Navigation block](https://wordpress.org/support/article/navigation-block/), in a classic theme it works different. In other words it depends on the target WordPress environment how to take over navigation.
+  Navigation is different handled in FSE and classic themes. In a FSE you would generate a [Navigation block](https://wordpress.org/support/article/navigation-block/), in a classic theme it works different. It depends on the target WordPress environment how to take over navigation.
 
-- Styles are also not taken over in the example.
+- Styles are ignored in the example.
 
-  Because it depends on the goal of the transformation. If the content should be placed in a WordPress theme providing the complete styling, this is not needed. But if needed, style properties like fonts and colors could be introspected and transformed to FSE theme.json settings.
+  Because it depends on the goal of the transformation. If the content should be styled completely by a WordPress theme providing the complete styling, this is not needed.
 
-- The overall layout (header/footer/main section) could be converted to [FSE part templates](https://developer.wordpress.org/themes/block-themes/templates-and-template-parts/).
+  But if needed, style properties like fonts and colors could be introspected and transformed to FSE theme.json settings.
+
+- The overall layout (header/footer/main section) is also ignored (but could be converted to [FSE part templates](https://developer.wordpress.org/themes/block-themes/templates-and-template-parts/)).
 
   But : as you might guess - all these improvements may vary depending on the goal.
 

@@ -14,4 +14,4 @@ The sources can be found at the [ImpEx WordPress plugin GitHub repository](https
 {{#include ./../../../../packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js}}
 ```
 
-The script is available at [ImpEx WordPress plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js)
+The script is also available at [ImpEx WordPress plugin GitHub repository](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js)
