@@ -67,6 +67,16 @@ Possible improvements:
 
   But if needed, style properties like fonts and colors could be introspected and transformed to FSE theme.json settings.
 
+- Contact form will be taken over as `core/html` block. Submitting the form does not work in the example.
+
+  WordPress/Gutenberg does not provide a generic Form block. There is no option to convert the HTML form to something matching using plain WordPress / Gutenberg.
+
+  But the form could be easily converted into a [Ninja Form](https://ninjaforms.com/) or any other form builder plugin available for WordPress.
+
+  To keep the example simple and working without depending on additional plugins like [Ninja Forms](https://ninjaforms.com/) the example ist just converted to a `core/html` block.
+
+  _So it depends on your target WordPress environment (and available plugins) how the conversion will be implemented._
+
 - The overall layout (header/footer/main section) is also ignored (but could be converted to [FSE part templates](https://developer.wordpress.org/themes/block-themes/templates-and-template-parts/)).
 
   But : as you might guess - all these improvements may vary depending on the goal.
