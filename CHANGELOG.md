@@ -1,3 +1,11 @@
+### [1.3.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.3...1.3.4) (2022-05-10)
+
+
+### Bug Fixes
+
+* typo fixed in plugin descriptor ([419625f](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/419625f0240cff3941a58340ecbb520b4bc2effc))
+* typo fixed in wordpress descriptor ([ba440bd](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ba440bd78bcb5d153c05929f244eedd849c6d946))
+
 ### [1.3.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.2...1.3.3) (2022-05-10)
 
 
