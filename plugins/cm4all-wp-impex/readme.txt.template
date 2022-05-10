@@ -33,7 +33,7 @@ Impex provides :
 
   * A user interface for importing / exporting data via ImpEx WP admin screen
 
-* the ImpEx API is designed to support resumable/abortable imports and exports.
+* the ImpEx API is designed to support resumable/cancelable imports and exports.
 
 * ImpEx provides a REST API integrated into WordPress
 
