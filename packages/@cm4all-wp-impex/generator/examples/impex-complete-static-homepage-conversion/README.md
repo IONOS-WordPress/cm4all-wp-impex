@@ -9,6 +9,12 @@ You can view the website by
 - starting the PHP built-in webserver : `php -S localhost:8080 -t homepage-dr-mustermann/`
 - and open the website in your browser : `http://localhost:8080/`.
 
+## [Watch the walk-trough on YouTube](https://img.youtube.com/vi/pjG69RmULYo/2.jpg)
+
+[![Watch the video](https://img.youtube.com/vi/pjG69RmULYo/2.jpg)](https://www.youtube.com/watch?v=pjG69RmULYo)
+
+_(German audio with english sub titles.)_
+
 # Conversion process
 
 The conversion process is implemented in a single file `./index.js` :
