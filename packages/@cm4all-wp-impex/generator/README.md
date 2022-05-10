@@ -7,6 +7,10 @@ The framework does not require a WordPress instance. It rather offers an extensi
 > [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) is a Open Source WordPress plugin for importing / exporting WordPress data.
 > _[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is part of the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) project._
 
+[Watch the tutorial on YouTube](https://img.youtube.com/vi/pjG69RmULYo/2.jpg):
+
+[![Watch the video](https://img.youtube.com/vi/pjG69RmULYo/2.jpg)](https://www.youtube.com/watch?v=pjG69RmULYo)
+
 # Details
 
 The [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) specifies a [JSON](https://www.json.org/) file [based import/export format for WordPress content](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html)).

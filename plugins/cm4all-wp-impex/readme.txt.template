@@ -44,6 +44,11 @@ Impex provides :
 * a [CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) for importing/exporting data via ImpEx REST interface.
   The ImpEx CLI can be used as an alternative to the ImpEx WP admin screen. 
 
+* related NPM package [@cm4all-wp-impex/generator](https://www.npmjs.com/package/@cm4all-wp-impex/generator) enabling transformation of any content to Impex Export format.
+  
+  Using this package you're able to convert any content to WordPress and import it using the ImpEx plugin. See the [Tutorial](https://ionos-wordpress.github.io/cm4all-wp-impex/cm4all-wp-impex-generator/static-website-tutorial.html) 
+  or [watch the walk-trough a Youtube](https://www.youtube.com/watch?v=pjG69RmULYo).
+
 **Your help is welcome !!**
 
 == Frequently Asked Questions ==
