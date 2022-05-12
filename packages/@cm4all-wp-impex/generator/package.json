@@ -1,7 +1,7 @@
 {
   "name": "@cm4all-wp-impex/generator",
   "version": "1.3.4",
-  "description": "Foundation for transforming any data to Gutenberg block annotated WordPress content into WordPress ImpEx plugin (https://github.com/IONOS-WordPress/cm4all-wp-impex) export format",
+  "description": "Transforming any data to Gutenberg block annotated WordPress content by generating WordPress ImpEx plugin (https://github.com/IONOS-WordPress/cm4all-wp-impex) files",
   "keywords": [
     "cm4all-wp-impex",
     "transform",

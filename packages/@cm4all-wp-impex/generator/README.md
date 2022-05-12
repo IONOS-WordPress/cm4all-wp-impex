@@ -4,7 +4,7 @@ This package provides a foundation of JavaScript functions/classes for transform
 
 The framework does not require a WordPress instance. It rather offers an extensible platform for generating WordPress content consumable by the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 
-> [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) is a Open Source WordPress plugin for importing / exporting WordPress data.
+> [ImpEx](https://github.com/IONOS-WordPress/cm4all-wp-impex) is a [Open Source WordPress plugin for importing / exporting WordPress data](https://github.com/IONOS-WordPress/cm4all-wp-impex).
 > _[`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) is part of the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex) project._
 
 [Watch the tutorial on YouTube](https://img.youtube.com/vi/pjG69RmULYo/2.jpg):
