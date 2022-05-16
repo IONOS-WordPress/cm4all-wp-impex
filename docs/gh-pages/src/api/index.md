@@ -6,7 +6,9 @@
 
 All ImpEx features are exposed by it's WordPress REST API endpoint.
 
-The REST API is available at `/wp-json/cm4all-wp-impex/v1/`.
+See [ImpEx REST API documentation](./cm4all-wp-impex-oas.md).
+
+The REST API is also available as [OpenAPI Specification Format](https://swagger.io/specification/v2/) : Download [ImpEx OpenAPI Specification](http://0.0.0.0:3000/api/cm4all-wp-impex-oas.json) here.
 
 You can explore the ImpEx Rest API using any HTTP Rest API Client.
 

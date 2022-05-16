@@ -217,13 +217,24 @@ node_modules: package-lock.json
 package-lock.json: package.json
 > npm install --no-fund --package-lock-only
 
-docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE)
+# must be invoked manually to generate oas rest api json
+# caveat: cannot be invoked in github action context
+docs/gh-pages/src/api/cm4all-wp-impex-oas.json: $(WP_ENV_HOME)
+> cd docs/gh-pages/src/api
+> curl -s http://localhost:8888/rest-api/schema | jq '.info.title = "cm4all-wp-impex REST API" | del(.info.description) | .info.version="v1" | del(.info.contact) | del(.host) | del(.schemes)' > cm4all-wp-impex-oas.json
+
+# must be invoked manually to generate rest api from swagger api markdown
+docs/gh-pages/src/api/cm4all-wp-impex-oas.md: docs/gh-pages/src/api/cm4all-wp-impex-oas.json
+> cd docs/gh-pages/src/api
+> npx --yes openapi-to-md ./cm4all-wp-impex-oas.json >cm4all-wp-impex-oas.md
+
+docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE) 
 > docker run --rm -v $$(pwd):/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook build docs/gh-pages
 # configure github to bypass jekyll processing on github pages
 > touch docs/gh-pages/book/.nojekyll
 > @touch -m docs/gh-pages/book
 
-HELP: build docs
+#HELP: build docs
 dist/docs : node_modules $(DOCS_MERMAID_TARGETS) $(DOCS_MARKDOWN_TARGETS) docs/gh-pages/book
 
 dist/cm4all-wp-impex-gh-pages: docs/gh-pages/book/
