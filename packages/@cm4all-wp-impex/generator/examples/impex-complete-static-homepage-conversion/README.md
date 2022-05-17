@@ -31,16 +31,18 @@ The conversion process is implemented in a single file `./index.js` :
 
 The conversion process is implemented in less than 240 lines of code thanks to package [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator).
 
-You can run the conversion script by executing `./index.js`
+You can run the conversion script by executing `./index.js` (can be found at the GitHub repository : [packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion\index.js](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js)
 
 > Ensure the right nodejs version is active before using `nvm install` and to install the required NodeJS dependencies using `npm ci`.
+
+> Ensure that you've installed the script dependencies by entering directory `cm4all-wp-impex/packages/@cm4all-wp-impex/generator` and executing `npm ci`.
 
 The result is a folder `generated-impex-import/` containing the generated [ImpEx export folder layout](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation) containing the ImpEx slice JSON files and media files.
 
 This export can now be imported into WordPress using [ImpEx CLI](https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html) :
 
 ```sh
-impex-cli.php import -username=<adminusername> -password=<adminpassword> -rest-url=<your-wordpress-rest-api-endpoint> -profile=all ./generated-impex-export/
+impex-cli.php import -username=<adminusername> -password=<adminpassword> -rest-url=<your-wordpress-rest-api-endpoint> ./generated-impex-export/
 ```
 
 _(Replace the `<placeholder>` with your own values.)_

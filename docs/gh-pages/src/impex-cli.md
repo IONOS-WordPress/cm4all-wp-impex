@@ -259,7 +259,6 @@ Example usage:
 impex-cli.php import \
   -username=<adminuser> -password='<password>' \
   -rest-url=http://localhost:8888/wp-json \
-  -profile=all \
   ~/tmp/my-export
 ```
 
@@ -267,11 +266,9 @@ This snippet will upload the whole exported data in the directory and imports th
 
 #### `profile` option
 
-An ImpEx import profile defines what data should be imported.
+An ImpEx import profile defines what data should be imported. If not provided, the import will fallback to default import profile `all`.
 
 > To get a list of available ImpEx import profiles see impex-cli operation [`import-profiles`](#export-profiles)
-
-You will usually use the predefined `all` import profile.
 
 #### `directory` argument
 

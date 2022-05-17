@@ -214,7 +214,7 @@ operation:
 
   import                                                import wordpress data exported by impex from a directory 
     options:
-      -profile=[export-profile]                         (required) export profile to use
+      -profile=[import-profile]                         (default='all') export profile to use
     arguments:
       [directory]                                       (required) impex export directory to import from
 
@@ -343,10 +343,10 @@ function sanitizeFilename($string, $force_lowercase = true, $anal = false)
 
 function import($options, $import_directory, ...$args)
 {
-  $profile = $options['profile'] ?? null;
-  if (!$profile) {
-    _die($options, "Import failed: missing option 'profile'");
-  }
+  $profile = $options['profile'] ?? 'all';
+  // if (!$profile) {
+  //   _die($options, "Import failed: missing option 'profile'");
+  // }
 
   [$profiles] = import_profile($options, 'list');
   $profiles = array_column($profiles, 'name');
