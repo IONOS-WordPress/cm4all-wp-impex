@@ -23,7 +23,7 @@ The [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
 - functions to [create file/folder structure expected](https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html) by the [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex)
 
-Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) includes a [full featured example transforming a complete static website into a WordPress content](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) consumable by [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex). The [example](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) is the perfect starting point for creating your own WordPress content generator.
+Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) includes a [full featured example transforming a complete static website into WordPress content](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) consumable by [ImpEx WordPress plugin](https://github.com/IONOS-WordPress/cm4all-wp-impex). The [example](https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion) is the perfect starting point for creating your own WordPress content generator.
 
 # Installation
 
