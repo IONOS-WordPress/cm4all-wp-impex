@@ -1,8 +1,9 @@
 # Summary
 
 - [About](./about.md)
-- [Explanation of terms](./explanation-of-terms.md)
+- [Basic usage](./basic-usage.md)
 - [Features](./features.md)
+- [Explanation of terms](./explanation-of-terms.md)
 - [CLI](./impex-cli.md)
 - [Migrating content](./migrating-content.md)
 - [Package `@cm4all-wp-impex/generator`](./cm4all-wp-impex-generator/index.md)
