@@ -10,6 +10,18 @@ This page will clarify their meaning.
 
 The name of the plugin stands for **Imp**ort / **Ex**port => in short **ImpEx**.
 
+## Snapshot
+
+A snapshot is a copy of the content to be imported/exported.
+
+It resides in a separate WordPress database table managed by the ImpEx plugin.
+
+> Attachments/media will be saved in a private sub-directory of the WordPress uploads folder.
+
+You can imagine a snapshot like a server side copy of the content.
+
+You can import / export as many snapshots as you want.
+
 ## Provider
 
 Provider handle content for ImpEx. They are used to load (import) or extract (export) data for ImpEx.
