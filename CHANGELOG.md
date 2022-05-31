@@ -1,3 +1,14 @@
+### [1.3.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.4...1.3.5) (2022-05-31)
+
+
+### Bug Fixes
+
+* **@cm4all-wp-impex/generator:** package.json repository property fixed ([b140ffe](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/b140ffe032cf1d349ac43a7ac995ca4ad2093869))
+* **impex-cli:** made import option "profile" optional. default value is "all" ([82517e2](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/82517e2e11388c8e143a30a8e9c7bfc4c967e83e))
+* rector upgrade ([fae99b8](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/fae99b8df3e64f34fcaa56cb7f3104b445df90c4))
+* updated recommended vscode extensions ([facf38e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/facf38e192295a1b39fd1e381d5dff43c501be17))
+* updated supported wordpress version to 6.0 ([be2a62d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/be2a62d44026eec73de3e6a5584d9fc424c7e03c))
+
 ### [1.3.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.3...1.3.4) (2022-05-10)
 
 
