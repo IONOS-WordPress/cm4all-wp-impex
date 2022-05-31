@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">2.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html" class="active"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html" class="active"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -187,13 +187,16 @@
 </li>
 </ul>
 <p>The conversion process is implemented in less than 240 lines of code thanks to package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>.</p>
-<p>You can run the conversion script by executing <code>./index.js</code></p>
+<p>You can run the conversion script by executing <code>./index.js</code> (can be found at the GitHub repository : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion\index.js</a></p>
 <blockquote>
 <p>Ensure the right nodejs version is active before using <code>nvm install</code> and to install the required NodeJS dependencies using <code>npm ci</code>.</p>
 </blockquote>
+<blockquote>
+<p>Ensure that you've installed the script dependencies by entering directory <code>cm4all-wp-impex/packages/@cm4all-wp-impex/generator</code> and executing <code>npm ci</code>.</p>
+</blockquote>
 <p>The result is a folder <code>generated-impex-import/</code> containing the generated <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx export folder layout</a> containing the ImpEx slice JSON files and media files.</p>
 <p>This export can now be imported into WordPress using <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html">ImpEx CLI</a> :</p>
-<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; -profile=all ./generated-impex-export/
+<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; ./generated-impex-export/
 </code></pre>
 <p><em>(Replace the <code>&lt;placeholder&gt;</code> with your own values.)</em></p>
 <blockquote>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>About</title>
+        <title>Basic usage</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html" class="active"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,39 +143,49 @@
                 <div id="content" class="content">
                     <main>
                         <ul>
-<li><a href="#preface">Preface</a></li>
-<li><a href="#about">About</a></li>
-<li><a href="#development">Development</a></li>
+<li><a href="#basic-usage">Basic usage</a>
+<ul>
+<li><a href="#export">Export</a></li>
+<li><a href="#import">Import</a></li>
 </ul>
-<h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
-<p><em>This is a working-draft that has not been peer-reviewed. It is not yet complete and may change in the future.</em></p>
-<h1 id="about"><a class="header" href="#about">About</a></h1>
-<p>The ImpEx plugin provides a modern way to import and export data from WordPress.</p>
-<p>It provides</p>
+</li>
+</ul>
+<h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
+<p>ImpEx separates Import and Export in 2 steps using the ImpEx Dashboard screen.</p>
+<p><img src="./impex-screenshot.png" alt="ImpEx Dashboard screen" /></p>
+<h2 id="export"><a class="header" href="#export">Export</a></h2>
 <ul>
 <li>
-<p>a <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a> extension for importing and exporting data</p>
+<p>You need to create a snapshot first.</p>
+<p>The snapshot will contain the current data (defined by the used <a href="explanation-of-terms.html#profile">ImpEx profile</a>) of the WordPress instance.</p>
 </li>
 <li>
-<p>a WordPress admin page for interacting with the ImpEx <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a>.</p>
-</li>
-<li>
-<p>a <a href="./impex-cli.html">CLI</a> for importing and exporting WordPress data from the command-line. You can use the <a href="./impex-cli.html">CLI</a> to interact with a remote WordPress installation.</p>
-</li>
-<li>
-<p>an easy way to extend the import/export capabilities by third-party plugins based on WordPress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
+<p>Now you can download the snapshot to your local machine.</p>
 </li>
 </ul>
-<p><img src="./impex-screenshot.png" alt="ImpEx UI" /></p>
-<h1 id="development"><a class="header" href="#development">Development</a></h1>
-<p>The sources of this plugin are maintained at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Impex WordPress plugin GitHub repository</a>.</p>
+<h2 id="import"><a class="header" href="#import">Import</a></h2>
+<ul>
+<li>
+<p>Upload snapshot from your local machine to the WordPress instance.</p>
+<p>Uploading does not modify your current WordPress contents.</p>
+</li>
+<li>
+<p>If you now import the snapshot, the contents of your WordPress instance will be updated with the snapshot data.</p>
+</li>
+</ul>
+<blockquote>
+<p>Using the <a href="./impex-cli.html">impex-cli</a> command line tool will combine both steps in one. You just export or import a local directory containing the snapshot in <a href="./migrating-content.html#preparation">ImpEx Export Format</a>. <a href="./impex-cli.html">impex-cli</a> manages the temporary snapshot handling for you.</p>
+</blockquote>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="about.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next" href="basic-usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="features.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -185,8 +195,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="about.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next" href="basic-usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="features.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

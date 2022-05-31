@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">2.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -171,72 +171,39 @@
 <h1 id="development"><a class="header" href="#development">Development</a></h1>
 <p>The sources of this plugin are maintained at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Impex WordPress plugin GitHub repository</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
-<li><a href="explanation-of-terms.html#explanation-of-terms">Explanation of terms</a>
+<li><a href="basic-usage.html#basic-usage">Basic usage</a>
 <ul>
-<li><a href="explanation-of-terms.html#impex">ImpEx</a></li>
-<li><a href="explanation-of-terms.html#provider">Provider</a>
-<ul>
-<li><a href="explanation-of-terms.html#export-provider">Export Provider</a></li>
-<li><a href="explanation-of-terms.html#import-provider">Import Provider</a></li>
-</ul>
-</li>
-<li><a href="explanation-of-terms.html#profile">Profile</a></li>
-<li><a href="explanation-of-terms.html#chunk">Chunk</a></li>
-<li><a href="explanation-of-terms.html#slice">Slice</a></li>
-<li><a href="explanation-of-terms.html#transformationcontext">TransformationContext</a></li>
+<li><a href="basic-usage.html#export">Export</a></li>
+<li><a href="basic-usage.html#import">Import</a></li>
 </ul>
 </li>
 </ul>
-<h1 id="explanation-of-terms"><a class="header" href="#explanation-of-terms">Explanation of terms</a></h1>
-<p>ImpEx documentation often refers to special terms.</p>
-<p>This page will clarify their meaning.</p>
-<h2 id="impex"><a class="header" href="#impex">ImpEx</a></h2>
-<p>The name of the plugin stands for <strong>Imp</strong>ort / <strong>Ex</strong>port =&gt; in short <strong>ImpEx</strong>.</p>
-<h2 id="provider"><a class="header" href="#provider">Provider</a></h2>
-<p>Provider handle content for ImpEx. They are used to load (import) or extract (export) data for ImpEx.</p>
-<p>There exist a set of standard providers brought by ImpEx for common WordPress data like <code>posts</code>, <code>attachments</code>, <code>wp_options</code> and <code>database tables</code>. Custom providers can be registered by the user.</p>
-<p>ImpEx provider are basically callback functions called by ImpEx.</p>
-<p>A provider gets registered with a unique name. The name is used to reference providers in a <a href="explanation-of-terms.html#profile">ImpEx profile</a>.</p>
-<p>There are two types of providers: Import and Export provider.</p>
-<h3 id="export-provider"><a class="header" href="#export-provider">Export Provider</a></h3>
-<p>Export provider expose data as <a href="explanation-of-terms.html#slice">slices</a> to ImpEx.</p>
-<p>Because an Export provider may need to produce more than one <a href="explanation-of-terms.html#slice">slice</a> per execution, the callback interface is designed as <a href="https://www.php.net/manual/en/language.generators.overview.php">generator function</a>.</p>
-<p>In other words, an Export provider callback function gets called with a configuration and <a href="https://www.php.net/manual/en/language.generators.syntax.php">yields</a> as many slices as needed. The configuration controls <em>which</em> data should be exported.</p>
-<p><em>Take a look at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-export-extension-wp-options.php"><code>**WpOptionsExporterProviderCallback</code></a> to see an example.</em></p>
-<h3 id="import-provider"><a class="header" href="#import-provider">Import Provider</a></h3>
-<p>Import provider consume <a href="explanation-of-terms.html#slice">slices</a> from ImpEx.</p>
-<p>They work similarly to Export provider and get called with a configuration (controling <em>what</em> data should be imported from a <a href="explanation-of-terms.html#slice">slice</a>) and a <a href="explanation-of-terms.html#slice">slice</a> as parameter.</p>
-<p>Since ImpEx does not know about how to handle a <a href="explanation-of-terms.html#slice">slice</a> by itself, it delegates this task to the Import provider.</p>
-<p>So an Import Provider checks if it can handle a <a href="explanation-of-terms.html#slice">slice</a> by introspecting the <a href="explanation-of-terms.html#slice">slice</a> meta-data. If it does, it handles the <a href="explanation-of-terms.html#slice">slice</a> data and returns <code>true</code> if the slice was successfully imported.</p>
-<p><em>In all other cases it returns <code>false</code>.</em> In this case ImpEx will take the next Import provider in charge.</p>
-<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-import-extension-wp-options.php"><code>__WpOptionsImportProviderCallback</code></a> as an example</em></p>
-<h2 id="profile"><a class="header" href="#profile">Profile</a></h2>
-<p>A profile consists of a list of <em>tasks</em> that are executed in the order they are registered.</p>
-<p>Each <em>task</em> will reference a <em>provider</em> and it's <em>configuration</em>.</p>
+<h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
+<p>ImpEx separates Import and Export in 2 steps using the ImpEx Dashboard screen.</p>
+<p><img src="./impex-screenshot.png" alt="ImpEx Dashboard screen" /></p>
+<h2 id="export"><a class="header" href="#export">Export</a></h2>
+<ul>
+<li>
+<p>You need to create a snapshot first.</p>
+<p>The snapshot will contain the current data (defined by the used <a href="explanation-of-terms.html#profile">ImpEx profile</a>) of the WordPress instance.</p>
+</li>
+<li>
+<p>Now you can download the snapshot to your local machine.</p>
+</li>
+</ul>
+<h2 id="import"><a class="header" href="#import">Import</a></h2>
+<ul>
+<li>
+<p>Upload snapshot from your local machine to the WordPress instance.</p>
+<p>Uploading does not modify your current WordPress contents.</p>
+</li>
+<li>
+<p>If you now import the snapshot, the contents of your WordPress instance will be updated with the snapshot data.</p>
+</li>
+</ul>
 <blockquote>
-<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/profiles/export-profile-base.php"><code>base</code> Export profile</a> as example.</p>
+<p>Using the <a href="./impex-cli.html">impex-cli</a> command line tool will combine both steps in one. You just export or import a local directory containing the snapshot in <a href="./migrating-content.html#preparation">ImpEx Export Format</a>. <a href="./impex-cli.html">impex-cli</a> manages the temporary snapshot handling for you.</p>
 </blockquote>
-<p>Profiles are used to <em>programmatically compose</em> the data to export (Export Profile) or to <em>consume</em> the data to import (Import Profile).</p>
-<p>Furthermore a profile can configure event handler to be triggered in certain situations (like when the import was finished).</p>
-<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex-example/inc/impex-import-profile-example.php"><code>ImpexImport::EVENT_IMPORT_END</code> event usage</a> for example</em></p>
-<h2 id="chunk"><a class="header" href="#chunk">Chunk</a></h2>
-<p>When exporting a huge WordPress site with hundreds of posts and images, the result would be a directory with hundreds of files. To prevent File managers of crashing due to the amount of files, ImpEx splits the exported <a href="explanation-of-terms.html#slice">slice</a> files into sub-directory chunks.</p>
-<p>A chunk is sub-directory keeping a configurable unit of <a href="explanation-of-terms.html#slice">slices</a> below the top level export directory. See <a href="migrating-content.html#preparation">an example export directory layout</a>.</p>
-<h2 id="slice"><a class="header" href="#slice">Slice</a></h2>
-<p>A slice is a self-containing JSON data structure of both data and its description (aka meta-data).</p>
-<blockquote>
-<p>An example: a slice of WordPress posts will contain the posts (=&gt; data) and the information thats needed to import the posts (=&gt; meta-data like post title, author, ...).</p>
-</blockquote>
-<p>The slice meta-data consist of a static part (semantic version, type of slice, ...) and a content related part contributed by the <a href="explanation-of-terms.html#provider">Export provider</a> (entity type, any other meta data relevant for importing the data).</p>
-<blockquote>
-<p>There is one <em>special</em> exception to the rule that a slice is self-contained : Attachment slices. Attachment slices are not self-contained because they contain binary data which cannot effectively stored within JSON.</p>
-</blockquote>
-<p>The slice data are completely contributed by the <a href="explanation-of-terms.html#provider">Export provider</a>.</p>
-<p>See the <a href="migrating-content.html#data-files">Data files</a> chapter for more information about the structure of a slice.</p>
-<p><em>Slice files are strongly typed JSON structures. See the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema">JSON schema definitions for standard ImpEx slice types in the ImpEx GitHub repository</a>.</em></p>
-<h2 id="transformationcontext"><a class="header" href="#transformationcontext">TransformationContext</a></h2>
-<p>TransformationContext transports contextual information's about the current import/export process. It's used to pass information from ImpEx to the <a href="explanation-of-terms.html#provider">Provider</a>.</p>
-<p><em>A TransformationContext is an internal data structure.</em></p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
 <li><a href="features.html#features">Features</a>
 <ul>
@@ -340,6 +307,82 @@
 <h1 id="generating-custom-content"><a class="header" href="#generating-custom-content">Generating custom content</a></h1>
 <p>Even more, <a href="cm4all-wp-impex-generator/index.html">@cm4all-wp-impex/generator</a> allows you to transform <strong>any</strong> data from anywhere into WordPress content.</p>
 <p>There ist actually no limit - everything can be transformed into WordPress content using <a href="cm4all-wp-impex-generator/index.html">@cm4all-wp-impex/generator</a>. See the <a href="./cm4all-wp-impex-generator/static-website-tutorial.html">Static website conversion tutorial</a> as a starting point.</p>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="explanation-of-terms.html#explanation-of-terms">Explanation of terms</a>
+<ul>
+<li><a href="explanation-of-terms.html#impex">ImpEx</a></li>
+<li><a href="explanation-of-terms.html#snapshot">Snapshot</a></li>
+<li><a href="explanation-of-terms.html#provider">Provider</a>
+<ul>
+<li><a href="explanation-of-terms.html#export-provider">Export Provider</a></li>
+<li><a href="explanation-of-terms.html#import-provider">Import Provider</a></li>
+</ul>
+</li>
+<li><a href="explanation-of-terms.html#profile">Profile</a></li>
+<li><a href="explanation-of-terms.html#chunk">Chunk</a></li>
+<li><a href="explanation-of-terms.html#slice">Slice</a></li>
+<li><a href="explanation-of-terms.html#transformationcontext">TransformationContext</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="explanation-of-terms"><a class="header" href="#explanation-of-terms">Explanation of terms</a></h1>
+<p>ImpEx documentation often refers to special terms.</p>
+<p>This page will clarify their meaning.</p>
+<h2 id="impex"><a class="header" href="#impex">ImpEx</a></h2>
+<p>The name of the plugin stands for <strong>Imp</strong>ort / <strong>Ex</strong>port =&gt; in short <strong>ImpEx</strong>.</p>
+<h2 id="snapshot"><a class="header" href="#snapshot">Snapshot</a></h2>
+<p>A snapshot is a copy of the content to be imported/exported.</p>
+<p>It resides in a separate WordPress database table managed by the ImpEx plugin.</p>
+<blockquote>
+<p>Attachments/media will be saved in a private sub-directory of the WordPress uploads folder.</p>
+</blockquote>
+<p>You can imagine a snapshot like a server side copy of the content.</p>
+<p>You can import / export as many snapshots as you want.</p>
+<h2 id="provider"><a class="header" href="#provider">Provider</a></h2>
+<p>Provider handle content for ImpEx. They are used to load (import) or extract (export) data for ImpEx.</p>
+<p>There exist a set of standard providers brought by ImpEx for common WordPress data like <code>posts</code>, <code>attachments</code>, <code>wp_options</code> and <code>database tables</code>. Custom providers can be registered by the user.</p>
+<p>ImpEx provider are basically callback functions called by ImpEx.</p>
+<p>A provider gets registered with a unique name. The name is used to reference providers in a <a href="explanation-of-terms.html#profile">ImpEx profile</a>.</p>
+<p>There are two types of providers: Import and Export provider.</p>
+<h3 id="export-provider"><a class="header" href="#export-provider">Export Provider</a></h3>
+<p>Export provider expose data as <a href="explanation-of-terms.html#slice">slices</a> to ImpEx.</p>
+<p>Because an Export provider may need to produce more than one <a href="explanation-of-terms.html#slice">slice</a> per execution, the callback interface is designed as <a href="https://www.php.net/manual/en/language.generators.overview.php">generator function</a>.</p>
+<p>In other words, an Export provider callback function gets called with a configuration and <a href="https://www.php.net/manual/en/language.generators.syntax.php">yields</a> as many slices as needed. The configuration controls <em>which</em> data should be exported.</p>
+<p><em>Take a look at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-export-extension-wp-options.php"><code>**WpOptionsExporterProviderCallback</code></a> to see an example.</em></p>
+<h3 id="import-provider"><a class="header" href="#import-provider">Import Provider</a></h3>
+<p>Import provider consume <a href="explanation-of-terms.html#slice">slices</a> from ImpEx.</p>
+<p>They work similarly to Export provider and get called with a configuration (controling <em>what</em> data should be imported from a <a href="explanation-of-terms.html#slice">slice</a>) and a <a href="explanation-of-terms.html#slice">slice</a> as parameter.</p>
+<p>Since ImpEx does not know about how to handle a <a href="explanation-of-terms.html#slice">slice</a> by itself, it delegates this task to the Import provider.</p>
+<p>So an Import Provider checks if it can handle a <a href="explanation-of-terms.html#slice">slice</a> by introspecting the <a href="explanation-of-terms.html#slice">slice</a> meta-data. If it does, it handles the <a href="explanation-of-terms.html#slice">slice</a> data and returns <code>true</code> if the slice was successfully imported.</p>
+<p><em>In all other cases it returns <code>false</code>.</em> In this case ImpEx will take the next Import provider in charge.</p>
+<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-import-extension-wp-options.php"><code>__WpOptionsImportProviderCallback</code></a> as an example</em></p>
+<h2 id="profile"><a class="header" href="#profile">Profile</a></h2>
+<p>A profile consists of a list of <em>tasks</em> that are executed in the order they are registered.</p>
+<p>Each <em>task</em> will reference a <em>provider</em> and it's <em>configuration</em>.</p>
+<blockquote>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/profiles/export-profile-base.php"><code>base</code> Export profile</a> as example.</p>
+</blockquote>
+<p>Profiles are used to <em>programmatically compose</em> the data to export (Export Profile) or to <em>consume</em> the data to import (Import Profile).</p>
+<p>Furthermore a profile can configure event handler to be triggered in certain situations (like when the import was finished).</p>
+<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex-example/inc/impex-import-profile-example.php"><code>ImpexImport::EVENT_IMPORT_END</code> event usage</a> for example</em></p>
+<h2 id="chunk"><a class="header" href="#chunk">Chunk</a></h2>
+<p>When exporting a huge WordPress site with hundreds of posts and images, the result would be a directory with hundreds of files. To prevent File managers of crashing due to the amount of files, ImpEx splits the exported <a href="explanation-of-terms.html#slice">slice</a> files into sub-directory chunks.</p>
+<p>A chunk is sub-directory keeping a configurable unit of <a href="explanation-of-terms.html#slice">slices</a> below the top level export directory. See <a href="migrating-content.html#preparation">an example export directory layout</a>.</p>
+<h2 id="slice"><a class="header" href="#slice">Slice</a></h2>
+<p>A slice is a self-containing JSON data structure of both data and its description (aka meta-data).</p>
+<blockquote>
+<p>An example: a slice of WordPress posts will contain the posts (=&gt; data) and the information thats needed to import the posts (=&gt; meta-data like post title, author, ...).</p>
+</blockquote>
+<p>The slice meta-data consist of a static part (semantic version, type of slice, ...) and a content related part contributed by the <a href="explanation-of-terms.html#provider">Export provider</a> (entity type, any other meta data relevant for importing the data).</p>
+<blockquote>
+<p>There is one <em>special</em> exception to the rule that a slice is self-contained : Attachment slices. Attachment slices are not self-contained because they contain binary data which cannot effectively stored within JSON.</p>
+</blockquote>
+<p>The slice data are completely contributed by the <a href="explanation-of-terms.html#provider">Export provider</a>.</p>
+<p>See the <a href="migrating-content.html#data-files">Data files</a> chapter for more information about the structure of a slice.</p>
+<p><em>Slice files are strongly typed JSON structures. See the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema">JSON schema definitions for standard ImpEx slice types in the ImpEx GitHub repository</a>.</em></p>
+<h2 id="transformationcontext"><a class="header" href="#transformationcontext">TransformationContext</a></h2>
+<p>TransformationContext transports contextual information's about the current import/export process. It's used to pass information from ImpEx to the <a href="explanation-of-terms.html#provider">Provider</a>.</p>
+<p><em>A TransformationContext is an internal data structure.</em></p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
 <li><a href="impex-cli.html#cli">CLI</a></li>
 <li><a href="impex-cli.html#prerequisites">Prerequisites</a>
@@ -515,7 +558,7 @@
   -rest-url=http://example.com/wp-json
 </code></pre>
 <h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
-<h3 id="export"><a class="header" href="#export"><code>export</code></a></h3>
+<h3 id="export-1"><a class="header" href="#export-1"><code>export</code></a></h3>
 <p>The <code>export</code> operation exports and downloads data using the ImpEx plugin of the WordPress installation.</p>
 <p>A ImpEx export results in a directory structure containing</p>
 <ul>
@@ -576,7 +619,7 @@ managers like Windows Explorer.</p>
 <h4 id="directory-argument"><a class="header" href="#directory-argument"><code>directory</code> argument</a></h4>
 <p>The <code>directory</code> argument specifies the export target directory.
 The <code>export</code> operation will create a top-level directory in the specified directory and stores everything else in <a href="explanation-of-terms.html#chunk">chunk</a> subdirectories.</p>
-<h3 id="import"><a class="header" href="#import"><code>import</code></a></h3>
+<h3 id="import-1"><a class="header" href="#import-1"><code>import</code></a></h3>
 <p>The <code>import</code> operation imports an ImpEx export from the specified directory into the remote WordPress installation.</p>
 <blockquote>
 <p>If you repeat the <code>import</code> operation again and again you may want to cleanup your WordPress content in between. You can use <a href="https://wp-cli.org/">wp-cli</a> on your WordPress installation to do that:</p>
@@ -590,16 +633,14 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <pre><code class="language-sh">impex-cli.php import \
   -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
   -rest-url=http://localhost:8888/wp-json \
-  -profile=all \
   ~/tmp/my-export
 </code></pre>
 <p>This snippet will upload the whole exported data in the directory and imports them using the <code>all</code> profile at the WordPress installation.</p>
 <h4 id="profile-option-1"><a class="header" href="#profile-option-1"><code>profile</code> option</a></h4>
-<p>An ImpEx import profile defines what data should be imported.</p>
+<p>An ImpEx import profile defines what data should be imported. If not provided, the import will fallback to default import profile <code>all</code>.</p>
 <blockquote>
 <p>To get a list of available ImpEx import profiles see impex-cli operation <a href="impex-cli.html#export-profiles"><code>import-profiles</code></a></p>
 </blockquote>
-<p>You will usually use the predefined <code>all</code> import profile.</p>
 <h4 id="directory-argument-1"><a class="header" href="#directory-argument-1"><code>directory</code> argument</a></h4>
 <p>The <code>directory</code> argument specifies the directory where the import data resides.</p>
 <blockquote>
@@ -1095,10 +1136,10 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> is especially useful for converting bare HTML content and website-builder/CMS generated HTML into WordPress content.</p>
 <p>The framework does not require a WordPress instance. It rather offers an extensible platform for generating WordPress content consumable by the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a>.</p>
 <blockquote>
-<p><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> is a Open Source WordPress plugin for importing / exporting WordPress data.
+<p><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx</a> is a <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Open Source WordPress plugin for importing / exporting WordPress data</a>.
 <em><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> is part of the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> project.</em></p>
 </blockquote>
-<p><a href="https://img.youtube.com/vi/pjG69RmULYo/2.jpg">Watch the tutorial on YouTube</a>:</p>
+<p><a href="https://www.youtube.com/watch?v=pjG69RmULYo">Watch the tutorial on YouTube</a>:</p>
 <p><a href="https://www.youtube.com/watch?v=pjG69RmULYo"><img src="https://img.youtube.com/vi/pjG69RmULYo/2.jpg" alt="Watch the video" /></a></p>
 <h1 id="details"><a class="header" href="#details">Details</a></h1>
 <p>The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> specifies a <a href="https://www.json.org/">JSON</a> file <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">based import/export format for WordPress content</a>).</p>
@@ -1114,7 +1155,7 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <p>functions to <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">create file/folder structure expected</a> by the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a></p>
 </li>
 </ul>
-<p>Last but not least <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> includes a <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">full featured example transforming a complete static website into a WordPress content</a> consumable by <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a>. The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">example</a> is the perfect starting point for creating your own WordPress content generator.</p>
+<p>Last but not least <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> includes a <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">full featured example transforming a complete static website into WordPress content</a> consumable by <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a>. The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">example</a> is the perfect starting point for creating your own WordPress content generator.</p>
 <h1 id="installation-1"><a class="header" href="#installation-1">Installation</a></h1>
 <p><code>npm install @cm4all-wp-impex/generator</code></p>
 <h1 id="development-1"><a class="header" href="#development-1">Development</a></h1>
@@ -1334,13 +1375,16 @@ console.log(gen.next().value); // =&gt; &quot;chunk-0003/slice-0002.json&quot;);
 </li>
 </ul>
 <p>The conversion process is implemented in less than 240 lines of code thanks to package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>.</p>
-<p>You can run the conversion script by executing <code>./index.js</code></p>
+<p>You can run the conversion script by executing <code>./index.js</code> (can be found at the GitHub repository : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion\index.js</a></p>
 <blockquote>
 <p>Ensure the right nodejs version is active before using <code>nvm install</code> and to install the required NodeJS dependencies using <code>npm ci</code>.</p>
 </blockquote>
+<blockquote>
+<p>Ensure that you've installed the script dependencies by entering directory <code>cm4all-wp-impex/packages/@cm4all-wp-impex/generator</code> and executing <code>npm ci</code>.</p>
+</blockquote>
 <p>The result is a folder <code>generated-impex-import/</code> containing the generated <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx export folder layout</a> containing the ImpEx slice JSON files and media files.</p>
 <p>This export can now be imported into WordPress using <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html">ImpEx CLI</a> :</p>
-<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; -profile=all ./generated-impex-export/
+<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; ./generated-impex-export/
 </code></pre>
 <p><em>(Replace the <code>&lt;placeholder&gt;</code> with your own values.)</em></p>
 <blockquote>
@@ -1626,7 +1670,8 @@ main();
 <h2 id="a-hrefapiconfigurationhtmlconfigurationa"><a class="header" href="#a-hrefapiconfigurationhtmlconfigurationa"><a href="api/./configuration.html">Configuration</a></a></h2>
 <h2 id="rest-api"><a class="header" href="#rest-api">REST API</a></h2>
 <p>All ImpEx features are exposed by it's WordPress REST API endpoint.</p>
-<p>The REST API is available at <code>/wp-json/cm4all-wp-impex/v1/</code>.</p>
+<p>See <a href="api/./cm4all-wp-impex-oas.html">ImpEx REST API documentation</a>.</p>
+<p>The REST API is also available as <a href="https://swagger.io/specification/v2/">OpenAPI Specification Format</a> : Download <a href="http://0.0.0.0:3000/api/cm4all-wp-impex-oas.json">ImpEx OpenAPI Specification</a> here.</p>
 <p>You can explore the ImpEx Rest API using any HTTP Rest API Client.</p>
 <blockquote>
 <p>Our favorite is the <a href="https://wordpress.org/plugins/wp-api-swaggerui/">&quot;WP API SwaggerUI&quot; WordPress Plugin</a> since it's perfectly integrated into WordPress.</p>
@@ -1670,7 +1715,7 @@ main();
 <blockquote>
 <p>Implementing a ImpEx profile in your WordPress code does not make ImpEx a required dependency for your plugin since the code is only executed if ImpEx is installed and active.</p>
 </blockquote>
-<h3 id="export-1"><a class="header" href="#export-1">Export</a></h3>
+<h3 id="export-2"><a class="header" href="#export-2">Export</a></h3>
 <p>Let's say you want to export the core WordPress contents (pages/posts/attachments and stuff) but also</p>
 <ul>
 <li>
@@ -1766,7 +1811,7 @@ main();
 </blockquote>
 <p>That's it !</p>
 <p>Now you can trigger the export using this ImpEx export configuration in the ImpEx screen at WP dashboard (or even using the <a href="api/./impex-cli.html">ImpEx CLI</a>)</p>
-<h3 id="import-1"><a class="header" href="#import-1">Import</a></h3>
+<h3 id="import-2"><a class="header" href="#import-2">Import</a></h3>
 <p>Thanks to ImpEx architecture you normally don't need to define a custom import configuration.</p>
 <p>ImpEx sports a generic <code>all</code> import provider and profile importing <strong>anything</strong> exported using the ImpEx building blocks.</p>
 <blockquote>
@@ -1810,6 +1855,723 @@ To work around this we can also introduce a custom import profile utilizing the 
     fn () =&gt; method_exists('WPN_Helper', 'set_forms_maintenance_mode') &amp;&amp; WPN_Helper::set_forms_maintenance_mode(0)
   );
 });
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cm4all-wp-impex-rest-api"><a class="header" href="#cm4all-wp-impex-rest-api">cm4all-wp-impex REST API</a></h1>
+<blockquote>
+<p>Version v1</p>
+</blockquote>
+<h2 id="path-table"><a class="header" href="#path-table">Path Table</a></h2>
+<table><thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofileschema">/cm4all-wp-impex/v1/export/profile/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofile">/cm4all-wp-impex/v1/export/profile</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofilename">/cm4all-wp-impex/v1/export/profile/{name}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofileschema">/cm4all-wp-impex/v1/import/profile/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofile">/cm4all-wp-impex/v1/import/profile</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofilename">/cm4all-wp-impex/v1/import/profile/{name}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportschema">/cm4all-wp-impex/v1/export/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1export">/cm4all-wp-impex/v1/export</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1export">/cm4all-wp-impex/v1/export</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>DELETE</td><td><a href="api/cm4all-wp-impex-oas.html#deletecm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportidslice">/cm4all-wp-impex/v1/export/{id}/slice</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importschema">/cm4all-wp-impex/v1/import/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1import">/cm4all-wp-impex/v1/import</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1import">/cm4all-wp-impex/v1/import</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>DELETE</td><td><a href="api/cm4all-wp-impex-oas.html#deletecm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importidslice">/cm4all-wp-impex/v1/import/{id}/slice</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+</tbody></table>
+<h2 id="reference-table"><a class="header" href="#reference-table">Reference Table</a></h2>
+<table><thead><tr><th>Name</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<tr><td>postCm4allWpImpexV1Import</td><td><a href="api/cm4all-wp-impex-oas.html#componentsrequestbodiespostcm4allwpimpexv1import">#/components/requestBodies/postCm4allWpImpexV1Import</a></td><td></td></tr>
+<tr><td>postCm4allWpImpexV1Export</td><td><a href="api/cm4all-wp-impex-oas.html#componentsrequestbodiespostcm4allwpimpexv1export">#/components/requestBodies/postCm4allWpImpexV1Export</a></td><td></td></tr>
+<tr><td>basic</td><td><a href="api/cm4all-wp-impex-oas.html#componentssecurityschemesbasic">#/components/securitySchemes/basic</a></td><td></td></tr>
+</tbody></table>
+<h2 id="path-details"><a class="header" href="#path-details">Path Details</a></h2>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofileschema"><a class="header" href="#getcm4all-wp-impexv1exportprofileschema">[GET]/cm4all-wp-impex/v1/export/profile/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses"><a class="header" href="#responses">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofile"><a class="header" href="#getcm4all-wp-impexv1exportprofile">[GET]/cm4all-wp-impex/v1/export/profile</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-1"><a class="header" href="#responses-1">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofilename"><a class="header" href="#getcm4all-wp-impexv1exportprofilename">[GET]/cm4all-wp-impex/v1/export/profile/{name}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery"><a class="header" href="#parametersquery">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-2"><a class="header" href="#responses-2">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofileschema"><a class="header" href="#getcm4all-wp-impexv1importprofileschema">[GET]/cm4all-wp-impex/v1/import/profile/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-3"><a class="header" href="#responses-3">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofile"><a class="header" href="#getcm4all-wp-impexv1importprofile">[GET]/cm4all-wp-impex/v1/import/profile</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-4"><a class="header" href="#responses-4">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofilename"><a class="header" href="#getcm4all-wp-impexv1importprofilename">[GET]/cm4all-wp-impex/v1/import/profile/{name}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-1"><a class="header" href="#parametersquery-1">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-5"><a class="header" href="#responses-5">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportschema"><a class="header" href="#getcm4all-wp-impexv1exportschema">[GET]/cm4all-wp-impex/v1/export/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-6"><a class="header" href="#responses-6">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1export"><a class="header" href="#getcm4all-wp-impexv1export">[GET]/cm4all-wp-impex/v1/export</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-7"><a class="header" href="#responses-7">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1export"><a class="header" href="#postcm4all-wp-impexv1export">[POST]/cm4all-wp-impex/v1/export</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody"><a class="header" href="#requestbody">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h4 id="responses-8"><a class="header" href="#responses-8">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportid"><a class="header" href="#getcm4all-wp-impexv1exportid">[GET]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-2"><a class="header" href="#parametersquery-2">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-9"><a class="header" href="#responses-9">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1exportid"><a class="header" href="#postcm4all-wp-impexv1exportid">[POST]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-1"><a class="header" href="#requestbody-1">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h4 id="responses-10"><a class="header" href="#responses-10">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1exportid"><a class="header" href="#putcm4all-wp-impexv1exportid">[PUT]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-3"><a class="header" href="#parametersquery-3">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-11"><a class="header" href="#responses-11">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1exportid"><a class="header" href="#patchcm4all-wp-impexv1exportid">[PATCH]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-4"><a class="header" href="#parametersquery-4">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-12"><a class="header" href="#responses-12">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="deletecm4all-wp-impexv1exportid"><a class="header" href="#deletecm4all-wp-impexv1exportid">[DELETE]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-5"><a class="header" href="#parametersquery-5">Parameters(Query)</a></h4>
+<pre><code class="language-ts">force?: string
+</code></pre>
+<h4 id="responses-13"><a class="header" href="#responses-13">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportidslice"><a class="header" href="#getcm4all-wp-impexv1exportidslice">[GET]/cm4all-wp-impex/v1/export/{id}/slice</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-6"><a class="header" href="#parametersquery-6">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string[]
+</code></pre>
+<pre><code class="language-ts">page?: string
+</code></pre>
+<pre><code class="language-ts">per_page?: string
+</code></pre>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<h4 id="responses-14"><a class="header" href="#responses-14">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importschema"><a class="header" href="#getcm4all-wp-impexv1importschema">[GET]/cm4all-wp-impex/v1/import/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-15"><a class="header" href="#responses-15">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1import"><a class="header" href="#getcm4all-wp-impexv1import">[GET]/cm4all-wp-impex/v1/import</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-16"><a class="header" href="#responses-16">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1import"><a class="header" href="#postcm4all-wp-impexv1import">[POST]/cm4all-wp-impex/v1/import</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-2"><a class="header" href="#requestbody-2">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h4 id="responses-17"><a class="header" href="#responses-17">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importid"><a class="header" href="#getcm4all-wp-impexv1importid">[GET]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-7"><a class="header" href="#parametersquery-7">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-18"><a class="header" href="#responses-18">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importid"><a class="header" href="#postcm4all-wp-impexv1importid">[POST]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-3"><a class="header" href="#requestbody-3">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h4 id="responses-19"><a class="header" href="#responses-19">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1importid"><a class="header" href="#putcm4all-wp-impexv1importid">[PUT]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-8"><a class="header" href="#parametersquery-8">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-20"><a class="header" href="#responses-20">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1importid"><a class="header" href="#patchcm4all-wp-impexv1importid">[PATCH]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-9"><a class="header" href="#parametersquery-9">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-21"><a class="header" href="#responses-21">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="deletecm4all-wp-impexv1importid"><a class="header" href="#deletecm4all-wp-impexv1importid">[DELETE]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-10"><a class="header" href="#parametersquery-10">Parameters(Query)</a></h4>
+<pre><code class="language-ts">force?: string
+</code></pre>
+<h4 id="responses-22"><a class="header" href="#responses-22">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importidslice"><a class="header" href="#postcm4all-wp-impexv1importidslice">[POST]/cm4all-wp-impex/v1/import/{id}/slice</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-4"><a class="header" href="#requestbody-4">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // slice position column in database
+  position: string
+}
+</code></pre>
+<h4 id="responses-23"><a class="header" href="#responses-23">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importidconsume"><a class="header" href="#postcm4all-wp-impexv1importidconsume">[POST]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-5"><a class="header" href="#requestbody-5">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // Offset at which to start consuming
+  offset?: string
+  // Lmit at which to end consuming
+  limit?: string
+}
+</code></pre>
+<h4 id="responses-24"><a class="header" href="#responses-24">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1importidconsume"><a class="header" href="#putcm4all-wp-impexv1importidconsume">[PUT]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-11"><a class="header" href="#parametersquery-11">Parameters(Query)</a></h4>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<pre><code class="language-ts">limit?: string
+</code></pre>
+<h4 id="responses-25"><a class="header" href="#responses-25">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1importidconsume"><a class="header" href="#patchcm4all-wp-impexv1importidconsume">[PATCH]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-12"><a class="header" href="#parametersquery-12">Parameters(Query)</a></h4>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<pre><code class="language-ts">limit?: string
+</code></pre>
+<h4 id="responses-26"><a class="header" href="#responses-26">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<h3 id="componentsrequestbodiespostcm4allwpimpexv1import"><a class="header" href="#componentsrequestbodiespostcm4allwpimpexv1import">#/components/requestBodies/postCm4allWpImpexV1Import</a></h3>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h3 id="componentsrequestbodiespostcm4allwpimpexv1export"><a class="header" href="#componentsrequestbodiespostcm4allwpimpexv1export">#/components/requestBodies/postCm4allWpImpexV1Export</a></h3>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h3 id="componentssecurityschemesbasic"><a class="header" href="#componentssecurityschemesbasic">#/components/securitySchemes/basic</a></h3>
+<pre><code class="language-ts">{
+  &quot;type&quot;: &quot;http&quot;,
+  &quot;scheme&quot;: &quot;basic&quot;
+}
 </code></pre>
 
                     </main>

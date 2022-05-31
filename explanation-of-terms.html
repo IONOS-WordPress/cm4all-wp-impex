@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html" class="active"><strong aria-hidden="true">2.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html" class="active"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,6 +146,7 @@
 <li><a href="#explanation-of-terms">Explanation of terms</a>
 <ul>
 <li><a href="#impex">ImpEx</a></li>
+<li><a href="#snapshot">Snapshot</a></li>
 <li><a href="#provider">Provider</a>
 <ul>
 <li><a href="#export-provider">Export Provider</a></li>
@@ -164,6 +165,14 @@
 <p>This page will clarify their meaning.</p>
 <h2 id="impex"><a class="header" href="#impex">ImpEx</a></h2>
 <p>The name of the plugin stands for <strong>Imp</strong>ort / <strong>Ex</strong>port =&gt; in short <strong>ImpEx</strong>.</p>
+<h2 id="snapshot"><a class="header" href="#snapshot">Snapshot</a></h2>
+<p>A snapshot is a copy of the content to be imported/exported.</p>
+<p>It resides in a separate WordPress database table managed by the ImpEx plugin.</p>
+<blockquote>
+<p>Attachments/media will be saved in a private sub-directory of the WordPress uploads folder.</p>
+</blockquote>
+<p>You can imagine a snapshot like a server side copy of the content.</p>
+<p>You can import / export as many snapshots as you want.</p>
 <h2 id="provider"><a class="header" href="#provider">Provider</a></h2>
 <p>Provider handle content for ImpEx. They are used to load (import) or extract (export) data for ImpEx.</p>
 <p>There exist a set of standard providers brought by ImpEx for common WordPress data like <code>posts</code>, <code>attachments</code>, <code>wp_options</code> and <code>database tables</code>. Custom providers can be registered by the user.</p>
@@ -214,11 +223,11 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="about.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="features.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="features.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="impex-cli.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -228,11 +237,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="about.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="features.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="features.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="impex-cli.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
