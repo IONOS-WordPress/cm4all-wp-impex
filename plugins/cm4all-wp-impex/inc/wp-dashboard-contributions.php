@@ -55,9 +55,9 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
           [
             'id'      => 'help-export',
             'title'   => __('Export', 'cm4all-wp-impex'),
-            'content' => '
-          TODO
-        '
+            'content' =>
+            __('Export will create a snapshot of the data provided by the ImpEx export profile.<br/>The snapshot can be downloaded to a directory on your local machine.')
+
           ]
         );
 
@@ -65,9 +65,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
           [
             'id'      => 'help-import',
             'title'   => __('Import', 'cm4all-wp-impex'),
-            'content' => '
-          TODO
-        '
+            'content' => __('Import allows you to upload a (previously created) ImpEx snapshot and import it to your WordPress instance.')
           ]
         );
 
@@ -102,7 +100,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
 
         /* 
           prevent loading wp admin forms.css since it breaks gutenberg component styles
-          wp_register_style doesnt overwrite exiting style registrations so that we need to 
+          wp_register_style doesn't overwrite exiting style registrations so that we need to 
           - remove the original style 
           - add a dummy style handle for 'forms'
         */

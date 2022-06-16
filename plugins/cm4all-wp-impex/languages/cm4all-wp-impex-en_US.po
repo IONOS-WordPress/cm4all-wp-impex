@@ -253,7 +253,7 @@ msgid "Uploading snapshot"
 msgstr ""
 
 #: dist/wp.impex.dashboard.js:548
-msgid "Upload snapshot to Wordpress"
+msgid "Upload snapshot to WordPress"
 msgstr ""
 
 #: dist/wp.impex.dashboard.js:554

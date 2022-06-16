@@ -178,8 +178,6 @@ function enqueueClientAssets(bool $in_footer): string
             ])),
           'after'
         );
-
-        //echo (__('huhu !', 'cm4all-wp-impex'));
       },
       10,
       2,
