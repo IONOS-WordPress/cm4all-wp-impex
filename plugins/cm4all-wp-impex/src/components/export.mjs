@@ -8,6 +8,7 @@ import { __, sprintf } from "@wordpress/i18n";
 import Debug from "@cm4all-impex/debug";
 import ImpexFilters from "@cm4all-impex/filters";
 import { edit, cancelCircleFilled, download } from "@wordpress/icons";
+import ExportProfileSelector from "./export-profile-selector.mjs";
 
 import RenameModal from "./rename-modal.mjs";
 import DeleteModal from "./delete-modal.mjs";
@@ -31,18 +32,11 @@ export default function Export() {
   });
 
   const [exportProfile, setExportProfile] = element.useState();
-  const exportProfileSelectRef = element.useRef();
-
-  const _setExportProfile = (exportProfileName = null) => {
-    const exportProfile = exportProfiles.find(
-      (_) => _.name === exportProfileName
-    );
-    setExportProfile(exportProfile);
-    exportProfileSelectRef.current.title = exportProfile?.description;
-  };
 
   element.useEffect(() => {
-    _setExportProfile(exportProfiles?.[0]?.name);
+    if (exportProfiles.length === 1) {
+      setExportProfile(exportProfiles[0]);
+    }
   }, [exportProfiles]);
 
   const {
@@ -56,7 +50,7 @@ export default function Export() {
 
   const screenContext = useScreenContext();
 
-  console.log({ exportProfile, exportProfiles });
+  // debug({ exportProfile, exportProfiles });
   const { currentUser } = data.useSelect((select) => ({
     currentUser: select("core").getCurrentUser(),
   }));
@@ -75,6 +69,7 @@ export default function Export() {
           onRequestClose={() => {}}
           overlayClassName="blocking"
         >
+          value
           <progress indeterminate="true"></progress>
         </components.Modal>
       ),
@@ -203,37 +198,15 @@ export default function Export() {
           opened
           className="create-export-form"
         >
-          <wp.components.SelectControl
-            ref={exportProfileSelectRef}
-            disabled={!exportProfiles.length}
-            label={__("Export Profile", "cm4all-wp-impex")}
-            value={exportProfile?.name}
-            onChange={(exportProfileName) =>
-              _setExportProfile(exportProfileName)
-            }
-            options={[
-              {
-                name: __("Select an Export profile", "cm4all-wp-impex"),
-                disabled: true,
-              },
-              ...exportProfiles,
-            ].map((_) => ({
-              value: _.disabled ? undefined : _.name,
-              label: _.name,
-              disabled: _.disabled,
-            }))}
-            help={__(
-              "Export profiles define which WordPress data should be extracted to the snapshot",
-              "cm4all-wp-impex"
-            )}
-          ></wp.components.SelectControl>
+          <ExportProfileSelector
+            value={exportProfile}
+            onChange={setExportProfile}
+          />
 
           <components.Button
             isPrimary
             onClick={createExport}
-            disabled={
-              !exportProfiles.find((_) => _.name === exportProfile?.name)
-            }
+            disabled={!exportProfile}
           >
             {__("Create Snapshot", "cm4all-wp-impex")}
           </components.Button>

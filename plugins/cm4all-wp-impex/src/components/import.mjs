@@ -16,6 +16,7 @@ import {
 import RenameModal from "./rename-modal.mjs";
 import DeleteModal from "./delete-modal.mjs";
 import useScreenContext from "./screen-context.mjs";
+import ImportProfileSelector from "./import-profile-selector.mjs";
 
 import Store from "@cm4all-impex/store";
 
@@ -51,18 +52,10 @@ export default function Import() {
 
   const [importProfile, setImportProfile] = element.useState();
 
-  const importProfileSelectRef = element.useRef();
-
-  const _setImportProfile = (importProfileName = null) => {
-    const importProfile = importProfiles.find(
-      (_) => _.name === importProfileName
-    );
-    setImportProfile(importProfile);
-    importProfileSelectRef.current.title = importProfile?.description;
-  };
-
   element.useEffect(() => {
-    _setImportProfile(importProfiles?.[0]?.name);
+    if (importProfiles.length === 1) {
+      setImportProfile(importProfiles[0]);
+    }
   }, [importProfiles]);
 
   const onConsumeImport = async (_import) => {
@@ -192,34 +185,14 @@ export default function Import() {
         header={__("Import", "cm4all-wp-impex")}
       >
         <components.PanelBody
-          title={__("Upload snapshot to Wordpress", "cm4all-wp-impex")}
+          title={__("Upload snapshot to WordPress", "cm4all-wp-impex")}
           opened
           className="upload-import-form"
         >
-          <wp.components.SelectControl
-            ref={importProfileSelectRef}
-            disabled={!importProfiles.length}
-            label={__("Import Profile", "cm4all-wp-impex")}
-            value={importProfile?.name}
-            onChange={(importProfileName) =>
-              _setImportProfile(importProfileName)
-            }
-            options={[
-              {
-                name: __("Select an Import profile", "cm4all-wp-impex"),
-                disabled: true,
-              },
-              ...importProfiles,
-            ].map((_) => ({
-              value: _.disabled ? undefined : _.name,
-              label: _.name,
-              disabled: _.disabled,
-            }))}
-            help={__(
-              "Import profiles define which WordPress data should be consumed from the snapshot",
-              "cm4all-wp-impex"
-            )}
-          ></wp.components.SelectControl>
+          <ImportProfileSelector
+            value={importProfile}
+            onChange={setImportProfile}
+          />
           <components.Button
             isPrimary
             onClick={onUpload}

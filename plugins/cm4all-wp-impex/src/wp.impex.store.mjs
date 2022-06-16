@@ -10,7 +10,6 @@ const KEY = `cm4all/impex`;
 
 export default async function (settings) {
   const { namespace, base_uri, site_url } = settings;
-
   const DEFAULT_STATE = {
     settings,
     imports: [],
@@ -24,11 +23,11 @@ export default async function (settings) {
   });
 
   if (!discovery.namespaces.includes(namespace)) {
-    throw `rest discovery doesnt provide expected impex rest namespace(=${namespace})`;
+    throw `rest discovery doesn't provide expected impex rest namespace(=${namespace})`;
   }
 
   if (!discovery.routes[base_uri]) {
-    throw `rest discovery doesnt provide expected impex rest route (=${base_uri})`;
+    throw `rest discovery doesn't provide expected impex rest route (=${base_uri})`;
   }
 
   const actions = {
