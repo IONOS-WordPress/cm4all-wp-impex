@@ -41,6 +41,8 @@ function SimpleTab() {
     };
   });
 
+  const { createAndDownloadExport } = data.useDispatch(Store.KEY);
+
   const [exportProfile, setExportProfile] = element.useState();
   element.useEffect(() => {
     if (exportProfiles.length === 1) {
@@ -66,7 +68,11 @@ function SimpleTab() {
               value={exportProfile}
               onChange={setExportProfile}
             />
-            <components.Button variant="primary" disabled={!exportProfile}>
+            <components.Button
+              variant="primary"
+              disabled={!exportProfile}
+              onClick={() => createAndDownloadExport(exportProfile)}
+            >
               Export
             </components.Button>
           </components.PanelBody>

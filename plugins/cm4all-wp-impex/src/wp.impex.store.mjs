@@ -31,6 +31,26 @@ export default async function (settings) {
   }
 
   const actions = {
+    // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
+    createAndDownloadExport:
+      (exportProfile) =>
+      async ({ dispatch, registry, resolveSelect, select }) => {
+        const exports = select.getExports();
+        debugger;
+        console.log(exports);
+
+        const createdExport = await dispatch.createExport(
+          exportProfile,
+          `intermediate-${window.crypto.randomUUID()}`,
+          `intermediate snapshot created using profile ${exportProfile.name}`
+        );
+
+        const exports2 = select.getExports();
+        console.log(exports2);
+
+        // return createdExport;
+      },
+
     async createExport(exportProfile, name = "", description = "") {
       const payload = await apiFetch({
         path: `${settings.base_uri}/export`,
@@ -177,7 +197,8 @@ export default async function (settings) {
     },
   };
 
-  const store = {
+  const store = data.createReduxStore(KEY, {
+    __experimentalUseThunks: true,
     reducer(state = DEFAULT_STATE, { type, payload }) {
       switch (type) {
         case "ADD_EXPORT": {
@@ -325,9 +346,9 @@ export default async function (settings) {
         };
       },
     },
-  };
+  });
 
-  data.registerStore(KEY, store);
+  data.register(store);
 }
 
 export { KEY };
