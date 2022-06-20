@@ -128,6 +128,7 @@ export default function Export() {
     const exportsDirHandle = await window.showDirectoryPicker({
       // You can suggest a default start directory by passing a startIn property to the showSaveFilePicker
       startIn: "downloads",
+      mode: "readwrite",
       // If an id is specified, the file picker implementation will remember a separate last-used directory for pickers with that same id.
       id: _exportFolderName,
     });

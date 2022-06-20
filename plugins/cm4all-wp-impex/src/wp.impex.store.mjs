@@ -2,6 +2,7 @@ import data from "@wordpress/data";
 import apiFetch from "@wordpress/api-fetch";
 import url from "@wordpress/url";
 import Debug from "@cm4all-impex/debug";
+import { __, sprintf } from "@wordpress/i18n";
 
 const debug = Debug.default("wp.impex.store");
 debug("loaded");
@@ -32,10 +33,42 @@ export default async function (settings) {
 
   const actions = {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
-    createAndDownloadExport:
-      (exportProfile) =>
-      async ({ dispatch, registry, resolveSelect, select }) => {
+    createAndDownloadExport: (exportProfile, screenContext) =>
+      async function* ({ dispatch, registry, resolveSelect, select }) {
+        const _exportFolderName = screenContext.normalizeFilename(
+          `${discovery.name}-${
+            exportProfile.name
+          }-${screenContext.currentDateString()}`
+        );
+
+        let exportsDirHandle = null;
+        try {
+          // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
+          // see https://web.dev/file-system-access/
+          // see https://developer.mozilla.org/en-US/docs/Web/API/window/showDirectoryPicker
+          exportsDirHandle = await window.showDirectoryPicker({
+            startIn: "downloads",
+            mode: "readwrite",
+            id: _exportFolderName,
+          });
+        } catch {
+          return;
+        }
+
+        const exportDirHandle = await exportsDirHandle.getDirectoryHandle(
+          _exportFolderName,
+          {
+            create: true,
+          }
+        );
+
+        // ensure directory is empty before continuing
+
+        console.log(exportDirHandle);
+
         const exports = select.getExports();
+
+        /*
         debugger;
         console.log(exports);
 
@@ -43,12 +76,48 @@ export default async function (settings) {
           exportProfile,
           `intermediate-${window.crypto.randomUUID()}`,
           `intermediate snapshot created using profile ${exportProfile.name}`
+                  // const date = screenContext.currentDateString();
+        // const name = `${site_url.hostname}-${exportProfile.name}-${date}`;
+        // const description = `Export '${exportProfile.name}' created by user '${currentUser.name}' at ${date}`;
+
         );
 
         const exports2 = select.getExports();
         console.log(exports2);
+        */
 
-        // return createdExport;
+        /*
+        yield {
+          type: "progress",
+          title: __("Export", "cm4all-wp-impex"),
+          message: __("Creating snapshot", "cm4all-wp-impex"),
+        };
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        yield {
+          type: "progress",
+          title: __("Export", "cm4all-wp-impex"),
+          message: __("Downloading snapshot", "cm4all-wp-impex"),
+        };
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // throw {
+        //   title: __("Export failed", "cm4all-wp-impex"),
+        //   message: __("Export failed by abortion", "cm4all-wp-impex"),
+        // };
+
+        throw new Error("Huuuuu - something went wrong");
+
+        yield {
+          type: "progress",
+          title: __("Export", "cm4all-wp-impex"),
+          message: __("Done", "cm4all-wp-impex"),
+        };
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        */
       },
 
     async createExport(exportProfile, name = "", description = "") {

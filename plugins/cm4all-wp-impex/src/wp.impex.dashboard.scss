@@ -13,7 +13,16 @@ button > svg {
 
   &.blocking {
     cursor: wait;
-  }
+
+    // we cannot name it "error" because it is already used by the wp admin 
+    &.fault {
+      cursor: inherit;
+
+      .components-modal__header {
+        background-color: #d63638;
+      }
+    }
+ }
 
   PROGRESS {
     width: 100%;

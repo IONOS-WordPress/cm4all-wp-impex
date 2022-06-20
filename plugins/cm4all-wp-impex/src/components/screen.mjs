@@ -11,6 +11,7 @@ import Import from "./import.mjs";
 
 import ExportProfileSelector from "./export-profile-selector.mjs";
 import ImportProfileSelector from "./import-profile-selector.mjs";
+import useScreenContext from "./screen-context.mjs";
 
 const debug = Debug.default("wp.impex.dashboard.screen");
 debug("loaded");
@@ -33,6 +34,8 @@ function AdvancedTab() {
 }
 
 function SimpleTab() {
+  const screenContext = useScreenContext();
+
   const { exportProfiles, importProfiles } = data.useSelect((select) => {
     const store = select(Store.KEY);
     return {
@@ -57,42 +60,96 @@ function SimpleTab() {
     }
   }, [importProfiles]);
 
-  debug({ exportProfile, importProfile });
+  const _createAndDownloadExport = async () => {
+    console.log({ exportProfile, screenContext });
+    const gen = await createAndDownloadExport(exportProfile, screenContext);
+
+    try {
+      for await (const state of gen) {
+        switch (state.type) {
+          case "progress":
+            setProgress({
+              component: (
+                <components.Modal
+                  title={state.title}
+                  onRequestClose={() => {}}
+                  overlayClassName="blocking"
+                >
+                  {state.message}
+                  <progress indeterminate="true"></progress>
+                </components.Modal>
+              ),
+            });
+            break;
+        }
+      }
+      setProgress(null);
+    } catch (ex) {
+      console.error(ex);
+      setProgress({
+        component: (
+          <components.Modal
+            title={ex.title || __("Export failed", "cm4all-wp-impex")}
+            onRequestClose={() => setProgress(null)}
+            overlayClassName="blocking fault"
+          >
+            <p>{ex.message}</p>
+            <components.Flex direction="row" justify="flex-end">
+              <components.Button isPrimary onClick={() => setProgress(null)}>
+                {__("OK", "cm4all-wp-impex")}
+              </components.Button>
+            </components.Flex>
+          </components.Modal>
+        ),
+      });
+    }
+  };
+
+  const [progress, setProgress] = element.useState(null);
+
+  debug({ exportProfile, importProfile, _createAndDownloadExport });
 
   return (
-    <components.Flex direction="row" align="top">
-      <components.FlexItem isBlock>
-        <components.Panel className="export">
-          <components.PanelBody opened className="create-export-form">
-            <ExportProfileSelector
-              value={exportProfile}
-              onChange={setExportProfile}
-            />
-            <components.Button
-              variant="primary"
-              disabled={!exportProfile}
-              onClick={() => createAndDownloadExport(exportProfile)}
-            >
-              Export
-            </components.Button>
-          </components.PanelBody>
-        </components.Panel>
-      </components.FlexItem>
+    <>
+      <components.Flex direction="row" align="top">
+        <components.FlexItem isBlock>
+          <components.Panel className="export">
+            <components.PanelBody opened className="create-export-form">
+              <ExportProfileSelector
+                value={exportProfile}
+                onChange={setExportProfile}
+              />
+              <components.Button
+                variant="primary"
+                disabled={!exportProfile}
+                onClick={_createAndDownloadExport}
+              >
+                Export
+              </components.Button>
+            </components.PanelBody>
+          </components.Panel>
+        </components.FlexItem>
 
-      <components.FlexItem isBlock>
-        <components.Panel className="export">
-          <components.PanelBody opened className="upload-import-form">
-            <ImportProfileSelector
-              value={importProfile}
-              onChange={setImportProfile}
-            />
-            <components.Button variant="primary" disabled={!importProfile}>
-              Import
-            </components.Button>
-          </components.PanelBody>
-        </components.Panel>
-      </components.FlexItem>
-    </components.Flex>
+        <components.FlexItem isBlock>
+          <components.Panel className="export">
+            <components.PanelBody opened className="upload-import-form">
+              <ImportProfileSelector
+                value={importProfile}
+                onChange={setImportProfile}
+              />
+              <components.Button variant="primary" disabled={!importProfile}>
+                Import
+              </components.Button>
+            </components.PanelBody>
+          </components.Panel>
+        </components.FlexItem>
+      </components.Flex>
+      {progress && (
+        <components.Fill name="progress" onRequestClose={() => {}}>
+          {progress.component}
+        </components.Fill>
+      )}
+    </>
   );
 }
 
