@@ -206,7 +206,7 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
 
         $notConsumedSlices = $this->prepare_item_for_response($notConsumedSlices, $request);
 
-        $response = new \WP_REST_Response($notConsumedSlices, 200);
+        $response = new \WP_REST_Response(['notConsumedSlices' => $notConsumedSlices, 'log' => $transformationContext->log], 200);
         return $response;
       }
     }

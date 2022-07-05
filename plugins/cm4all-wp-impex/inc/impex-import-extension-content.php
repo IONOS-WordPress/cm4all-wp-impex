@@ -47,15 +47,15 @@ function __ImportContentProviderProviderCallback(array $slice, array $options, I
         // THIS IS IMPORTANT: clear cache to ensure that we dont get half baked data from cache !
         \wp_cache_flush();
 
-        $author_mapping = _import_authors($options, $slice);
+        $author_mapping = _import_authors($options, $slice, $transformationContext);
 
-        $processed_taxonomies = _import_taxonomies($options, $slice);
+        $processed_taxonomies = _import_taxonomies($options, $slice, $transformationContext);
 
-        $processed_categories = _import_categories($options, $slice);
-        $processed_terms = _import_terms($options, $slice);
-        $processed_tags = _import_tags($options, $slice);
+        $processed_categories = _import_categories($options, $slice, $transformationContext);
+        $processed_terms = _import_terms($options, $slice, $transformationContext);
+        $processed_tags = _import_tags($options, $slice, $transformationContext);
 
-        list($processed_posts, $post_orphans, $featured_images, $missing_menu_items, $processed_menu_items, $menu_item_orphans) = _import_posts($options, $slice, $author_mapping, $processed_categories, $processed_terms, $processed_tags);
+        list($processed_posts, $post_orphans, $featured_images, $missing_menu_items, $processed_menu_items, $menu_item_orphans) = _import_posts($options, $slice, $author_mapping, $processed_categories, $processed_terms, $processed_tags, $transformationContext);
 
         \wp_suspend_cache_invalidation(false);
 
@@ -97,7 +97,7 @@ function __ImportContentProviderProviderCallback(array $slice, array $options, I
   return false;
 }
 
-function _import_posts(array $options, array $slice, array $author_mapping, array $processed_categories, array $processed_terms, array $processed_tags): array
+function _import_posts(array $options, array $slice, array $author_mapping, array $processed_categories, array $processed_terms, array $processed_tags, ImpexImportTransformationContext $transformationContext): array
 {
   $processed_posts = [];
   $post_orphans = [];
@@ -557,7 +557,7 @@ function _import_tags(array $options, array $slice): array
   return $processed_terms;
 }
 
-function _import_terms(array $options, array $slice): array
+function _import_terms(array $options, array $slice, ImpexImportTransformationContext $transformationContext): array
 {
   $processed_terms = [];
 
@@ -568,7 +568,7 @@ function _import_terms(array $options, array $slice): array
 
   foreach ($terms as $term) {
     // if the term already exists in the correct taxonomy leave it alone
-    $term_id = term_exists($term[ContentExporter::SLICE_DATA_TERMS_SLUG], $term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY]);
+    $term_id = \term_exists($term[ContentExporter::SLICE_DATA_TERMS_SLUG], $term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY]);
     if ($term_id) {
       if (is_array($term_id)) {
         $term_id = $term_id['term_id'];
@@ -595,22 +595,22 @@ function _import_terms(array $options, array $slice): array
       'parent'      => (int) $parent,
     ];
 
-    $term_id = wp_insert_term(wp_slash($term[ContentExporter::SLICE_DATA_TERMS_NAME]), $term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY], $args);
-    if (!is_wp_error($term_id)) {
+    $term_id = \wp_insert_term(\wp_slash($term[ContentExporter::SLICE_DATA_TERMS_NAME]), $term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY], $args);
+    if (!\is_wp_error($term_id)) {
       if (isset($term[ContentExporter::SLICE_DATA_TERMS_ID])) {
         $processed_terms[(int)$term[ContentExporter::SLICE_DATA_TERMS_ID]] = $term_id['term_id'];
       }
+      _process_termmeta($term, $term_id['term_id']);
     } else {
-      throw new ImpexImportRuntimeException("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}");
+      $transformationContext->warn("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}", $term);
+      // throw new ImpexImportRuntimeException("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}");
     }
-
-    _process_termmeta($term, $term_id['term_id']);
   }
 
   return $processed_terms;
 }
 
-function _import_categories(array $options, array $slice): array
+function _import_categories(array $options, array $slice, ImpexImportTransformationContext $transformationContext): array
 {
   $categories = $slice[Impex::SLICE_DATA][ContentExporter::SLICE_DATA_CATEGORIES];
 
@@ -690,7 +690,7 @@ function _process_termmeta(array $term, int $term_id)
  * @throws ImpexImportRuntimeException
  * @return array<string,integer>
  */
-function _import_authors(array $options, array $slice): array
+function _import_authors(array $options, array $slice, ImpexImportTransformationContext $transformationContext): array
 {
   if ($options['users'] === false) {
     return false;

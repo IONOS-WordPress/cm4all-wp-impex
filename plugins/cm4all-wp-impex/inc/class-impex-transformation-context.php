@@ -36,6 +36,7 @@ abstract class ImpexTransformationContext implements \JsonSerializable
   protected string $_profile_name;
   protected array $_options;
   protected bool $_isExportPart;
+  protected array $_log = array();
 
   protected function __construct(
     ImpexPart $part,
@@ -93,9 +94,19 @@ abstract class ImpexTransformationContext implements \JsonSerializable
       'url' => \wp_get_upload_dir()['baseurl'] . '/' . $this->_uploads_subpath,
       'profile' => Impex::getInstance()->{$this->_isExportPart ? 'Export' : 'Import'}->getProfile($this->_profile_name),
       'options' => $this->_options,
+      'log' => $this->_log,
 
       default => throw new ImpexRuntimeException(sprintf('abort getting invalid property "%s"', $property)),
     };
+  }
+
+  public function warn(string $message, array $cause = [])
+  {
+    $this->_log[] = [
+      'type' => 'warning',
+      'message' => $message,
+      'cause' => $cause,
+    ];
   }
 
   /**
