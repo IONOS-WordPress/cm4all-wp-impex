@@ -93,6 +93,9 @@ DOCS_MARKDOWN_TARGETS := $(patsubst %.md,dist/%.pdf,$(wildcard $(DOCS_MARKDOWN_F
 DOCS_MERMAID_FILES := docs/**/*.mmd
 DOCS_MERMAID_TARGETS := $(patsubst %.mmd,%.mmd.svg,$(wildcard $(DOCS_MERMAID_FILES)))
 
+RECTOR := $(shell pwd)/tmp/rector/vendor/bin/rector
+RECTOR_CONFIG := $(shell pwd)/rector.php
+
 .ONESHELL:
 
 .PHONY: all 
@@ -489,17 +492,19 @@ dist/cm4all-wp-impex-cli : tmp/rector
 > sed -i 's/Requires PHP:[[:space:]]\+8.0/Requires PHP: 7.4/' $@/impex-cli-php7.4.0.php
 # test generated php 7.4 script using: 
 # docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.4-cli php ./dist/cm4all-wp-impex-cli/impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
-> tmp/rector/vendor/bin/rector --clear-cache --working-dir $@ --config ./rector.php --no-progress-bar process impex-cli-php7.4.0.php
+# > tmp/rector/vendor/bin/rector --clear-cache --working-dir $@ --config ./rector.php --no-progress-bar process impex-cli-php7.4.0.php
+> cd '$@' && $(RECTOR) --clear-cache --config '$(RECTOR_CONFIG)' --no-progress-bar process impex-cli-php7.4.0.php
 
 $(DOWNGRADED_PLUGIN_DIR): dist/cm4all-wp-impex tmp/rector
 #HELP: * generate downgraded PHP flavor of impex plugin
 > mkdir -p '$@'
 > rsync -rc dist/cm4all-wp-impex/ $@/
 # rename dummy plugin for downgraded plugin variant
-> sed -i "s/Plugin Name: cm4all-wp-impex/Plugin Name: $$(basename $(DOWNGRADED_PLUGIN_DIR))/g" $@/plugin.php
+> sed -i "s/Plugin Name: cm4all-wp-impex/Plugin Name: $$(basename '$@')/g" $@/plugin.php
 > sed -i 's/Requires PHP:[[:space:]]\+8.0/Requires PHP: 7.4/' $@/plugin.php $@/readme.txt
 # > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./$(DOWNGRADED_PLUGIN_DIR) --config ./tmp/rector/vendor/rector/rector/config/set/downgrade-php80.php --no-progress-bar process .
-> tmp/rector/vendor/bin/rector --clear-cache --working-dir ./$(DOWNGRADED_PLUGIN_DIR) --config ./rector.php --no-progress-bar process .
+# > tmp/rector/vendor/bin/rector --clear-cache --working-dir ./$(DOWNGRADED_PLUGIN_DIR) --config ./rector.php --no-progress-bar process .
+> cd '$@' && $(RECTOR) --clear-cache --config '$(RECTOR_CONFIG)' --no-progress-bar process .
 
 .PHONY: deploy-to-wordpress
 #HELP: * package and deploy impex plugin to wordpress.org
