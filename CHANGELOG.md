@@ -1,3 +1,11 @@
+### [1.3.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.5...1.3.6) (2022-07-05)
+
+
+### Bug Fixes
+
+* import will not fail on unknown taxonomy references ([c2016b5](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c2016b59b18ad2a841acb76c5f0e1f3515ea6f2a))
+* upgraded rector command to latest rector cli ([0976dcf](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/0976dcf68fdefc080331686a742dc833a209168c))
+
 ### [1.3.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.4...1.3.5) (2022-05-31)
 
 
