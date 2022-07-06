@@ -1,3 +1,10 @@
+### [1.3.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.6...1.3.7) (2022-07-06)
+
+
+### Bug Fixes
+
+* made snapshot import more sensitive about files/directories ([e38ed41](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/e38ed41c5f40bef8ce191462e158789142dd722c))
+
 ### [1.3.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.5...1.3.6) (2022-07-05)
 
 
