@@ -87,12 +87,17 @@ export default function Import() {
   const _getSliceFiles = async (importDirHandle) => {
     const slices = [];
     for await (let sliceChunkDirectoryHandle of importDirHandle.values()) {
-      for await (let sliceFileHandle of sliceChunkDirectoryHandle.values()) {
-        if (sliceFileHandle.name.match(/^slice-\d+\.json$/)) {
-          slices.push({
-            fileHandle: sliceFileHandle,
-            dirHandle: sliceChunkDirectoryHandle,
-          });
+      if (sliceChunkDirectoryHandle.kind === "directory") {
+        for await (let sliceFileHandle of sliceChunkDirectoryHandle.values()) {
+          if (
+            sliceFileHandle.kind === "file" &&
+            sliceFileHandle.name.match(/^slice-\d+\.json$/)
+          ) {
+            slices.push({
+              fileHandle: sliceFileHandle,
+              dirHandle: sliceChunkDirectoryHandle,
+            });
+          }
         }
       }
     }
