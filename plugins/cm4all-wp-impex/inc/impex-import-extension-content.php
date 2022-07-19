@@ -179,7 +179,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
 
       // map the post author
       $author = \sanitize_user($post[ContentExporter::SLICE_DATA_POSTS_CREATOR], true);
-      $author = $author_mapping[$author] ?? (int) get_current_user_id();
+      $author = $author_mapping[$author] ?? (int)\get_current_user_id();
 
       // see defaults here : https://developer.wordpress.org/reference/functions/wp_insert_post/
       $postdata = [
@@ -707,6 +707,13 @@ function _import_authors(array $options, array $slice, ImpexImportTransformation
   foreach ($slice[Impex::SLICE_DATA][ContentExporter::SLICE_DATA_AUTHORS] as $author) {
     // Multisite adds strtolower to sanitize_user. Need to sanitize here to stop breakage in process_posts.
     $login =  sanitize_user($author[ContentExporter::SLICE_DATA_AUTHORS_LOGIN], true);
+
+    // bugfix: if current user is '' (which is illegal but happens on bad configured machines)
+    // => map it to the current user
+    if ($login === '' && !isset($options['users'][$login])) {
+      $options['users'][$login] = (int)\get_current_user_id();
+    }
+
     $map = $options['users'][$login] ?? \username_exists($login);
 
     if ($map === false) {
