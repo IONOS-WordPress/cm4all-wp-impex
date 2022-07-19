@@ -117,9 +117,13 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
     $post = \apply_filters('wp_import_post_data_raw', $post);
 
     if (!\post_type_exists($post[ContentExporter::SLICE_DATA_POSTS_TYPE] ?? 'post')) {
+      $transformationContext->warn("Failed to create post(title='{$post['post_title']}', post_type='{$post['post_title']}') : post_type does not exist.");
+      continue;
+      /*
       throw new ImpexImportRuntimeException(
-        "Failed to create post(title='{$post['post_title']}, post_type={$post['post_title']}') : post_type does not exist."
+        "Failed to create post(title='{$post['post_title']}', post_type='{$post['post_title']}') : post_type does not exist."
       );
+      */
     }
 
     // @TODO: : do we want this ? abort post import if post id already exists
