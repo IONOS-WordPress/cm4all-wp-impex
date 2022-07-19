@@ -161,9 +161,14 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
      */
     $post_exists = \apply_filters('wp_import_existing_post', $post_exists, $post);
 
-    if ($post_exists && get_post_type($post_exists) == $post[ContentExporter::SLICE_DATA_POSTS_TYPE]) {
+    if ($post_exists && \get_post_type($post_exists) == $post[ContentExporter::SLICE_DATA_POSTS_TYPE]) {
       // @TODO: log notice post(type=$post_type_object->labels->singular_name}, title={$post['post_title']}) alread exists 
       // => skip post import
+
+      $transformationContext->warn(
+        "Skip importing Post(post_type='{$post[ContentExporter::SLICE_DATA_POSTS_TYPE]}', title='{$post[ContentExporter::SLICE_DATA_POSTS_TITLE]}') already exists (id={$post[ContentExporter::SLICE_DATA_POSTS_ID]})."
+      );
+
       $comment_post_id = $post_exists;
       $post_id         = $post_exists;
       $processed_posts[(int)$post[ContentExporter::SLICE_DATA_POSTS_ID]] = (int)$post_exists;
