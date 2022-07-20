@@ -4,7 +4,7 @@
  * Plugin Name: cm4all-wp-impex-example
  * Plugin URI: http://dev.intern.cm-ag/trinity/research/cm4all-wp-impex
  * Description: Example plugin contributing additional Importer/Exporter facilities to ImpEx plugin 
- * Version: 1.3.7
+ * Version: 1.3.8
  * Tags: import, export, migration
  * Requires PHP: 8.0
  * Requires at least: 5.7

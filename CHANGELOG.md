@@ -1,3 +1,10 @@
+### [1.3.8](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.7...1.3.8) (2022-07-20)
+
+
+### Bug Fixes
+
+* import will no more fail on unknown post type import ([df37c18](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/df37c18c3a01b09edb20ed683b257f64712f456b))
+
 ### [1.3.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.6...1.3.7) (2022-07-06)
 
 
