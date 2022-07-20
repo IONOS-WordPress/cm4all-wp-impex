@@ -98,6 +98,13 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
         'permission_callback' => [$this, 'consume_permissions_check'],
         // @TODO: attach the correct schema for the post body
         'args'                => [
+          'options' => [
+            'description'       => 'options to pass to the consume method',
+            'type'              => 'object',
+            'default'           => [],
+            // 'sanitize_callback' => 'sanitize_text_field',
+            'required'          => false
+          ],
           /*
           'profile' => [
             'description'       => 'import profile to use',
@@ -193,15 +200,17 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
   {
     //$profile = Impex::getInstance()->Import->getProfile($request->get_param('profile'));
     $snapshot_id = $request->get_param('id');
-    //$options = $request->get_json_params();
+    $options = $request->get_json_params()['options'] ?? [];
 
     $limit = $request->get_param('limit');
     $offset = $request->get_param('offset');
 
     foreach (\get_option(ImpexImport::WP_OPTION_IMPORTS, []) as $import) {
       if ($import['id'] === $snapshot_id) {
-        $transformationContext = ImpexImportTransformationContext::fromJson($import);
+        // merge consume options over import options
+        $import['options'] = array_merge($import['options'], $options);
 
+        $transformationContext = ImpexImportTransformationContext::fromJson($import);
         $notConsumedSlices = Impex::getInstance()->Import->consume($transformationContext, $limit, $offset);
 
         $notConsumedSlices = $this->prepare_item_for_response($notConsumedSlices, $request);
