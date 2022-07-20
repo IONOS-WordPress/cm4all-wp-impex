@@ -85,7 +85,7 @@ export default async function (settings) {
         payload,
       };
     },
-    async consumeImport(id, options = [], offset = null, limit = null) {
+    async consumeImport(id, options = {}, offset = null, limit = null) {
       const queryArgs = {};
 
       if (offset !== null) {
@@ -102,7 +102,7 @@ export default async function (settings) {
           queryArgs
         ),
         method: "POST",
-        data: options,
+        data: { options },
       });
 
       return {
