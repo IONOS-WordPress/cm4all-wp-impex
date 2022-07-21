@@ -410,10 +410,12 @@ wp-env-wp-cli-sh: $(WP_ENV_HOME)
 #HELP: deletes all posts/pages/...
 wp-env-clean: $(WP_ENV_HOME)
 > for instance_prefix in '' 'tests-' ; do
-> 	wp-env run "$${instance_prefix}cli" bash <<-EOF
-> 		wp post list --post_type=attachment,post,page --format=ids | xargs wp post delete --force 1>/dev/null || :
+> 	wp-env run --debug=false "$${instance_prefix}cli" bash <<-EOF
+#> 		wp post list --post_type=attachment,post,page,wp_block --format=ids | xargs wp post delete --force 1>/dev/null || :
+#> 		wp post list --post_status=trash --format=ids | xargs wp post delete --force 1>/dev/null || :  
+> 		wp db query --silent "select id from wp_posts;" | xargs wp post delete --force 1>/dev/null || :
 > 		wp option update fresh_site '1' || : 
-> 		wp menu list --format=ids | xargs wp menu delete 1>/dev/null || : 
+> 		wp menu list --format=ids | xargs wp menu delete --force 1>/dev/null || : 
 > 	EOF
 > done
 
