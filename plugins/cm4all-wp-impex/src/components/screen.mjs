@@ -131,7 +131,7 @@ function SimpleTab() {
         </components.FlexItem>
 
         <components.FlexItem isBlock>
-          <components.Panel className="export">
+          <components.Panel className="import">
             <components.PanelBody opened className="upload-import-form">
               <ImportProfileSelector
                 value={importProfile}
