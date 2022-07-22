@@ -19,6 +19,9 @@ debug("loaded");
 const isFileystemApiAvailable =
   typeof window.showDirectoryPicker === "function";
 
+const isCryptoRandomAvailable =
+  typeof window?.crypto?.randomUUID === "function";
+
 function AdvancedTab() {
   return (
     <components.Flex direction="row" align="top">
@@ -179,6 +182,36 @@ export default function () {
         <components.Slot name="progress" />
 
         {!isFileystemApiAvailable && (
+          <components.Modal
+            title="Ouch - your browser does not support the File System Access API :-("
+            isDismissible={false}
+          >
+            <p>
+              ImpEx Import / Export requires a browser implementing the{" "}
+              <a href="https://web.dev/file-system-access/">
+                File System Access API
+              </a>
+              .
+            </p>
+            <p>
+              Currently only Chromium based browsers like Chrome, Chromium, MS
+              Edge are known to support this feature.
+            </p>
+            <p>
+              See{" "}
+              <a href="https://caniuse.com/mdn-api_window_showdirectorypicker">
+                here
+              </a>{" "}
+              to find the latest list of browsers supporting the{" "}
+              <a href="https://web.dev/file-system-access/">
+                File System Access API
+              </a>{" "}
+              feature.
+            </p>
+          </components.Modal>
+        )}
+
+        {!isCryptoRandomAvailable && (
           <components.Modal
             title="Ouch - your browser does not support the File System Access API :-("
             isDismissible={false}
