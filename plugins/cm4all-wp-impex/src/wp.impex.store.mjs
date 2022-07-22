@@ -35,12 +35,6 @@ export default async function (settings) {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
     createAndDownloadExport: (exportProfile, screenContext) =>
       async function* ({ dispatch, registry, resolveSelect, select }) {
-        const _exportFolderName = screenContext.normalizeFilename(
-          `${discovery.name}-${
-            exportProfile.name
-          }-${screenContext.currentDateString()}`
-        );
-
         let exportsDirHandle = null;
         try {
           // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
@@ -55,6 +49,46 @@ export default async function (settings) {
           return;
         }
 
+        let _exportFolderName = screenContext.normalizeFilename(
+          `${window.location.hostname}-${
+            exportProfile.name
+          }-${screenContext.currentDateString()}`
+        );
+
+        _exportFolderName =
+          prompt(
+            "Enter name of the export (max 32 characters):",
+            _exportFolderName
+          ) ?? _exportFolderName;
+
+        /*
+        _exportFolderName.substring(0, 32);
+
+        matchingexistingExports = [];
+        for await (let exportsDirChildHandle of exportsDirHandle.values()) {
+          if (
+            exportsDirChildHandle.kind === "directory" &&
+            exportsDirChildHandle.name.startsWith(_exportFolderName)
+          ) {
+            matchingexistingExports.push(exportsDirChildHandle.name);
+          }
+        }
+        */
+
+        // ensure directory does not exist
+        try {
+          const r = await exportsDirHandle.getDirectoryHandle(
+            _exportFolderName,
+            {
+              create: false,
+            }
+          );
+
+          throw new Error(
+            `Export folder ${_exportFolderName} already exists. Please remove/rename it and continue.\n(${ex.message})`
+          );
+        } catch (ex) {}
+
         const exportDirHandle = await exportsDirHandle.getDirectoryHandle(
           _exportFolderName,
           {
@@ -62,16 +96,12 @@ export default async function (settings) {
           }
         );
 
-        // ensure directory is empty before continuing
-
-        console.log(exportDirHandle);
+        debug({ exportDirHandle });
 
         const exports = select.getExports();
+        debug({ exports });
 
         /*
-        debugger;
-        console.log(exports);
-
         const createdExport = await dispatch.createExport(
           exportProfile,
           `intermediate-${window.crypto.randomUUID()}`,
