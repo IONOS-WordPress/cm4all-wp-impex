@@ -85,7 +85,7 @@ function SimpleTab() {
       }
       setProgress(null);
     } catch (ex) {
-      console.error(ex);
+      debug(ex);
       setProgress({
         component: (
           <components.Modal
@@ -93,7 +93,9 @@ function SimpleTab() {
             onRequestClose={() => setProgress(null)}
             overlayClassName="blocking fault"
           >
-            <p>{ex.message}</p>
+            {ex.message.split("\n").map((line, index) => (
+              <p key={index}>{line}</p>
+            ))}
             <components.Flex direction="row" justify="flex-end">
               <components.Button isPrimary onClick={() => setProgress(null)}>
                 {__("OK", "cm4all-wp-impex")}
