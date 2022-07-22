@@ -116,6 +116,7 @@ export default function Import() {
       importDirHandle = await window.showDirectoryPicker({
         // You can suggest a default start directory by passing a startIn property to the showSaveFilePicker
         startIn: "downloads",
+        id: "impex-dir",
       });
     } catch {
       return;

@@ -49,7 +49,7 @@ export default async function (settings) {
           exportsDirHandle = await window.showDirectoryPicker({
             startIn: "downloads",
             mode: "readwrite",
-            id: _exportFolderName,
+            id: "impex-dir",
           });
         } catch {
           return;
