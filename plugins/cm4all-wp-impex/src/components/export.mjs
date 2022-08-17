@@ -1,12 +1,10 @@
 import element from "@wordpress/element";
 import components from "@wordpress/components";
 import apiFetch from "@wordpress/api-fetch";
-import hooks from "@wordpress/hooks";
 import url from "@wordpress/url";
 import data from "@wordpress/data";
 import { __, sprintf } from "@wordpress/i18n";
 import Debug from "@cm4all-impex/debug";
-import ImpexFilters from "@cm4all-impex/filters";
 import { edit, cancelCircleFilled, download } from "@wordpress/icons";
 import ExportProfileSelector from "./export-profile-selector.mjs";
 
@@ -78,42 +76,6 @@ export default function Export() {
     setProgress();
   };
 
-  const _saveSlicesChunk = async (exportDirHandle, response, chunk) => {
-    const slices = await response;
-    debug(`_saveSlicesChunk(chunk=%o) : %o`, chunk, response);
-
-    // create chunk sub directory
-    const chunkDirHandle = await exportDirHandle.getDirectoryHandle(
-      `chunk-${chunk.toString().padStart(4, "0")}`,
-      { create: true }
-    );
-
-    return Promise.all(
-      slices.map(async (slice, index) => {
-        const sliceFileHandle = await chunkDirHandle.getFileHandle(
-          `slice-${index.toString().padStart(4, "0")}.json`,
-          { create: true }
-        );
-
-        slice = await hooks.applyFilters(
-          ImpexFilters.SLICE_REST_UNMARSHAL,
-          ImpexFilters.NAMESPACE,
-          slice,
-          index,
-          chunkDirHandle
-        );
-
-        // Create a FileSystemWritableFileStream to write to.
-        const writable = await sliceFileHandle.createWritable();
-        // Write the contents of the file to the stream.
-        await writable.write(JSON.stringify(slice, null, "  "));
-        debug("slice(=%o) = %o", index, slice);
-        // Close the file and write the contents to disk.
-        await writable.close();
-      })
-    );
-  };
-
   const onDownloadExport = async (_export) => {
     let _exportFolderName = null;
     // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
@@ -170,11 +132,11 @@ export default function Export() {
     );
 
     const sliceChunks = [
-      _saveSlicesChunk(exportDirHandle, initialResponse.json(), 1),
+      screenContext.saveSlicesChunk(exportDirHandle, initialResponse.json(), 1),
     ];
     for (let chunk = 2; chunk <= x_wp_total_pages; chunk++) {
       sliceChunks.push(
-        _saveSlicesChunk(
+        screenContext.saveSlicesChunk(
           exportDirHandle,
           apiFetch({
             path: url.addQueryArgs(path, { page: chunk }),

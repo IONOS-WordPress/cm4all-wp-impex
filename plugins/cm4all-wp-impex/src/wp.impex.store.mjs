@@ -35,119 +35,176 @@ export default async function (settings) {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
     createAndDownloadExport: (exportProfile, screenContext) =>
       async function* ({ dispatch, registry, resolveSelect, select }) {
-        let exportsDirHandle = null;
         try {
-          // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
-          // see https://web.dev/file-system-access/
-          // see https://developer.mozilla.org/en-US/docs/Web/API/window/showDirectoryPicker
-          exportsDirHandle = await window.showDirectoryPicker({
-            startIn: "downloads",
-            mode: "readwrite",
-            id: "impex-dir",
-          });
-        } catch {
-          return;
-        }
-
-        let _exportFolderName = screenContext.normalizeFilename(
-          `${window.location.hostname}-${
-            exportProfile.name
-          }-${screenContext.currentDateString()}`
-        );
-
-        _exportFolderName =
-          prompt(
-            "Enter name of the export (max 32 characters):",
-            _exportFolderName
-          ) ?? _exportFolderName;
-
-        /*
-        _exportFolderName.substring(0, 32);
-
-        matchingexistingExports = [];
-        for await (let exportsDirChildHandle of exportsDirHandle.values()) {
-          if (
-            exportsDirChildHandle.kind === "directory" &&
-            exportsDirChildHandle.name.startsWith(_exportFolderName)
-          ) {
-            matchingexistingExports.push(exportsDirChildHandle.name);
+          let exportsDirHandle = null;
+          try {
+            // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
+            // see https://web.dev/file-system-access/
+            // see https://developer.mozilla.org/en-US/docs/Web/API/window/showDirectoryPicker
+            exportsDirHandle = await window.showDirectoryPicker({
+              startIn: "downloads",
+              mode: "readwrite",
+              id: "impex-dir",
+            });
+          } catch {
+            return;
           }
-        }
-        */
 
-        // ensure directory does not exist
-        try {
-          const r = await exportsDirHandle.getDirectoryHandle(
+          let _exportFolderName = screenContext.normalizeFilename(
+            `${window.location.hostname}-${
+              exportProfile.name
+            }-${screenContext.currentDateString()}`
+          );
+
+          _exportFolderName =
+            prompt(
+              "Enter name of the export (max 32 characters):",
+              _exportFolderName
+            ); // ?? _exportFolderName;
+
+          // abort if user pressed cancel
+          if(!_exportFolderName) {
+            await (yield {
+              type: "info",
+              title: __("Export aborted", "cm4all-wp-impex"),
+              message: __("You canceled the export or entered an invalid export name", "cm4all-wp-impex"),
+            });
+
+            return;
+          }
+
+          /*
+          _exportFolderName.substring(0, 32);
+
+          matchingExistingExports = [];
+          for await (let exportsDirChildHandle of exportsDirHandle.values()) {
+            if (
+              exportsDirChildHandle.kind === "directory" &&
+              exportsDirChildHandle.name.startsWith(_exportFolderName)
+            ) {
+              matchingExistingExports.push(exportsDirChildHandle.name);
+            }
+          }
+          */
+
+          // ensure directory does not exist
+          try {
+            const r = await exportsDirHandle.getDirectoryHandle(
+              _exportFolderName,
+              {
+                create: false,
+              }
+            );
+
+            throw new Error(
+              `Export folder ${_exportFolderName} already exists. Please remove/rename it and continue.\n(${ex.message})`
+            );
+          } catch (ex) {}
+
+          const exportDirHandle = await exportsDirHandle.getDirectoryHandle(
             _exportFolderName,
             {
-              create: false,
+              create: true,
             }
           );
 
-          throw new Error(
-            `Export folder ${_exportFolderName} already exists. Please remove/rename it and continue.\n(${ex.message})`
+          debug({ exportDirHandle });
+
+          // const exports = select.getExports();
+          // debug({ exports });
+
+          yield {
+            type: "progress",
+            title: __("Export", "cm4all-wp-impex"),
+            message: __("Creating snapshot", "cm4all-wp-impex"),
+          };
+
+          const { payload : createdExport } = await dispatch.createExport(
+            exportProfile,
+            `transient-${window.crypto.randomUUID()}`,
+            `machine generated transient snapshot created using profile ${exportProfile.name}`
+            // const date = screenContext.currentDateString();
+            // const name = `${site_url.hostname}-${exportProfile.name}-${date}`;
+            // const description = `Export '${exportProfile.name}' created by user '${currentUser.name}' at ${date}`;
           );
-        } catch (ex) {}
 
-        const exportDirHandle = await exportsDirHandle.getDirectoryHandle(
-          _exportFolderName,
-          {
-            create: true,
+          // const exports2 = select.getExports();
+          // console.log(exports2);
+
+          const path = `${settings.base_uri}/export/${createdExport.id}/slice`;
+
+          yield {
+            type: "progress",
+            title: __("Downloading snapshot", "cm4all-wp-impex"),
+            message: __("Creating snapshot", "cm4all-wp-impex"),
+          };
+
+          debugger
+          const initialResponse = await apiFetch({
+            path,
+            // parse: false is needed to geta access to the headers
+            parse: false,
+          });
+
+          // const x_wp_total = Number.parseInt(
+          //   initialResponse.headers.get("X-WP-Total"),
+          //   10
+          // );
+          const x_wp_total_pages = Number.parseInt(
+            initialResponse.headers.get("X-WP-TotalPages")
+          );
+
+          const sliceChunks = [
+            screenContext.saveSlicesChunk(exportDirHandle, initialResponse.json(), 1),
+          ];
+          for (let chunk = 2; chunk <= x_wp_total_pages; chunk++) {
+            sliceChunks.push(
+              screenContext.saveSlicesChunk(
+                exportDirHandle,
+                apiFetch({
+                  path: url.addQueryArgs(path, { page: chunk }),
+                }),
+                chunk
+              )
+            );
           }
-        );
 
-        debug({ exportDirHandle });
+          await Promise.all(sliceChunks);
 
-        const exports = select.getExports();
-        debug({ exports });
+          await (yield {
+            type: "info",
+            title: __("Export completed", "cm4all-wp-impex"),
+            message: __("Successfully finished export.", "cm4all-wp-impex"),
+          });
 
-        /*
-        const createdExport = await dispatch.createExport(
-          exportProfile,
-          `intermediate-${window.crypto.randomUUID()}`,
-          `intermediate snapshot created using profile ${exportProfile.name}`
-                  // const date = screenContext.currentDateString();
-        // const name = `${site_url.hostname}-${exportProfile.name}-${date}`;
-        // const description = `Export '${exportProfile.name}' created by user '${currentUser.name}' at ${date}`;
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        );
+          // yield {
+          //   type: "progress",
+          //   title: __("Export", "cm4all-wp-impex"),
+          //   message: __("Downloading snapshot", "cm4all-wp-impex"),
+          // };
 
-        const exports2 = select.getExports();
-        console.log(exports2);
-        */
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        /*
-        yield {
-          type: "progress",
-          title: __("Export", "cm4all-wp-impex"),
-          message: __("Creating snapshot", "cm4all-wp-impex"),
-        };
+          // throw {
+          //   title: __("Export failed", "cm4all-wp-impex"),
+          //   message: __("Export failed by abortion", "cm4all-wp-impex"),
+          // };
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        yield {
-          type: "progress",
-          title: __("Export", "cm4all-wp-impex"),
-          message: __("Downloading snapshot", "cm4all-wp-impex"),
-        };
+          // throw new Error("Huuuuu - something went wrong");
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+          // yield {
+          //   type: "progress",
+          //   title: __("Export", "cm4all-wp-impex"),
+          //   message: __("Done", "cm4all-wp-impex"),
+          // };
 
-        // throw {
-        //   title: __("Export failed", "cm4all-wp-impex"),
-        //   message: __("Export failed by abortion", "cm4all-wp-impex"),
-        // };
-
-        throw new Error("Huuuuu - something went wrong");
-
-        yield {
-          type: "progress",
-          title: __("Export", "cm4all-wp-impex"),
-          message: __("Done", "cm4all-wp-impex"),
-        };
-
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        */
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
+        } finally {
+          // @TODO: remove created export 
+        }
       },
 
     async createExport(exportProfile, name = "", description = "") {

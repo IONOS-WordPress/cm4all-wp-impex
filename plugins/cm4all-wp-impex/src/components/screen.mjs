@@ -84,6 +84,21 @@ function SimpleTab() {
               ),
             });
             break;
+          case "info": 
+            gen.next(new Promise((resolve) => {
+              setProgress({
+                component: (
+                  <components.Modal
+                    title={state.title}
+                    onRequestClose={() => resolve()}
+                    overlayClassName="blocking"
+                  >
+                    {state.message}
+                  </components.Modal>
+                ),
+              });
+            }));
+            break;
         }
       }
       setProgress(null);
