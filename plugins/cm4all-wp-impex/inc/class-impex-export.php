@@ -19,6 +19,8 @@ abstract class ImpexExport extends ImpexPart
   const WP_FILTER_SLICE_SERIALIZE = 'impex_export_filter_serialize';
   const WP_FILTER_SLICE_DESERIALIZE = 'impex_export_filter_deserialize';
 
+  const WP_FILTER_PROFILES = 'impex_export_filter_profiles';
+
   protected function _createProvider(string $name, callable $cb): ImpexExportProvider
   {
     return new class($name, $cb) extends ImpexExportProvider

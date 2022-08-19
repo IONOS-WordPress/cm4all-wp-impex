@@ -19,6 +19,8 @@ abstract class ImpexImport extends ImpexPart
 
   const EVENT_IMPORT_END = 'cm4all_wp_import_end';
 
+  const WP_FILTER_PROFILES = 'impex_import_filter_profiles';
+
   protected function _createProvider(string $name, callable $cb): ImpexImportProvider
   {
     return new class($name, $cb) extends ImpexImportProvider

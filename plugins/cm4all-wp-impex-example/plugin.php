@@ -32,4 +32,5 @@ if (!defined('ABSPATH')) {
 \add_action('cm4all_wp_impex_register_profiles', function () {
   require_once __DIR__ . '/inc/impex-export-profile-example.php';
   require_once __DIR__ . '/inc/impex-import-profile-example.php';
+  require_once __DIR__ . '/inc/impex-filter-profile-example.php';
 });

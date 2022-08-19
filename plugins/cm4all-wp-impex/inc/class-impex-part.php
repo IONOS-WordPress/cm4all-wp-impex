@@ -85,7 +85,11 @@ abstract class ImpexPart
    */
   public function getProfiles()
   {
-    return $this->_profiles;
+    $profiles = iterator_to_array($this->_profiles);
+
+    $profiles = apply_filters( static::WP_FILTER_PROFILES, $profiles );
+
+    return $profiles;
   }
 
   public function getProfile(string $name): ImpexProfile|null
