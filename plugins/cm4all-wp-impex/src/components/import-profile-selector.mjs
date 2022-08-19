@@ -20,16 +20,30 @@ export default function ImportProfileSelector({ value, onChange }) {
     );
     onChange(importProfile);
 
-    if (!importProfile) {
-      importProfileSelectRef.current.selectedIndex = 0;
-    }
+    if(importProfileSelectRef.current) {
+      if (!importProfile) {
+        importProfileSelectRef.current.selectedIndex = 0;
+      }
 
-    importProfileSelectRef.current.title = importProfile?.description || "";
+      importProfileSelectRef.current.title = importProfile?.description || "";
+    }
   };
 
   element.useEffect(() => {
     setImportProfile(value?.name);
   }, [importProfiles]);
+
+  const options = [...importProfiles];
+
+  if(importProfiles.length > 1) {
+    options.unshift(
+      {
+        name: importProfiles.length
+          ? __("Select an import profile", "cm4all-wp-impex")
+          : __("No import profiles found"),
+        disabled: true,
+      });
+  }
 
   return (
     <wp.components.SelectControl
@@ -38,19 +52,14 @@ export default function ImportProfileSelector({ value, onChange }) {
       label={__("Import Profile:", "cm4all-wp-impex")}
       value={value?.name}
       onChange={setImportProfile}
-      options={[
-        {
-          name: importProfiles.length
-            ? __("Select an import profile", "cm4all-wp-impex")
-            : __("No import profiles found"),
-          disabled: true,
-        },
-        ...importProfiles,
-      ].map((_) => ({
-        value: _.disabled ? undefined : _.name,
-        label: _.name,
-        disabled: _.disabled,
-      }))}
+      options={
+        options
+        .map((_) => ({
+          value: _.disabled ? undefined : _.name,
+          label: _.name,
+          disabled: _.disabled,
+        }))
+      }
       help={__(
         "Import profiles define which WordPress data should be consumed",
         "cm4all-wp-impex"
