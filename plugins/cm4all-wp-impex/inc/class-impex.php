@@ -59,6 +59,10 @@ class Impex
 
   const DB_SNAPSHOTS_TABLENAME = 'impex_snapshots';
 
+  const CRON_JOB_CLEANUP_NAME = 'cm4all_wp_impex_cron_job_cleanup';
+
+  const CRON_JOB_CLEANUP_INTERVAL_NAME = 'cm4all_wp_impex_cron_job_interval';
+
   protected function __construct()
   {
     global $wpdb;
@@ -81,8 +85,18 @@ class Impex
     };
   }
 
+  public function __uninstall(): void 
+  {
+    $timestamp = \wp_next_scheduled( self::CRON_JOB_CLEANUP_NAME );
+    \wp_unschedule_event( $timestamp, self::CRON_JOB_CLEANUP_NAME );
+  }
+
   public function __install(): bool
   {
+    if(!\wp_next_scheduled(self::CRON_JOB_CLEANUP_NAME)) {
+      \wp_schedule_event(time(), self::CRON_JOB_CLEANUP_INTERVAL_NAME, self::CRON_JOB_CLEANUP_NAME);
+    }
+
     /* @var string */
     $installed_version = \get_option('impex_version');
 
@@ -155,3 +169,54 @@ class Impex
 }
 
 Impex::getInstance();
+
+/*
+  to debug the cleanup cronjob 
+  - add the following snippet to the head of plugin.php
+    if ( ! defined( 'WP_CRON_LOCK_TIMEOUT' ) ) {
+      define( 'WP_CRON_LOCK_TIMEOUT', 10 );
+    }
+  - replace 'interval' => WEEK_IN_SECONDS, with 'interval' => WP_CRON_LOCK_TIMEOUT, (see below)
+*/
+\add_filter( 'cron_schedules', function ( $schedules ) {
+  $schedules[Impex::CRON_JOB_CLEANUP_INTERVAL_NAME] = array(
+      'interval' => WEEK_IN_SECONDS,
+      'display' => Impex::CRON_JOB_CLEANUP_INTERVAL_NAME
+  );
+  return $schedules;
+});
+
+/**
+ * cron triggered action to cleanup deprecated import/export snapshots
+ * 
+ * such snapshots may be a result of a failed or aborted import or export operations
+ */
+\add_action(Impex::CRON_JOB_CLEANUP_NAME, function() {
+  $exports = \get_option(ImpexExport::WP_OPTION_EXPORTS, []);
+  foreach ($exports as $export) {
+    if(str_starts_with($export['name'], 'transient-')) {
+      $created = strtotime($export['created']);
+      $current = time();
+      
+      $hoursSinceCreation = ($current - $created)/60/60;
+      // if the snapshot was created more than 36 hours ago
+      if($hoursSinceCreation > 36) {
+        Impex::getInstance()->Export->remove($export['id']);
+      }
+    }
+  }
+
+  $imports = \get_option(ImpexImport::WP_OPTION_IMPORTS, []);
+  foreach ($imports as $import) {
+    if(str_starts_with($import['name'], 'transient-')) {
+      $created = strtotime($import['created']);
+      $current = time();
+      
+      $hoursSinceCreation = ($current - $created)/60/60;
+      // if the snapshot was created more than 36 hours ago
+      if($hoursSinceCreation > 36) {
+        Impex::getInstance()->Import->remove($import['id']);
+      }
+    }
+  }
+});

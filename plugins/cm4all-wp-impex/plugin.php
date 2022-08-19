@@ -22,7 +22,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once __DIR__ . '/inc/class-impex.php';
-
 require_once __DIR__ . '/inc/impex-export-extension-content.php';
 require_once __DIR__ . '/inc/impex-import-extension-content.php';
 require_once __DIR__ . '/inc/impex-export-extension-attachments.php';
@@ -50,6 +49,10 @@ require_once __DIR__ . '/inc/wp-dashboard-contributions.php';
   }
 
   Impex::getInstance()->__install();
+});
+
+\register_deactivation_hook(__FILE__, function () {
+  Impex::getInstance()->__uninstall();
 });
 
 // disable wordpress update notifications in the cloud to suppress php errors in the cloud
