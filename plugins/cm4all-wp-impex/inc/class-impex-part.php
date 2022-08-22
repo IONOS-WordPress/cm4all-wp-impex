@@ -2,6 +2,7 @@
 
 namespace cm4all\wp\impex;
 
+use ArrayIterator;
 use cm4all\wp\impex\ImpexSet;
 
 // Exit if accessed directly.
@@ -80,16 +81,13 @@ abstract class ImpexPart
     return $this->_profiles->has($name);
   }
 
-  /**
-   * @return \Generator 
-   */
-  public function getProfiles()
+  public function getProfiles() 
   {
     $profiles = iterator_to_array($this->_profiles);
 
-    $profiles = apply_filters( static::WP_FILTER_PROFILES, $profiles );
+    $profiles = \apply_filters( static::WP_FILTER_PROFILES, $profiles );
 
-    return $profiles;
+    return new ArrayIterator($profiles);
   }
 
   public function getProfile(string $name): ImpexProfile|null
