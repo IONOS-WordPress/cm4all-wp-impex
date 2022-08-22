@@ -16,7 +16,7 @@ use cm4all\wp\impex\WpOptionsExporter;
 require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 $profile = Impex::getInstance()->Export->addProfile('impex-export-profile-example');
-$profile->setDescription('Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic] if these plugins are enabled');
+$profile->setDescription('Example profile exporting posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic] if these plugins are enabled');
 
 // export pages/posts/comments/block patterns/templates/template parts/reusable blocks
 $profile->addTask('wordpress content', ContentExporter::PROVIDER_NAME,);

@@ -33,6 +33,14 @@ export default function ExportProfileSelector({ value, onChange }) {
     setExportProfile(value?.name);
   }, [exportProfiles]);
 
+  element.useEffect(() => {
+    for(const option of exportProfileSelectRef.current?.options ?? []) {
+      if(!option.disabled) {
+        option.title = exportProfiles.find(_ => _.name === option.value)?.description;
+      }
+    }
+  }, [exportProfiles]);
+
   const options = [...exportProfiles];
   
   if(exportProfiles.length > 1) {
@@ -55,6 +63,7 @@ export default function ExportProfileSelector({ value, onChange }) {
         .map((_) => ({
           value: _.disabled ? undefined : _.name,
           label: _.name,
+          title: _.description,
           disabled: _.disabled,
         }))
       }

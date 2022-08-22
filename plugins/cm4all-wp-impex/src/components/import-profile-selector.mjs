@@ -33,6 +33,14 @@ export default function ImportProfileSelector({ value, onChange }) {
     setImportProfile(value?.name);
   }, [importProfiles]);
 
+  element.useEffect(() => {
+    for(const option of importProfileSelectRef.current?.options ?? []) {
+      if(!option.disabled) {
+        option.title = importProfiles.find(_ => _.name === option.value)?.description;
+      }
+    }
+  }, [importProfiles]);
+
   const options = [...importProfiles];
 
   if(importProfiles.length > 1) {
