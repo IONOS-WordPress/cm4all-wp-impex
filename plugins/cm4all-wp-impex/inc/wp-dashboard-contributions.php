@@ -56,7 +56,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
             'id'      => 'help-export',
             'title'   => __('Export', 'cm4all-wp-impex'),
             'content' =>
-            __('Export will create a snapshot of the data provided by the ImpEx export profile.<br/>The snapshot can be downloaded to a directory on your local machine.')
+            '<p>' . __('Export will create a snapshot of the data provided by the ImpEx export profile.<p/><p>The snapshot can be downloaded to a directory on your local machine.') . '</p>'
 
           ]
         );
@@ -65,7 +65,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
           [
             'id'      => 'help-import',
             'title'   => __('Import', 'cm4all-wp-impex'),
-            'content' => __('Import allows you to upload a (previously created) ImpEx snapshot and import it to your WordPress instance.')
+            'content' => '<p>' . __('Import allows you to upload a (previously created) ImpEx snapshot and import it to your WordPress instance.') . '</p>'
           ]
         );
 
