@@ -20,7 +20,7 @@ const isFileystemApiAvailable =
   typeof window.showDirectoryPicker === "function";
 
 const isCryptoRandomAvailable =
-  typeof window?.crypto?.randomUUIDss === "function";
+  typeof window?.crypto?.randomUUID === "function";
 
 function AdvancedTab() {
   return (
