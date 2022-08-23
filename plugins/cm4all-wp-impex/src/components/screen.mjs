@@ -36,6 +36,65 @@ function AdvancedTab() {
   );
 }
 
+async function ImportExportGeneratorConsumer(gen, setProgress, defaultErrorPopupTitle) {
+  try {
+    for await (const state of gen) {
+      switch (state.type) {
+        case "progress":
+          setProgress({
+            component: (
+              <components.Modal
+                title={state.title}
+                onRequestClose={() => {}}
+                overlayClassName="blocking"
+              >
+                {state.message}
+                <progress indeterminate="true"></progress>
+              </components.Modal>
+            ),
+          });
+          break;
+        case "info": 
+          gen.next(new Promise((resolve) => {
+            setProgress({
+              component: (
+                <components.Modal
+                  title={state.title}
+                  onRequestClose={() => resolve()}
+                  overlayClassName="blocking"
+                >
+                  {state.message}
+                </components.Modal>
+              ),
+            });
+          }));
+          break;
+      }
+    }
+    setProgress(null);
+  } catch (ex) {
+    debug(ex);
+    setProgress({
+      component: (
+        <components.Modal
+          title={ex.title || defaultErrorPopupTitle}
+          onRequestClose={() => setProgress(null)}
+          overlayClassName="blocking fault"
+        >
+          {ex.message.split("\n").map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
+          <components.Flex direction="row" justify="flex-end">
+            <components.Button isPrimary onClick={() => setProgress(null)}>
+              {__("OK", "cm4all-wp-impex")}
+            </components.Button>
+          </components.Flex>
+        </components.Modal>
+      ),
+    });
+  }
+}
+
 function SimpleTab() {
   const screenContext = useScreenContext();
 
@@ -47,7 +106,7 @@ function SimpleTab() {
     };
   });
 
-  const { createAndDownloadExport } = data.useDispatch(Store.KEY);
+  const { createAndDownloadExport, createAndUploadConsumeImport } = data.useDispatch(Store.KEY);
 
   const [exportProfile, setExportProfile] = element.useState();
   element.useEffect(() => {
@@ -63,69 +122,22 @@ function SimpleTab() {
     }
   }, [importProfiles]);
 
+  const [progress, setProgress] = element.useState(null);
+  const [cleanupContent, setCleanupContent] = element.useState(true);
+
+  const _createAndUploadConsumeImport = async () => {
+    console.log({ importProfile, screenContext });
+    const gen = await createAndUploadConsumeImport(importProfile, cleanupContent, screenContext);
+
+    await ImportExportGeneratorConsumer(gen, setProgress, __("Import failed", "cm4all-wp-impex"));
+  };
+
   const _createAndDownloadExport = async () => {
     console.log({ exportProfile, screenContext });
     const gen = await createAndDownloadExport(exportProfile, screenContext);
 
-    try {
-      for await (const state of gen) {
-        switch (state.type) {
-          case "progress":
-            setProgress({
-              component: (
-                <components.Modal
-                  title={state.title}
-                  onRequestClose={() => {}}
-                  overlayClassName="blocking"
-                >
-                  {state.message}
-                  <progress indeterminate="true"></progress>
-                </components.Modal>
-              ),
-            });
-            break;
-          case "info": 
-            gen.next(new Promise((resolve) => {
-              setProgress({
-                component: (
-                  <components.Modal
-                    title={state.title}
-                    onRequestClose={() => resolve()}
-                    overlayClassName="blocking"
-                  >
-                    {state.message}
-                  </components.Modal>
-                ),
-              });
-            }));
-            break;
-        }
-      }
-      setProgress(null);
-    } catch (ex) {
-      debug(ex);
-      setProgress({
-        component: (
-          <components.Modal
-            title={ex.title || __("Export failed", "cm4all-wp-impex")}
-            onRequestClose={() => setProgress(null)}
-            overlayClassName="blocking fault"
-          >
-            {ex.message.split("\n").map((line, index) => (
-              <p key={index}>{line}</p>
-            ))}
-            <components.Flex direction="row" justify="flex-end">
-              <components.Button isPrimary onClick={() => setProgress(null)}>
-                {__("OK", "cm4all-wp-impex")}
-              </components.Button>
-            </components.Flex>
-          </components.Modal>
-        ),
-      });
-    }
+    await ImportExportGeneratorConsumer(gen, setProgress, __("Export failed", "cm4all-wp-impex"));
   };
-
-  const [progress, setProgress] = element.useState(null);
 
   debug({ exportProfile, importProfile, _createAndDownloadExport });
 
@@ -157,7 +169,18 @@ function SimpleTab() {
                 value={importProfile}
                 onChange={setImportProfile}
               />
-              <components.Button variant="primary" disabled={!importProfile}>
+              <components.ToggleControl
+                help={ cleanupContent ? __("Clean up existing post, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") }
+                checked={ cleanupContent }
+                onChange={ setCleanupContent }
+                label={__("Remove existing content before import", "cm4all-wp-impex")}
+              >
+              </components.ToggleControl>
+              <components.Button 
+                variant="primary" 
+                disabled={!importProfile}
+                onClick={_createAndUploadConsumeImport}
+              >
                 Import
               </components.Button>
             </components.PanelBody>

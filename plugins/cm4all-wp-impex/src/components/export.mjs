@@ -78,7 +78,7 @@ export default function Export() {
 
   const onDownloadExport = async (_export) => {
     let _exportFolderName = null;
-    // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
+    // showDirectoryPicker will throw a DOMException in case the user pressed cancel
     try {
       // colons need to be replaced otherwise showDirectoryPicker will fail
       _exportFolderName = screenContext.normalizeFilename(_export.name);

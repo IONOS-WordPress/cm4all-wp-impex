@@ -42,7 +42,7 @@ export default function Import() {
     };
   });
 
-  const { createImport, updateImport, deleteImport, consumeImport } =
+  const { createImport, updateImport, deleteImport, consumeImport{} =
     data.useDispatch(Store.KEY /*, []*/);
 
   const [modal, setModal] = element.useState(null);
@@ -110,7 +110,7 @@ export default function Import() {
 
   const onUpload = async () => {
     let importDirHandle = null;
-    // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
+    // showDirectoryPicker will throw a DOMException in case the user pressed cancel
     try {
       // see https://web.dev/file-system-access/
       importDirHandle = await window.showDirectoryPicker({
@@ -140,7 +140,7 @@ export default function Import() {
       ),
     });
 
-    const _import = (await createImport(name, description, importProfile, []))
+    const _import = (await createImport(name, description, importProfile, {}))
       .payload;
 
     const sliceFiles = await _getSliceFiles(importDirHandle);

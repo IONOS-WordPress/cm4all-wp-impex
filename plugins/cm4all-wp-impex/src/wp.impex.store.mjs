@@ -33,11 +33,18 @@ export default async function (settings) {
 
   const actions = {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
+    createAndUploadConsumeImport : (importProfile, cleanupContent, screenContext) =>
+      async function* ({ dispatch, registry, resolveSelect, select }) {
+        debugger
+        debug({importProfile, cleanupContent});
+      }
+    ,
+    // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
     createAndDownloadExport: (exportProfile, screenContext) =>
       async function* ({ dispatch, registry, resolveSelect, select }) {
         let exportsDirHandle = null;
         try {
-          // showDirectoryPicker will throw a DOMExxception in case the user pressed cancel
+          // showDirectoryPicker will throw a DOMException in case the user pressed cancel
           // see https://web.dev/file-system-access/
           // see https://developer.mozilla.org/en-US/docs/Web/API/window/showDirectoryPicker
           exportsDirHandle = await window.showDirectoryPicker({
