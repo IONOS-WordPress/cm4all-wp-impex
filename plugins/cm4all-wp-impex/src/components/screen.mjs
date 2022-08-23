@@ -20,7 +20,7 @@ const isFileystemApiAvailable =
   typeof window.showDirectoryPicker === "function";
 
 const isCryptoRandomAvailable =
-  typeof window?.crypto?.randomUUID === "function";
+  typeof window?.crypto?.randomUUIDss === "function";
 
 function AdvancedTab() {
   return (
@@ -217,7 +217,7 @@ export default function () {
               <a href="https://caniuse.com/mdn-api_window_showdirectorypicker">
                 here
               </a>{" "}
-              to find the latest list of browsers supporting the{" "}
+              to find the latest list of browsers supporting the{' '}
               <a href="https://web.dev/file-system-access/">
                 File System Access API
               </a>{" "}
@@ -228,30 +228,15 @@ export default function () {
 
         {!isCryptoRandomAvailable && (
           <components.Modal
-            title="Ouch - your browser does not support the File System Access API :-("
+            title="Ouch - your browser does not support the Crypto API :-("
             isDismissible={false}
           >
             <p>
-              ImpEx Import / Export requires a browser implementing the{" "}
-              <a href="https://web.dev/file-system-access/">
-                File System Access API
+              ImpEx Import / Export requires a browser implementing the{' '}
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto">
+                Browser Crypto API
               </a>
               .
-            </p>
-            <p>
-              Currently only Chromium based browsers like Chrome, Chromium, MS
-              Edge are known to support this feature.
-            </p>
-            <p>
-              See{" "}
-              <a href="https://caniuse.com/mdn-api_window_showdirectorypicker">
-                here
-              </a>{" "}
-              to find the latest list of browsers supporting the{" "}
-              <a href="https://web.dev/file-system-access/">
-                File System Access API
-              </a>{" "}
-              feature.
             </p>
           </components.Modal>
         )}
