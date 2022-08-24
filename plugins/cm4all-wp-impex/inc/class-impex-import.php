@@ -21,6 +21,10 @@ abstract class ImpexImport extends ImpexPart
 
   const WP_FILTER_PROFILES = 'impex_import_filter_profiles';
 
+  // post, media, block pattern, nav_menu an reusable block items
+  const OPTION_CLEANUP_CONTENTS = 'impex-import-option-cleanup_contents';
+  const OPTION_CLEANUP_CONTENTS_DEFAULT = false;
+
   protected function _createProvider(string $name, callable $cb): ImpexImportProvider
   {
     return new class($name, $cb) extends ImpexImportProvider
@@ -117,6 +121,23 @@ abstract class ImpexImport extends ImpexPart
 
     $options = $transformationContext->options;
     $profile = $transformationContext->profile;
+
+    if($options[self::OPTION_CLEANUP_CONTENTS] === true) {
+      $menus = \wp_get_nav_menus(['fields' => 'ids' ]);
+      foreach ($menus as $menu) {
+        \wp_delete_nav_menu( $menu);
+      }
+
+      $postsToDelete= \get_posts( ['post_type'=>['page', 'post', 'wp_block'],'numberposts'=>-1, 'fields' => 'ids'] );
+      foreach ($postsToDelete as $postToDelete) {
+        \wp_delete_post( $postToDelete, true );
+      }
+
+      $attachmentsToDelete= \get_posts( ['post_type'=>'attachment','numberposts'=>-1,'fields' => 'ids'] );
+      foreach ($attachmentsToDelete as $attachmentToDelete) {
+        \wp_delete_attachment($attachmentToDelete, true);
+      }
+    }
 
     foreach ($this->get_slices($transformationContext->id, $limit, $offset) as $slice) {
       $consumed = false;
