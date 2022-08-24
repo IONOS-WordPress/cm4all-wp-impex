@@ -42,7 +42,7 @@ export default function Import() {
     };
   });
 
-  const { createImport, updateImport, deleteImport, consumeImport{} =
+  const { createImport, updateImport, deleteImport, consumeImport } =
     data.useDispatch(Store.KEY /*, []*/);
 
   const [modal, setModal] = element.useState(null);
@@ -76,38 +76,7 @@ export default function Import() {
     await consumeImport(_import.id, {}, null, null);
     setProgress();
   };
-
-  const _getSliceFiles = async (importDirHandle) => {
-    const slices = [];
-    for await (let sliceChunkDirectoryHandle of importDirHandle.values()) {
-      if (sliceChunkDirectoryHandle.kind === "directory") {
-        for await (let sliceFileHandle of sliceChunkDirectoryHandle.values()) {
-          if (
-            sliceFileHandle.kind === "file" &&
-            sliceFileHandle.name.match(/^slice-\d+\.json$/)
-          ) {
-            slices.push({
-              fileHandle: sliceFileHandle,
-              dirHandle: sliceChunkDirectoryHandle,
-            });
-          }
-        }
-      }
-    }
-
-    slices.sort((l, r) => {
-      const cval = l.dirHandle.name.localeCompare(r.dirHandle.name);
-
-      if (cval === 0) {
-        return l.fileHandle.name.localeCompare(r.fileHandle.name);
-      }
-
-      return cval;
-    });
-
-    return slices;
-  };
-
+  
   const onUpload = async () => {
     let importDirHandle = null;
     // showDirectoryPicker will throw a DOMException in case the user pressed cancel
@@ -116,7 +85,7 @@ export default function Import() {
       importDirHandle = await window.showDirectoryPicker({
         // You can suggest a default start directory by passing a startIn property to the showSaveFilePicker
         startIn: "downloads",
-        id: "impex-dir",
+        id: "impex-import-dir",
       });
     } catch {
       return;
@@ -143,44 +112,9 @@ export default function Import() {
     const _import = (await createImport(name, description, importProfile, {}))
       .payload;
 
-    const sliceFiles = await _getSliceFiles(importDirHandle);
+    const sliceFiles = await screenContext._getSliceFilesToImport(importDirHandle);
 
-    const path = `${settings.base_uri}/import/${_import.id}/slice`;
-
-    const sliceUploads = sliceFiles.map(
-      async ({ fileHandle, dirHandle }, position) => {
-        const formData = new FormData();
-        let slice = JSON.parse(await (await fileHandle.getFile()).text());
-
-        slice = await hooks.applyFilters(
-          ImpexFilters.SLICE_REST_UPLOAD,
-          ImpexFilters.NAMESPACE,
-          slice,
-          parseInt(fileHandle.name.match(/^slice-(\d+)\.json$/)[1]),
-          dirHandle,
-          formData
-        );
-
-        if (slice) {
-          debug("upload %o", {
-            position,
-            file: fileHandle.name,
-            dir: dirHandle.name,
-          });
-          formData.append("slice", JSON.stringify(slice, null, "  "));
-
-          return apiFetch({
-            method: "POST",
-            path: url.addQueryArgs(path, { position }),
-            body: formData,
-
-            parse: false,
-          });
-        }
-      }
-    );
-
-    const finished = await Promise.all(sliceUploads);
+    const finished = await screenContext._uploadSlices(_import, sliceFiles);
     setProgress();
   };
 

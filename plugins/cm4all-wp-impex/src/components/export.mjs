@@ -92,7 +92,7 @@ export default function Export() {
       startIn: "downloads",
       mode: "readwrite",
       // If an id is specified, the file picker implementation will remember a separate last-used directory for pickers with that same id.
-      id: "impex-dir",
+      id: "impex-export-dir",
     });
 
     const exportDirHandle = await exportsDirHandle.getDirectoryHandle(

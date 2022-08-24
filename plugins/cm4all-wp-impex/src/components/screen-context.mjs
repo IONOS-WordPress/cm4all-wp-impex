@@ -2,6 +2,10 @@ import element from "@wordpress/element";
 import Debug from "@cm4all-impex/debug";
 import hooks from "@wordpress/hooks";
 import ImpexFilters from "@cm4all-impex/filters";
+import Store from "@cm4all-impex/store";
+import apiFetch from "@wordpress/api-fetch";
+import data from "@wordpress/data";
+import url from "@wordpress/url";
 
 const debug = Debug.default("wp.impex.dashboard.export");
 debug("loaded");
@@ -64,6 +68,75 @@ ScreenContext = {
       })
     );
   },
+  async _getSliceFilesToImport(importDirHandle) {
+    const slices = [];
+    for await (let sliceChunkDirectoryHandle of importDirHandle.values()) {
+      if (sliceChunkDirectoryHandle.kind === "directory") {
+        for await (let sliceFileHandle of sliceChunkDirectoryHandle.values()) {
+          if (
+            sliceFileHandle.kind === "file" &&
+            sliceFileHandle.name.match(/^slice-\d+\.json$/)
+          ) {
+            slices.push({
+              fileHandle: sliceFileHandle,
+              dirHandle: sliceChunkDirectoryHandle,
+            });
+          }
+        }
+      }
+    }
+
+    slices.sort((l, r) => {
+      const cval = l.dirHandle.name.localeCompare(r.dirHandle.name);
+
+      if (cval === 0) {
+        return l.fileHandle.name.localeCompare(r.fileHandle.name);
+      }
+
+      return cval;
+    });
+
+    return slices;
+  },
+  async _uploadSlices(_import, sliceFiles) {
+    const settings = data.select(Store.KEY).getSettings();
+    const path = `${settings.base_uri}/import/${_import.id}/slice`;
+
+    const sliceUploads = sliceFiles.map(
+      async ({ fileHandle, dirHandle }, position) => {
+        const formData = new FormData();
+        let slice = JSON.parse(await (await fileHandle.getFile()).text());
+
+        slice = await hooks.applyFilters(
+          ImpexFilters.SLICE_REST_UPLOAD,
+          ImpexFilters.NAMESPACE,
+          slice,
+          parseInt(fileHandle.name.match(/^slice-(\d+)\.json$/)[1]),
+          dirHandle,
+          formData
+        );
+
+        if (slice) {
+          debug("upload %o", {
+            position,
+            file: fileHandle.name,
+            dir: dirHandle.name,
+          });
+          formData.append("slice", JSON.stringify(slice, null, "  "));
+
+          return apiFetch({
+            method: "POST",
+            path: url.addQueryArgs(path, { position }),
+            body: formData,
+
+            parse: false,
+          });
+        }
+      }
+    );
+
+    await Promise.all(sliceUploads);
+  }
 };
 
 export function ScreenContextProvider({ children }) {

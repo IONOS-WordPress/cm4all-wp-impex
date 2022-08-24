@@ -7,7 +7,7 @@ import { __, sprintf } from "@wordpress/i18n";
 const debug = Debug.default("wp.impex.store");
 debug("loaded");
 
-const KEY = `cm4all/impex`;
+const KEY = 'cm4all/impex';
 
 export default async function (settings) {
   const { namespace, base_uri, site_url } = settings;
@@ -35,8 +35,72 @@ export default async function (settings) {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
     createAndUploadConsumeImport : (importProfile, cleanupContent, screenContext) =>
       async function* ({ dispatch, registry, resolveSelect, select }) {
-        debugger
         debug({importProfile, cleanupContent});
+
+        let importDirHandle = null;
+        // showDirectoryPicker will throw a DOMException in case the user pressed cancel
+        try {
+          // see https://web.dev/file-system-access/
+          importDirHandle = await window.showDirectoryPicker({
+            // You can suggest a default start directory by passing a startIn property to the showSaveFilePicker
+            startIn: "downloads",
+            id: "impex-import-dir",
+          });
+        } catch {
+          return;
+        }
+
+        yield {
+          type: "progress",
+          title: __("Import", "cm4all-wp-impex"),
+          message: __("Creating snapshot ...", "cm4all-wp-impex"),
+        };
+
+        const createdImport = (await dispatch.createImport(
+          `transient-import-${window.crypto.randomUUID()}`,
+          `machine generated transient export snapshot created using profile ${importProfile.name}`,
+          importProfile, { }))
+          .payload;
+
+        
+        try {
+          yield {
+            type: "progress",
+            title: __("Import", "cm4all-wp-impex"),
+            message: __("Uploading slices ...", "cm4all-wp-impex"),
+          };
+
+          const sliceFiles = await screenContext._getSliceFilesToImport(importDirHandle);
+
+          const finished = await screenContext._uploadSlices(createdImport, sliceFiles);
+
+          yield {
+            type: "progress",
+            title: __("Import", "cm4all-wp-impex"),
+            message: __("importing slices ...", "cm4all-wp-impex"),
+          };
+
+
+          await dispatch.consumeImport(
+            createdImport.id, 
+            {
+              // @see PHP class ImpexExport::OPTION_CLEANUP_CONTENTS
+              'impex-import-option-cleanup_contents' : cleanupContent,
+            }, 
+            null, 
+            null
+          );
+
+          await (yield {
+            type: "info",
+            title: __("Import completed", "cm4all-wp-impex"),
+            message: __("Successfully finished import.", "cm4all-wp-impex"),
+          });
+        } finally {
+          if(createdImport) {
+            await dispatch.deleteImport(createdImport.id);
+          }
+        }
       }
     ,
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
@@ -50,7 +114,7 @@ export default async function (settings) {
           exportsDirHandle = await window.showDirectoryPicker({
             startIn: "downloads",
             mode: "readwrite",
-            id: "impex-dir",
+            id: "impex-export-dir",
           });
         } catch {
           return;
@@ -130,7 +194,7 @@ export default async function (settings) {
 
           createdExport = (await dispatch.createExport(
             exportProfile,
-            `transient-${window.crypto.randomUUID()}`,
+            `transient-export-${window.crypto.randomUUID()}`,
             `machine generated transient snapshot created using profile ${exportProfile.name}`
             // const date = screenContext.currentDateString();
             // const name = `${site_url.hostname}-${exportProfile.name}-${date}`;
