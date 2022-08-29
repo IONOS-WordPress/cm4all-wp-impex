@@ -16,6 +16,8 @@
 
 namespace cm4all\wp\impex\cli;
 
+use Exception;
+
 function _noop(...$args)
 {
 }
@@ -348,6 +350,23 @@ function import($options, $import_directory, ...$args)
   //   _die($options, "Import failed: missing option 'profile'");
   // }
 
+  $import_options = $options['options'] ?? '{}';
+  try {
+    $import_options = json_decode(
+      json: $import_options, 
+      associative: true, 
+      flags: JSON_THROW_ON_ERROR,
+    );
+  } catch(Exception $ex) {
+    _die(
+      $options,
+      "Import failed : parsing import options(='%s') as JSON object failed : %s",
+      $import_options,
+      $ex->getMessage(),
+    );
+  }
+
+
   [$profiles] = import_profile($options, 'list');
   $profiles = array_column($profiles, 'name');
   if (!in_array($profile, $profiles)) {
@@ -364,14 +383,18 @@ function import($options, $import_directory, ...$args)
   };
   $import_directory = realpath($import_directory);
 
-  _log($options, "Import directory(=%s) using profile(=%s) to %s", $import_directory, $profile, $options['rest-url']);
+  _log($options, "Import directory(=%s) using profile(=%s) and import options(=%s) to %s", $import_directory, $profile, json_encode($import_options, true), $options['rest-url']);
 
   // create import snapshot
   [$result, $status, $error] = _curl(
     $options,
     'import',
     \CURLOPT_POST,
-    fn ($curl) => curl_setopt($curl, \CURLOPT_POSTFIELDS, http_build_query(['profile' => $profile]))
+    fn ($curl) => curl_setopt($curl, \CURLOPT_POSTFIELDS, http_build_query([
+      'profile' => $profile,
+      'name' => "transient-import-" . vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4)),
+      'options' => $import_options,
+    ]))
   );
 
   if ($error) {
@@ -607,7 +630,6 @@ main([
   "./impex-cli.php",
   "export",
   "-verbose",
-  "-overwrite",
   "-username=admin",
   "-password=password",
   "-rest-url=",

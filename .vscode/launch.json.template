@@ -17,10 +17,14 @@
         "XDEBUG_CONFIG": "client_port=${port}"
       },
       "args": [
-        "export",
-        "-H=bzzle",
+        "import",
+        "-profile=all",
+        "-username=admin",
+        "-password=password",
         "-verbose",
-        "my-directory"
+        "-rest-url=http://localhost:8888/wp-json",
+        "-options={\"impex-import-option-cleanup_contents\" : true}",
+        "./tests/fixtures/simple-import"
       ]
     },
     {

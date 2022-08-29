@@ -21,7 +21,6 @@ final class ImportTest extends AbstractImpexCLITestCase
   {
     $result = impex_cli(
       'import',
-      '-overwrite',
       '-profile=all',
       __DIR__ . '/fixtures/empty-snapshot',
     );
@@ -33,7 +32,30 @@ final class ImportTest extends AbstractImpexCLITestCase
   {
     $result = impex_cli(
       'import',
-      '-overwrite',
+      '-profile=all',
+      __DIR__ . '/fixtures/simple-import',
+    );
+
+    $this->assertEquals(0, $result['exit_code'], 'should succeed');
+  }
+
+  function testImportWithInvalidOptions()
+  {
+    $result = impex_cli(
+     'import',
+     '-options="impex-import-option-cleanup_contents" : true}',
+      '-profile=all',
+      __DIR__ . '/fixtures/simple-import',
+    );
+
+    $this->assertEquals(1, $result['exit_code'], 'should fail');
+  }
+
+  function testImportWithCleanupOption()
+  {
+    $result = impex_cli(
+     'import',
+     '-options={"impex-import-option-cleanup_contents" : true}',
       '-profile=all',
       __DIR__ . '/fixtures/simple-import',
     );
