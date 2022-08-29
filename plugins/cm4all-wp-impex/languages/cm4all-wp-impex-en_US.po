@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cm4all-wp-impex 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cm4all-wp-impex\n"
-"POT-Creation-Date: 2022-08-19T11:59:46+00:00\n"
+"POT-Creation-Date: 2022-08-29T11:54:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,12 +145,14 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: inc/wp-dashboard-contributions.php:57 dist/wp.impex.dashboard.js:396
-#: dist/wp.impex.store.js:95
+#: inc/wp-dashboard-contributions.php:57 dist/wp.impex.dashboard.js:451
+#: dist/wp.impex.store.js:139
 msgid "Export"
 msgstr "(en_US) Export"
 
-#: inc/wp-dashboard-contributions.php:67 dist/wp.impex.dashboard.js:616
+#: inc/wp-dashboard-contributions.php:67 dist/wp.impex.dashboard.js:635
+#: dist/wp.impex.store.js:71 dist/wp.impex.store.js:78
+#: dist/wp.impex.store.js:85
 msgid "Import"
 msgstr "(en_US) Import"
 
@@ -174,163 +176,205 @@ msgid ""
 "\">Support</a>"
 msgstr "(en_US) <a href=\"https://wordpress.org/support/\">Support</a>"
 
-#: dist/wp.impex.dashboard.js:196
+#: dist/wp.impex.dashboard.js:203
 #, fuzzy
 msgid "Select an export profile"
 msgstr "Select an Export profile"
 
-#: dist/wp.impex.dashboard.js:210
+#: dist/wp.impex.dashboard.js:218
 #, fuzzy
 msgid "Export Profile:"
 msgstr "Export Profile"
 
-#: dist/wp.impex.dashboard.js:211
+#: dist/wp.impex.dashboard.js:219
 msgid "Export profiles define which WordPress data should be extracted"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:228
+#: dist/wp.impex.dashboard.js:236
 msgid "Name"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:229
+#: dist/wp.impex.dashboard.js:237
 msgid "Name should be short and human readable"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:233
+#: dist/wp.impex.dashboard.js:241
 msgid "Description"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:234
+#: dist/wp.impex.dashboard.js:242
 msgid "Description may contain more expressive information describing the item"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:339 dist/wp.impex.store.js:96
-#: dist/wp.impex.store.js:103
+#: dist/wp.impex.dashboard.js:394 dist/wp.impex.store.js:140
+#: dist/wp.impex.store.js:147
 msgid "Creating snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:369 dist/wp.impex.store.js:102
+#: dist/wp.impex.dashboard.js:424 dist/wp.impex.store.js:146
 msgid "Downloading snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:398
+#: dist/wp.impex.dashboard.js:453
 msgid "Create snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:408
+#: dist/wp.impex.dashboard.js:463
 msgid "Create Snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:416
+#: dist/wp.impex.dashboard.js:471
 msgid "Download snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:417
+#: dist/wp.impex.dashboard.js:472
 msgid "Additional actions on this export"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:420 dist/wp.impex.dashboard.js:642
+#: dist/wp.impex.dashboard.js:475 dist/wp.impex.dashboard.js:661
 msgid "Edit"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:425
+#: dist/wp.impex.dashboard.js:480
 #, fuzzy
 msgid "Edit export"
 msgstr "(en_US) Export"
 
-#: dist/wp.impex.dashboard.js:434 dist/wp.impex.dashboard.js:656
+#: dist/wp.impex.dashboard.js:489 dist/wp.impex.dashboard.js:675
 msgid "Delete"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:439
+#: dist/wp.impex.dashboard.js:494
 msgid "Delete export"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:483
+#: dist/wp.impex.dashboard.js:545
 #, fuzzy
 msgid "Select an import profile"
 msgstr "Select an Import profile"
 
-#: dist/wp.impex.dashboard.js:490
+#: dist/wp.impex.dashboard.js:552
 #, fuzzy
 msgid "Import Profile:"
 msgstr "Import Profile"
 
-#: dist/wp.impex.dashboard.js:498
+#: dist/wp.impex.dashboard.js:560
 msgid "Import profiles define which WordPress data should be consumed"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:531
+#: dist/wp.impex.dashboard.js:593
 msgid "Importing data into WordPress ..."
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:581
+#: dist/wp.impex.dashboard.js:620
 msgid "Uploading snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:618
+#: dist/wp.impex.dashboard.js:637
 msgid "Upload snapshot to WordPress"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:629
+#: dist/wp.impex.dashboard.js:648
 msgid "Upload snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:638
+#: dist/wp.impex.dashboard.js:657
 msgid "Import uploaded snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:639
+#: dist/wp.impex.dashboard.js:658
 msgid "Additional actions on this import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:647
+#: dist/wp.impex.dashboard.js:666
 msgid "Edit import snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:661
+#: dist/wp.impex.dashboard.js:680
 msgid "Delete import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:662
+#: dist/wp.impex.dashboard.js:681
 msgid "Are you really sure to delete import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:755
+#: dist/wp.impex.dashboard.js:761
+msgid "OK"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:792
+#, fuzzy
+msgid "Import failed"
+msgstr "Export Profile"
+
+#: dist/wp.impex.dashboard.js:797
 #, fuzzy
 msgid "Export failed"
 msgstr "Export Profile"
 
-#: dist/wp.impex.dashboard.js:766
-msgid "OK"
+#: dist/wp.impex.dashboard.js:828
+msgid ""
+"Clean up existing post, media, block pattern, nav_menu an reusable block "
+"items"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:809
+#: dist/wp.impex.dashboard.js:828
+msgid ""
+"Keep existing post, media, block pattern, nav_menu an reusable block items. "
+"Media might be partly overwritten by export"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:832
+msgid "Remove existing content before import"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:844
 msgid "ImpEx"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:813
+#: dist/wp.impex.dashboard.js:848
 msgid "Basic"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:817
+#: dist/wp.impex.dashboard.js:852
 msgid "Advanced"
 msgstr ""
 
-#: dist/wp.impex.store.js:74
+#: dist/wp.impex.store.js:72
+msgid "Creating snapshot ..."
+msgstr ""
+
+#: dist/wp.impex.store.js:79
+msgid "Uploading slices ..."
+msgstr ""
+
+#: dist/wp.impex.store.js:86
+msgid "importing slices ..."
+msgstr ""
+
+#: dist/wp.impex.store.js:93
+#, fuzzy
+msgid "Import completed"
+msgstr "Export Profile"
+
+#: dist/wp.impex.store.js:94
+msgid "Successfully finished import."
+msgstr ""
+
+#: dist/wp.impex.store.js:118
 #, fuzzy
 msgid "Export aborted"
 msgstr "Export Profile"
 
-#: dist/wp.impex.store.js:75
+#: dist/wp.impex.store.js:119
 msgid "You canceled the export or entered an invalid export name"
 msgstr ""
 
-#: dist/wp.impex.store.js:121
+#: dist/wp.impex.store.js:165
 #, fuzzy
 msgid "Export completed"
 msgstr "Export Profile"
 
-#: dist/wp.impex.store.js:122
+#: dist/wp.impex.store.js:166
 msgid "Successfully finished export."
 msgstr ""

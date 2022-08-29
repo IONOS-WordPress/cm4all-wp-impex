@@ -170,7 +170,7 @@ function SimpleTab() {
                 onChange={setImportProfile}
               />
               <components.ToggleControl
-                help={ cleanupContent ? __("Clean up existing post, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, media, block pattern, nav_menu an reusable block items. Media might be partly overwritten by export", "cm4all-wp-impex") }
+                help={ cleanupContent ? __("Clean up existing post, page, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, media, block pattern, nav_menu an reusable block items. Media might be partly overwritten by export", "cm4all-wp-impex") }
                 checked={ cleanupContent }
                 onChange={ setCleanupContent }
                 className="is-destructive"
