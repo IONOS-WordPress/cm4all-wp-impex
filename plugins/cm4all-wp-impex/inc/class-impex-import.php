@@ -122,7 +122,7 @@ abstract class ImpexImport extends ImpexPart
     $options = $transformationContext->options;
     $profile = $transformationContext->profile;
 
-    if($options[self::OPTION_CLEANUP_CONTENTS] === true) {
+    if(($options[self::OPTION_CLEANUP_CONTENTS] ?? false) === true) {
       $menus = \wp_get_nav_menus(['fields' => 'ids' ]);
       foreach ($menus as $menu) {
         \wp_delete_nav_menu( $menu);
