@@ -214,11 +214,12 @@ operation:
     arguments:
       [directory]                                       (required) directory to export to
 
-  import                                                import wordpress data exported by impex from a directory 
+  import                                                import wordpress data (in impex format) from a directory 
     options:
-      -profile=[import-profile]                         (default='all') export profile to use
+      -profile=[import-profile]                        (default='all') import profile to use
+      -options=[import options in JSON format]         (default='{}') provide options to the import process
     arguments:
-      [directory]                                       (required) impex export directory to import from
+      [directory]                                       (required) impex directory to import from
 
   export-profile 
     sub-operations:                                     (required)

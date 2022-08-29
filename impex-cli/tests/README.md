@@ -36,4 +36,4 @@ make wp-env-clean
 ./impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ./impex-cli/tests/fixtures/simple-import
 ```
 
-# Usage
+See more at the official documentation : https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html

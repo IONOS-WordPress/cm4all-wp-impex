@@ -243,26 +243,21 @@ The `export` operation will create a top-level directory in the specified direct
 
 The `import` operation imports an ImpEx export from the specified directory into the remote WordPress installation.
 
-> If you repeat the `import` operation again and again you may want to cleanup your WordPress content in between. You can use [wp-cli](https://wp-cli.org/) on your WordPress installation to do that:
->
-> ```sh
-> wp post delete --force $(wp post list --post_type=attachment --format=ids)
-> wp post delete --force $(wp post list --post_type=page --format=ids)
-> wp post delete --force $(wp post list --post_type=post --format=ids)
-> ```
->
-> to delete all pages/posts and attachments.
-
 Example usage:
 
 ```sh
 impex-cli.php import \
   -username=<adminuser> -password='<password>' \
   -rest-url=http://localhost:8888/wp-json \
+  -options='{"impex-import-option-cleanup_contents" : true}'
   ~/tmp/my-export
 ```
 
-This snippet will upload the whole exported data in the directory and imports them using the `all` profile at the WordPress installation.
+This snippet will 
+
+- upload the whole exported data in the directory 
+- import them using the `all` profile at the WordPress installation.
+  - the `impex-import-option-cleanup_contents` option will cleanup existing post, page, media, block pattern, nav_menu and reusable block items right before starting the import.
 
 #### `profile` option
 
@@ -275,6 +270,25 @@ An ImpEx import profile defines what data should be imported. If not provided, t
 The `directory` argument specifies the directory where the import data resides.
 
 > The directory argument takes the directory path created by the `export` operation.
+
+#### `options` argument
+
+The `options` argument let's you provide ImpEx import options. The `options` value is expected to be an associative JSON object. 
+
+Valid options are : 
+
+- `impex-import-option-cleanup_contents`
+  
+  You may want to cleanup your WordPress content right before import. That's what the `impex-import-option-cleanup_contents` option is made for. If this option is set to `true` ImpEx will remove any 
+
+  - post
+  - page 
+  - media
+  - block pattern
+  - nav_menu
+  - reusable block 
+  
+  item right before starting the import.
 
 ### `export-profiles`
 
