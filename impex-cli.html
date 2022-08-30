@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html" class="active"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.2.</strong> REST API</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="impex-cli.html" class="active"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/filters.html"><strong aria-hidden="true">8.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.3.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -179,6 +179,7 @@
 <ul>
 <li><a href="#profile-option-1"><code>profile</code> option</a></li>
 <li><a href="#directory-argument-1"><code>directory</code> argument</a></li>
+<li><a href="#options-argument"><code>options</code> argument</a></li>
 </ul>
 </li>
 <li><a href="#export-profiles"><code>export-profiles</code></a>
@@ -380,21 +381,22 @@ managers like Windows Explorer.</p>
 The <code>export</code> operation will create a top-level directory in the specified directory and stores everything else in <a href="explanation-of-terms.html#chunk">chunk</a> subdirectories.</p>
 <h3 id="import"><a class="header" href="#import"><code>import</code></a></h3>
 <p>The <code>import</code> operation imports an ImpEx export from the specified directory into the remote WordPress installation.</p>
-<blockquote>
-<p>If you repeat the <code>import</code> operation again and again you may want to cleanup your WordPress content in between. You can use <a href="https://wp-cli.org/">wp-cli</a> on your WordPress installation to do that:</p>
-<pre><code class="language-sh">wp post delete --force $(wp post list --post_type=attachment --format=ids)
-wp post delete --force $(wp post list --post_type=page --format=ids)
-wp post delete --force $(wp post list --post_type=post --format=ids)
-</code></pre>
-<p>to delete all pages/posts and attachments.</p>
-</blockquote>
 <p>Example usage:</p>
 <pre><code class="language-sh">impex-cli.php import \
   -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
   -rest-url=http://localhost:8888/wp-json \
+  -options='{&quot;impex-import-option-cleanup_contents&quot; : true}'
   ~/tmp/my-export
 </code></pre>
-<p>This snippet will upload the whole exported data in the directory and imports them using the <code>all</code> profile at the WordPress installation.</p>
+<p>This snippet will </p>
+<ul>
+<li>upload the whole exported data in the directory </li>
+<li>import them using the <code>all</code> profile at the WordPress installation.
+<ul>
+<li>the <code>impex-import-option-cleanup_contents</code> option will cleanup existing post, page, media, block pattern, nav_menu and reusable block items right before starting the import.</li>
+</ul>
+</li>
+</ul>
 <h4 id="profile-option-1"><a class="header" href="#profile-option-1"><code>profile</code> option</a></h4>
 <p>An ImpEx import profile defines what data should be imported. If not provided, the import will fallback to default import profile <code>all</code>.</p>
 <blockquote>
@@ -405,6 +407,24 @@ wp post delete --force $(wp post list --post_type=post --format=ids)
 <blockquote>
 <p>The directory argument takes the directory path created by the <code>export</code> operation.</p>
 </blockquote>
+<h4 id="options-argument"><a class="header" href="#options-argument"><code>options</code> argument</a></h4>
+<p>The <code>options</code> argument let's you provide ImpEx import options. The <code>options</code> value is expected to be an associative JSON object. </p>
+<p>Valid options are : </p>
+<ul>
+<li>
+<p><code>impex-import-option-cleanup_contents</code></p>
+<p>You may want to cleanup your WordPress content right before import. That's what the <code>impex-import-option-cleanup_contents</code> option is made for. If this option is set to <code>true</code> ImpEx will remove any </p>
+<ul>
+<li>post</li>
+<li>page </li>
+<li>media</li>
+<li>block pattern</li>
+<li>nav_menu</li>
+<li>reusable block </li>
+</ul>
+<p>item right before starting the import.</p>
+</li>
+</ul>
 <h3 id="export-profiles"><a class="header" href="#export-profiles"><code>export-profiles</code></a></h3>
 <h4 id="list"><a class="header" href="#list"><code>list</code></a></h4>
 <p>Lists all available export profiles in JSON format.</p>

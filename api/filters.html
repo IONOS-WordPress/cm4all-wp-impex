@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>API</title>
+        <title>Filters</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html" class="active"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html"><strong aria-hidden="true">8.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.3.</strong> REST API</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../basic-usage.html"><strong aria-hidden="true">2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">4.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">5.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">6.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">7.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">7.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html"><strong aria-hidden="true">8.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">8.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html" class="active"><strong aria-hidden="true">8.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">8.3.</strong> REST API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,26 +142,58 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="api"><a class="header" href="#api">API</a></h1>
-<h2 id="a-hrefconfigurationhtmlconfigurationa"><a class="header" href="#a-hrefconfigurationhtmlconfigurationa"><a href="./configuration.html">Configuration</a></a></h2>
-<h2 id="rest-api"><a class="header" href="#rest-api">REST API</a></h2>
-<p>All ImpEx features are exposed by it's WordPress REST API endpoint.</p>
-<p>See <a href="./cm4all-wp-impex-oas.html">ImpEx REST API documentation</a>.</p>
-<p>The REST API is also available as <a href="https://swagger.io/specification/v2/">OpenAPI Specification Format</a> : Download <a href="http://0.0.0.0:3000/api/cm4all-wp-impex-oas.json">ImpEx OpenAPI Specification</a> here.</p>
-<p>You can explore the ImpEx Rest API using any HTTP Rest API Client.</p>
-<blockquote>
-<p>Our favorite is the <a href="https://wordpress.org/plugins/wp-api-swaggerui/">&quot;WP API SwaggerUI&quot; WordPress Plugin</a> since it's perfectly integrated into WordPress.</p>
-</blockquote>
+                        <ul>
+<li><a href="#wordpress-filters">WordPress Filters</a>
+<ul>
+<li><a href="#import">Import</a>
+<ul>
+<li><a href="#impex_import_filter_profiles"><code>impex_import_filter_profiles</code></a></li>
+</ul>
+</li>
+<li><a href="#export">Export</a>
+<ul>
+<li><a href="#impex_export_filter_profiles"><code>impex_export_filter_profiles</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="wordpress-filters"><a class="header" href="#wordpress-filters">WordPress Filters</a></h1>
+<p>ImpEx supports various WordPress filters for customizing ImpEx.</p>
+<h2 id="import"><a class="header" href="#import">Import</a></h2>
+<h3 id="impex_import_filter_profiles"><a class="header" href="#impex_import_filter_profiles"><code>impex_import_filter_profiles</code></a></h3>
+<p>Using this filter you can hide ImpEx import profiles from the user.</p>
+<p>An example : To hide the ImpEx import profile <code>all</code> you need to add the following WordPress filter to your sources :</p>
+<pre><code class="language-php:">\add_filter( 
+  'impex_import_filter_profiles', 
+  fn( $profiles ) =&gt; array_filter(
+    $profiles, 
+    fn($profile) =&gt; $profile-&gt;name !== 'all'
+  ),
+);
+</code></pre>
+<h2 id="export"><a class="header" href="#export">Export</a></h2>
+<h3 id="impex_export_filter_profiles"><a class="header" href="#impex_export_filter_profiles"><code>impex_export_filter_profiles</code></a></h3>
+<p>Using this filter you can hide ImpEx export profiles from the user.</p>
+<p>An example : To hide the ImpEx export profile <code>base</code> you need to add the following WordPress filter to your sources :</p>
+<pre><code class="language-php:">\add_filter( 
+  'impex_export_filter_profiles', 
+  fn( $profiles ) =&gt; array_filter(
+    $profiles, 
+    fn($profile) =&gt; $profile-&gt;name !== 'base'
+  ),
+);
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../cm4all-wp-impex-generator/static-website-tutorial.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../api/configuration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../api/configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../api/cm4all-wp-impex-oas.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -171,11 +203,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../cm4all-wp-impex-generator/static-website-tutorial.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../api/configuration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../api/configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../api/cm4all-wp-impex-oas.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
