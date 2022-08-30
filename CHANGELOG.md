@@ -1,3 +1,35 @@
+## [1.4.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.8...1.4.0) (2022-08-30)
+
+
+### Features
+
+* added cleanup option to "advanced import" ui ([74ffc47](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/74ffc479b0992580ada6ea5a3b89471062f83626))
+* added import option to cleanup wordpress before import ([98cb602](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/98cb6021c8e2f44e21f34bf9c1afe61605755c3d))
+* impex cli import now supports providing options to the import process ([9064a77](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/9064a7725e75a714d53e9f050f2beb63125fdce7))
+* impex cli supports import options like "impex-import-option-cleanup_contents" ([b218221](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/b218221d1ba23b7756d23212018a0def9094e792))
+* import/export filters can now be filtered using wp filters ([f94ae55](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f94ae55c3203a93ff1bb017ab52e026b493f2345))
+* simple import roughly implemented ([2836697](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/28366974ff2d8c23a65656d73af64876c013a0d6))
+
+
+### Bug Fixes
+
+* browser filesystem-api will use consistent snaopshot directory handle ([3960b98](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/3960b985f73b386fd3b6dd7680f7647cc859c368))
+* consumeImport will gracefully handle not set option impex-import-option-cleanup_contents ([4ac7660](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/4ac7660f02e41d4dafd580e4f5ce53fe695f4042))
+* ensuring that the window.crypto api is available before using it ([4b818b4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/4b818b438cca375b73bf4eb6506d6ccc4cec224e))
+* fixed crypto api detection ([893ff0d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/893ff0d2435037ebeb5d4b816e7e8190bf407c3e))
+* fixed error message if browser crypto api is missing ([9544a00](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/9544a0080decfacb9d6a6643cce03deac5aa50a0))
+* fixed some typos ([a79decb](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/a79decb01d37308b2068f9caaa47b0ca0f93d01a))
+* getProfile() should return an ArrayIterator ([ad6ace4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ad6ace41ae50aa0ad3c5227196bdc199a66e2cde))
+* i18n translations fixed ([8a7f392](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/8a7f3923f12c57ae50c047b42889b9a56d03b7b2))
+* impex error popup can handle multiline messages ([f6b51e1](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f6b51e168183dd4feeee005f337637120249dcbf))
+* import will no more fail on unknown post type import ([5e25505](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/5e255058c199de968a9c4a68a1d498f3419dc532))
+* import will not fail on unknown taxonomy references ([eff2c2e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/eff2c2ea5d23d7167356f2a450d5abdb087d4d24))
+* made snapshot import more sensitive about files/directories ([f6120d4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f6120d40bf4ddecd79165ecc550804f3b6a4213f))
+* relax import of users with illegal login ([fea4c5a](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/fea4c5a0e93f529d7d07481481f92360f28afe3b))
+* simple ui labels fixed ([be850cf](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/be850cf4f2a1aa740dd30d438f9c890a3379073a))
+* test environment runs only with disabled wp cron ([ff24148](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ff241480518107ff4c8a8d2d88e2d0eef70a3aaa))
+* upgraded rector command to latest rector cli ([bcfc886](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/bcfc88630e863dc6edc6587ba44680e644dc5a77))
+
 ### [1.3.8](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.7...1.3.8) (2022-07-20)
 
 
