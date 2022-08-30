@@ -173,12 +173,12 @@ function SimpleTab() {
                 help={ cleanupContent ? __("Clean up existing post, page, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, media, block pattern, nav_menu an reusable block items. Media might be partly overwritten by export", "cm4all-wp-impex") }
                 checked={ cleanupContent }
                 onChange={ setCleanupContent }
-                className="is-destructive"
                 label={__("Remove existing content before import", "cm4all-wp-impex")}
               >
               </components.ToggleControl>
-              <components.Button 
-                variant="primary" 
+              <components.Button
+                isDestructive 
+                isPrimary
                 disabled={!importProfile}
                 onClick={_createAndUploadConsumeImport}
               >

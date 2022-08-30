@@ -40,12 +40,13 @@ button > svg {
   margin-top: 12px;
 
   .create-export-form,
-  .upload-import-form {
+  .upload-import-form,
+  .import-options-form {
     background-color: rgb(240, 240, 241);
 
     .components-panel__body-title {
       pointer-events: none;
-
+  
       .components-panel__body-toggle > * {
         visibility: hidden;
       }

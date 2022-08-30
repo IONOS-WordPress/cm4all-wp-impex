@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cm4all-wp-impex 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cm4all-wp-impex\n"
-"POT-Creation-Date: 2022-08-29T11:54:11+00:00\n"
+"POT-Creation-Date: 2022-08-30T11:03:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Export"
 msgstr "(en_US) Export"
 
-#: inc/wp-dashboard-contributions.php:67 dist/wp.impex.dashboard.js:635
+#: inc/wp-dashboard-contributions.php:67 dist/wp.impex.dashboard.js:638
 #: dist/wp.impex.store.js:71 dist/wp.impex.store.js:78
 #: dist/wp.impex.store.js:85
 msgid "Import"
@@ -231,7 +231,7 @@ msgstr ""
 msgid "Additional actions on this export"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:475 dist/wp.impex.dashboard.js:661
+#: dist/wp.impex.dashboard.js:475 dist/wp.impex.dashboard.js:674
 msgid "Edit"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 msgid "Edit export"
 msgstr "(en_US) Export"
 
-#: dist/wp.impex.dashboard.js:489 dist/wp.impex.dashboard.js:675
+#: dist/wp.impex.dashboard.js:489 dist/wp.impex.dashboard.js:688
 msgid "Delete"
 msgstr ""
 
@@ -262,81 +262,90 @@ msgstr "Import Profile"
 msgid "Import profiles define which WordPress data should be consumed"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:593
+#: dist/wp.impex.dashboard.js:594
 msgid "Importing data into WordPress ..."
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:620
+#: dist/wp.impex.dashboard.js:623
 msgid "Uploading snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:637
+#: dist/wp.impex.dashboard.js:640
 msgid "Upload snapshot to WordPress"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:648
+#: dist/wp.impex.dashboard.js:651
 msgid "Upload snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:657
+#: dist/wp.impex.dashboard.js:652
+#, fuzzy
+msgid "Import options"
+msgstr "Export Profile"
+
+#: dist/wp.impex.dashboard.js:656 dist/wp.impex.dashboard.js:841
+msgid ""
+"Clean up existing post, page, media, block pattern, nav_menu an reusable "
+"block items"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:656 dist/wp.impex.dashboard.js:841
+msgid ""
+"Keep existing post, page, media, block pattern, nav_menu an reusable block "
+"items. Media might be partly overwritten by export"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:660
+msgid "Remove existing content before importing uploaded snapshot"
+msgstr ""
+
+#: dist/wp.impex.dashboard.js:670
 msgid "Import uploaded snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:658
+#: dist/wp.impex.dashboard.js:671
 msgid "Additional actions on this import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:666
+#: dist/wp.impex.dashboard.js:679
 msgid "Edit import snapshot"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:680
+#: dist/wp.impex.dashboard.js:693
 msgid "Delete import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:681
+#: dist/wp.impex.dashboard.js:694
 msgid "Are you really sure to delete import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:761
+#: dist/wp.impex.dashboard.js:774
 msgid "OK"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:792
+#: dist/wp.impex.dashboard.js:805
 #, fuzzy
 msgid "Import failed"
 msgstr "Export Profile"
 
-#: dist/wp.impex.dashboard.js:797
+#: dist/wp.impex.dashboard.js:810
 #, fuzzy
 msgid "Export failed"
 msgstr "Export Profile"
 
-#: dist/wp.impex.dashboard.js:828
-msgid ""
-"Clean up existing post, media, block pattern, nav_menu an reusable block "
-"items"
-msgstr ""
-
-#: dist/wp.impex.dashboard.js:828
-msgid ""
-"Keep existing post, media, block pattern, nav_menu an reusable block items. "
-"Media might be partly overwritten by export"
-msgstr ""
-
-#: dist/wp.impex.dashboard.js:832
+#: dist/wp.impex.dashboard.js:844
 msgid "Remove existing content before import"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:844
+#: dist/wp.impex.dashboard.js:857
 msgid "ImpEx"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:848
+#: dist/wp.impex.dashboard.js:861
 msgid "Basic"
 msgstr ""
 
-#: dist/wp.impex.dashboard.js:852
+#: dist/wp.impex.dashboard.js:865
 msgid "Advanced"
 msgstr ""
 
