@@ -1,3 +1,10 @@
+### [1.4.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.0...1.4.1) (2022-08-31)
+
+
+### Bug Fixes
+
+* updated dev environment to wordpress 6.0.2 ([271b33d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/271b33d97078fa4e584d82575fea7cecf00fe10d))
+
 ## [1.4.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.3.8...1.4.0) (2022-08-30)
 
 
