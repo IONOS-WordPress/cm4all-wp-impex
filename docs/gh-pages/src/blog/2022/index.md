@@ -2,6 +2,12 @@
 
 # 2022-08
 
+## Did you know : ImpEx can import / export [Elementor](https://elementor.com/) pages out of the box
+
+ImpEx can import and export pages operated by [Elementor](https://elementor.com/).
+
+[ImpEx](https://wordpress.org/plugins/cm4all-wp-impex/) is a free and fully open sourced WordPress Import/Export plugin.
+
 ## [Release 1.4.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/releases/tag/1.4.1) 
 
 - This release features a more user oriented UI simplifying the Import / Export : 
