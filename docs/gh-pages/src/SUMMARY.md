@@ -1,6 +1,9 @@
-# Summary
+[About](./about.md)
 
-- [About](./about.md)
+# Blog
+- [2022](./blog/2022/index.md) 
+
+# Documentation
 - [Features](./features.md)
 - [Basic usage](./basic-usage.md)
 - [CLI](./impex-cli.md)
