@@ -10,7 +10,7 @@ There ist built-in support for exporting/importing
 
 - WordPress posts, pages, comments, categories, tags, custom post types, custom fields, users, taxonomies, navigation menus and more
 
-- FSE relates content like block patterns, global styles, templates and template parts
+- FSE related content like block patterns, global styles, templates and template parts
 
 - WordPress media
 

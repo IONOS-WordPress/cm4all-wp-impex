@@ -15,3 +15,4 @@
   - [Filters](./api/filters.md)
   - [REST API](./api/cm4all-wp-impex-oas.md)
 - [Explanation of terms](./explanation-of-terms.md)
+- [FAQ](./faq.md)
