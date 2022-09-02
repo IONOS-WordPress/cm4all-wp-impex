@@ -70,7 +70,7 @@ If you operate your WordPress website using a managed WordPress hosting service,
 
 In these scenarios most WordPress Import / Export plugins will not work.
 
-**ImpEx only needs access to the WordPress REST API an works like a charm in almost any managed WordPress hosting environment.**
+**ImpEx only needs access to the WordPress REST API. Works like a charm in almost any managed WordPress hosting environment.**
 
 ## Commandline interface (CLI)
 
