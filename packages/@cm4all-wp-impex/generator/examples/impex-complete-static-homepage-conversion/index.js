@@ -31,7 +31,7 @@ async function* getFiles(dir, recursive, extension) {
     const res = resolve(dir, entry.name);
     if (entry.isDirectory()) {
       yield* getFiles(res, recursive, extension);
-    } else if (extension !== null || entry.name.endsWith(extension)) {
+    } else if (!extension || entry.name.endsWith(extension)) {
       yield res;
     }
   }
