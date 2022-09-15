@@ -1,3 +1,12 @@
+### [1.4.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.1...1.4.2) (2022-09-15)
+
+
+### Bug Fixes
+
+* fixed getFiles() in @cm4all-wp-impex/generator ([570f5e4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/570f5e485f38b64c12b44a7502cfaebc8ab8ee5e))
+* image attachments without extension can be handlet by impex ([f8d157f](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f8d157fecfa4c726c105a031bef66e01dbd7afe3))
+* typos fixed ([599e950](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/599e9503cb3c886a86c46bac841b421c89eb79ea))
+
 ### [1.4.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.0...1.4.1) (2022-08-31)
 
 
