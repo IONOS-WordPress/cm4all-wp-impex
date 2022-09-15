@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-        <base href="/">
+        <title>FAQ</title>
 
 
         <!-- Custom HTML head -->
@@ -82,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="blog/2022/index.html"><strong aria-hidden="true">1.</strong> 2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">3.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/filters.html"><strong aria-hidden="true">7.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">7.3.</strong> REST API</a></li></ol></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">8.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">9.</strong> FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="blog/2022/index.html"><strong aria-hidden="true">1.</strong> 2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="basic-usage.html"><strong aria-hidden="true">3.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="api/filters.html"><strong aria-hidden="true">7.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">7.3.</strong> REST API</a></li></ol></li><li class="chapter-item expanded "><a href="explanation-of-terms.html"><strong aria-hidden="true">8.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="faq.html" class="active"><strong aria-hidden="true">9.</strong> FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,13 +142,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="why-is-the-impex-ui-not-yet-working-in-firefox--brave-"><a class="header" href="#why-is-the-impex-ui-not-yet-working-in-firefox--brave-">Why is the ImpEx UI not (yet) working in Firefox / Brave ?</a></h2>
+<p>The ImpEx UI uses the <a href="https://web.dev/file-system-access/">File System Access API</a> to export and import data to the local filesystem. This browser feature is mandatory.</p>
+<p>Right now Chromium based browsers (except of Brave who disabled this feature) and Safari supporting the <a href="https://web.dev/file-system-access/">File System Access API</a>. </p>
+<blockquote>
+<p>As of now, it's unclear if and when Firefox will support the <a href="https://web.dev/file-system-access/">File System Access API</a>. </p>
+</blockquote>
+<p>As an alternative you can use the <a href="./impex-cli.html">ImpEx CLI</a> to trigger import/export operations on the commandline.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="explanation-of-terms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -158,6 +166,9 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="explanation-of-terms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 
