@@ -1,3 +1,10 @@
+### [1.4.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.2...1.4.3) (2022-09-19)
+
+
+### Bug Fixes
+
+* fixed extensionless attachment imports ([ab28dc3](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ab28dc34d4b547bb3e643cb6039f28a8d0b16563))
+
 ### [1.4.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.1...1.4.2) (2022-09-15)
 
 
