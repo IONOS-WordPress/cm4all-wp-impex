@@ -155,10 +155,10 @@ class __AttachmentImporter
     // remap resized image URLs, works by stripping the extension and remapping the URL stub.
     if (preg_match('!^image/!', $post['post_mime_type'])) {
       $parts = pathinfo($url);
-      $name  = basename($parts['basename'], $parts['extension'] ? ".{$parts['extension']}" : ''); // PATHINFO_FILENAME in PHP 5.2
+      $name  = basename($parts['basename'], isset($parts['extension']) ? ".{$parts['extension']}" : ''); // PATHINFO_FILENAME in PHP 5.2
 
       $parts_new = pathinfo($upload['url']);
-      $name_new  = basename($parts_new['basename'], ".{$parts_new['extension']}");
+      $name_new  = basename($parts_new['basename'], isset($parts_new['extension']) ? ".{$parts_new['extension']}" : "");
 
       $this->url_remap[$parts['dirname'] . '/' . $name] = $parts_new['dirname'] . '/' . $name_new;
     }
