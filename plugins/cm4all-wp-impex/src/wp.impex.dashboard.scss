@@ -52,6 +52,12 @@ button > svg {
       }
     }
   }
+  
+  // workaround : destructive:disabled css rule does not exist in current gutenberg  
+  .components-button.is-primary.is-destructive:disabled {
+    color: #fff6;
+    pointer-events: none;
+  }
 }
 
 ///     background-color: rgb(240, 240, 241);
