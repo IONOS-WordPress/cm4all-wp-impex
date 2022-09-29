@@ -42,6 +42,8 @@ interface AttachmentImporter
 
   const WP_FILTER_IMPORT_REST_SLICE_UPLOAD_FILE = "AttachmentImporter";
 
+  const REST_API_ENDPOINT_UPDATE_METADATA = ImpexImportRESTController::REST_BASE . '/attachment/update-metadata';
+
   const OPTION_OVERWRITE = 'wp-attachment-import-option-overwrite';
   const OPTION_OVERWRITE_DEFAULT = true;
 
@@ -138,13 +140,29 @@ class __AttachmentImporter
     // as per wp-admin/includes/upload.php
     $post_id = \wp_insert_attachment($post, $upload['file']);
 
-    // required if non admin user imports attachments
-    if (!function_exists('wp_crop_image')) {
-      include(ABSPATH . 'wp-admin/includes/image.php');
-    }
+    // // required if non admin user imports attachments
+    // if (!function_exists('wp_crop_image')) {
+    //   include(ABSPATH . 'wp-admin/includes/image.php');
+    // }
+    // if(!function_exists('wp_read_video_metadata')) {
+    //   include(ABSPATH . 'wp-admin/includes/media.php');
+    // }
 
     /*$attachment_invalid =*/
-    \wp_update_attachment_metadata($post_id, \wp_generate_attachment_metadata($post_id, $upload['file']));
+    // \wp_update_attachment_metadata($post_id, \wp_generate_attachment_metadata($post_id, $upload['file']));
+
+    // register url callback to call by client side to update 
+    // attachment metadata step by step
+    $basedir = \wp_upload_dir()['basedir'];
+    $this->transformationContext->addCallback(
+      // relative rest api url
+      substr(AttachmentImporter::REST_API_ENDPOINT_UPDATE_METADATA, 1),
+      'POST',
+      [
+        'post_id' => $post_id,
+        'file' => substr($upload['file'], strlen($basedir)+1),
+      ],
+    );
 
     /*
     if ($attachment_invalid === false) {
@@ -185,7 +203,7 @@ class __AttachmentImporter
     // Extract the file name from the URL.
     $file_name = basename(parse_url($url, PHP_URL_PATH));
 
-    $uploads = wp_upload_dir($post['post_date'] ?? null);
+    $uploads = \wp_upload_dir($post['post_date'] ?? null);
     if (!($uploads && false === $uploads['error'])) {
       return new \WP_Error('upload_dir_error', $uploads['error']);
     }
@@ -287,6 +305,45 @@ class __AttachmentImporter
       10,
       3,
     );
+
+    \register_rest_route(ImpexImportRESTController::NAMESPACE, AttachmentImporter::REST_API_ENDPOINT_UPDATE_METADATA, [
+      'methods'  => \WP_REST_Server::EDITABLE,
+      /**
+        * @param WP_REST_Request $request Full data about the request.
+        * @return WP_Error|WP_REST_Response
+        */
+      'callback' => function($request) {
+        $post_id = $request->get_param('post_id');
+        $basedir = \wp_upload_dir()['basedir'];
+        $file = $basedir . '/' . $request->get_param('file');
+
+        // required if non admin user imports attachments
+        if (!function_exists('wp_crop_image')) {
+          include(ABSPATH . 'wp-admin/includes/image.php');
+        }
+
+        if(!function_exists('wp_read_video_metadata')) {
+          include(ABSPATH . 'wp-admin/includes/media.php');
+        }
+        
+        \wp_update_attachment_metadata($post_id, \wp_generate_attachment_metadata($post_id, $file));
+
+        $response = new \WP_REST_Response(true, 200);
+        return $response;
+      },
+      /**
+        * @param WP_REST_Request $request Full data about the request.
+        * @return WP_Error|WP_REST_Response
+        */
+      'permission_callback' => function($request) {
+        // @TODO: check a more specific permission
+        return \current_user_can('import');
+      },
+      /*
+      'args'                => [],
+      'schema' => [$this, 'get_public_item_schema'],
+      */
+    ]);
   },
 );
 

@@ -461,11 +461,33 @@ function import($options, $import_directory, ...$args)
     }
   }
 
+  _log($options, 'Consume imported slices ...');
   [$result, $status, $error] = _curl(
     $options,
     "import/$import_id/consume",
     \CURLOPT_POST,
   );
+  
+  $postConsumeCallbacks = $result['callbacks'] ?? [];
+  foreach($postConsumeCallbacks as $index => $postConsumeCallback) {
+    _log(
+      $options, 
+      'Executing post consume callback(path=%s, method=%s) with data(=%s)', 
+      $postConsumeCallback['path'], 
+      $postConsumeCallback['method'], 
+      json_encode($postConsumeCallback['data']),
+    );
+    [$result, $status, $error] = _curl(
+      $options,
+      $postConsumeCallback['path'],
+      $postConsumeCallback['method']==='post' ? \CURLOPT_POST : null,
+      fn ($curl) => curl_setopt($curl, \CURLOPT_POSTFIELDS, http_build_query($postConsumeCallback['data']))
+    );
+  
+    if ($error) {
+      _die($options, "Creating import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+    }
+  }
 
   if ($error) {
     $__deleteImportSnapshot();

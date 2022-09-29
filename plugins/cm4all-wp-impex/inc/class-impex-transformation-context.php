@@ -36,7 +36,8 @@ abstract class ImpexTransformationContext implements \JsonSerializable
   protected string $_profile_name;
   protected array $_options;
   protected bool $_isExportPart;
-  protected array $_log = array();
+  protected array $_log = [];
+  protected array $_callbacks = [];
 
   protected function __construct(
     ImpexPart $part,
@@ -95,6 +96,7 @@ abstract class ImpexTransformationContext implements \JsonSerializable
       'profile' => Impex::getInstance()->{$this->_isExportPart ? 'Export' : 'Import'}->getProfile($this->_profile_name),
       'options' => $this->_options,
       'log' => $this->_log,
+      'callbacks' => $this->_callbacks,
 
       default => throw new ImpexRuntimeException(sprintf('abort getting invalid property "%s"', $property)),
     };
@@ -106,6 +108,15 @@ abstract class ImpexTransformationContext implements \JsonSerializable
       'type' => 'warning',
       'message' => $message,
       'cause' => $cause,
+    ];
+  }
+
+  public function addCallback(string $path, string $method, array $data = [])
+  {
+    $this->_callbacks[] = [
+      'path' => $path,
+      'method' => $method,
+      'data' => $data,
     ];
   }
 

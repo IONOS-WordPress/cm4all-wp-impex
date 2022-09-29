@@ -77,7 +77,7 @@ export default async function (settings) {
           yield {
             type: "progress",
             title: __("Import", "cm4all-wp-impex"),
-            message: __("importing slices ...", "cm4all-wp-impex"),
+            message: __("Importing slices ...", "cm4all-wp-impex"),
           };
 
 
@@ -347,7 +347,7 @@ export default async function (settings) {
         queryArgs["limit"] = limit;
       }
 
-      const payload = await apiFetch({
+      const { log, callbacks = [], notConsumedSlices } = await apiFetch({
         path: url.addQueryArgs(
           `${settings.base_uri}/import/${id}/consume`,
           queryArgs
@@ -355,6 +355,17 @@ export default async function (settings) {
         method: "POST",
         data: { options },
       });
+
+      // process returned callbacks 
+      const postConsumeCallbacks = callbacks.map(
+        callback => apiFetch({
+          path : `${settings.base_uri}/${callback.path}`,
+          method: callback.method,
+          data: callback.data,
+        })
+      );
+
+      await Promise.all(postConsumeCallbacks);
 
       return {
         type: "",
