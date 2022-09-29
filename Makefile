@@ -162,6 +162,11 @@ $(WP_ENV_HOME): node_modules
 > # BEGIN WordPress
 > php_value upload_max_filesize 64M
 > php_value post_max_size 64M
+> # php_value display_errors on
+> # php_flag log_errors on
+> # php_flag html_errors on
+> # php_value error_reporting 8191
+> # php_value error_log /var/www/html/wp-content/debug.log
 > # The directives (lines) between `BEGIN WordPress` and `END WordPress` are
 > # dynamically generated, and should only be modified via WordPress filters.
 > # Any changes to the directives between these markers will be overwritten.
