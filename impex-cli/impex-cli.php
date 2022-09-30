@@ -485,7 +485,7 @@ function import($options, $import_directory, ...$args)
     );
   
     if ($error) {
-      _die($options, "Creating import snapshot failed : HTTP status(=%s) : %s", $status, $error);
+      _log($options, "Warning : Failed to update metadata : HTTP status(=%s) : %s", $status, $error);
     }
   }
 

@@ -362,13 +362,26 @@ export default async function (settings) {
           path : `${settings.base_uri}/${callback.path}`,
           method: callback.method,
           data: callback.data,
+        }).catch(error => {
+          // silently ignore errors from timed out metadata updates 
+          if(error.code==='fetch_error') {
+            log.push({
+              type: 'warning',
+              message : `Ignore post consume callback(='${callback.path}') response : server side timed out(data=${JSON.stringify(callback.data)})`,
+              cause : [],
+            });
+            return Promise.resolve();
+          }
         })
       );
 
       await Promise.all(postConsumeCallbacks);
 
+      debug("consumeImport(%o, %o, %s, %o).log=\n%o", id, JSON.stringify(options), offset, limit, log);
+
       return {
         type: "",
+        payload: { log, notConsumedSlices },
       };
     },
     setImports(exports) {
