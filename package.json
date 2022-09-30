@@ -10,7 +10,7 @@
   "author": "lars.gersmann@cm4all.com",
   "devDependencies": {
     "@marp-team/marp-cli": "^1.5.2",
-    "@mermaid-js/mermaid-cli": "^8.13.10",
+    "@mermaid-js/mermaid-cli": "^9.1.6",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
