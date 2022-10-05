@@ -1,0 +1,225 @@
+{
+  "tag": "content-exporter",
+  "version": "1.0.0",
+  "meta": {
+    "entity": "content-exporter",
+    "options": []
+  },
+  "data": {
+    "wp:bloginfo_title": "cm4all-wp-impex",
+    "wp:bloginfo_url": "http://localhost:8888",
+    "wp:bloginfo_description": "Just another WordPress site",
+    "wp:bloginfo_language": "en-US",
+    "wp:bloginfo_rss_url": "http://localhost:8888",
+    "authors": [
+      {
+        "wp:author_id": 1,
+        "wp:author_login": "admin",
+        "wp:author_email": "wordpress@example.com",
+        "wp:author_display_name": "admin",
+        "wp:author_first_name": "",
+        "wp:author_last_name": ""
+      }
+    ],
+    "taxonomies": [],
+    "categories": {
+      "1": {
+        "wp:term_id": 1,
+        "wp:term_slug": "uncategorized",
+        "wp:term_parent": "",
+        "wp:term_name": "Uncategorized",
+        "wp:term_description": "",
+        "wp:term_meta": []
+      }
+    },
+    "tags": [],
+    "terms": [
+      {
+        "wp:term_id": 1,
+        "wp:term_taxonomy": "category",
+        "wp:term_slug": "uncategorized",
+        "wp:term_parent": "",
+        "wp:term_name": "Uncategorized",
+        "wp:term_description": "",
+        "wp:term_meta": []
+      },
+      {
+        "wp:term_id": 2,
+        "wp:term_taxonomy": "nav_menu",
+        "wp:term_slug": "primary-menu",
+        "wp:term_parent": "",
+        "wp:term_name": "primary-menu",
+        "wp:term_description": "",
+        "wp:term_meta": []
+      },
+      {
+        "wp:term_id": 3,
+        "wp:term_taxonomy": "wp_theme",
+        "wp:term_slug": "trinity-core",
+        "wp:term_parent": "",
+        "wp:term_name": "trinity-core",
+        "wp:term_description": "",
+        "wp:term_meta": []
+      },
+      {
+        "wp:term_id": 4,
+        "wp:term_taxonomy": "wp_theme",
+        "wp:term_slug": "tt1-blocks",
+        "wp:term_parent": "",
+        "wp:term_name": "tt1-blocks",
+        "wp:term_description": "",
+        "wp:term_meta": []
+      }
+    ],
+    "posts": [
+      {
+        "title": "Custom Styles",
+        "link": null,
+        "pubDate": false,
+        "dc:creator": "admin",
+        "guid": null,
+        "guid_isPermaLink": false,
+        "description": null,
+        "wp:post_content": "{\"version\": 2, \"isGlobalStylesUserThemeJSON\": true }",
+        "wp:post_excerpt": "",
+        "wp:post_id": 44,
+        "wp:post_date": "2022-10-05 09:50:11",
+        "wp:post_date_gmt": "2022-10-05 09:50:11",
+        "wp:post_modified_gmt": "2022-10-05 09:50:11",
+        "wp:comment_status": "closed",
+        "wp:ping_status": "closed",
+        "wp:post_name": "wp-global-styles-tt1-blocks",
+        "wp:status": "publish",
+        "wp:post_parent": 0,
+        "wp:menu_order": 0,
+        "wp:post_type": "wp_global_styles",
+        "wp:post_password": "",
+        "wp:is_sticky": 0,
+        "wp:attachment_url": null,
+        "taxonomy_terms": [
+          {
+            "wp:term_taxonomy": "wp_theme",
+            "wp:term_slug": "tt1-blocks",
+            "wp:term_name": "tt1-blocks"
+          }
+        ],
+        "meta": [],
+        "comments": []
+      },
+      {
+        "title": "hecht",
+        "link": null,
+        "pubDate": false,
+        "dc:creator": "admin",
+        "guid": null,
+        "guid_isPermaLink": false,
+        "description": null,
+        "wp:post_content": "<!-- wp:image {\"id\":46,\"sizeSlug\":\"full\",\"linkDestination\":\"none\",\"cm4allBlockId\":\"e114188a-2b24-49c6-8bde-c7290e413bee\"} -->\n<figure class=\"wp-block-image size-full\"><img src=\"http://localhost:8888/wp-content/uploads/2022/10/hecht-2-rotated.jpg\" alt=\"\" class=\"wp-image-46\"/></figure>\n<!-- /wp:image -->\n\n<!-- wp:image {\"id\":45,\"sizeSlug\":\"full\",\"linkDestination\":\"none\",\"cm4allBlockId\":\"575825e8-f034-48a2-937b-36fc2b3eda7e\"} -->\n<figure class=\"wp-block-image size-full\"><img src=\"http://localhost:8888/wp-content/uploads/2022/10/hecht-1-rotated.jpg\" alt=\"\" class=\"wp-image-45\"/></figure>\n<!-- /wp:image -->",
+        "wp:post_excerpt": "",
+        "wp:post_id": 47,
+        "wp:post_date": "2022-10-05 09:51:19",
+        "wp:post_date_gmt": "2022-10-05 09:51:19",
+        "wp:post_modified_gmt": "2022-10-05 09:51:19",
+        "wp:comment_status": "closed",
+        "wp:ping_status": "closed",
+        "wp:post_name": "hecht",
+        "wp:status": "publish",
+        "wp:post_parent": 0,
+        "wp:menu_order": 0,
+        "wp:post_type": "page",
+        "wp:post_password": "",
+        "wp:is_sticky": 0,
+        "wp:attachment_url": null,
+        "taxonomy_terms": [],
+        "meta": [
+          {
+            "wp:term_meta_key": "_edit_lock",
+            "wp:term_meta_value": "1664963348:1"
+          },
+          {
+            "wp:term_meta_key": "_edit_last",
+            "wp:term_meta_value": "1"
+          },
+          {
+            "wp:term_meta_key": "cmplz_hide_cookiebanner",
+            "wp:term_meta_value": ""
+          }
+        ],
+        "comments": []
+      },
+      {
+        "title": "",
+        "link": null,
+        "pubDate": false,
+        "dc:creator": "admin",
+        "guid": null,
+        "guid_isPermaLink": false,
+        "description": null,
+        "wp:post_content": " ",
+        "wp:post_excerpt": "",
+        "wp:post_id": 48,
+        "wp:post_date": "2022-10-05 09:51:19",
+        "wp:post_date_gmt": "2022-10-05 09:51:19",
+        "wp:post_modified_gmt": "2022-10-05 09:51:19",
+        "wp:comment_status": "closed",
+        "wp:ping_status": "closed",
+        "wp:post_name": "48",
+        "wp:status": "publish",
+        "wp:post_parent": 0,
+        "wp:menu_order": 0,
+        "wp:post_type": "nav_menu_item",
+        "wp:post_password": "",
+        "wp:is_sticky": 0,
+        "wp:attachment_url": null,
+        "taxonomy_terms": [
+          {
+            "wp:term_taxonomy": "nav_menu",
+            "wp:term_slug": "primary-menu",
+            "wp:term_name": "primary-menu"
+          }
+        ],
+        "meta": [
+          {
+            "wp:term_meta_key": "_menu_item_type",
+            "wp:term_meta_value": "post_type"
+          },
+          {
+            "wp:term_meta_key": "_menu_item_menu_item_parent",
+            "wp:term_meta_value": "0"
+          },
+          {
+            "wp:term_meta_key": "_menu_item_object_id",
+            "wp:term_meta_value": "47"
+          },
+          {
+            "wp:term_meta_key": "_menu_item_object",
+            "wp:term_meta_value": "page"
+          },
+          {
+            "wp:term_meta_key": "_menu_item_target",
+            "wp:term_meta_value": ""
+          },
+          {
+            "wp:term_meta_key": "_menu_item_classes",
+            "wp:term_meta_value": "a:1:{i:0;s:0:\"\";}"
+          },
+          {
+            "wp:term_meta_key": "_menu_item_xfn",
+            "wp:term_meta_value": ""
+          },
+          {
+            "wp:term_meta_key": "_menu_item_url",
+            "wp:term_meta_value": ""
+          },
+          {
+            "wp:term_meta_key": "_menu_item_content",
+            "wp:term_meta_value": ""
+          }
+        ],
+        "comments": []
+      }
+    ]
+  },
+  "type": "php",
+  "date": "2022-10-05 09:54:23 +0000"
+}

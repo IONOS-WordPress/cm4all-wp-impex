@@ -19,7 +19,8 @@
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
-    "test": "tape tests/**/test-*.js | tap-spec"
+    "test": "tape tests/**/test-*.js | tap-spec",
+    "_test:migrate": "find . -type f | entr -c /usr/bin/env bash -c 'node_modules/.bin/tape tests/test-impex-migrate.js | node_modules/.bin/tap-spec'"
   },
   "repository": {
     "type": "git",
