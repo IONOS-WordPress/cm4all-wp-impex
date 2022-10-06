@@ -1,16 +1,43 @@
-import { readFile, stat, access, mkdir, readdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { readFile, stat, mkdir, readdir, cp } from 'node:fs/promises';
+import { join, resolve, dirname, basename } from 'node:path';
+import ImpexSliceFactory from './impex-slice-factory.js';
 
-async function* __getSlices(dir) {
+export const MIGRATE_DEFAULT_OPTIONS = {
+  max_slices_per_chunk : 10,
+};
+
+async function* getSlices(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   entries.sort((l,r)=>l.name.localeCompare(r.name));
   for (const entry of entries) {
     const res = resolve(dir, entry.name);
     if (entry.isDirectory() && /^chunk-\d{4}$/.test(entry.name)) {
-      yield* __getSlices(res);
+      yield* getSlices(res);
     } else if (/^slice-\d{4}\.json$/.test(entry.name)) {
       yield res;
     }
+  }
+}
+
+async function processSlice(sliceCallback, slicePath, pathGenerator, targetPath, options) {
+  // we should handle the slice if callback returns falsy 
+  if(!await sliceCallback(slicePath)) {
+    // fuzzy testing for slices transporting a binary subsidiary file like attachments
+    const sliceFilenameBase = basename(slicePath, '.json');
+    let entries = await readdir(dirname(slicePath), { withFileTypes: true });
+    entries = entries
+      .filter(entry=>entry.name.startsWith(sliceFilenameBase));
+    
+    const sourceSliceDir = dirname(slicePath);
+    const targetSlicePath = join(targetPath, pathGenerator.next().value);
+    mkdir(basename(targetSlicePath), { recursive : true});
+    for (const entry of entries) {
+      await cp(
+        join(sourceSliceDir, entry.name), 
+        targetSlicePath + entry.name.substring(sliceFilenameBase.length),
+        { force : true, recursive : true },
+      );
+    }    
   }
 }
 
@@ -38,7 +65,27 @@ export default async function migrate(sourcePath, targetPath, sliceCallback, opt
 
   await mkdir(targetPath, { recursive : true });
 
-  for await (const slicePath of __getSlices(sourcePath)) {
-    sliceCallback(slicePath);
+  const slices = getSlices(sourcePath);
+
+  const { value : firstSlicePath, done : empty} = await slices.next();
+  if(empty) {
+    return 
   }
+
+  // merge default options into options 
+  options = { ...MIGRATE_DEFAULT_OPTIONS, ...options};
+
+  const pathGenerator = ImpexSliceFactory.PathGenerator(options.max_slices_per_chunk, '');
+
+  // curry processSlice arguments 
+  const _processSlice = async (slicePath) => await processSlice(sliceCallback, slicePath, pathGenerator, targetPath, options);
+
+  await options.onStart?.();
+  await _processSlice(firstSlicePath);
+
+  for await (const slicePath of slices) {
+    await _processSlice(slicePath);
+  }
+
+  await options.onFinish?.();
 }

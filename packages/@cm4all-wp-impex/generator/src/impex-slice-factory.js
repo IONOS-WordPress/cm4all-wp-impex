@@ -80,12 +80,12 @@ export default class ImpexSliceFactory {
    *
    * @yields {string}
    */
-  static *PathGenerator(max_slices_per_chunk = 10) {
+  static *PathGenerator(max_slices_per_chunk = 10, extension=".json") {
     for (let chunk = 1; ; chunk++) {
-      for (let slice = 1; slice <= max_slices_per_chunk; slice++) {
+      for (let slice = 0; slice <= max_slices_per_chunk; slice++) {
         yield path.join(
           "chunk-" + chunk.toString().padStart(4, "0"),
-          "slice-" + slice.toString().padStart(4, "0") + ".json"
+          "slice-" + slice.toString().padStart(4, "0") + extension
         );
       }
     }

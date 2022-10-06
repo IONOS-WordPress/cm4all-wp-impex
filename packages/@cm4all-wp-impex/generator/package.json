@@ -37,12 +37,13 @@
     "@wordpress/blocks": "^11.4.0",
     "global-jsdom": "^8.4.0",
     "jsdom": "^19.0.0",
-    "polyfill-library": "^3.111.0",
-    "lodash.clonedeepwith": "^4.5.0"
+    "lodash.clonedeepwith": "^4.5.0",
+    "polyfill-library": "^3.111.0"
   },
   "devDependencies": {
     "tap-spec": "^5.0.0",
-    "tape": "^5.5.2"
+    "tape": "^5.5.2",
+    "zx": "^7.1.0"
   },
   "publishConfig": {
     "access": "public"

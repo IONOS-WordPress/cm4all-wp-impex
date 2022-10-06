@@ -2,6 +2,7 @@ import test from "./tape-configuration.js";
 import migrate from "../src/impex-migrate.js";
 import { rm } from 'node:fs/promises';
 import { basename } from 'node:path';
+import 'zx/globals'
 
 const __TMP_DIR = './tests/tmp';
 const __SNAPSHOT_HECHT = './tests/fixtures/impex-snapshots/hecht';
@@ -42,6 +43,13 @@ test("migrate() : test noop migration", async (t) => {
     slicePaths.push(basename(slicePath));
   });
   t.deepEqual(slicePaths, new Array(slicePaths.length).fill('').map((_,index)=>`slice-${('' + index).padStart(4, '0')}.json`));
+
+  try {
+    await $`diff -r ${__SNAPSHOT_HECHT} ${__TMP_DIR}/noop-migration`;
+    t.pass('migrated impex export directory is identical');
+  } catch(ex) {
+    t.fail(`migrated impex export directory content is not identical : "diff -r ${__SNAPSHOT_HECHT} ${__TMP_DIR}/noop-migration" (exitCode=${ex.exitCode},stderr="${ex.stderr}",stdout="${ex.stdout}")`);
+  }
 
   t.end();
 });
