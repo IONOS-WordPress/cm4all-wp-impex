@@ -30,7 +30,7 @@ async function processSlice(sliceCallback, slicePath, pathGenerator, targetPath,
     
     const sourceSliceDir = dirname(slicePath);
     const targetSlicePath = join(targetPath, pathGenerator.next().value);
-    mkdir(basename(targetSlicePath), { recursive : true});
+    mkdir(dirname(targetSlicePath), { recursive : true});
     for (const entry of entries) {
       await cp(
         join(sourceSliceDir, entry.name), 
