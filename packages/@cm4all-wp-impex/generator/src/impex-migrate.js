@@ -20,7 +20,7 @@ async function* getSlices(dir) {
 }
 
 async function processSlice(sliceCallback, slicePath, pathGenerator, targetPath, options) {
-  // we should handle the slice if callback returns falsy 
+  // we should handle the slice by ourself if callback returns falsy
   if(!await sliceCallback(slicePath)) {
     // fuzzy testing for slices transporting a binary subsidiary file like attachments
     const sliceFilenameBase = basename(slicePath, '.json');
@@ -56,11 +56,11 @@ async function processSlice(sliceCallback, slicePath, pathGenerator, targetPath,
 export default async function migrate(sourcePath, targetPath, sliceCallback, options = {}) {
   const sourcePathStats = await stat(sourcePath);
   if(!sourcePathStats?.isDirectory()) {
-    throw "'sourcePath' is expected to be an existing directory";
+    throw "'sourcePath' expected to be an existing directory";
   } 
 
   if(typeof(sliceCallback)!=='function') {
-    throw "argument 'sliceCallback expected to be a function";
+    throw "argument 'sliceCallback' expected to be a function";
   }
 
   await mkdir(targetPath, { recursive : true });
