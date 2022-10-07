@@ -1,3 +1,20 @@
+## [1.5.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.3...1.5.0) (2022-10-07)
+
+
+### Features
+
+* **@cm4all-wp-impex/generator:** added migrate function to minimize boilerplate code when writing impex export transformations ([209ad2d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/209ad2d4995a6fee1a1419424544e00b8f3baeee))
+
+
+### Bug Fixes
+
+* **@cm4all-wp-impex/generator:** fixed chunk directory creation in `migrate` ([7f184bb](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/7f184bbb68d4d4a2e767f27e499d5d7202778ad0))
+* **@cm4all-wp-impex/generator:** fixed testcases ([3e58f1d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/3e58f1d8e5488fd4bd4f01f02f8a3471541a7459))
+* imported media metadata will be generated after consuming slices ([1373a6e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/1373a6eccda8d8d33c9b709bbfddadf761caf918))
+* relax post consume callback error handling ([c309d1b](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c309d1bcb34404c87ebc2821e444a9b75a6db729))
+* simple import button disabled style workaround added for current gutenberg ([6b5c685](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/6b5c685e98d23f8197f9e2ab11d6a4ceb7629f64))
+* use external mdbook image for documentation generation within ci ([639e824](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/639e824b6e3a536d0db8d7586eaa08630f744f52))
+
 ### [1.4.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.2...1.4.3) (2022-09-19)
 
 
