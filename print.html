@@ -1100,7 +1100,15 @@ The <code>export</code> operation will create a top-level directory in the speci
 <ul>
 <li><a href="cm4all-wp-impex-generator/index.html#details">Details</a></li>
 <li><a href="cm4all-wp-impex-generator/index.html#installation">Installation</a></li>
-<li><a href="cm4all-wp-impex-generator/index.html#development">Development</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#development">Development</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#tests">tests</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#requirements">requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="cm4all-wp-impex-generator/index.html#usage">Usage</a>
 <ul>
 <li><a href="cm4all-wp-impex-generator/index.html#api">API</a>
@@ -1118,6 +1126,11 @@ The <code>export</code> operation will create a top-level directory in the speci
 </ul>
 </li>
 <li><a href="cm4all-wp-impex-generator/index.html#generate-filenames-for-the-json-slice-data-in-impex-export-format">Generate filenames for the JSON slice data in ImpEx Export format</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#migrate-existing-impex-export">Migrate existing ImpEx export</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#example-migrate-usage">Example <code>migrate</code> usage</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1167,11 +1180,14 @@ The <code>export</code> operation will create a top-level directory in the speci
 <p>run the tests : <code>npm run test</code></p>
 </li>
 </ul>
+<h2 id="tests"><a class="header" href="#tests">tests</a></h2>
+<h3 id="requirements"><a class="header" href="#requirements">requirements</a></h3>
+<p>tests require the <code>diff</code> command to be available.</p>
 <h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> exposes an API for generating WordPress content.</p>
 <h2 id="api-1"><a class="header" href="#api-1">API</a></h2>
 <p>To use the API just import the exposed API into your code.</p>
-<pre><code class="language-js">import { ImpexTransformer, traverseBlocks, ImpexSliceFactory } from `@cm4all-wp-impex/generator`;
+<pre><code class="language-js">import { ImpexTransformer, traverseBlocks, ImpexSliceFactory, migrate } from `@cm4all-wp-impex/generator`;
 </code></pre>
 <h3 id="transforming-data-into-wordpress-content"><a class="header" href="#transforming-data-into-wordpress-content">Transforming data into WordPress content</a></h3>
 <p>Data transformation into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>
@@ -1321,6 +1337,105 @@ console.log(gen.next().value); // =&gt; &quot;chunk-0003/slice-0002.json&quot;);
 
 </code></pre>
 <p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-30-slice-factory-pathgenerator.js">tests</a> and <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">static website transformation example</a> for real world usage.</p>
+<h3 id="migrate-existing-impex-export"><a class="header" href="#migrate-existing-impex-export">Migrate existing ImpEx export</a></h3>
+<p>The <code>migrate</code> export provides you the option to transform existing ImpEx export data with minimal boilerplate code.</p>
+<blockquote>
+<p>Example use case : Suppose you want to transform your WordPress pages created using a Pagebuilder like <a href="https://elementor.com/">Elementor</a> into 
+true Gutenberg pages ...</p>
+</blockquote>
+<ul>
+<li>
+<p>Import the migrate function from the package using the following snippet: </p>
+<pre><code class="language-js">import { migrate } from &quot;@cm4all-wp-impex/generator&quot;;
+</code></pre>
+</li>
+<li>
+<p>Synopsis : <code>async migrate(sourcePath, targetPath, sliceCallback, options = {})</code></p>
+<p>The function traverses all ImpEx chunk sub directories and delegates the found slice files to the given callback argument.</p>
+<p>Slice files will be delegated to the callback ordered by sub chunk directory name and slice file name.</p>
+<p>Arguments:</p>
+<ul>
+<li>
+<p><code>sourcePath</code> : string </p>
+<p>path to an ImpEx export directory containing the exported data to transform</p>
+</li>
+<li>
+<p><code>targetPath</code> : string</p>
+<p>Directory to write the transformed ImpEx export to. Will be created if it does not exist.</p>
+</li>
+<li>
+<p><code>sliceCallback</code> : function</p>
+<p>A callback function called for every ImpEx slice file.</p>
+<p>The provided callback can handle (transform its content into one or more target slice files or just suppress it) the slice file by itself and return a <em>truthy</em> value. </p>
+<p>Otherwise the <code>migrate</code> functions default mechanism will taken into account and the slice will be copied to the target directory including subsidiary file(s) in case of a attachment slice.</p>
+<p>A <code>async</code> callback as argument is also supported.</p>
+<p>Arguments:</p>
+<ul>
+<li>
+<p><code>slicePath</code> : string </p>
+<p>The absolute path to the the current slice file. It's up to the callback to load/parse/process the slice JSON file.</p>
+</li>
+<li>
+<p><code>pathGenerator</code> : <code>SliceFactory.PathGenerator</code></p>
+<p>An preconfigured instance of <code>SliceFactory.PathGenerator</code> provided by this package. Using the <code>pathGenerator</code> allows you to generate valid ImpEx target slice file paths. </p>
+</li>
+<li>
+<p><code>targetPath</code> : string</p>
+<p>The path of the resulting ImpEx export directory.</p>
+</li>
+<li>
+<p><code>options</code> : object</p>
+<p>The options object provided to the <code>migrate</code> function.</p>
+</li>
+</ul>
+<p>Return: </p>
+<ul>
+<li>
+<p><em>truthy</em> <code>migrate</code> assumes the slice was already consumed/processed by the callback </p>
+</li>
+<li>
+<p><em>falsy</em> the <code>migrate</code> alorithm will copy the slice (and associated files in case of a attachment slice) to the target directory</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>options</code> : object</p>
+<p>An optional argument to customize the <code>migrate</code> function behaviour. </p>
+<p>Keys : </p>
+<ul>
+<li>
+<p><code>onStart</code> : function</p>
+<p>Will be called right <strong>before</strong> <code>migrate</code> will call the <code>sliceCallback</code> the first time. </p>
+<p>If the ImpEx export is empty (=&gt; no slice files in the export directory) the <code>onStart</code> callback will never be called.</p>
+<p>A <code>async</code> function callback is supported.</p>
+</li>
+<li>
+<p><code>onFinish</code> : function</p>
+<p>Will be called <strong>after</strong> <code>migrate</code> has called the <code>sliceCallback</code> the last time. </p>
+<p>If the ImpEx export is empty (=&gt; no slice files in the export directory) the <code>onFinish</code> callback will never be called.</p>
+<p>A <code>async</code> function callback is supported.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="example-migrate-usage"><a class="header" href="#example-migrate-usage">Example <code>migrate</code> usage</a></h4>
+<ul>
+<li>strip out any content of an ImpEx export except attachment posts (Images/Videos) using <code>migrate</code>.</li>
+</ul>
+<pre><code class="language-js">await migrate(
+  './my-impex-export', 
+  './my-migrated-impex-export', 
+  async (slicePath) =&gt; {
+    const slice = JSON.parse(readFile(slicePath));
+
+    // return truthy for all slices except attachments
+    return slice.tag!=='attachment';
+  }
+);
+</code></pre>
+<p>Checkout the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-migrate.js">package test cases</a> for further usage examples.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="static-website-conversion-tutorial"><a class="header" href="#static-website-conversion-tutorial">Static website conversion tutorial</a></h1>
 <p>This chapter features the conversion of a static HTML website to a WordPress site using <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> and <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress Plugin</a>.</p>
 <p>The sources can be found at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">ImpEx WordPress plugin GitHub repository</a>.</p>
