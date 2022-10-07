@@ -1,6 +1,6 @@
 /node_modules
 dist
-/tmp
+tmp
 /docs/**/*.mmd.svg
 /plugins/*
 !/plugins/cm4all-wp-impex

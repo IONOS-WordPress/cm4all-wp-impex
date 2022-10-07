@@ -41,6 +41,11 @@ Last but not least [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-
 
 - run the tests : `npm run test`
 
+## tests
+
+### requirements
+
+tests require the `diff` command to be available.
 # Usage
 
 [`@cm4all-wp-impex/generator`](https://www.npmjs.com/@cm4all-wp-impex/generator) exposes an API for generating WordPress content.
