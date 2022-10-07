@@ -59,8 +59,7 @@ DOCKER_PHPUNIT_IMAGE := wordpressdevelop/phpunit:9-php-8.0-fpm
 MDBOOK_SOURCES := $(wildcard docs/gh-pages/src/*.md)
 MDBOOK_TARGETS := $(subst /src/,/book/,$(MDBOOK_SOURCES))
 
-DOCKER_MDBOOK_IMAGE := cm4all-wp-impex/mdbook
-
+DOCKER_MDBOOK_IMAGE := lgersman/cm4all-wp-impex-mdbook
 DOCKER_IMPEXCLI_PHPUNIT_IMAGE := cm4all-wp-impex/impex-cli-phpunit
 
 IMPEX_PLUGIN_NAME := cm4all-wp-impex
@@ -355,12 +354,23 @@ dev-marp: node_modules
 
 .PHONY: $(DOCKER_MDBOOK_IMAGE)
 $(DOCKER_MDBOOK_IMAGE): 
+> docker pull $(DOCKER_MDBOOK_IMAGE):latest
+
+.PHONY: DOCKER_MDBOOK_IMAGE
+#HELP: * build and deploy the mdbook image locally\n  (cannot be done in ci because building takes too long for github action)
+build-and-deploy-mdbook-docker-image:
+> if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
+> 	>&2 echo "build/deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
+>   exit 1
+> fi 
 # test if local mdbook image already build
 ifneq ($(shell docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE) 2> /dev/null | jq '.[0].Config.Labels.impex_customized'),"true") 
 > $(info inject mdbook image customization into $(DOCKER_MDBOOK_IMAGE))
 > docker build docs/gh-pages -t $(DOCKER_MDBOOK_IMAGE)
 # mermaid install returns exitcode != 0 also for warnings which aborts the make process within github actions
 > $$(docker run --rm -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook-mermaid install) || true
+# > docker login --username [username] and docker access-token or real password must be initially before 
+> docker push $(DOCKER_MDBOOK_IMAGE)
 endif 
 
 .PHONY: dev-gh-pages
