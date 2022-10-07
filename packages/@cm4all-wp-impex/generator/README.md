@@ -55,7 +55,7 @@ tests require the `diff` command to be available.
 To use the API just import the exposed API into your code.
 
 ```js
-import { ImpexTransformer, traverseBlocks, ImpexSliceFactory } from `@cm4all-wp-impex/generator`;
+import { ImpexTransformer, traverseBlocks, ImpexSliceFactory, migrate } from `@cm4all-wp-impex/generator`;
 ```
 
 ### Transforming data into WordPress content
@@ -258,3 +258,110 @@ console.log(gen.next().value); // => "chunk-0003/slice-0002.json");
 ```
 
 See [tests](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-30-slice-factory-pathgenerator.js) and [static website transformation example](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js) for real world usage.
+
+### Migrate existing ImpEx export 
+
+The `migrate` export provides you the option to transform existing ImpEx export data with minimal boilerplate code.
+
+> Example use case : Suppose you want to transform your WordPress pages created using a Pagebuilder like [Elementor](https://elementor.com/) into 
+true Gutenberg pages ...
+
+- Import the migrate function from the package using the following snippet: 
+
+  ```js
+  import { migrate } from "@cm4all-wp-impex/generator";
+  ```
+
+- Synopsis : `async migrate(sourcePath, targetPath, sliceCallback, options = {})`
+
+  The function traverses all ImpEx chunk sub directories and delegates the found slice files to the given callback argument.
+
+  Slice files will be delegated to the callback ordered by sub chunk directory name and slice file name.
+
+  Arguments:
+
+  - `sourcePath` : string 
+
+    path to an ImpEx export directory containing the exported data to transform
+
+  - `targetPath` : string
+
+    Directory to write the transformed ImpEx export to. Will be created if it does not exist.
+
+  - `sliceCallback` : function
+
+    A callback function called for every ImpEx slice file.
+
+    The provided callback can handle (transform its content into one or more target slice files or just suppress it) the slice file by itself and return a _truthy_ value. 
+    
+    Otherwise the `migrate` functions default mechanism will taken into account and the slice will be copied to the target directory including subsidiary file(s) in case of a attachment slice.
+
+    A `async` callback as argument is also supported.
+
+    Arguments:
+
+    - `slicePath` : string 
+
+      The absolute path to the the current slice file. It's up to the callback to load/parse/process the slice JSON file.
+    
+    - `pathGenerator` : `SliceFactory.PathGenerator`
+
+      An preconfigured instance of `SliceFactory.PathGenerator` provided by this package. Using the `pathGenerator` allows you to generate valid ImpEx target slice file paths. 
+    
+    - `targetPath` : string
+
+      The path of the resulting ImpEx export directory.
+    
+    - `options` : object
+
+      The options object provided to the `migrate` function.
+  
+    Return: 
+
+    - _truthy_ `migrate` assumes the slice was already consumed/processed by the callback 
+
+    - _falsy_ the `migrate` alorithm will copy the slice (and associated files in case of a attachment slice) to the target directory
+
+  - `options` : object
+
+    An optional argument to customize the `migrate` function behaviour. 
+
+    Keys : 
+
+    - `onStart` : function
+
+      Will be called right __before__ `migrate` will call the `sliceCallback` the first time. 
+
+      If the ImpEx export is empty (=> no slice files in the export directory) the `onStart` callback will never be called.
+
+      A `async` function callback is supported.
+
+    - `onFinish` : function
+
+      Will be called __after__ `migrate` has called the `sliceCallback` the last time. 
+
+      If the ImpEx export is empty (=> no slice files in the export directory) the `onFinish` callback will never be called.
+
+      A `async` function callback is supported.
+
+#### Example `migrate` usage
+
+- strip out any content of an ImpEx export except attachment posts (Images/Videos) using `migrate`.
+
+```js
+await migrate(
+  './my-impex-export', 
+  './my-migrated-impex-export', 
+  async (slicePath) => {
+    const slice = JSON.parse(readFile(slicePath));
+
+    // return truthy for all slices except attachments
+    return slice.tag!=='attachment';
+  }
+);
+```
+
+Checkout the [package test cases](https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-migrate.js) for further usage examples.
+
+
+
