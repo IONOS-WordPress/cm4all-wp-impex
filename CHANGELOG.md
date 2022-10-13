@@ -1,3 +1,10 @@
+### [1.5.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.0...1.5.1) (2022-10-13)
+
+
+### Bug Fixes
+
+* **@cm4all-wp-impex/generator:** added missing migrate callback arguments ([9fc96ff](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/9fc96ffabaa26a4f8033d5d72b00664945a58402))
+
 ## [1.5.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.4.3...1.5.0) (2022-10-07)
 
 
