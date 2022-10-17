@@ -25,7 +25,7 @@ $profile->addTask('wordpress content', ContentExporter::PROVIDER_NAME,);
 $profile->addTask('wordpress attachments (uploads)', AttachmentsExporter::PROVIDER_NAME,);
 
 // export cm4all-wordpress related tables/options if active
-$task = $profile->addTask('cm4all-wordpress wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR => ['cm4all-*',]]);
+$task = $profile->addTask('cm4all-wordpress wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR => ['cm4all-*','*trinity-core']]);
 $task->disabled = !\is_plugin_active("cm4all-wordpress/plugin.php");
 
 // export complianz related tables/options if active
