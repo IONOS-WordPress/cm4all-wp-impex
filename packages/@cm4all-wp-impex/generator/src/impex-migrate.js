@@ -21,7 +21,7 @@ async function* getSlices(dir) {
 
 async function processSlice(sliceCallback, slicePath, pathGenerator, targetPath, options) {
   // we should handle the slice by ourself if callback returns falsy
-  if(!await sliceCallback(slicePath, slicePath, pathGenerator, targetPath, options)) {
+  if(!await sliceCallback(slicePath, pathGenerator, targetPath, options)) {
     // fuzzy testing for slices transporting a binary subsidiary file like attachments
     const sliceFilenameBase = basename(slicePath, '.json');
     let entries = await readdir(dirname(slicePath), { withFileTypes: true });
