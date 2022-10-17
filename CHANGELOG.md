@@ -1,3 +1,10 @@
+### [1.5.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.1...1.5.2) (2022-10-17)
+
+
+### Bug Fixes
+
+* **@cm4all-wp-impex/generator:** fixed double passing slicePath argument on migrate callback ([8e11db4](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/8e11db41fb61d18957249404245b5ab74f19c6b3))
+
 ### [1.5.1](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.0...1.5.1) (2022-10-13)
 
 
