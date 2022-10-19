@@ -235,8 +235,8 @@ docs/gh-pages/src/api/cm4all-wp-impex-oas.md: docs/gh-pages/src/api/cm4all-wp-im
 > cd docs/gh-pages/src/api
 > npx --yes openapi-to-md ./cm4all-wp-impex-oas.json >cm4all-wp-impex-oas.md
 
-docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE) 
-> docker run --rm -v $$(pwd):/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook build docs/gh-pages
+docs/gh-pages/book $(MDBOOK_TARGETS): $(MDBOOK_SOURCES) $(DOCKER_MDBOOK_IMAGE)
+> docker run --rm --mount type=bind,source=$$(pwd),target=/data -u $$(id -u):$$(id -g) -i $(DOCKER_MDBOOK_IMAGE) mdbook build docs/gh-pages
 # configure github to bypass jekyll processing on github pages
 > touch docs/gh-pages/book/.nojekyll
 > @touch -m docs/gh-pages/book
@@ -362,21 +362,43 @@ build-and-deploy-mdbook-docker-image:
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
 > 	>&2 echo "build/deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
 >   exit 1
-> fi 
+> fi
 # test if local mdbook image already build
 ifneq ($(shell docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE) 2> /dev/null | jq '.[0].Config.Labels.impex_customized'),"true") 
 > $(info inject mdbook image customization into $(DOCKER_MDBOOK_IMAGE))
 > docker build docs/gh-pages -t $(DOCKER_MDBOOK_IMAGE)
 # mermaid install returns exitcode != 0 also for warnings which aborts the make process within github actions
-> $$(docker run --rm -v $$(pwd)/docs/gh-pages:/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook-mermaid install) || true
+> $$(docker run --rm --mount type=$$(pwd)/docs/gh-pages,target=/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook-mermaid install) || true
 # > docker login --username [username] and docker access-token or real password must be initially before 
-> docker push $(DOCKER_MDBOOK_IMAGE)
+# > docker push $(DOCKER_MDBOOK_IMAGE)
 endif 
+
+.PHONY: mdbook-image
+mdbook-image: 
+> export DOCKER_SCAN_SUGGEST=false
+> export DOCKER_BUILDKIT=1
+> PACKAGE_VERSION=$$(jq -r '.version | values' package.json)
+> PACKAGE_AUTHOR="$$(jq -r '.author.name | values' package.json) <$$(jq -r '.author.email | values' package.json)>"
+> docker build ./docs/gh-pages \
+> 	-t $(DOCKER_MDBOOK_IMAGE):latest \
+> 	-t $(DOCKER_MDBOOK_IMAGE):$$PACKAGE_VERSION \
+>		--label "maintainer=$$PACKAGE_AUTHOR" \
+> 	--label "org.opencontainers.image.title=$(DOCKER_MDBOOK_IMAGE)" \
+> 	--label "org.opencontainers.image.description=$$(jq -r '.description | values' package.json)" \
+> 	--label "org.opencontainers.image.authors=$$PACKAGE_AUTHOR" \
+> 	--label "org.opencontainers.image.url=$$(jq -r '.homepage | values' package.json)" \
+> 	--label "org.opencontainers.image.vendor=https://cm4all.com" \
+> 	--label "org.opencontainers.image.licenses=$$(jq -r '.license | values' package.json)"
+# output generated image labels
+# > docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest 2> /dev/null | jq '.[0].Config.Labels'
+> docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest | jq '.[0].Config.Labels'
+# output some image statistics
+> docker image ls $(DOCKER_MDBOOK_IMAGE):$$PACKAGE_VERSION
 
 .PHONY: dev-gh-pages
 #HELP: * watch/rebuild gh-pages on change
 dev-gh-pages: $(DOCKER_MDBOOK_IMAGE)
-> docker run --rm -p 3000:3000 -p 3001:3001 -v $$(pwd):/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve docs/gh-pages -p 3000 -n 0.0.0.0
+> docker run --rm -p 3000:3000 -p 3001:3001 --mount type=$$(pwd),target=/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve docs/gh-pages -p 3000 -n 0.0.0.0
 
 .PHONY: dev-js
 #HELP: * rebuild js/css sources on change

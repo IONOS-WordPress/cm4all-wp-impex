@@ -7,7 +7,10 @@
     "check-updates": "npx taze"
   },
   "private": true,
-  "author": "lars.gersmann@cm4all.com",
+  "author": {
+    "email": "lars.gersmann@cm4all.com",
+    "name": "lars gersmann"
+  },
   "devDependencies": {
     "@marp-team/marp-cli": "^1.5.2",
     "@mermaid-js/mermaid-cli": "^9.1.6",
