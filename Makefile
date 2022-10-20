@@ -226,7 +226,12 @@ package-lock.json: package.json
 
 # must be invoked manually to generate oas rest api json
 # caveat: cannot be invoked in github action context
+#HELP: generate oas rest api json
 docs/gh-pages/src/api/cm4all-wp-impex-oas.json: $(WP_ENV_HOME)
+> if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
+> 	>&2 echo "generating oas rest api files can only be done locally"
+>   exit 1
+> fi
 > cd docs/gh-pages/src/api
 > curl -s http://localhost:8888/rest-api/schema | jq '.info.title = "cm4all-wp-impex REST API" | del(.info.description) | .info.version="v1" | del(.info.contact) | del(.host) | del(.schemes)' > cm4all-wp-impex-oas.json
 
