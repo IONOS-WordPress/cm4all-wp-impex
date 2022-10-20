@@ -224,7 +224,6 @@ node_modules: package-lock.json
 package-lock.json: package.json
 > npm install --no-fund --package-lock-only
 
-# must be invoked manually to generate oas rest api json
 # caveat: cannot be invoked in github action context
 #HELP: generate oas rest api json
 docs/gh-pages/src/api/cm4all-wp-impex-oas.json: $(WP_ENV_HOME)
@@ -361,25 +360,13 @@ dev-marp: node_modules
 $(DOCKER_MDBOOK_IMAGE): 
 > docker pull $(DOCKER_MDBOOK_IMAGE):latest
 
-.PHONY: DOCKER_MDBOOK_IMAGE
-#HELP: * build and deploy the mdbook image locally\n  (cannot be done in ci because building takes too long for github action)
-build-and-deploy-mdbook-docker-image:
+.PHONY: mdbook-image
+
+mdbook-image: 
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
-> 	>&2 echo "build/deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
+> 	>&2 echo "build docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
 >   exit 1
 > fi
-# test if local mdbook image already build
-ifneq ($(shell docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE) 2> /dev/null | jq '.[0].Config.Labels.impex_customized'),"true") 
-> $(info inject mdbook image customization into $(DOCKER_MDBOOK_IMAGE))
-> docker build docs/gh-pages -t $(DOCKER_MDBOOK_IMAGE)
-# mermaid install returns exitcode != 0 also for warnings which aborts the make process within github actions
-> $$(docker run --rm --mount type=$$(pwd)/docs/gh-pages,target=/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook-mermaid install) || true
-# > docker login --username [username] and docker access-token or real password must be initially before 
-# > docker push $(DOCKER_MDBOOK_IMAGE)
-endif 
-
-.PHONY: mdbook-image
-mdbook-image: 
 > export DOCKER_SCAN_SUGGEST=false
 > export DOCKER_BUILDKIT=1
 > PACKAGE_VERSION=$$(jq -r '.version | values' package.json)
@@ -389,16 +376,55 @@ mdbook-image:
 > 	-t $(DOCKER_MDBOOK_IMAGE):$$PACKAGE_VERSION \
 >		--label "maintainer=$$PACKAGE_AUTHOR" \
 > 	--label "org.opencontainers.image.title=$(DOCKER_MDBOOK_IMAGE)" \
-> 	--label "org.opencontainers.image.description=$$(jq -r '.description | values' package.json)" \
+> 	--label "org.opencontainers.image.description=customized image used to generate documentaton using mdbook" \
 > 	--label "org.opencontainers.image.authors=$$PACKAGE_AUTHOR" \
-> 	--label "org.opencontainers.image.url=$$(jq -r '.homepage | values' package.json)" \
+> 	--label "org.opencontainers.image.url=https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages" \
 > 	--label "org.opencontainers.image.vendor=https://cm4all.com" \
-> 	--label "org.opencontainers.image.licenses=$$(jq -r '.license | values' package.json)"
+> 	--label "org.opencontainers.image.licenses=MPL2"
 # output generated image labels
 # > docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest 2> /dev/null | jq '.[0].Config.Labels'
-> docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest | jq '.[0].Config.Labels'
+> docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest | jq '.[0].Config.Labels | values'
 # output some image statistics
 > docker image ls $(DOCKER_MDBOOK_IMAGE):$$PACKAGE_VERSION
+
+.PHONY: mdbook-image-push
+#HELP: * push mdbook docker image to docker hub\n(docker login using token or password required before)
+mdbook-image-push : mdbook-image 
+> if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
+> 	>&2 echo "deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
+>   exit 1
+> fi
+# > docker login --username [username] and docker access-token or real password must be initially before push
+> docker push --all-tags $(DOCKER_MDBOOK_IMAGE)
+
+.PHONY: mdbook-image-deploy
+#HELP: * update README and description of mdbook docker image at docker hub
+mdbook-image-deploy: 
+# ensure make arguments exist
+> if [[ "$${DOCKER_USER:-}" == "" || "$${DOCKER_PASS:-}" == "" ]]; then
+> 	>&2 echo "Cannot update README and description of image '$(DOCKER_MDBOOK_IMAGE)' without make arguments DOCKER_USER and DOCKER_PASS"
+>   exit 1
+> fi
+# > cat ~/my_password.txt | docker login --username foo --password-stdin
+# > docker login --username='$(DOCKER_USER)' --password='$(DOCKER_PASS)' $${DOCKER_HOST:-}
+> LOGIN_PAYLOAD=$$(printf '{"username": "%s", "password": "%s" }' "$$DOCKER_USER" "$$DOCKER_PASS")
+# > echo "$$LOGIN_PAYLOAD"
+> TOKEN=$$(curl -s -H "Content-Type: application/json" -X POST -d "$$LOGIN_PAYLOAD" https://hub.docker.com/v2/users/login/ | jq --exit-status -r .token)
+# > echo "$$TOKEN"
+# > REPO_URL="https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
+# GET : > curl -v -H "Authorization: JWT $${TOKEN}" $${REPO_URL}
+> DESCRIPTION=$(docker image inspect --format='' lgersman/cm4all-wp-impex-mdbook:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
+> curl -v \
+> 	-H "Content-Type: application/json" \
+>		-H "Authorization: JWT $${TOKEN}" \
+> 	-X PATCH \
+>		--data '{"description":"foo bar"}' \
+> 	"https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
+# https://frontbackend.com/linux/how-to-post-a-json-data-using-curl
+# https://stackoverflow.com/a/48470227/1554103
+# >		--data-urlencode description="$$DESCRIPTION"' \
+# > 	--data-urlencode full_description@./docs/gh-pages/README.md \
+
 
 .PHONY: dev-gh-pages
 #HELP: * watch/rebuild gh-pages on change
@@ -635,7 +661,7 @@ dist/%.zip: dist/%
 #HELP: * prints this screen
 help: 
 > @printf "Available targets\n\n"
-> @awk '/^[a-zA-Z\-_0-9]+:/ { 
+> awk '/^[a-zA-Z\-_0-9]+:/ { 
 >   helpMessage = match(lastLine, /^#HELP: (.*)/); 
 >   if (helpMessage) { 
 >     helpCommand = substr($$1, 0, index($$1, ":")-1); 
