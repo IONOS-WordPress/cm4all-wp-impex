@@ -399,7 +399,7 @@ mdbook-image-push : mdbook-image
 
 .PHONY: mdbook-image-deploy
 #HELP: * update README and description of mdbook docker image at docker hub
-mdbook-image-deploy: 
+mdbook-image-deploy: mdbook-image-push
 # ensure make arguments exist
 > if [[ "$${DOCKER_USER:-}" == "" || "$${DOCKER_PASS:-}" == "" ]]; then
 > 	>&2 echo "Cannot update README and description of image '$(DOCKER_MDBOOK_IMAGE)' without make arguments DOCKER_USER and DOCKER_PASS"
@@ -408,28 +408,27 @@ mdbook-image-deploy:
 # > cat ~/my_password.txt | docker login --username foo --password-stdin
 # > docker login --username='$(DOCKER_USER)' --password='$(DOCKER_PASS)' $${DOCKER_HOST:-}
 > LOGIN_PAYLOAD=$$(printf '{"username": "%s", "password": "%s" }' "$$DOCKER_USER" "$$DOCKER_PASS")
-# > echo "$$LOGIN_PAYLOAD"
-> TOKEN=$$(curl -s -H "Content-Type: application/json" -X POST -d "$$LOGIN_PAYLOAD" https://hub.docker.com/v2/users/login/ | jq --exit-status -r .token)
-# > echo "$$TOKEN"
-# > REPO_URL="https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
-# GET : > curl -v -H "Authorization: JWT $${TOKEN}" $${REPO_URL}
-> DESCRIPTION=$(docker image inspect --format='' lgersman/cm4all-wp-impex-mdbook:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
-> curl -v \
+> TOKEN=$$(curl -s --show-error  -H "Content-Type: application/json" -X POST -d "$$LOGIN_PAYLOAD" https://hub.docker.com/v2/users/login/ | jq --exit-status -r .token)
+# GET : > curl -v -H "Authorization: JWT $${TOKEN}" "https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
+> DESCRIPTION=$$(docker image inspect --format='' lgersman/cm4all-wp-impex-mdbook:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
+# see https://frontbackend.com/linux/how-to-post-a-json-data-using-curl
+# see https://stackoverflow.com/a/48470227/1554103
+> jq -n \
+>   --arg description "$$DESCRIPTION" \
+>   --arg full_description "$$(<./docs/gh-pages/README.md)" \
+> 	'{description: $$description, full_description: $$full_description}' \
+>	| curl -s --show-error \
 > 	-H "Content-Type: application/json" \
 >		-H "Authorization: JWT $${TOKEN}" \
 > 	-X PATCH \
->		--data '{"description":"foo bar"}' \
-> 	"https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
-# https://frontbackend.com/linux/how-to-post-a-json-data-using-curl
-# https://stackoverflow.com/a/48470227/1554103
-# >		--data-urlencode description="$$DESCRIPTION"' \
-# > 	--data-urlencode full_description@./docs/gh-pages/README.md \
-
+>		--data-binary @- \
+> 	"https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/" \
+> | jq .
 
 .PHONY: dev-gh-pages
 #HELP: * watch/rebuild gh-pages on change
 dev-gh-pages: $(DOCKER_MDBOOK_IMAGE)
-> docker run --rm -p 3000:3000 -p 3001:3001 --mount type=$$(pwd),target=/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve docs/gh-pages -p 3000 -n 0.0.0.0
+> docker run --rm -p 3000:3000 -p 3001:3001 --mount type=bind,source=$$(pwd),target=/data -u $$(id -u):$$(id -g) -it $(DOCKER_MDBOOK_IMAGE) mdbook serve docs/gh-pages -p 3000 -n 0.0.0.0
 
 .PHONY: dev-js
 #HELP: * rebuild js/css sources on change

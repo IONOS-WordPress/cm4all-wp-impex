@@ -13,4 +13,7 @@ command = "mdbook-mermaid"
 [output]
 
 [output.html]
+git-repository-url = "https://github.com/IONOS-WordPress/cm4all-wp-impex/"
+edit-url-template = "https://github.com/IONOS-WordPress/cm4all-wp-impex/edit/develop/docs/gh-pages/{path}"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
+no-section-label = true
