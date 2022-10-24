@@ -361,7 +361,7 @@ $(DOCKER_MDBOOK_IMAGE):
 > docker pull $(DOCKER_MDBOOK_IMAGE):latest
 
 .PHONY: mdbook-image
-
+#HELP: * build mdbook docker image
 mdbook-image: 
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
 > 	>&2 echo "build docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
@@ -389,7 +389,7 @@ mdbook-image:
 
 .PHONY: mdbook-image-push
 #HELP: * push mdbook docker image to docker hub\n(docker login using token or password required before)
-mdbook-image-push : mdbook-image 
+mdbook-image-push: mdbook-image 
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
 > 	>&2 echo "deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
 >   exit 1
@@ -410,7 +410,7 @@ mdbook-image-deploy: mdbook-image-push
 > LOGIN_PAYLOAD=$$(printf '{"username": "%s", "password": "%s" }' "$$DOCKER_USER" "$$DOCKER_PASS")
 > TOKEN=$$(curl -s --show-error  -H "Content-Type: application/json" -X POST -d "$$LOGIN_PAYLOAD" https://hub.docker.com/v2/users/login/ | jq --exit-status -r .token)
 # GET : > curl -v -H "Authorization: JWT $${TOKEN}" "https://hub.docker.com/v2/repositories/$(DOCKER_MDBOOK_IMAGE)/"
-> DESCRIPTION=$$(docker image inspect --format='' lgersman/cm4all-wp-impex-mdbook:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
+> DESCRIPTION=$$(docker image inspect --format='' $(DOCKER_MDBOOK_IMAGE):latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
 # see https://frontbackend.com/linux/how-to-post-a-json-data-using-curl
 # see https://stackoverflow.com/a/48470227/1554103
 > jq -n \
