@@ -16,7 +16,7 @@ endif
 .RECIPEPREFIX = >
 
 # alwas use bash as shell (to get <<< and stuff working), otherwise sh would be used by default
-SHELL := bash
+SHELL != which bash
 # use bash strict mode o that make will fail if a bash statement fails
 .SHELLFLAGS := -eu -o pipefail -c
 # disable default rules enabled by default (build yacc, cc and stuff)
@@ -36,7 +36,7 @@ ifeq (,$(wildcard $(_NVMRC)))
 endif
 
 _NVMRC_NODE_VERSION := $(file < $(_NVMRC))
-CURRENT_NODE_VERSION := $(shell node --version 2>/dev/null || echo 'not installed')
+CURRENT_NODE_VERSION != node --version 2>/dev/null || echo 'not installed'
 # if current node version does not matches nvmrc noted version
 ifneq ($(_NVMRC_NODE_VERSION), $(CURRENT_NODE_VERSION)) 
   $(error expected node version "$(_NVMRC_NODE_VERSION)" not installed (detected version: "$(CURRENT_NODE_VERSION)". Consider calling "nvm use" :-))
@@ -74,7 +74,7 @@ DOWNGRADED_PLUGIN_DIR := dist/cm4all-wp-impex-php7.4.0
 SCRIPT_SOURCES := $(wildcard $(IMPEX_PLUGIN_DIR)/src/*.mjs)
 SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
 
-PHP_SOURCES := $(shell find $(IMPEX_PLUGIN_DIR)/ -not -path "*/vendor/*" -not -path "*/tests/*" -name "*.php")
+PHP_SOURCES != find $(IMPEX_PLUGIN_DIR)/ -not -path "*/vendor/*" -not -path "*/tests/*" -name "*.php"
 
 I18N_DIRECTORY := $(IMPEX_PLUGIN_DIR)/languages
 
