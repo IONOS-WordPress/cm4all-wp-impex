@@ -378,6 +378,7 @@ mdbook-image:
 > 	--label "org.opencontainers.image.title=$(DOCKER_MDBOOK_IMAGE)" \
 > 	--label "org.opencontainers.image.description=customized image used to generate documentaton using mdbook" \
 > 	--label "org.opencontainers.image.authors=$$PACKAGE_AUTHOR" \
+> 	--label "org.opencontainers.image.source=https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages" \
 > 	--label "org.opencontainers.image.url=https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages" \
 > 	--label "org.opencontainers.image.vendor=https://cm4all.com" \
 > 	--label "org.opencontainers.image.licenses=MPL2"
