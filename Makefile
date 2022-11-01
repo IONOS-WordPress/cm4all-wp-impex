@@ -62,6 +62,8 @@ MDBOOK_TARGETS := $(subst /src/,/book/,$(MDBOOK_SOURCES))
 DOCKER_MDBOOK_IMAGE := lgersman/cm4all-wp-impex-mdbook
 DOCKER_IMPEXCLI_PHPUNIT_IMAGE := cm4all-wp-impex/impex-cli-phpunit
 
+DOCKER_CMALL-WP-BUNDLE_IMAGE := lgersman/cm4all-wp-bundle:latest
+
 IMPEX_PLUGIN_NAME := cm4all-wp-impex
 IMPEX_PLUGIN_DIR := ./plugins/$(IMPEX_PLUGIN_NAME)
 
@@ -122,9 +124,31 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 # create variable at execution time : (see https://stackoverflow.com/questions/1909188/define-make-variable-at-rule-execution-time)
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
 # development version
-> esbuild-bundle.mjs --debug --global-name='$($@_GLOBAL_NAME)' $< $@
+> cat << EOF | docker run -i --rm --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $<
+> { 
+>	  "wordpress" : { 
+>      "mappings" : { 
+>        "@cm4all-impex/debug" : "wp.impex.debug", 
+>        "@cm4all-impex/store" : "wp.impex.store",
+>        "@cm4all-impex/filters" : "wp.impex.filters", 
+>        "React": "window.React" 
+>      }
+>   }
+> }
+> EOF
 # production version
-> esbuild-bundle.mjs --global-name='$($@_GLOBAL_NAME)' $< $(@:.js=.min.js)
+> cat << EOF | docker run -i --rm --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=production --outdir=plugins/cm4all-wp-impex/dist $<
+> { 
+>	  "wordpress" : { 
+>      "mappings" : { 
+>        "@cm4all-impex/debug" : "wp.impex.debug", 
+>        "@cm4all-impex/store" : "wp.impex.store",
+>        "@cm4all-impex/filters" : "wp.impex.filters", 
+>        "React": "window.React" 
+>      }
+>   }
+> }
+> EOF
 > touch -m $@ $(@:.js=.min.js)
 
 # not used right now
@@ -341,11 +365,6 @@ endif
 # for whatever reason we need to force php to load xdebug by commandline
 # (actually xdebug should be configured by `docker-php-ext-enable xdebug` in the Dockerfile but it is'nt ...)
 > wp-env --debug run phpunit 'php -dzend_extension=xdebug.so /var/www/html/wp-content/plugins/cm4all-wp-impex/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/cm4all-wp-impex/tests/phpunit/phpunit.xml $(ARGS)'
-
-.PHONY: test-esbuild
-#HELP: test run esbuild-bundler
-test-esbuild: node_modules
-> esbuild-bundle.mjs --debug --global-name='example.versions["1.0"]' tests/esbuild-bundle/screen.mjs tests/esbuild-bundle/dist/screen.js
 
 .PHONY: test
 #HELP: * run all tests
