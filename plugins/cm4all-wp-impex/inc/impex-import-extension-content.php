@@ -138,7 +138,11 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
 
     // delegate import 
     if ('nav_menu_item' == $post[ContentExporter::SLICE_DATA_POSTS_TYPE]) {
-      list($missing_menu_items, $processed_menu_items, $menu_item_orphans) = _process_menu_item($post, $processed_terms, $processed_posts, $missing_menu_items, $processed_menu_items, $menu_item_orphans);
+      $result = _process_menu_item($post, $processed_terms, $processed_posts, $missing_menu_items, $processed_menu_items, $menu_item_orphans);
+      if($result) {
+        list($missing_menu_items, $processed_menu_items, $menu_item_orphans) = $result;
+      }
+
       continue;
     }
 
@@ -463,13 +467,13 @@ function _process_menu_item($item, array $processed_terms, array $processed_post
   } elseif ('custom' != $_menu_item_type) {
     // associated object is missing or not imported yet, we'll retry later
     $missing_menu_items[] = $item;
-    return;
+    return [$missing_menu_items, $processed_menu_items, $menu_item_orphans];
   }
 
   if (isset($processed_menu_items[(int)$_menu_item_menu_item_parent])) {
     $_menu_item_menu_item_parent = $processed_menu_items[(int)$_menu_item_menu_item_parent];
   } elseif ($_menu_item_menu_item_parent) {
-    $menu_item_orphans[(int)$item['post_id']] = (int) $_menu_item_menu_item_parent;
+    $menu_item_orphans[(int)$item['wp:post_id']] = (int) $_menu_item_menu_item_parent;
     $_menu_item_menu_item_parent = 0;
   }
 
