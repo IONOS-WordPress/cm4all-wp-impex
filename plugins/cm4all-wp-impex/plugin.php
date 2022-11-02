@@ -8,7 +8,7 @@
  * Tags: import, export, migration
  * Requires PHP: 8.0
  * Requires at least: 5.7
- * Tested up to: 6.0.2
+ * Tested up to: 6.1
  * Author: Lars Gersmann, CM4all
  * Author URI: https://cm4all.com
  * Domain Path: /languages
