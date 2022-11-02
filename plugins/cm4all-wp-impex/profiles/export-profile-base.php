@@ -5,6 +5,7 @@ namespace cm4all\wp\impex\example;
 use cm4all\wp\impex\AttachmentsExporter;
 use cm4all\wp\impex\ContentExporter;
 use cm4all\wp\impex\Impex;
+use cm4all\wp\impex\WpOptionsExporter;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -18,3 +19,12 @@ $profile->addTask('wordpress content', ContentExporter::PROVIDER_NAME, []);
 
 // export uploads
 $profile->addTask('wordpress attachments (uploads)', AttachmentsExporter::PROVIDER_NAME, []);
+
+// export most common used wp options
+$profile->addTask(
+  'common wp_options', 
+  WpOptionsExporter::PROVIDER_NAME, 
+  [WpOptionsExporter::OPTION_SELECTOR => [
+    'page_on_front', // wordpress homepage
+  ]]
+);

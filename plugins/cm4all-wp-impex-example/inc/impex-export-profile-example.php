@@ -24,6 +24,15 @@ $profile->addTask('wordpress content', ContentExporter::PROVIDER_NAME,);
 // export uploads
 $profile->addTask('wordpress attachments (uploads)', AttachmentsExporter::PROVIDER_NAME,);
 
+// export most common used wp options
+$profile->addTask(
+  'common wp_options', 
+  WpOptionsExporter::PROVIDER_NAME, 
+  [WpOptionsExporter::OPTION_SELECTOR => [
+    'page_on_front', // wordpress homepage
+  ]]
+);
+
 // export cm4all-wordpress related tables/options if active
 $task = $profile->addTask('cm4all-wordpress wp_options', WpOptionsExporter::PROVIDER_NAME, [WpOptionsExporter::OPTION_SELECTOR => ['cm4all-*','*trinity-core']]);
 $task->disabled = !\is_plugin_active("cm4all-wordpress/plugin.php");
