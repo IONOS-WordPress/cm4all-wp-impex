@@ -368,7 +368,7 @@ endif
 
 .PHONY: test
 #HELP: * run all tests
-test: test-esbuild test-phpunit test-impex-cli test-cm4all-wp-impex-generator
+test: test-phpunit test-impex-cli test-cm4all-wp-impex-generator
   
 .PHONY: dev-marp
 #HELP: * watch/rebuild marp slides on change
