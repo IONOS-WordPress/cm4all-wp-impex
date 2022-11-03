@@ -1,3 +1,17 @@
+## [1.5.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.2...1.5.3) (2022-11-03)
+
+
+### Bug Fixes
+
+* disabled example filter hiding impex import profiles ([6356f97](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/6356f97b909a525abd0741b6e4a736614e30cd40))
+* GitHub action ([cf49192](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/cf4919240738d2126b0a8a326b364ebf6a3b8a42))
+* GitHub permission issue ([2e6e688](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/2e6e68891356621f3ea362d5429c02ded74b46a9))
+* GitHub permission issue ([f6a83d1](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f6a83d166f8af743d0fa675e51423333623b2b3f))
+* **make:** fixed a few caveats in Makefile ([48330ae](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/48330aea3ad240032f6139b2c86906ab762d9ea1))
+* **mdbook image:** added dopcker label pointing to the github repo ([319e870](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/319e870d28dee09ea3d8f1cea3b201b2f3839b1d))
+* nav menu import doesnt chrash anymore ([d8e9959](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/d8e9959f91efff5e86da09f1466fbd7955a8536b))
+* patched Makefile to fit GitHub action needs ([174e666](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/174e66608d2dbe1ff91990164b44a0a7e2bac7b2))
+
 ### [1.5.2](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.1...1.5.2) (2022-10-17)
 
 
