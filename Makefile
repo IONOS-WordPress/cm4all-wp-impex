@@ -150,7 +150,10 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 >   }
 > }
 > EOF
-> touch -m $@ $(@:.js=.min.js)
+> if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
+>		chmod a+w -R plugins/cm4all-wp-impex/dist
+> fi
+> touch -m $@ $(@:.js=.min.js) 
 
 # not used right now
 # plugins/cm4all-wp-impex/dist/%.css : plugins/cm4all-wp-impex/src/%.scss
