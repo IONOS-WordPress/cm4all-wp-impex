@@ -123,8 +123,9 @@ tmp/composer.phar :
 plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 # create variable at execution time : (see https://stackoverflow.com/questions/1909188/define-make-variable-at-rule-execution-time)
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
+> GITHUB_ACTION_DOCKER_USER=$$( [ "$${GITHUB_ACTIONS:-false}" == "true" ] && echo '--user root' || echo '')
 # development version
-> cat << EOF | docker run -i --rm --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $<
+> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $<
 > { 
 >	  "wordpress" : { 
 >      "mappings" : { 
@@ -137,7 +138,7 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 > }
 > EOF
 # production version
-> cat << EOF | docker run -i --rm --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=production --outdir=plugins/cm4all-wp-impex/dist $<
+> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=production --outdir=plugins/cm4all-wp-impex/dist $<
 > { 
 >	  "wordpress" : { 
 >      "mappings" : { 
