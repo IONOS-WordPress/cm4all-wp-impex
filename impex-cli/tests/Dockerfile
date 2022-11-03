@@ -41,7 +41,7 @@ RUN apk --no-cache add \
   unzip 
 
 # composer expects command "php" available in path
-RUN ln -s /usr/bin/php8 /usr/bin/php
+# RUN ln -s /usr/bin/php8 /usr/bin/php
 
 # install composer
 RUN wget https://getcomposer.org/installer -O composer-setup.php && php composer-setup.php --install-dir=/usr/bin --filename=composer && rm composer-setup.php
