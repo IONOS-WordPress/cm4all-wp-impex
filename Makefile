@@ -538,7 +538,7 @@ $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot: $(WP_ENV_HOME) $(SCRIPT_TARGETS) $(P
 > chmod go+w $(I18N_DIRECTORY) 
 # > [ -f "$(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot" ] && chmod go+w $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot
 > wp-env run cli \
->   '$(SHELL) -c "cd ./wp-content/plugins/$(IMPEX_PLUGIN_NAME) && wp i18n make-pot --debug --exclude=tests/,*-min.js,vendor/ ./ languages/$(IMPEX_PLUGIN_NAME).pot && chmod go+w languages/$(IMPEX_PLUGIN_NAME).pot"'
+>   'sh -c "cd ./wp-content/plugins/$(IMPEX_PLUGIN_NAME) && wp i18n make-pot --debug --exclude=tests/,*-min.js,vendor/ ./ languages/$(IMPEX_PLUGIN_NAME).pot && chmod go+w languages/$(IMPEX_PLUGIN_NAME).pot"'
 
 $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME)-%.po : $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot
 # create variable at execution time (see http(s:)//stackoverflow.com/questions/1909188/define-make-variable-at-rule-execution-time))
