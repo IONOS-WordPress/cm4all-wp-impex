@@ -123,6 +123,8 @@ tmp/composer.phar :
 plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 # create variable at execution time : (see https://stackoverflow.com/questions/1909188/define-make-variable-at-rule-execution-time)
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
+# if make was called from GitHub action we need to run cm4all-wp-bundle using --user root to have write permissions to checked out repository
+# (the cm4all-wp-bundle image will by default use user "node" instead of "root" for security purposes)
 > GITHUB_ACTION_DOCKER_USER=$$( [ "$${GITHUB_ACTIONS:-false}" == "true" ] && echo '--user root' || echo '')
 # development version
 > cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $<
@@ -150,6 +152,9 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 >   }
 > }
 > EOF
+# if runned in GitHub action touch will not work because of wrong permissions 
+# as a result of the docker invocation using --user root before 
+# => which was needed to have write access to the checkout out repository 
 > if [ "$${GITHUB_ACTIONS:-false}" == "false" ]; then
 >		touch -m $@ $(@:.js=.min.js)
 > fi
