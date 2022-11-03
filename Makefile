@@ -151,7 +151,7 @@ plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
 > }
 > EOF
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
->		chmod a+w -R plugins/cm4all-wp-impex/dist
+>		sudo chmod a+w -R plugins/cm4all-wp-impex/dist
 > fi
 > touch -m $@ $(@:.js=.min.js) 
 
