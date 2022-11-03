@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="../blog/2022/index.html"><strong aria-hidden="true">1.</strong> 2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../basic-usage.html"><strong aria-hidden="true">3.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html" class="active"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html"><strong aria-hidden="true">7.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html"><strong aria-hidden="true">7.3.</strong> REST API</a></li></ol></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">8.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">9.</strong> FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="../blog/2022/index.html">2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="../features.html">Features</a></li><li class="chapter-item expanded "><a href="../basic-usage.html">Basic usage</a></li><li class="chapter-item expanded "><a href="../impex-cli.html">CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html">Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html" class="active">Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html">Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html">Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html">REST API</a></li></ol></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html">Explanation of terms</a></li><li class="chapter-item expanded "><a href="../faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -115,6 +115,12 @@
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/edit/develop/docs/gh-pages/src/cm4all-wp-impex-generator/index.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
                     </div>
@@ -319,7 +325,7 @@ ImpexTransformer.setup({
 <p>Using the <code>ImpexSliceFactory</code> instance we've created we can now generate <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">WordPress ImpEx Slice JSON structures</a> for WordPress content or media by calling function <code>createSlice(sliceType : string, callback(factory, sliceJson : any) : any)</code>.</p>
 <p>The <code>sliceType</code> argument is the type of the slice to be created.</p>
 <p>The <code>callback</code> function is called with the <code>ImpexSliceFactory</code> instance and the generated slice JSON structure as parameters .</p>
-<h4 id="encapsulate-wordpress-content-into-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmldata-filesimpex-jsona"><a class="header" href="#encapsulate-wordpress-content-into-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmldata-filesimpex-jsona">Encapsulate WordPress content into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
+<h4 id="encapsulate-wordpress-content-into-impex-json"><a class="header" href="#encapsulate-wordpress-content-into-impex-json">Encapsulate WordPress content into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
 <p>Creating the JSON for a WordPress <code>post</code> is dead simple :</p>
 <pre><code class="language-js">const slice = sliceFactory.createSlice(&quot;content-exporter&quot;, (factory, slice) =&gt; {
   slice.data.posts[0].title = &quot;Hello&quot;;
@@ -338,7 +344,7 @@ ImpexTransformer.setup({
   return slice;
 });
 </code></pre>
-<h4 id="encapsulate-wordpress-attachments-like-images-into-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmldata-filesimpex-jsona"><a class="header" href="#encapsulate-wordpress-attachments-like-images-into-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmldata-filesimpex-jsona">Encapsulate WordPress attachments like images into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
+<h4 id="encapsulate-wordpress-attachments-like-images-into-impex-json"><a class="header" href="#encapsulate-wordpress-attachments-like-images-into-impex-json">Encapsulate WordPress attachments like images into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
 <p>Creating the JSON for a WordPress <code>attachment</code> is even dead simple :</p>
 <pre><code class="language-js">// declares a attachment for image './foo.jpg'
 const slice = sliceFactory.createSlice(&quot;attachment&quot;, (factory, slice) =&gt; {
@@ -360,7 +366,7 @@ const slice = sliceFactory.createSlice(&quot;attachment&quot;, (factory, slice) 
   return slice;
 });
 </code></pre>
-<h3 id="generate-filenames-for-the-json-slice-data-in-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmlpreparationimpex-export-formata"><a class="header" href="#generate-filenames-for-the-json-slice-data-in-a-hrefhttpsionos-wordpressgithubiocm4all-wp-impexmigrating-contenthtmlpreparationimpex-export-formata">Generate filenames for the JSON slice data in <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx Export format</a></a></h3>
+<h3 id="generate-filenames-for-the-json-slice-data-in-impex-export-format"><a class="header" href="#generate-filenames-for-the-json-slice-data-in-impex-export-format">Generate filenames for the JSON slice data in <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx Export format</a></a></h3>
 <p>The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> imports and exports data into a directory structure according to the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">ImpEx Export format</a>.</p>
 <p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> supports creating the correct paths by providing a static generator function <code>SliceFactory.PathGenerator()</code>.</p>
 <p>This function returns a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator">Generator</a> function yielding a new relative path each time it's <code>next()</code> function is called.</p>

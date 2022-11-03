@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="../blog/2022/index.html"><strong aria-hidden="true">1.</strong> 2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../basic-usage.html"><strong aria-hidden="true">3.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../impex-cli.html"><strong aria-hidden="true">4.</strong> CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html"><strong aria-hidden="true">5.</strong> Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html"><strong aria-hidden="true">6.</strong> Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html"><strong aria-hidden="true">6.1.</strong> Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html"><strong aria-hidden="true">7.</strong> API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html"><strong aria-hidden="true">7.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html"><strong aria-hidden="true">7.2.</strong> Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html" class="active"><strong aria-hidden="true">7.3.</strong> REST API</a></li></ol></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html"><strong aria-hidden="true">8.</strong> Explanation of terms</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">9.</strong> FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="../blog/2022/index.html">2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="../features.html">Features</a></li><li class="chapter-item expanded "><a href="../basic-usage.html">Basic usage</a></li><li class="chapter-item expanded "><a href="../impex-cli.html">CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html">Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html">Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html">Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html">Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html" class="active">REST API</a></li></ol></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html">Explanation of terms</a></li><li class="chapter-item expanded "><a href="../faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -116,6 +116,12 @@
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/edit/develop/docs/gh-pages/src/api/cm4all-wp-impex-oas.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -147,7 +153,7 @@
 <p>Version v1</p>
 </blockquote>
 <h2 id="path-table"><a class="header" href="#path-table">Path Table</a></h2>
-<table><thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead><tbody>
 <tr><td>GET</td><td><a href="#getcm4all-wp-impexv1exportprofileschema">/cm4all-wp-impex/v1/export/profile/schema</a></td><td></td></tr>
 <tr><td>GET</td><td><a href="#getcm4all-wp-impexv1exportprofile">/cm4all-wp-impex/v1/export/profile</a></td><td></td></tr>
 <tr><td>GET</td><td><a href="#getcm4all-wp-impexv1exportprofilename">/cm4all-wp-impex/v1/export/profile/{name}</a></td><td></td></tr>
@@ -176,12 +182,14 @@
 <tr><td>PUT</td><td><a href="#putcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
 <tr><td>PATCH</td><td><a href="#patchcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="reference-table"><a class="header" href="#reference-table">Reference Table</a></h2>
-<table><thead><tr><th>Name</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Path</th><th>Description</th></tr></thead><tbody>
 <tr><td>postCm4allWpImpexV1Import</td><td><a href="#componentsrequestbodiespostcm4allwpimpexv1import">#/components/requestBodies/postCm4allWpImpexV1Import</a></td><td></td></tr>
 <tr><td>postCm4allWpImpexV1Export</td><td><a href="#componentsrequestbodiespostcm4allwpimpexv1export">#/components/requestBodies/postCm4allWpImpexV1Export</a></td><td></td></tr>
 <tr><td>basic</td><td><a href="#componentssecurityschemesbasic">#/components/securitySchemes/basic</a></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="path-details"><a class="header" href="#path-details">Path Details</a></h2>
 <hr />
 <h3 id="getcm4all-wp-impexv1exportprofileschema"><a class="header" href="#getcm4all-wp-impexv1exportprofileschema">[GET]/cm4all-wp-impex/v1/export/profile/schema</a></h3>
