@@ -57,7 +57,7 @@ jobs:
 
       - name: Merge main back into develop
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: everlytic/branch-merge@1.1.4
+        uses: everlytic/branch-merge@1.1.5
         with:
           # enable next line when using the action in a private github repo
           #          github_token: ${{ secrets.GH_TOKEN }}
