@@ -26,5 +26,7 @@ $profile->addTask(
   WpOptionsExporter::PROVIDER_NAME, 
   [WpOptionsExporter::OPTION_SELECTOR => [
     'page_on_front', // wordpress homepage
+    'show_on_front', // what should be shown ('page'| 'post' ...)
+    'page_for_posts' // posts homepage
   ]]
 );
