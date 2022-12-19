@@ -122,6 +122,9 @@ class __AttachmentImporter
     }
 
     $post['guid'] = $upload['url'];
+
+    $old_id = $post['ID'];
+
     unset($post['ID']);
 
     // if post_mime_type is not set the media will not appear correctly resized within media uploader
@@ -139,6 +142,9 @@ class __AttachmentImporter
 
     // as per wp-admin/includes/upload.php
     $post_id = \wp_insert_attachment($post, $upload['file']);
+
+    // register old id as postmeta for later remapping
+    \update_post_meta($post_id, ImpexImport::META_KEY_OLD_ID, $old_id, true);
 
     // // required if non admin user imports attachments
     // if (!function_exists('wp_crop_image')) {

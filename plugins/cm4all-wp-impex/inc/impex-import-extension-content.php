@@ -68,6 +68,12 @@ function __ImportContentProviderProviderCallback(array $slice, array $options, I
           processed_menu_items: $processed_menu_items,
           menu_item_orphans: $menu_item_orphans,
         );
+
+        foreach ($processed_posts as $old_id => $post_id) {
+          // register old id as postmeta for later remapping
+          \update_post_meta($post_id, ImpexImport::META_KEY_OLD_ID, $old_id, true);
+        }
+
         // $this->backfill_attachment_urls();
         // $this->remap_featured_images();
       } catch (ImpexImportRuntimeException $ex) {
@@ -614,6 +620,10 @@ function _import_terms(array $options, array $slice, ImpexImportTransformationCo
         $processed_terms[(int)$term[ContentExporter::SLICE_DATA_TERMS_ID]] = $term_id['term_id'];
       }
       _process_termmeta($term, $term_id['term_id']);
+
+      if($term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY] === 'nav_menu') {
+        \update_term_meta( $term_id['term_id'], ImpexImport::META_KEY_OLD_ID, (int)$term[ContentExporter::SLICE_DATA_TERMS_ID]);
+      }
     } else {
       $transformationContext->warn("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}", $term);
       // throw new ImpexImportRuntimeException("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}");

@@ -17,7 +17,19 @@ abstract class ImpexImport extends ImpexPart
 {
   const WP_OPTION_IMPORTS = 'impex_imports';
 
+  // meta key attached to all imported documents 
+  // with the original ID value of the imported post
+  // - will be deleted after final consume() call
+  // can be used to remap imported content referenced in other documents
+  // its even applied to imported nav_menu(s) in wp_terms
+  // (key is prefixed with underscore to hide it in metaboxes)
+  const META_KEY_OLD_ID = '_cm4all_meta_key_old_id';
+
+  // triggered when all chunks was successfully imported
   const EVENT_IMPORT_END = 'cm4all_wp_import_end';
+
+  // triggered when a chunk was successfully imported
+  const EVENT_IMPORT_CHUNK_END = 'cm4all_wp_import_chunk_end';
 
   const WP_FILTER_PROFILES = 'impex_import_filter_profiles';
 
@@ -110,6 +122,22 @@ abstract class ImpexImport extends ImpexPart
     }
   }
 
+  function _delete_old_key_metadata() {
+    // delete existing import metadata from last run
+    \delete_metadata( 'post', null, ImpexImport::META_KEY_OLD_ID, '', true );
+
+    $terms = \get_terms([
+      'hide_empty' => false, // also retrieve terms which are not used yet
+      // 'taxonomy'  => 'nav_menu',
+      'meta_query' => [
+        ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
+      ],
+    ]);
+    foreach ($terms as $term) {
+      \delete_term_meta($term->term_id, ImpexImport::META_KEY_OLD_ID);
+    }
+  }
+
   /**
    * @TODO: makes it sense to rename this function to aggregate or reduce ? 
    * 
@@ -122,20 +150,25 @@ abstract class ImpexImport extends ImpexPart
     $options = $transformationContext->options;
     $profile = $transformationContext->profile;
 
-    if(($options[self::OPTION_CLEANUP_CONTENTS] ?? false) == true) {
-      $menus = \wp_get_nav_menus(['fields' => 'ids' ]);
-      foreach ($menus as $menu) {
-        \wp_delete_nav_menu( $menu);
-      }
+    // do clean up before importing first slices
+    if($offset===0) {
+      if(($options[self::OPTION_CLEANUP_CONTENTS] ?? false) == true) {
+        $menus = \wp_get_nav_menus(['fields' => 'ids' ]);
+        foreach ($menus as $menu) {
+          \wp_delete_nav_menu( $menu);
+        }
 
-      $postsToDelete= \get_posts( ['post_type'=>['page', 'post', 'wp_block'],'numberposts'=>-1, 'fields' => 'ids'] );
-      foreach ($postsToDelete as $postToDelete) {
-        \wp_delete_post( $postToDelete, true );
-      }
+        $postsToDelete= \get_posts( ['post_type'=>['page', 'post', 'wp_block'],'numberposts'=>-1, 'fields' => 'ids'] );
+        foreach ($postsToDelete as $postToDelete) {
+          \wp_delete_post( $postToDelete, true );
+        }
 
-      $attachmentsToDelete= \get_posts( ['post_type'=>'attachment','numberposts'=>-1,'fields' => 'ids'] );
-      foreach ($attachmentsToDelete as $attachmentToDelete) {
-        \wp_delete_attachment($attachmentToDelete, true);
+        $attachmentsToDelete= \get_posts( ['post_type'=>'attachment','numberposts'=>-1,'fields' => 'ids'] );
+        foreach ($attachmentsToDelete as $attachmentToDelete) {
+          \wp_delete_attachment($attachmentToDelete, true);
+        }
+      } else {
+        _delete_old_key_metadata();
       }
     }
 
@@ -161,11 +194,43 @@ abstract class ImpexImport extends ImpexPart
       }
     }
 
-    $profile->events(self::EVENT_IMPORT_END)($transformationContext, [
+    $profile->events(self::EVENT_IMPORT_CHUNK_END)($transformationContext, [
       'unconsumed_slices' => &$unconsumed_slices,
       'limit' => $limit,
       'offset' => $offset,
     ]);
+
+    global $wpdb;
+    $sliceCount = $wpdb->get_var(
+      $wpdb->prepare("SELECT COUNT(*) from {$this->_db_chunks_tablename} WHERE snapshot_id=%s", $transformationContext->id)
+    );
+    // if we consume the last chunk of slices
+    if($sliceCount <= $offset + $limit) {
+      // process marked terms
+      $imported_terms = \get_terms([
+        'hide_empty' => false, // also retrieve terms which are not used yet
+        'taxonomy'  => 'nav_menu',
+        'meta_query' => [
+          ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
+        ],
+      ]);
+      $x = (int)array_shift(\get_term_meta($imported_terms[0]->term_id, ImpexImport::META_KEY_OLD_ID));
+
+      // process marked posts
+      $imported_posts = \get_posts([
+        'post_type' => \get_post_types(),
+        'meta_query' => [
+          ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
+        ],
+      ]);
+
+      $y = (int)$imported_posts[0]->_cm4all_meta_key_old_id;
+
+      $profile->events(self::EVENT_IMPORT_END)($transformationContext, [ /* todo imported terms and posts */ ]);
+      // @TODO: implement id backfill
+
+      _delete_old_key_metadata();
+    }
 
     return $unconsumed_slices;
   }
