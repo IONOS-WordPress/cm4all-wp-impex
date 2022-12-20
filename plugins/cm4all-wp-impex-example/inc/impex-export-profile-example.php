@@ -35,7 +35,8 @@ $profile->addTask(
 
     'blogname',       // aka website title
     'blogdescription', 
-    'site_logo'      
+    'site_logo',
+    'site_icon',
   ]]
 );
 

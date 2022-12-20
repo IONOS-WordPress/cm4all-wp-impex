@@ -122,7 +122,10 @@ abstract class ImpexImport extends ImpexPart
     }
   }
 
-  function _delete_old_key_metadata() {
+  /**
+   * clean up temporary import metadata 
+   */
+  function _delete_old_key_metadata() : void {
     // delete existing import metadata from last run
     \delete_metadata( 'post', null, ImpexImport::META_KEY_OLD_ID, '', true );
 
@@ -168,7 +171,7 @@ abstract class ImpexImport extends ImpexPart
           \wp_delete_attachment($attachmentToDelete, true);
         }
       } else {
-        _delete_old_key_metadata();
+        $this->_delete_old_key_metadata();
       }
     }
 
@@ -204,19 +207,18 @@ abstract class ImpexImport extends ImpexPart
     $sliceCount = $wpdb->get_var(
       $wpdb->prepare("SELECT COUNT(*) from {$this->_db_chunks_tablename} WHERE snapshot_id=%s", $transformationContext->id)
     );
-    // if we consume the last chunk of slices
+    // if we consumed the last chunk of slices
     if($sliceCount <= $offset + $limit) {
-      // process marked terms
+      // fetch imported terms
       $imported_terms = \get_terms([
         'hide_empty' => false, // also retrieve terms which are not used yet
-        'taxonomy'  => 'nav_menu',
+        // 'taxonomy'  => array_keys(get_taxonomies()), //'nav_menu',
         'meta_query' => [
           ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
         ],
       ]);
-      $x = (int)array_shift(\get_term_meta($imported_terms[0]->term_id, ImpexImport::META_KEY_OLD_ID));
 
-      // process marked posts
+      // fetch imported posts
       $imported_posts = \get_posts([
         'post_type' => \get_post_types(),
         'meta_query' => [
@@ -224,15 +226,58 @@ abstract class ImpexImport extends ImpexPart
         ],
       ]);
 
-      $y = (int)$imported_posts[0]->_cm4all_meta_key_old_id;
+      $imported = [ 
+        'terms' => &$imported_terms,
+        'posts' => &$imported_posts,
+      ];
 
-      $profile->events(self::EVENT_IMPORT_END)($transformationContext, [ /* todo imported terms and posts */ ]);
-      // @TODO: implement id backfill
+      $this->_backfill_ids($imported);
 
-      _delete_old_key_metadata();
+      $profile->events(self::EVENT_IMPORT_END)($transformationContext, $imported);
+
+      $this->_delete_old_key_metadata();
     }
 
     return $unconsumed_slices;
+  }
+
+  function _backfill_ids(array &$imported) : void {
+    // $first_taxonomy_old_id = (int)array_shift(\get_term_meta($imported_terms[0]->term_id, ImpexImport::META_KEY_OLD_ID));
+    // $first_taxonomy_id = (int)$imported_posts[0]->_cm4all_meta_key_old_id;
+
+    list('terms' => $terms, 'posts' => $posts) = $imported;
+
+    /*
+    @TODO:
+
+    wp_option site_icon	references the site logo by attachment id
+
+    wp_option site_logo	references the site logo by attachment id
+
+    select * from wp_options where option_name like 'theme_mod%'\G;
+    nav menu id must be adjusted in theme mods.
+
+    $locations = get_theme_mod( 'nav_menu_locations' );
+    https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
+
+    select * from wp_options where option_name like 'theme_mod%'\G;
+
+    https://digitalzoomstudio.net/2017/07/31/where-to-find-menus-in-wordpress-database/
+
+    $locations = \get_theme_mod( 'nav_menu_locations' );
+        $locations['primary-menu'] = 10;
+        \set_theme_mod('nav_menu_locations', $locations);
+
+    select * from wp_terms AS t LEFT JOIN wp_term_taxonomy AS tt  ON tt.term_id = t.term_id;
+
+    old ids als _impex_old_id wärend des imports speichern und danach wieder löschen
+    https://developer.wordpress.org/reference/functions/add_post_meta/
+    https://developer.wordpress.org/plugins/metadata/managing-post-metadata/#hidden-custom-fields
+
+    can also be accessed using a the WP_POst_Object magic __get getter 
+    <?php echo $post->some_meta_field; ?>
+    https://since1979.dev/wordpress-access-post-meta-fields-through-wp-post/
+    */
   }
 
   function update(string $snapshot_id, array $data): array|bool
