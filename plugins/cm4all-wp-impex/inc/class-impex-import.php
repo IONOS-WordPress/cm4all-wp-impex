@@ -250,6 +250,8 @@ abstract class ImpexImport extends ImpexPart
     /*
     @TODO:
 
+    use blog title, blog description and other reimported common wp_options
+
     wp_option site_icon	references the site logo by attachment id
 
     wp_option site_logo	references the site logo by attachment id
