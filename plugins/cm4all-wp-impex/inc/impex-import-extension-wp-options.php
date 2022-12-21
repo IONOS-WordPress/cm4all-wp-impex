@@ -26,6 +26,12 @@ function __WpOptionsImportProviderCallback(array $slice, array $options, ImpexIm
         \update_option($wpOptionName, $wpOptionValue);
       }
 
+      // remember updated option names 
+      $updatedOptions = \get_option(ImpexImport::KEY_TRANSIENT_IMPORT_METADATA, []);
+      $updatedOptions = array_merge($updatedOptions, array_keys($slice[Impex::SLICE_DATA]));
+      $updatedOptions = array_unique($updatedOptions);
+      \update_option(ImpexImport::KEY_TRANSIENT_IMPORT_METADATA, $updatedOptions);
+
       return true;
     }
   }

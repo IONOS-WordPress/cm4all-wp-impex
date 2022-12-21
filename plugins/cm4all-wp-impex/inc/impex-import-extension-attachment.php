@@ -144,7 +144,7 @@ class __AttachmentImporter
     $post_id = \wp_insert_attachment($post, $upload['file']);
 
     // register old id as postmeta for later remapping
-    \update_post_meta($post_id, ImpexImport::META_KEY_OLD_ID, $old_id, true);
+    \update_post_meta($post_id, ImpexImport::KEY_TRANSIENT_IMPORT_METADATA, $old_id, true);
 
     // // required if non admin user imports attachments
     // if (!function_exists('wp_crop_image')) {

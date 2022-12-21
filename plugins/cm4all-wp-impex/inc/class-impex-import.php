@@ -17,13 +17,13 @@ abstract class ImpexImport extends ImpexPart
 {
   const WP_OPTION_IMPORTS = 'impex_imports';
 
-  // meta key attached to all imported documents 
+  // meta key attached to all imported documents / terms 
   // with the original ID value of the imported post
   // - will be deleted after final consume() call
   // can be used to remap imported content referenced in other documents
   // its even applied to imported nav_menu(s) in wp_terms
   // (key is prefixed with underscore to hide it in metaboxes)
-  const META_KEY_OLD_ID = '_cm4all_meta_key_old_id';
+  const KEY_TRANSIENT_IMPORT_METADATA = '_cm4all_KEY_TRANSIENT_IMPORT_METADATA';
 
   // triggered when all chunks was successfully imported
   const EVENT_IMPORT_END = 'cm4all_wp_import_end';
@@ -125,20 +125,23 @@ abstract class ImpexImport extends ImpexPart
   /**
    * clean up temporary import metadata 
    */
-  function _delete_old_key_metadata() : void {
+  function _delete_transient_import_metadata() : void {
     // delete existing import metadata from last run
-    \delete_metadata( 'post', null, ImpexImport::META_KEY_OLD_ID, '', true );
+    \delete_metadata( 'post', null, self::KEY_TRANSIENT_IMPORT_METADATA, '', true );
 
-    $terms = \get_terms([
+    $term_ids = \get_terms([
+      'fields' => 'ids',
       'hide_empty' => false, // also retrieve terms which are not used yet
       // 'taxonomy'  => 'nav_menu',
       'meta_query' => [
-        ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
+        ['key' => self::KEY_TRANSIENT_IMPORT_METADATA, 'compare' => 'EXISTS', ],
       ],
     ]);
-    foreach ($terms as $term) {
-      \delete_term_meta($term->term_id, ImpexImport::META_KEY_OLD_ID);
+    foreach ($term_ids as $term_id) {
+      \delete_term_meta($term_id, self::KEY_TRANSIENT_IMPORT_METADATA);
     }
+
+    \delete_option(self::KEY_TRANSIENT_IMPORT_METADATA);
   }
 
   /**
@@ -161,7 +164,7 @@ abstract class ImpexImport extends ImpexPart
           \wp_delete_nav_menu( $menu);
         }
 
-        $postsToDelete= \get_posts( ['post_type'=>['page', 'post', 'wp_block'],'numberposts'=>-1, 'fields' => 'ids'] );
+        $postsToDelete= \get_posts( ['post_type'=>['page', 'post', 'wp_block', 'nav_menu_item', 'wp_template', 'wp_template_part', 'wp_global_styles', 'wp_navigation'],'numberposts'=>-1, 'fields' => 'ids'] );
         foreach ($postsToDelete as $postToDelete) {
           \wp_delete_post( $postToDelete, true );
         }
@@ -171,7 +174,7 @@ abstract class ImpexImport extends ImpexPart
           \wp_delete_attachment($attachmentToDelete, true);
         }
       } else {
-        $this->_delete_old_key_metadata();
+        $this->_delete_transient_import_metadata();
       }
     }
 
@@ -210,42 +213,88 @@ abstract class ImpexImport extends ImpexPart
     // if we consumed the last chunk of slices
     if($sliceCount <= $offset + $limit) {
       // fetch imported terms
-      $imported_terms = \get_terms([
+      $imported_term_ids = \get_terms([
+        'fields' => 'ids',
         'hide_empty' => false, // also retrieve terms which are not used yet
         // 'taxonomy'  => array_keys(get_taxonomies()), //'nav_menu',
         'meta_query' => [
-          ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
+          ['key' => self::KEY_TRANSIENT_IMPORT_METADATA, 'compare' => 'EXISTS', ],
         ],
       ]);
+      $imported_term_ids = array_reduce(
+        $imported_term_ids,
+        function($accu, $term_id) {
+          $accu[(int)array_shift(\get_term_meta($term_id, self::KEY_TRANSIENT_IMPORT_METADATA))] = $term_id;
+          return $accu;
+        }, 
+        [],
+      );
 
       // fetch imported posts
-      $imported_posts = \get_posts([
-        'post_type' => \get_post_types(),
-        'meta_query' => [
-          ['key' => ImpexImport::META_KEY_OLD_ID, 'compare' => 'EXISTS', ],
-        ],
-      ]);
+      $imported_post_ids =  array_reduce(
+        $wpdb->get_results(
+          $wpdb->prepare("SELECT {$wpdb->prefix}postmeta.meta_value, {$wpdb->prefix}posts.ID FROM {$wpdb->prefix}posts INNER JOIN {$wpdb->prefix}postmeta ON ( {$wpdb->prefix}posts.ID = {$wpdb->prefix}postmeta.post_id ) WHERE ( {$wpdb->prefix}postmeta.meta_key = '%s')", self::KEY_TRANSIENT_IMPORT_METADATA)
+        ),
+        function($accu, $row) {
+          $accu[(int)$row->meta_value] = (int)$row->ID;
+          return $accu;
+        }, 
+        [],
+        );
+      /*
+      array_reduce(
+        \get_posts([
+          'fields' => 'ids',
+          'numberposts'=>-1,
+          'post_type' => 'any',
+          'meta_query' => [
+            ['key' => self::KEY_TRANSIENT_IMPORT_METADATA, 'compare' => 'EXISTS', ],
+          ],
+        ]),
+        function($accu, $post_id) {
+          $accu[(int)\get_post_meta($post_id, self::KEY_TRANSIENT_IMPORT_METADATA, true)] = $post_id;
+          return $accu;
+        }, 
+        [],
+      );*/
 
       $imported = [ 
-        'terms' => &$imported_terms,
-        'posts' => &$imported_posts,
+        'terms'   => &$imported_term_ids,
+        'posts'   => &$imported_post_ids,
+        'options' => \get_option(self::KEY_TRANSIENT_IMPORT_METADATA, []),
       ];
 
       $this->_backfill_ids($imported);
 
       $profile->events(self::EVENT_IMPORT_END)($transformationContext, $imported);
 
-      $this->_delete_old_key_metadata();
+      $this->_delete_transient_import_metadata();
     }
 
     return $unconsumed_slices;
   }
 
   function _backfill_ids(array &$imported) : void {
-    // $first_taxonomy_old_id = (int)array_shift(\get_term_meta($imported_terms[0]->term_id, ImpexImport::META_KEY_OLD_ID));
-    // $first_taxonomy_id = (int)$imported_posts[0]->_cm4all_meta_key_old_id;
+    // $first_taxonomy_old_id = (int)array_shift(\get_term_meta($imported_terms[0]->term_id, self::KEY_TRANSIENT_IMPORT_METADATA));
+    // $first_taxonomy_id = (int)$imported_posts[0]->_cm4all_KEY_TRANSIENT_IMPORT_METADATA;
 
-    list('terms' => $terms, 'posts' => $posts) = $imported;
+    list('terms' => $terms, 'posts' => $posts, 'options' => $options) = $imported;
+
+    array_push($options, 'site_logo');
+
+    // check/fix site_logo
+    if(in_array('site_logo', $options)) {
+      $site_logo = \get_option('site_logo', 314);
+      if($site_logo!==0) {
+        $mapped_site_logo_post = \get_post($posts[$site_logo]);
+
+        if($mapped_site_logo_post!==null && $mapped_site_logo_post->post_type==='attachment') {
+          \update_option('site_logo', $mapped_site_logo_post->ID);
+        } else if (\get_post($posts[$site_logo])===null) {
+          \delete_option('site_logo');
+        }
+      } 
+    } 
 
     /*
     @TODO:

@@ -71,7 +71,7 @@ function __ImportContentProviderProviderCallback(array $slice, array $options, I
 
         foreach ($processed_posts as $old_id => $post_id) {
           // register old id as postmeta for later remapping
-          \update_post_meta($post_id, ImpexImport::META_KEY_OLD_ID, $old_id, true);
+          \update_post_meta($post_id, ImpexImport::KEY_TRANSIENT_IMPORT_METADATA, $old_id, true);
         }
 
         // $this->backfill_attachment_urls();
@@ -622,7 +622,7 @@ function _import_terms(array $options, array $slice, ImpexImportTransformationCo
       _process_termmeta($term, $term_id['term_id']);
 
       if($term[ContentExporter::SLICE_DATA_TERMS_TAXONOMY] === 'nav_menu') {
-        \update_term_meta( $term_id['term_id'], ImpexImport::META_KEY_OLD_ID, (int)$term[ContentExporter::SLICE_DATA_TERMS_ID]);
+        \update_term_meta( $term_id['term_id'], ImpexImport::KEY_TRANSIENT_IMPORT_METADATA, (int)$term[ContentExporter::SLICE_DATA_TERMS_ID]);
       }
     } else {
       $transformationContext->warn("Failed to create term(term_name==='{$term[ContentExporter::SLICE_DATA_TERMS_NAME]}') : {$term_id->get_error_message()}", $term);
