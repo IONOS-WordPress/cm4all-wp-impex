@@ -284,7 +284,7 @@ abstract class ImpexImport extends ImpexPart
 
     // check/fix site_logo
     if(in_array('site_logo', $options)) {
-      $site_logo = \get_option('site_logo', 314);
+      $site_logo = \get_option('site_logo', 0);
       if($site_logo!==0) {
         $mapped_site_logo_post = \get_post($posts[$site_logo]);
 
@@ -292,6 +292,20 @@ abstract class ImpexImport extends ImpexPart
           \update_option('site_logo', $mapped_site_logo_post->ID);
         } else if (\get_post($posts[$site_logo])===null) {
           \delete_option('site_logo');
+        }
+      } 
+    } 
+
+    // check/fix site_icon
+    if(in_array('site_icon', $options)) {
+      $site_icon = \get_option('site_icon', 0);
+      if($site_icon!==0) {
+        $mapped_site_icon_post = \get_post($posts[$site_icon]);
+
+        if($mapped_site_icon_post!==null && $mapped_site_icon_post->post_type==='attachment') {
+          \update_option('site_icon', $mapped_site_icon_post->ID);
+        } else if (\get_post($posts[$site_icon])===null) {
+          \delete_option('site_icon');
         }
       } 
     } 
