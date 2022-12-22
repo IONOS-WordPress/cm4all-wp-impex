@@ -280,68 +280,55 @@ abstract class ImpexImport extends ImpexPart
 
     list('terms' => $terms, 'posts' => $posts, 'options' => $options) = $imported;
 
-    array_push($options, 'site_logo');
+    // check/fix imported options referencing imported posts
+    $wp_options_referencing_posts = ['site_logo', 'site_icon', 'page_on_front', 'page_for_posts'];
+    foreach ($wp_options_referencing_posts as $wp_option) {
+      // remap wp option if imported
+      if(in_array($wp_option, $options)) {
+        $post_id = \get_option($wp_option, 0);
+        if($post_id!==0) { // if post_id points to a post
+          // get the new post id
+          $post = \get_post($posts[$post_id]);
 
-    // check/fix site_logo
-    if(in_array('site_logo', $options)) {
-      $site_logo = \get_option('site_logo', 0);
-      if($site_logo!==0) {
-        $mapped_site_logo_post = \get_post($posts[$site_logo]);
-
-        if($mapped_site_logo_post!==null && $mapped_site_logo_post->post_type==='attachment') {
-          \update_option('site_logo', $mapped_site_logo_post->ID);
-        } else if (\get_post($posts[$site_logo])===null) {
-          \delete_option('site_logo');
+          // ensure the new post exists
+          if($post!==null) {
+            // adjust site_logo value to new post id
+            \update_option($wp_option, $post->ID);
+          } else if (\get_post($posts[$post_id])===null) {
+            // otherwise reset wp_option 
+            \delete_option($wp_option);
+          }
         }
-      } 
-    } 
+      }       
+    }
 
-    // check/fix site_icon
-    if(in_array('site_icon', $options)) {
-      $site_icon = \get_option('site_icon', 0);
-      if($site_icon!==0) {
-        $mapped_site_icon_post = \get_post($posts[$site_icon]);
+    // check/fix menus of current theme
+    $nav_menu_locations = get_theme_mod('nav_menu_locations');
+    // https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
 
-        if($mapped_site_icon_post!==null && $mapped_site_icon_post->post_type==='attachment') {
-          \update_option('site_icon', $mapped_site_icon_post->ID);
-        } else if (\get_post($posts[$site_icon])===null) {
-          \delete_option('site_icon');
+    $nav_menus = \wp_get_nav_menus();
+    foreach ($nav_menu_locations as $nav_menu_name => $nav_menu_value) {
+      // if a term with same old id was imported
+      if(isset($terms[$nav_menu_value])) {
+        // find the nav_menu term with same name name and mapped id
+        foreach ($nav_menus as $nav_menu) {
+          if($nav_menu->name === $nav_menu_name && $nav_menu->term_id===$terms[$nav_menu_value]) {
+            $nav_menu_locations[$nav_menu_name] = $terms[$nav_menu_value];
+          }
         }
-      } 
-    } 
+      }
+    }
 
-    /*
-    @TODO:
+    set_theme_mod('nav_menu_locations', $nav_menu_locations);
+  
+    /* 
+      @TODO: adjust reusable block references like
 
-    use blog title, blog description and other reimported common wp_options
+      <!-- wp:block {"ref":1,"cm4allBlockId":"db3b99bc-6e4d-4109-86a2-a76ff2543d64"} /-->
 
-    wp_option site_icon	references the site logo by attachment id
-
-    wp_option site_logo	references the site logo by attachment id
-
-    select * from wp_options where option_name like 'theme_mod%'\G;
-    nav menu id must be adjusted in theme mods.
-
-    $locations = get_theme_mod( 'nav_menu_locations' );
-    https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
-
-    select * from wp_options where option_name like 'theme_mod%'\G;
-
-    https://digitalzoomstudio.net/2017/07/31/where-to-find-menus-in-wordpress-database/
-
-    $locations = \get_theme_mod( 'nav_menu_locations' );
-        $locations['primary-menu'] = 10;
-        \set_theme_mod('nav_menu_locations', $locations);
-
-    select * from wp_terms AS t LEFT JOIN wp_term_taxonomy AS tt  ON tt.term_id = t.term_id;
-
-    old ids als _impex_old_id wärend des imports speichern und danach wieder löschen
-    https://developer.wordpress.org/reference/functions/add_post_meta/
-    https://developer.wordpress.org/plugins/metadata/managing-post-metadata/#hidden-custom-fields
-
-    can also be accessed using a the WP_POst_Object magic __get getter 
-    <?php echo $post->some_meta_field; ?>
-    https://since1979.dev/wordpress-access-post-meta-fields-through-wp-post/
+      can also be accessed using a the WP_POst_Object magic __get getter 
+      <?php echo $post->some_meta_field; ?>
+      https://since1979.dev/wordpress-access-post-meta-fields-through-wp-post/
     */
   }
 
