@@ -329,6 +329,9 @@ abstract class ImpexImport extends ImpexPart
       can also be accessed using a the WP_POst_Object magic __get getter 
       <?php echo $post->some_meta_field; ?>
       https://since1979.dev/wordpress-access-post-meta-fields-through-wp-post/
+
+      use parse_blocks to have a future safe version applicable for templates and template_parts : 
+      https://developer.wordpress.org/reference/functions/parse_blocks/
     */
   }
 
