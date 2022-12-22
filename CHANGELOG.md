@@ -1,3 +1,15 @@
+## [1.5.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.3...1.5.4) (2022-12-22)
+
+
+### Bug Fixes
+
+* added remapping site_logo and site_icon ([f669013](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f6690133b7689fd69ade9eda8bf4f774c516655d))
+* export example exports site logo, title and description ([362b9c2](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/362b9c22c7883794f351c726d439854806ae957a))
+* export website title,description and logo ([52a8084](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/52a80848d91b4a3fefbb09ee7196e7ca5d8aa56e))
+* exporting default homepage options ([968ca33](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/968ca33c8d129ab1e2427f343b63edf96eec9dfb))
+* finalized remapping imported nav_menu refs and several options referencing posts ([93c27c3](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/93c27c34ba078e575091485f7e0eeec1b50b70cd))
+* pinned ubuntu version for github action ([ead3c11](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ead3c118e81a936bc1cb978b1faa090b80424edc))
+
 ## [1.5.3](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.2...1.5.3) (2022-11-03)
 
 
