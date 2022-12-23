@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.4...1.5.5) (2022-12-23)
+
+
+### Bug Fixes
+
+* remap imported reusable block ids ([f2c91ee](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/f2c91ee1c8be7e2d0f6d351bed93ee361fce40ff))
+
 ## [1.5.4](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.3...1.5.4) (2022-12-22)
 
 
