@@ -320,7 +320,37 @@ abstract class ImpexImport extends ImpexPart
     }
 
     set_theme_mod('nav_menu_locations', $nav_menu_locations);
-  
+
+    foreach ($posts as $old_post_id => $post_id) {
+      $post = \get_post($post_id);
+
+      // if the post is considered to contain block content and contain content
+      if(\apply_filters( 'use_block_editor_for_post', \use_block_editor_for_post_type('nav_menu_item', 'editor'), $post) && \has_blocks($post)) {
+        $post_content = $post->post_content;
+        $parsed_blocks = \parse_blocks($post->post_content);
+
+        $updatePost = false;
+        $remapBlockRefs = function (array $block) use (&$posts, &$remapBlockRefs, &$updatePost) {
+          $block['innerBlocks'] = array_map($remapBlockRefs, $block['innerBlocks']);
+
+          if (
+            ($block['blockName'] ?? '')==='core/block' &&
+            isset($block['attrs']['ref'])
+          ) {
+            $referencedPost = $posts[$block['attrs']['ref']];
+            $updatePost = true;
+          }
+
+          return $block;
+        };
+
+        if($updatePost) {
+          $post->post_content = \serialize_blocks(array_map($remapBlockRefs, $parsed_blocks));
+          \wp_update_post($post);
+        }
+      }
+    }  
+
     /* 
       @TODO: adjust reusable block references like
 
