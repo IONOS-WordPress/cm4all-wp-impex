@@ -224,7 +224,7 @@ abstract class ImpexImport extends ImpexPart
       $imported_term_ids = array_reduce(
         $imported_term_ids,
         function($accu, $term_id) {
-          $accu[$term_id] = (int)array_shift(\get_term_meta($term_id, self::KEY_TRANSIENT_IMPORT_METADATA));
+          $accu[(int)array_shift(\get_term_meta($term_id, self::KEY_TRANSIENT_IMPORT_METADATA))] = $term_id;
           return $accu;
         }, 
         [],
@@ -307,15 +307,13 @@ abstract class ImpexImport extends ImpexPart
     // https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
 
     $nav_menus = \wp_get_nav_menus();
-    foreach ($nav_menu_locations as $nav_menu_name => $old_nav_menu_id) {
-      // find array key matching value $old_nav_menu_id
-      $new_nav_menu_id = array_search($old_nav_menu_id, $terms);
+    foreach ($nav_menu_locations as $nav_menu_name => $nav_menu_value) {
       // if a term with same old id was imported
-      if($new_nav_menu_id !== false) {
+      if(isset($terms[$nav_menu_value])) {
         // find the nav_menu term with same name name and mapped id
         foreach ($nav_menus as $nav_menu) {
-          if($nav_menu->name === $nav_menu_name && $nav_menu->term_id===$new_nav_menu_id) {
-            $nav_menu_locations[$nav_menu_name] = $new_nav_menu_id;
+          if($nav_menu->name === $nav_menu_name && $nav_menu->term_id===$terms[$nav_menu_value]) {
+            $nav_menu_locations[$nav_menu_name] = $terms[$nav_menu_value];
           }
         }
       }
