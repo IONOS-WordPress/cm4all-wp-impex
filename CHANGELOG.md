@@ -1,3 +1,11 @@
+## [1.5.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.5...1.5.6) (2023-02-03)
+
+
+### Bug Fixes
+
+* imported option "theme_mods_trinity-core" will be updated after final import ([14b1865](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/14b18657f1e71b1a1c6cc1430cc77f4e1e463f86))
+* remap imported reusable block ids ([a8828db](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/a8828db1d47f67c3ac5c846bb30686939dce7f35))
+
 ## [1.5.5](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.4...1.5.5) (2022-12-23)
 
 
