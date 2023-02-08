@@ -62,19 +62,6 @@
         "/var/www/html/wp-config.php": "${workspaceRoot}/$WP_ENV_ROOT/WordPress/wp-config.php",
         "/var/www/html": "${workspaceRoot}/$WP_ENV_ROOT/WordPress"
       }
-    },
-    {
-      "name": "impex esbuild-bundle test",
-      "program": "${workspaceFolder}/bin/esbuild-bundle.mjs",
-      "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "pwa-node",
-      "args": [
-        "--debug",
-        "--global-name='example.versions[\"1.0\"]'",
-        "tests/esbuild-bundle/screen.mjs",
-        "tests/esbuild-bundle/dist/screen.js"
-      ]
     }
   ]
 }
