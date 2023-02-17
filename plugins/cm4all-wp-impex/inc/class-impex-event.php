@@ -61,7 +61,6 @@ abstract class ImpexEvent implements ImpexNamedItem
 
   function __invoke(ImpexImportTransformationContext $transformationContext, array $options)
   {
-    $hey = "hoo";
     foreach ($this->getListeners() as $listener) {
       $listener($transformationContext, $options);
     }
