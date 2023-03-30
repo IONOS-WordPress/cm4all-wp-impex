@@ -71,7 +71,7 @@ class TestImpexProfileRestController extends ImpexRestUnitTestcase
 
   public function test_context_param()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_get_items()
@@ -116,22 +116,22 @@ class TestImpexProfileRestController extends ImpexRestUnitTestcase
 
   public function test_prepare_item()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_create_item()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_update_item()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_delete_item()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_get_item_schema()

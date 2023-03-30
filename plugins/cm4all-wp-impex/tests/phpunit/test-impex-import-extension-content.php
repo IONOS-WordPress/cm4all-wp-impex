@@ -208,26 +208,70 @@ class TestImpexImportExtensionContent extends ImpexUnitTestcase
     $this->assertCount(1, array_filter($users_after_import, fn ($user) => $user->data->user_login === 'non_existing_user'));
 
     // test imported post is attached to user 
-    $post = \get_page_by_title('post from exported_user', \OBJECT, 'post');
+    // $post = \get_page_by_title('post from exported_user', \OBJECT, 'post');
+    // \get_page_by_title iss deprecated since wp 6.2
+    $posts = \get_posts([
+      'post_type'              => 'post',
+      'title'                  => 'post from exported_user',
+      'post_status'            => 'all',
+      'numberposts'            => 1,
+    ]);
+    $post = ! empty( $posts ) ? $post = $posts[0] : null;
+
     $this->assertNotNull($post, 'post should be recreated by import');
     // we have assigned the post to user 'existing_user' in the import options
     $post_user = \get_user_by('login', $post->post_author);
     $this->assertEquals($post->post_author, \get_user_by('login', 'existing_user')->ID);
 
-    $post = \get_page_by_title('post from exported_user2', \OBJECT, 'post');
+    //$post = \get_page_by_title('post from exported_user2', \OBJECT, 'post');
+    // \get_page_by_title iss deprecated since wp 6.2
+    $posts = \get_posts([
+      'post_type'              => 'post',
+      'title'                  => 'post from exported_user2',
+      'post_status'            => 'all',
+      'numberposts'            => 1,
+    ]);
+    $post = ! empty( $posts ) ? $post = $posts[0] : null;
+
     $this->assertNotNull($post, 'post should be recreated by import');
     // we have assigned the post to user 'new_id_exported_user2' in the import options
     $this->assertEquals($post->post_author, $new_id_exported_user2);
 
-    $post = \get_page_by_title('post from existing_user', \OBJECT, 'post');
+    //$post = \get_page_by_title('post from existing_user', \OBJECT, 'post');
+    // \get_page_by_title iss deprecated since wp 6.2
+    $posts = \get_posts([
+      'post_type'              => 'post',
+      'title'                  => 'post from existing_user',
+      'post_status'            => 'all',
+      'numberposts'            => 1,
+    ]);
+    $post = ! empty( $posts ) ? $post = $posts[0] : null;
+
     $this->assertNotNull($post, 'post should be recreated by import');
     $this->assertEquals($post->post_author, \get_user_by('login', 'existing_user')->ID);
 
-    $post = \get_page_by_title('post from non_existing_user', \OBJECT, 'post');
+    // $post = \get_page_by_title('post from non_existing_user', \OBJECT, 'post');
+    // \get_page_by_title iss deprecated since wp 6.2
+    $posts = \get_posts([
+      'post_type'              => 'post',
+      'title'                  => 'post from non_existing_user',
+      'post_status'            => 'all',
+      'numberposts'            => 1,
+    ]);
+    $post = ! empty( $posts ) ? $post = $posts[0] : null;
     $this->assertNotNull($post, 'post should be recreated by import');
     $this->assertEquals($post->post_author, \get_user_by('login', 'non_existing_user')->ID);
 
-    $post = \get_page_by_title('post from user_with_different_id', \OBJECT, 'post');
+    // $post = \get_page_by_title('post from user_with_different_id', \OBJECT, 'post');
+    // \get_page_by_title iss deprecated since wp 6.2
+    $posts = \get_posts([
+      'post_type'              => 'post',
+      'title'                  => 'post from user_with_different_id',
+      'post_status'            => 'all',
+      'numberposts'            => 1,
+    ]);
+    $post = ! empty( $posts ) ? $post = $posts[0] : null;
+
     $this->assertNotNull($post, 'post should be recreated by import');
     $this->assertEquals($post->post_author, \get_user_by('login', 'user_with_different_id')->ID);
   }

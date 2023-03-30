@@ -77,7 +77,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
 
   public function test_context_param()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_get_items()
@@ -258,7 +258,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
 
   public function test_prepare_item()
   {
-    // No op
+    $this->expectNotToPerformAssertions();
   }
 
   public function test_get_item_schema()
