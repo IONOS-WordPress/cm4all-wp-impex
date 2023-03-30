@@ -1,5 +1,5 @@
 {
-  "core": "WordPress/WordPress#6.1.1",
+  "core": "WordPress/WordPress#6.2",
   "plugins": [
     "https://downloads.wordpress.org/plugin/gutenberg.zip",
     "./plugins/cm4all-wp-impex",
