@@ -362,6 +362,11 @@ test-impex-cli: node_modules $(WP_ENV_HOME)
 > $(eval ARGS ?= '')
 > docker run --add-host=host.docker.internal:host-gateway -it -v $(PWD)/impex-cli:/workdir --rm $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) phpunit $(ARGS)
 
+.PHONY: test-phpunit-single-test
+#HELP: execute a single phpunit test and exit
+test-phpunit-single-test: node_modules $(WP_ENV_HOME) plugins/cm4all-wp-impex/vendor/autoload.php
+> find plugins/*/tests/phpunit -name "test-*.php" | fzf --bind 'enter:execute(make test-phpunit ARGS="--verbose --filter={}"; kill $$PPID)' ||:
+
 .PHONY: test-phpunit
 #HELP: execute phpunit tests\n Example: run filtered tests\n make test-phpunit ARGS='--verbose --filter=TestImpexExportAdapterDb'\n Example : run filtered tests with phpunit debug information\n make test-phpunit ARGS='--debug --filter=TestImpexExportAdapterDb::test_wordpress_and_plugin_are_loaded'
 test-phpunit: node_modules $(WP_ENV_HOME) plugins/cm4all-wp-impex/vendor/autoload.php
