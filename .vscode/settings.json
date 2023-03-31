@@ -12,7 +12,7 @@
     // "**/vendor/**/vendor/**",
     "**/dist/**"
   ],
-  "git.ignoreLimitWarning": true,
+  "git.autoRepositoryDetection": false,
   /*
   "json.schemas": [
     {
