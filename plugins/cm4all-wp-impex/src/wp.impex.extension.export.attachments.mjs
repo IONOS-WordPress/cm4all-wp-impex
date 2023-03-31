@@ -21,12 +21,8 @@ hooks.addFilter(
         for (const entry of _links_self) {
           const href = entry["href"];
 
-          let path = href.split(/[\\/]/);
-
           const filename =
-            `slice-${sliceIndex.toString().padStart(4, "0")}-` + path.pop();
-          //path.push(filename);
-          //path = path.join("//");
+            `slice-${sliceIndex.toString().padStart(4, "0")}-attachment.blob`;
 
           await fetch(href).then(async (response) => {
             attachmentFileHandle = await chunkDirHandle.getFileHandle(

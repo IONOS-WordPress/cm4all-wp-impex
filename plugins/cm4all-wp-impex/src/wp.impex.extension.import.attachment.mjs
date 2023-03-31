@@ -20,6 +20,9 @@ hooks.addFilter(
 
       const localAttachmentFileHandle = await chunkDirHandle
         .getFileHandle(localAttachmentFilename)
+        .catch((NotFoundError)=>{
+          return chunkDirHandle.getFileHandle(`slice-${sliceIndex.toString().padStart(4, "0")}-attachment.blob`);
+        })
         .catch((e) => {
           console.log(localAttachmentFilename);
           return Promise.reject(e);
