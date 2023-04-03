@@ -1,3 +1,12 @@
+## [1.5.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.6...1.5.7) (2023-04-03)
+
+
+### Bug Fixes
+
+* fixed unit tests for wp 6.2 ([b76f9dc](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/b76f9dc5d9f89e986d9d202667593abe5c1ff80f))
+* impex uses anonymous filenames for attachment blobs ([6a47bac](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/6a47baca75ef5dd29161314b0f1e54b2ff477c13))
+* removed obsolete vscode launch configuration ([ea9d509](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ea9d509e20e618bb7bc6cd305c892f0e6d309156))
+
 ## [1.5.6](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.5...1.5.6) (2023-02-03)
 
 
