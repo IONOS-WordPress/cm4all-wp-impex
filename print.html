@@ -2810,6 +2810,10 @@ basic</li>
 <p>As of now, it's unclear if and when Firefox will support the <a href="https://web.dev/file-system-access/">File System Access API</a>. </p>
 </blockquote>
 <p>As an alternative you can use the <a href="./impex-cli.html">ImpEx CLI</a> to trigger import/export operations on the commandline.</p>
+<h2 id="ouch--your-browser-does-not-support-the-crypto-api"><a class="header" href="#ouch--your-browser-does-not-support-the-crypto-api"><code>Ouch -your browser does not support the Crypto API</code></a></h2>
+<p>Same same as with the <a href="https://web.dev/file-system-access/">File System Access API</a> API ... depending on your browser version the Crypto API feature we use (<code>window.crypto.randomUUID</code>) may not be supported by your browser. </p>
+<p>As of now, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID">all &quot;green&quot; browser support it</a>. </p>
+<p>But if you use an older version of a browser it might happen that Impex will not work since the browser feature is not available in your browser.</p>
 
                     </main>
 
