@@ -1,3 +1,10 @@
+## [1.5.8](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.7...1.5.8) (2023-06-21)
+
+
+### Bug Fixes
+
+* missing undefined $custom_taxonomies ([76eb948](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/76eb948e9ae9c794f82d04ba23e6e9f1e6532372))
+
 ## [1.5.7](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.6...1.5.7) (2023-04-03)
 
 
