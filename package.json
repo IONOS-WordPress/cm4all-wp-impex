@@ -12,7 +12,7 @@
     "name": "lars gersmann"
   },
   "devDependencies": {
-    "@marp-team/marp-cli": "^2.2.0",
+    "@marp-team/marp-cli": "^2.5.0",
     "@mermaid-js/mermaid-cli": "^9.1.7",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
