@@ -29,7 +29,7 @@ class TestImpexExportProfileCm4all extends ImpexUnitTestcase
     \activate_plugin('ninja-forms/ninja-forms.php');
     \activate_plugin('wp-content/plugins/ultimate-maps-by-supsystic/ums.php');
 
-    // force reexecution of the import profle registration since we depend on the "all" import provider
+    // force reexecution of the import profile registration since we depend on the "all" import provider
     require __DIR__ . '/../../../cm4all-wp-impex/profiles/import-profile-all.php';
 
     require_once __DIR__ . '/../../plugin.php';

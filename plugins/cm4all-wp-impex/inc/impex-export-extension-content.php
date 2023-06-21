@@ -171,6 +171,7 @@ function _export_wp(array $options, int $chunk_max_items = ContentExporter::OPTI
   $cats  = [];
   $tags  = [];
   $terms = [];
+  $custom_taxonomies = [];
   if (isset($term) && $term) {
     $cat  = \get_term($term['term_id'], 'category');
     $cats = [$cat->term_id => $cat];
@@ -179,7 +180,7 @@ function _export_wp(array $options, int $chunk_max_items = ContentExporter::OPTI
     $categories = \get_categories(['get' => 'all']);
     $tags       = \get_tags(array('get' => 'all'));
 
-    // @TODO: process only taxonomies of exported post types 
+    // @TODO: process only taxonomies of exported post types
     $custom_taxonomies = \get_taxonomies(['_builtin' => false], 'objects');
     $custom_terms      = \get_terms(
       [
@@ -379,7 +380,7 @@ function _terms_list($terms): array
 function _nav_menu_terms(array $blacklist): array
 {
   $nav_menus = \wp_get_nav_menus();
-  // @TODO: can this happen ?? 
+  // @TODO: can this happen ??
   $nav_menus = empty($nav_menus) || !is_array($nav_menus) ? [] : $nav_menus;
 
   $blacklisted_term_ids = array_column($blacklist, 'term_id');
