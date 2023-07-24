@@ -22,14 +22,14 @@ define( 'DB_COLLATE', '' );
 // Test with WordPress debug mode (default).
 define( 'WP_DEBUG', true );
 
-// This is configurable by setting the WP_PHPUNIT__TABLE_PREFIX environment variable. 
-// If set, this will take precedence over what is set in your tests config file. 
+// This is configurable by setting the WP_PHPUNIT__TABLE_PREFIX environment variable.
+// If set, this will take precedence over what is set in your tests config file.
 // If not, and the $table_prefix variable is not set in your tests config file then it will use wptests_ as a fallback.
 $table_prefix = 'wp_';   // Only numbers, letters, and underscores please!
 
 #define( 'WPLANG', '' );
 
-/* minimal set of constants required by wp php unit */ 
+/* minimal set of constants required by wp php unit */
 define( 'WP_TESTS_DOMAIN', 'example.org' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
 define( 'WP_TESTS_TITLE', 'Test Blog' );

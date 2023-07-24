@@ -121,7 +121,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
     $request->set_body(\wp_json_encode(['profile' => $profile->name]));
     $create_response = $this->server->dispatch($request);
 
-    // try to get it 
+    // try to get it
     $request = new \WP_REST_Request('GET', ImpexRestController::BASE_URI . ImpexExportRESTController::REST_BASE . '/' . $create_response->data['id']);
     $response = $this->server->dispatch($request);
     $this->assertEquals(200, $response->status);
@@ -222,7 +222,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
   {
     \wp_set_current_user($this->user);
 
-    // create export 
+    // create export
     $alphabet = range('a', 'z');
     $profile = $this->__createExportProfile('single-slice-export-profile', ['provider-alphabet' => $alphabet]);
 
@@ -244,7 +244,7 @@ class TestImpexExportRestController extends ImpexRestUnitTestcase
     $response = $this->server->dispatch($request);
     $this->assertEquals(404, $response->status);
 
-    // get export slices using rest pagination api 
+    // get export slices using rest pagination api
     $request = new \WP_REST_Request('GET', ImpexRestController::BASE_URI . ImpexExportRESTController::REST_BASE . '/' . $export_id . '/slice');
     $request->set_query_params(['offset' => 1, 'per_page' => 2, 'page' => 2]);
     $response = $this->server->dispatch($request);

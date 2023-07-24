@@ -18,9 +18,9 @@ class TestImpexExport extends ImpexUnitTestcase
     parent::setUp();
 
     /*
-     CAVEAT : tables created using WordPress install/upgrade mechanism 
-     (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use 
-     the wp phpunit filter making the table temporary. 
+     CAVEAT : tables created using WordPress install/upgrade mechanism
+     (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use
+     the wp phpunit filter making the table temporary.
 
      => so we need to drop the table manually to have a consistent setup
     */
@@ -92,7 +92,7 @@ class TestImpexExport extends ImpexUnitTestcase
     global $wpdb;
 
     /*
-      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements 
+      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements
       into CREATE/DROP TEMPORARY table statements (https://wordpress.stackexchange.com/questions/220275/wordpress-unit-testing-cannot-create-tables)
 
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.

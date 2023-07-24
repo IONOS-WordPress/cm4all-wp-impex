@@ -34,7 +34,7 @@ class TestImpexExportExtensionDbTable extends ImpexUnitTestcase
     // system('mysql --user=' . DB_USER . ' --password=' . DB_PASSWORD . ' ' . DB_NAME . ' < ' . __DIR__ . '/fixtures/adapter/db/cmplz-plugin.sql');
 
     /*
-      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements 
+      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements
       into CREATE/DROP TEMPORARY table statements (https://wordpress.stackexchange.com/questions/220275/wordpress-unit-testing-cannot-create-tables)
 
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.

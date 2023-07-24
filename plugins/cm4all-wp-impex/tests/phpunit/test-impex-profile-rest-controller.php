@@ -102,7 +102,7 @@ class TestImpexProfileRestController extends ImpexRestUnitTestcase
     \wp_set_current_user($this->user);
     $profile = $this->__createExportProfile('export-profile-1', ['provider-a' => ['a']]);
 
-    // try to get it 
+    // try to get it
     $request = new \WP_REST_Request('GET', ImpexRestController::BASE_URI . ImpexExportProfileRESTController::REST_BASE . '/' . $profile->name);
     $response = $this->server->dispatch($request);
     $this->assertEquals(200, $response->status);

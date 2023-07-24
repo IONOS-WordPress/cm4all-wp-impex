@@ -113,7 +113,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
     // create import
     $import_id = Impex::getInstance()->Import->create(Impex::getInstance()->Import->addProfile('dummy-import'))->id;
 
-    // try to get it 
+    // try to get it
     $request = new \WP_REST_Request('GET', ImpexRestController::BASE_URI . ImpexImportRESTController::REST_BASE . '/' . $import_id);
     $response = $this->server->dispatch($request);
     $this->assertEquals(200, $response->status);
@@ -218,8 +218,8 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
   }
 
   /*
-    testcase is obsolete since it utilizes the removed WordPress Importer 
-    @TODO : adapt testcase to new ContentImporter 
+    testcase is obsolete since it utilizes the removed WordPress Importer
+    @TODO : adapt testcase to new ContentImporter
   */
   public function _test_upsert_item_slices()
   {
@@ -255,7 +255,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
       if ($slice_json[Impex::SLICE_TAG] === 'attachment') {
         $attachment_filename = $EXPORT_PATH  . '/' . basename($slice_file, '.json') . '-' . basename($slice_json[Impex::SLICE_DATA]);
 
-        // ATTENTION: we need to make a copy of the file since attachment importer will move the uploaded file 
+        // ATTENTION: we need to make a copy of the file since attachment importer will move the uploaded file
         $uploadedAttachment = tempnam(sys_get_temp_dir(), 'impex_import_');
         $success = file_put_contents($uploadedAttachment, file_get_contents($attachment_filename));
 
@@ -281,7 +281,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
     ));
     $this->assertEquals(count($slice_filenames), $inserted_slices, 'all uploaded chunks should be in the database');
 
-    // try to insert the slices again 
+    // try to insert the slices again
     foreach ($slice_filenames as $index => $slice_filename) {
       $slice_file = $EXPORT_PATH  . '/' . $slice_filename;
 
@@ -296,7 +296,7 @@ class TestImpexImportRestController extends ImpexRestUnitTestcase
       if ($slice_json[Impex::SLICE_TAG] === 'attachment') {
         $attachment_filename = $EXPORT_PATH  . '/' . basename($slice_file, '.json') . '-' . basename($slice_json[Impex::SLICE_DATA]);
 
-        // ATTENTION: we need to make a copy of the file since attachment importer will move the uploaded file 
+        // ATTENTION: we need to make a copy of the file since attachment importer will move the uploaded file
         $uploadedAttachment = tempnam(sys_get_temp_dir(), 'impex_import_');
         $success = file_put_contents($uploadedAttachment, file_get_contents($attachment_filename));
 

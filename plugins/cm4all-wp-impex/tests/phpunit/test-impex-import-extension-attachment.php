@@ -166,7 +166,7 @@ class TestImpexImportExtensionAttachment extends ImpexUnitTestcase
 
 
 
-    // create initial attachment  
+    // create initial attachment
     $post = $this->factory->post->create_and_get();
     $attachment_id = $this->factory->attachment->create_upload_object(__DIR__ . '/fixtures/uploads/images/' . self::IMAGE, $post->ID);
 

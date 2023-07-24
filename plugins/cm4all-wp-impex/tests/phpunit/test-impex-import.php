@@ -36,9 +36,9 @@ class TestImpexImport extends ImpexUnitTestcase
     }
 
     /*
-     CAVEAT : tables created using WordPress install/upgrade mechanism 
-     (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use 
-     the wp phpunit filter making the table temporary. 
+     CAVEAT : tables created using WordPress install/upgrade mechanism
+     (https://codex.wordpress.org/Creating_Tables_with_Plugins) will not use
+     the wp phpunit filter making the table temporary.
 
      => so we need to drop the table manually to have a consistent setup
     */
@@ -170,7 +170,7 @@ class TestImpexImport extends ImpexUnitTestcase
     global $wpdb;
 
     /*
-      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements 
+      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements
       into CREATE/DROP TEMPORARY table statements (https://wordpress.stackexchange.com/questions/220275/wordpress-unit-testing-cannot-create-tables)
 
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.
@@ -182,8 +182,8 @@ class TestImpexImport extends ImpexUnitTestcase
   }
 
   /*
-    testcase is obsolete since it utilizes the removed WordPress Importer 
-    @TODO : adapt testcase to new ContentImporter 
+    testcase is obsolete since it utilizes the removed WordPress Importer
+    @TODO : adapt testcase to new ContentImporter
   */
   function _testConsume()
   {
@@ -216,7 +216,7 @@ class TestImpexImport extends ImpexUnitTestcase
     }
 
 
-    // read in slices 
+    // read in slices
     $slices = array_map(function ($slice_filename) use ($EXPORT_PATH) {
       return json_decode(file_get_contents($EXPORT_PATH . '/' . $slice_filename), JSON_OBJECT_AS_ARRAY);
     }, array_filter(
@@ -228,7 +228,7 @@ class TestImpexImport extends ImpexUnitTestcase
         return is_file($EXPORT_PATH  . '/' . $_);
       }
     ));
-    // inject them into import chunks table  
+    // inject them into import chunks table
     global $wpdb;
 
     foreach ($slices as $position => $slice) {

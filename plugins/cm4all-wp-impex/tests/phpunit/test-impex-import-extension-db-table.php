@@ -97,7 +97,7 @@ class TestImpexImportExtensionDbTable extends ImpexUnitTestcase
   {
     global $wpdb;
 
-    // drop (previously created by this function) table if exists 
+    // drop (previously created by this function) table if exists
     $wpdb->query("DROP TABLE IF EXISTS live_cmplz_cookies");
 
     // register importer/exporter
@@ -143,7 +143,7 @@ class TestImpexImportExtensionDbTable extends ImpexUnitTestcase
     $source_table = "{$wpdb->prefix}cmplz_cookies";
 
     /*
-      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements 
+      this is a bit quirky ... wp unit tests apply a query filter to wpdb which transforms CREATE/DROP table statements
       into CREATE/DROP TEMPORARY table statements (https://wordpress.stackexchange.com/questions/220275/wordpress-unit-testing-cannot-create-tables)
 
       therefore tables created in wp unit tests are not visible using SHOW TABLES LIKE statements.

@@ -4,8 +4,8 @@
 # Description: commandline tool to import/export wordpress data by interacting with the cm4all-wp-impex wordpress plugin
 #
 # This file is part of cm4all-wp-impex.
-# 
-# Usage: see impex-cli/impex-cli.php help 
+#
+# Usage: see impex-cli/impex-cli.php help
 #
 # Requires PHP: 8.0, php-curl extension
 # Author: Lars Gersmann<lars.gersmann@cm4all.com>
@@ -205,7 +205,7 @@ function help($options, $message = null, ...$args)
 
   echo "Usage: impex-cli.php [operation] [sub-operation?] -rest-url=[wordpress-restapi-url] [options] [arguments]
 
-operation: 
+operation:
   help                                                  show this help
 
   export                                                export wordpress data using the impex wordpress plugin to a directory
@@ -214,24 +214,24 @@ operation:
     arguments:
       [directory]                                       (required) directory to export to
 
-  import                                                import wordpress data (in impex format) from a directory 
+  import                                                import wordpress data (in impex format) from a directory
     options:
       -profile=[import-profile]                        (default='all') import profile to use
       -options=[import options in JSON format]         (default='{}') provide options to the import process
     arguments:
       [directory]                                       (required) impex directory to import from
 
-  export-profile 
+  export-profile
     sub-operations:                                     (required)
-      list                                              json list of known impex export profiles 
+      list                                              json list of known impex export profiles
 
-  import-profile                                     
+  import-profile
     sub-operations:                                     (required)
-      list                                              json list of known impex import profiles 
+      list                                              json list of known impex import profiles
 
 global options:
-  -username=[wordpress-username]    
-  -password=[wordpress-password]    
+  -username=[wordpress-username]
+  -password=[wordpress-password]
   -rest-url=[wordpress-restapi-url]                     (required) url of wordpress rest endpoint
                                                         example: -rest-url=http://localhost:8888/wp-json
 
@@ -239,7 +239,7 @@ global options:
   -CURLOPT_VERBOSE                                      prints additional php-curl debug informations stderr
   -H=[header]                                           additional header to send to the wordpress rest api
                                                         may occur multiple times
-                                                        example: -H='x-foo: bar' 
+                                                        example: -H='x-foo: bar'
 
 see https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html for more.
 ";
@@ -354,8 +354,8 @@ function import($options, $import_directory, ...$args)
   $import_options = $options['options'] ?? '{}';
   try {
     $import_options = json_decode(
-      json: $import_options, 
-      associative: true, 
+      json: $import_options,
+      associative: true,
       flags: JSON_THROW_ON_ERROR,
     );
   } catch(Exception $ex) {
@@ -467,14 +467,14 @@ function import($options, $import_directory, ...$args)
     "import/$import_id/consume",
     \CURLOPT_POST,
   );
-  
+
   $postConsumeCallbacks = $result['callbacks'] ?? [];
   foreach($postConsumeCallbacks as $index => $postConsumeCallback) {
     _log(
-      $options, 
-      'Executing post consume callback(path=%s, method=%s) with data(=%s)', 
-      $postConsumeCallback['path'], 
-      $postConsumeCallback['method'], 
+      $options,
+      'Executing post consume callback(path=%s, method=%s) with data(=%s)',
+      $postConsumeCallback['path'],
+      $postConsumeCallback['method'],
       json_encode($postConsumeCallback['data']),
     );
     [$result, $status, $error] = _curl(
@@ -483,7 +483,7 @@ function import($options, $import_directory, ...$args)
       $postConsumeCallback['method']==='post' ? \CURLOPT_POST : null,
       fn ($curl) => curl_setopt($curl, \CURLOPT_POSTFIELDS, http_build_query($postConsumeCallback['data']))
     );
-  
+
     if ($error) {
       _log($options, "Warning : Failed to update metadata : HTTP status(=%s) : %s", $status, $error);
     }
@@ -664,7 +664,7 @@ main([
 // if we are running in cli mode and not as phpunit test then run main
 if (php_sapi_name() === "cli" && !str_ends_with($_SERVER['argv'][0], 'phpunit')) {
   main($argv);
-} 
+}
 
 /*
 main([
