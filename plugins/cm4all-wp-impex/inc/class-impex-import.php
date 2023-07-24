@@ -17,7 +17,7 @@ abstract class ImpexImport extends ImpexPart
 {
   const WP_OPTION_IMPORTS = 'impex_imports';
 
-  // meta key attached to all imported documents / terms 
+  // meta key attached to all imported documents / terms
   // with the original ID value of the imported post
   // - will be deleted after final consume() call
   // can be used to remap imported content referenced in other documents
@@ -112,18 +112,34 @@ abstract class ImpexImport extends ImpexPart
    */
   function get_slices(string $snapshot_id, int $limit = PHP_INT_MAX, int $offset = 0): \Generator
   {
+    /*
+      we do not query all at once anymore
+      ("SELECT * from {$this->_db_chunks_tablename} WHERE snapshot_id=%s ORDER BY position LIMIT %d OFFSET %d", $snapshot_id, $limit, $offset)
+      since this will fail on system with a small configured mysql sort memory limit
+
+      thats why we first query for the row id s of all slices
+      and query the slices separately
+    */
+
     global $wpdb;
 
-    $rows = $wpdb->get_results(
-      $wpdb->prepare("SELECT * from {$this->_db_chunks_tablename} WHERE snapshot_id=%s ORDER BY position LIMIT %d OFFSET %d", $snapshot_id, $limit, $offset)
+    $row_ids = array_map(
+      fn($row) => $row->id,
+      $wpdb->get_results(
+        $wpdb->prepare("SELECT id from {$this->_db_chunks_tablename} WHERE snapshot_id=%s ORDER BY position LIMIT %d OFFSET %d", $snapshot_id, $limit, $offset)
+      )
     );
-    foreach ($rows as $row) {
+
+    foreach ($row_ids as $row_id) {
+      $row = $wpdb->get_row(
+        $wpdb->prepare("SELECT slice from {$this->_db_chunks_tablename} WHERE id=%s", $row_id)
+      );
       yield json_decode($row->slice, JSON_OBJECT_AS_ARRAY);
     }
   }
 
   /**
-   * clean up temporary import metadata 
+   * clean up temporary import metadata
    */
   function _delete_transient_import_metadata() : void {
     // delete existing import metadata from last run
@@ -145,8 +161,8 @@ abstract class ImpexImport extends ImpexPart
   }
 
   /**
-   * @TODO: makes it sense to rename this function to aggregate or reduce ? 
-   * 
+   * @TODO: makes it sense to rename this function to aggregate or reduce ?
+   *
    * @return array[] return uncomsumed slices
    */
   function consume(ImpexImportTransformationContext $transformationContext, int $limit = PHP_INT_MAX, int $offset = 0): array
@@ -226,7 +242,7 @@ abstract class ImpexImport extends ImpexPart
         function($accu, $term_id) {
           $accu[(int)array_shift(\get_term_meta($term_id, self::KEY_TRANSIENT_IMPORT_METADATA))] = $term_id;
           return $accu;
-        }, 
+        },
         [],
       );
 
@@ -238,7 +254,7 @@ abstract class ImpexImport extends ImpexPart
         function($accu, $row) {
           $accu[(int)$row->meta_value] = (int)$row->ID;
           return $accu;
-        }, 
+        },
         [],
         );
       /*
@@ -254,11 +270,11 @@ abstract class ImpexImport extends ImpexPart
         function($accu, $post_id) {
           $accu[(int)\get_post_meta($post_id, self::KEY_TRANSIENT_IMPORT_METADATA, true)] = $post_id;
           return $accu;
-        }, 
+        },
         [],
       );*/
 
-      $imported = [ 
+      $imported = [
         'terms'   => &$imported_term_ids,
         'posts'   => &$imported_post_ids,
         'options' => \get_option(self::KEY_TRANSIENT_IMPORT_METADATA, []),
@@ -295,11 +311,11 @@ abstract class ImpexImport extends ImpexPart
             // adjust site_logo value to new post id
             \update_option($wp_option, $post->ID);
           } else if (\get_post($posts[$post_id])===null) {
-            // otherwise reset wp_option 
+            // otherwise reset wp_option
             \delete_option($wp_option);
           }
         }
-      }       
+      }
     }
 
     // check/fix menus of current theme
@@ -349,18 +365,18 @@ abstract class ImpexImport extends ImpexPart
           \wp_update_post($post);
         }
       }
-    }  
+    }
 
-    /* 
+    /*
       @TODO: adjust reusable block references like
 
       <!-- wp:block {"ref":1,"cm4allBlockId":"db3b99bc-6e4d-4109-86a2-a76ff2543d64"} /-->
 
-      can also be accessed using a the WP_POst_Object magic __get getter 
+      can also be accessed using a the WP_POst_Object magic __get getter
       <?php echo $post->some_meta_field; ?>
       https://since1979.dev/wordpress-access-post-meta-fields-through-wp-post/
 
-      use parse_blocks to have a future safe version applicable for templates and template_parts : 
+      use parse_blocks to have a future safe version applicable for templates and template_parts :
       https://developer.wordpress.org/reference/functions/parse_blocks/
     */
   }
