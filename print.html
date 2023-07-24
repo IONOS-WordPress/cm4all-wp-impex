@@ -1,0 +1,2862 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="blog/2022/index.html">2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="features.html">Features</a></li><li class="chapter-item expanded "><a href="basic-usage.html">Basic usage</a></li><li class="chapter-item expanded "><a href="impex-cli.html">CLI</a></li><li class="chapter-item expanded "><a href="migrating-content.html">Migrating content</a></li><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/index.html">Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cm4all-wp-impex-generator/static-website-tutorial.html">Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="api/index.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="api/filters.html">Filters</a></li><li class="chapter-item expanded "><a href="api/cm4all-wp-impex-oas.html">REST API</a></li></ol></li><li class="chapter-item expanded "><a href="explanation-of-terms.html">Explanation of terms</a></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li><a href="about.html#preface">Preface</a></li>
+<li><a href="about.html#about">About</a></li>
+<li><a href="about.html#development">Development</a></li>
+</ul>
+<h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
+<p><em>This is a working-draft that has not been peer-reviewed. It is not yet complete and may change in the future.</em></p>
+<h1 id="about"><a class="header" href="#about">About</a></h1>
+<p>The ImpEx plugin provides a modern way to import and export data from WordPress.</p>
+<p>It provides</p>
+<ul>
+<li>
+<p>a <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a> extension for importing and exporting data</p>
+</li>
+<li>
+<p>a WordPress admin page for interacting with the ImpEx <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a>.</p>
+</li>
+<li>
+<p>a <a href="./impex-cli.html">CLI</a> for importing and exporting WordPress data from the command-line. You can use the <a href="./impex-cli.html">CLI</a> to interact with a remote WordPress installation.</p>
+</li>
+<li>
+<p>an easy way to extend the import/export capabilities by third-party plugins based on WordPress <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a></p>
+</li>
+</ul>
+<p><img src="./impex-screenshot.png" alt="ImpEx UI" /></p>
+<h1 id="development"><a class="header" href="#development">Development</a></h1>
+<p>The sources of this plugin are maintained at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Impex WordPress plugin GitHub repository</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="blog/2022/index.html#2022-08">2022-08</a>
+<ul>
+<li><a href="blog/2022/index.html#did-you-know--impex-can-import--export-elementor-pages-out-of-the-box">Did you know : ImpEx can import / export Elementor pages out of the box</a></li>
+<li><a href="blog/2022/index.html#release-141">Release 1.4.1</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="2022-08"><a class="header" href="#2022-08">2022-08</a></h1>
+<h2 id="did-you-know--impex-can-import--export-elementor-pages-out-of-the-box"><a class="header" href="#did-you-know--impex-can-import--export-elementor-pages-out-of-the-box">Did you know : ImpEx can import / export <a href="https://elementor.com/">Elementor</a> pages out of the box</a></h2>
+<p>ImpEx can import and export pages operated by <a href="https://elementor.com/">Elementor</a>.</p>
+<p><a href="https://wordpress.org/plugins/cm4all-wp-impex/">ImpEx</a> is a free and fully open sourced WordPress Import/Export plugin.</p>
+<h2 id="release-141"><a class="header" href="#release-141"><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/releases/tag/1.4.1">Release 1.4.1</a></a></h2>
+<ul>
+<li>
+<p>This release features a more user oriented UI simplifying the Import / Export : </p>
+<p><img src="blog/2022/./impex-1.4-simple.png" alt="ImpEx Simple UI" /></p>
+<ul>
+<li>
+<p>new additional import option to cleanup existing content (<code>post</code>, <code>page</code>, <code>media</code>, <code>block pattern</code>, <code>nav_menu</code> ans <code>reusable block</code> items) before processing the import data </p>
+</li>
+<li>
+<p>the local export folder name can be customized before download</p>
+</li>
+<li>
+<p>watch a full video walkthroughh of the simple UI </p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ReYMPwhUC7w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</li>
+</ul>
+</li>
+<li>
+<p>the (developer centric) ImpEx UI of previous ImpEx versions is also available in a second tab : </p>
+<p><img src="blog/2022/./impex-1.4-advanced.png" alt="ImpEx Advanced UI" /> </p>
+</li>
+<li>
+<p>Import UI: if only a single Import profile exists, it is preselected</p>
+</li>
+<li>
+<p>Export UI: if only a single Export profile exists, it is preselected</p>
+</li>
+<li>
+<p>CLI <a href="blog/2022/./../../impex-cli.html#options-argument">supports the new WordPress content cleanup option</a></p>
+</li>
+<li>
+<p>PHP API: ImpEx <a href="blog/2022/./../../api/filters.html#wordpress-filters">supports a 2 WordPress filters</a> to customize the available Import/Export profiles listed in the UI</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="features.html#features">Features</a>
+<ul>
+<li><a href="features.html#json-export-data-format">JSON export data format</a>
+<ul>
+<li><a href="features.html#semantic-versioning-support">Semantic versioning support</a></li>
+<li><a href="features.html#json-schema">JSON Schema</a></li>
+</ul>
+</li>
+<li><a href="features.html#extensibility">Extensibility</a>
+<ul>
+<li><a href="features.html#third-party-data-integration">Third-party data integration</a></li>
+<li><a href="features.html#api">API</a></li>
+</ul>
+</li>
+<li><a href="features.html#managed-wordpress-support">Managed WordPress support</a></li>
+<li><a href="features.html#commandline-interface-cli">Commandline interface (CLI)</a></li>
+<li><a href="features.html#rest-api-support">REST API support</a></li>
+<li><a href="features.html#scalability">Scalability</a>
+<ul>
+<li><a href="features.html#streaming-api">Streaming API</a></li>
+</ul>
+</li>
+<li><a href="features.html#import-framework-for-websites-from-third-party-website-builders">Import Framework for websites from third-party website builders</a></li>
+</ul>
+</li>
+<li><a href="features.html#generating-custom-content">Generating custom content</a></li>
+</ul>
+<h1 id="features"><a class="header" href="#features">Features</a></h1>
+<p>There are a lot of WordPress plugins offering Import Export capabilities.</p>
+<p>ImpEx stands out with some unique features making it the perfect match for WordPress data management.</p>
+<p>There ist built-in support for exporting/importing</p>
+<ul>
+<li>
+<p>WordPress posts, pages, comments, categories, tags, custom post types, custom fields, users, taxonomies, navigation menus and more</p>
+</li>
+<li>
+<p>FSE related content like block patterns, global styles, templates and template parts</p>
+</li>
+<li>
+<p>WordPress media</p>
+</li>
+</ul>
+<p>For exporting additional data like third-party WordPress plugin settings or any other data, you can use the ImpEx API to configure your own <a href="api/configuration.html#custom-profile-configuration">Export profiles</a>.</p>
+<h2 id="json-export-data-format"><a class="header" href="#json-export-data-format">JSON export data format</a></h2>
+<p>ImpEx exports data in a <a href="https://www.json.org/">JSON</a> format.</p>
+<p>The data structure can be validated using the provided <a href="https://json-schema.org/">ImpEx JSON Schema</a> definitions (can be found <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema">here</a>).</p>
+<h3 id="semantic-versioning-support"><a class="header" href="#semantic-versioning-support">Semantic versioning support</a></h3>
+<p>The ImpEx JSON Schema format has built-in semantic versioning support providing upgrade capabilities for older exported content.</p>
+<h3 id="json-schema"><a class="header" href="#json-schema">JSON Schema</a></h3>
+<p>The data format of ImpEx exports is described in the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema">ImpEx JSON Schema definition files</a>.</p>
+<p>There are a variety of tools for working with <a href="https://json-schema.org/">JSON Schema</a>.</p>
+<h2 id="extensibility"><a class="header" href="#extensibility">Extensibility</a></h2>
+<p>ImpEx provides a foundation of core functionality to easily integrate custom WordPress data into the export</p>
+<h3 id="third-party-data-integration"><a class="header" href="#third-party-data-integration">Third-party data integration</a></h3>
+<p>Third-party WordPress plugins and themes often persist data in custom database tables, <code>wp_options</code> or other data sources.</p>
+<p>ImpEx provides <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">WordPress filters</a> to integrate custom data into the export.</p>
+<p>Third-party plugins can easily contribute their own data provider by registering <a href="https://developer.wordpress.org/plugins/hooks/actions/">actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">filters</a> with ImpEx.</p>
+<blockquote>
+<p>A ImpEx Data Provider is a import /export definition exposes plugin data to be used by other developers to integrate the data in their own export.</p>
+</blockquote>
+<h3 id="api"><a class="header" href="#api">API</a></h3>
+<p>Custom profiles can be defined using the <a href="api/configuration.html">ImpEx API</a>.</p>
+<p>That does not mean that your own code depends on the ImpEx plugin to be installed and active. ImpEx uses <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress actions</a> and <a href="https://developer.wordpress.org/plugins/hooks/filters/">WordPress filters</a>, so your plugin will also work fine is ImpEx is not installed.</p>
+<p>The ImpEx API provides interfaces for</p>
+<ul>
+<li>
+<p>Data provider</p>
+<p>Data provider expose data (Export) or consume data (Import). Typically a third-party plugin will register a Import Provider and Export Provider to ImpEx. Theses providers can be used by ImpEx profiles to integrate the plugin data into export and import.</p>
+</li>
+<li>
+<p>Profiles</p>
+<p>A ImpEx profile is a set of configuration options and tasks defining what data to export/import.</p>
+</li>
+</ul>
+<blockquote>
+<p>ImpEx provides a foundation of helpers to create custom ImpEx profiles with a few lines for posts, database tables and wp_options.</p>
+</blockquote>
+<h2 id="managed-wordpress-support"><a class="header" href="#managed-wordpress-support">Managed WordPress support</a></h2>
+<p>If you operate your WordPress website using a managed WordPress hosting service, you often have limited or no direct access to the WordPress database / installation.</p>
+<p>In these scenarios most WordPress Import / Export plugins will not work.</p>
+<p><strong>ImpEx only needs access to the WordPress REST API. Works like a charm in almost any managed WordPress hosting environment.</strong></p>
+<h2 id="commandline-interface-cli"><a class="header" href="#commandline-interface-cli">Commandline interface (CLI)</a></h2>
+<p><a href="https://wp-cli.org/">wp-cli</a> is a great tool for managing WordPress installations. Unfortunately it needs direct access to the WordPress installation and database.</p>
+<p>Thus ImpEx provides a <a href="impex-cli.html">CLI interface</a> to interact with a WordPress installation using pure WordPress REST API. <strong>The <a href="impex-cli.html">ImpEx CLI</a> works perfectly on managed WordPress instances.</strong></p>
+<h2 id="rest-api-support"><a class="header" href="#rest-api-support">REST API support</a></h2>
+<p>ImPEx provides a <a href="https://developer.wordpress.org/rest-api/">WordPress REST API</a> extension for importing and exporting data. <a href="index.html#rest-api">All ImpEx functions are available as REST API endpoints</a>.</p>
+<h2 id="scalability"><a class="header" href="#scalability">Scalability</a></h2>
+<p>It's easy to export a WordPress website with a few pages. But about a WordPress website with a lot of pages and hundreds of images ?</p>
+<p><strong>ImpEx is designed to be scalable. It can can handle hundreds/thousands of pages/posts and media files from scratch.</strong></p>
+<h3 id="streaming-api"><a class="header" href="#streaming-api">Streaming API</a></h3>
+<p>ImpEx API is designed to import/export a WordPress website in <em>chunks</em> of <em>slices</em>.</p>
+<p>A chunk is a partial unit of the exported data. Its basically a directory containing a part of the exported slices. Each slice is a json file describing (and most times also containing) data like post(s) or any other WordPress data.</p>
+<p>The API ist designed to be resumable. A aborted export (and even import) can be resumed at any time.</p>
+<p><em>cancel/resume support will be part of a future release.</em></p>
+<h2 id="import-framework-for-websites-from-third-party-website-builders"><a class="header" href="#import-framework-for-websites-from-third-party-website-builders">Import Framework for websites from third-party website builders</a></h2>
+<p>ImpEx is also a great choice to import a website from a third-party website builder or even a static website.</p>
+<p>ImpEx provides a <a href="cm4all-wp-impex-generator/index.html">NodeJS Framework to convert any existing content to ImpEx WordPress content</a> : <a href="https://www.npmjs.com/package/@cm4all-wp-impex/generator">@cm4all-wp-impex/generator</a>.</p>
+<p><strong>Using <a href="https://www.npmjs.com/package/@cm4all-wp-impex/generator">@cm4all-wp-impex/generator</a> you can convert html pages or any other content to WordPress content.</strong></p>
+<p>Since this <a href="https://www.npmjs.com/package/@cm4all-wp-impex/generator">package</a> provides an API you can easily add custom transformations to suppport third-party site builder specialties into valid ImpEx export data.</p>
+<h1 id="generating-custom-content"><a class="header" href="#generating-custom-content">Generating custom content</a></h1>
+<p>Even more, <a href="cm4all-wp-impex-generator/index.html">@cm4all-wp-impex/generator</a> allows you to transform <strong>any</strong> data from anywhere into WordPress content.</p>
+<p>There ist actually no limit - everything can be transformed into WordPress content using <a href="cm4all-wp-impex-generator/index.html">@cm4all-wp-impex/generator</a>. See the <a href="./cm4all-wp-impex-generator/static-website-tutorial.html">Static website conversion tutorial</a> as a starting point.</p>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="basic-usage.html#basic-usage">Basic usage</a>
+<ul>
+<li><a href="basic-usage.html#export">Export</a></li>
+<li><a href="basic-usage.html#import">Import</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
+<p>ImpEx separates Import and Export in 2 steps using the ImpEx Dashboard screen.</p>
+<p><img src="./impex-screenshot.png" alt="ImpEx Dashboard screen" /></p>
+<h2 id="export"><a class="header" href="#export">Export</a></h2>
+<ul>
+<li>
+<p>You need to create a snapshot first.</p>
+<p>The snapshot will contain the current data (defined by the used <a href="explanation-of-terms.html#profile">ImpEx profile</a>) of the WordPress instance.</p>
+</li>
+<li>
+<p>Now you can download the snapshot to your local machine.</p>
+</li>
+</ul>
+<h2 id="import"><a class="header" href="#import">Import</a></h2>
+<ul>
+<li>
+<p>Upload snapshot from your local machine to the WordPress instance.</p>
+<p>Uploading does not modify your current WordPress contents.</p>
+</li>
+<li>
+<p>If you now import the snapshot, the contents of your WordPress instance will be updated with the snapshot data.</p>
+</li>
+</ul>
+<blockquote>
+<p>Using the <a href="./impex-cli.html">impex-cli</a> command line tool will combine both steps in one. You just export or import a local directory containing the snapshot in <a href="./migrating-content.html#preparation">ImpEx Export Format</a>. <a href="./impex-cli.html">impex-cli</a> manages the temporary snapshot handling for you.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="impex-cli.html#cli">CLI</a></li>
+<li><a href="impex-cli.html#prerequisites">Prerequisites</a>
+<ul>
+<li><a href="impex-cli.html#installation">Installation</a></li>
+<li><a href="impex-cli.html#syntax">Syntax</a></li>
+<li><a href="impex-cli.html#common-options-and-flags">Common options and flags</a>
+<ul>
+<li><a href="impex-cli.html#options">Options</a>
+<ul>
+<li><a href="impex-cli.html#rest-url"><code>rest-url</code></a></li>
+<li><a href="impex-cli.html#username-and-password"><code>username</code> and <code>password</code></a></li>
+<li><a href="impex-cli.html#http-headers">HTTP Headers</a></li>
+</ul>
+</li>
+<li><a href="impex-cli.html#flags">Flags</a>
+<ul>
+<li><a href="impex-cli.html#verbose"><code>verbose</code></a></li>
+<li><a href="impex-cli.html#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="impex-cli.html#authentication">Authentication</a></li>
+<li><a href="impex-cli.html#operations">Operations</a>
+<ul>
+<li><a href="impex-cli.html#export"><code>export</code></a>
+<ul>
+<li><a href="impex-cli.html#profile-option"><code>profile</code> option</a></li>
+<li><a href="impex-cli.html#overwrite-flag"><code>overwrite</code> flag</a></li>
+<li><a href="impex-cli.html#directory-argument"><code>directory</code> argument</a></li>
+</ul>
+</li>
+<li><a href="impex-cli.html#import"><code>import</code></a>
+<ul>
+<li><a href="impex-cli.html#profile-option-1"><code>profile</code> option</a></li>
+<li><a href="impex-cli.html#directory-argument-1"><code>directory</code> argument</a></li>
+<li><a href="impex-cli.html#options-argument"><code>options</code> argument</a></li>
+</ul>
+</li>
+<li><a href="impex-cli.html#export-profiles"><code>export-profiles</code></a>
+<ul>
+<li><a href="impex-cli.html#list"><code>list</code></a></li>
+</ul>
+</li>
+<li><a href="impex-cli.html#import-profiles"><code>import-profiles</code></a>
+<ul>
+<li><a href="impex-cli.html#list-1"><code>list</code></a></li>
+</ul>
+</li>
+<li><a href="impex-cli.html#help"><code>help</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="cli"><a class="header" href="#cli">CLI</a></h1>
+<p>ImpEx provides a command-line tool to interact with the ImpEx plugin remotely using WordPress HTTP REST API.</p>
+<p>Using this tool you can import and export data from and to a remote WordPress installation.</p>
+<blockquote>
+<p>impex-cli works also fine at <em>most</em> managed WordPress installations since it does not need direct WordPress access like <a href="https://wp-cli.org/">wp-cli</a>.</p>
+</blockquote>
+<h1 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h1>
+<p>ImpEx CLI requires PHP 7.4 or higher and the <code>php-curl</code> extension.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>ImpEx CLI is available at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/releases/latest">ImpEx release page</a>.</p>
+<p>Download the 'ImpEx CLI' archive and extract its contents.</p>
+<p>The ImpEx CLI is provided in 2 flavors :</p>
+<ul>
+<li>
+<p><code>impex-cli.php</code> needs at least PHP 8.0</p>
+</li>
+<li>
+<p><code>impex-cli-php7.4.0.php</code> is transpiled to be PHP 7.4 compatible</p>
+</li>
+</ul>
+<blockquote>
+<p>Linux/MacOS Users may mark the impex-cli files as executable by running <code>chmod +x *.php</code> for better usability.</p>
+</blockquote>
+<p>If you do not have the right PHP version installed on your machine but want to play with the ImpEx CLI you can give the official PHP Docker image a try
+<em>(Assuming your working dir contains the extracted impex-cli php files and impex-cli options needs to be adjusted to your needs)</em> :</p>
+<p>Using the official PHP 7.4 Docker image :</p>
+<pre><code class="language-sh">docker run \
+  -it \
+  --network host \
+  --rm \
+  -v &quot;$PWD&quot;:/usr/src/myapp \
+  --workdir /usr/src/myapp \
+  php:7.4-cli \
+  php \
+  impex-cli-php7.4.0.php \
+    export-profile \
+    list \
+    -username=&lt;adminuser&gt; \
+    -password=&lt;password&gt; \
+    -rest-url=http://localhost:8888/wp-json
+</code></pre>
+<p>Alternatively using the PHP 8.0 image:</p>
+<pre><code class="language-sh">docker run \
+  -it \
+  --network host \
+  --rm \
+  -v &quot;$PWD&quot;:/usr/src/myapp \
+  --workdir /usr/src/myapp \
+  php:8.0-cli \
+  php \
+    impex-cli.php \
+    export-profile \
+    list \
+    -username=&lt;adminuser&gt; \
+    -password=&lt;password&gt; \
+    -rest-url=http://localhost:8888/wp-json
+</code></pre>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
+<p>impex-cli.php <code>operation</code> <code>sub-operation?</code> <code>-rest-url=[wordpress-restapi-url]</code> [options] [arguments]?</p>
+<h2 id="common-options-and-flags"><a class="header" href="#common-options-and-flags">Common options and flags</a></h2>
+<p>Some of the impex-cli options are common to all operations.</p>
+<h3 id="options"><a class="header" href="#options">Options</a></h3>
+<p>Options are command-line arguments consisting of key and value.</p>
+<p>The value can be wrapped within <code>&quot;</code> or <code>'</code>.</p>
+<h4 id="rest-url"><a class="header" href="#rest-url"><code>rest-url</code></a></h4>
+<p>The <code>rest-url</code> option as <strong>always required for all impex-cli operations (except <code>help</code>)</strong> since it specifies the remote WordPress installation to interact with.</p>
+<p>A typical <code>rest-url</code> value in a <a href="https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/">wp-env development environment</a> is <code>http://example.com/wp-json/</code>.</p>
+<blockquote>
+<p>Please ensure that the remote WordPress installation has the REST API enabled. Otherwise impex-cli is unable to communicate with the installation.</p>
+</blockquote>
+<h4 id="username-and-password"><a class="header" href="#username-and-password"><code>username</code> and <code>password</code></a></h4>
+<p>If you can access your WordPress installation using <code>username</code> and <code>password</code> credentials via HTTP Basic Auth, you can use the <code>--username</code> and <code>--password</code> options to specify them.</p>
+<p>Example:</p>
+<pre><code class="language-sh">impex-cli.php export-profile \
+  -username=&lt;adminuser&gt; \
+  -password='&lt;password&gt;' \
+  -rest-url=http://example.com/wp-json
+</code></pre>
+<blockquote>
+<p>By providing the credentials via <code>username</code> and <code>password</code> options impex-cli will authenticate against the remote WordPress installation using the HTTP BASIC AUTH method.</p>
+</blockquote>
+<h4 id="http-headers"><a class="header" href="#http-headers">HTTP Headers</a></h4>
+<p>You can provide as many HTTP headers as you like to impex-cli. All HTTP headers are passed to every request as is.</p>
+<p>Example:</p>
+<pre><code class="language-sh">impex-cli.php export-profile \
+  -H=&quot;X-foo=bar&quot; \
+  -H=&quot;X-myrealm=cheers&quot; \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://example.com/wp-json
+</code></pre>
+<h3 id="flags"><a class="header" href="#flags">Flags</a></h3>
+<p>Flags are command-line arguments consisting of just a name.</p>
+<h4 id="verbose"><a class="header" href="#verbose"><code>verbose</code></a></h4>
+<p>Enable verbose log output.</p>
+<p>Example:</p>
+<pre><code class="language-sh">impex-cli.php export-profile \
+  -verbose \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://example.com/wp-json
+</code></pre>
+<h4 id="curlopt_verbose"><a class="header" href="#curlopt_verbose"><code>CURLOPT_VERBOSE</code></a></h4>
+<p>Enable verbose CURL output.</p>
+<blockquote>
+<p>This flag will result in a lot of output and is therefore not recommended for normal use.</p>
+</blockquote>
+<p>Example:</p>
+<pre><code class="language-sh">impex-cli.php export-profile \
+  -CURLOPT_VERBOSE \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://example.com/wp-json
+</code></pre>
+<h2 id="authentication"><a class="header" href="#authentication">Authentication</a></h2>
+<p>If your WordPress installation does not use HTTP Basic Auth, you need to authenticate using HTTP headers.</p>
+<p>Since impex-cli supports additional header options you're a lucky winner.</p>
+<p>Example (doing HTTP Basic Auth using plain HTTP headers):</p>
+<pre><code class="language-sh">impex-cli.php export-profile \
+  -H='Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
+  -rest-url=http://example.com/wp-json
+</code></pre>
+<h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
+<h3 id="export-1"><a class="header" href="#export-1"><code>export</code></a></h3>
+<p>The <code>export</code> operation exports and downloads data using the ImpEx plugin of the WordPress installation.</p>
+<p>A ImpEx export results in a directory structure containing</p>
+<ul>
+<li>
+<p>JSON Files for structured data</p>
+<p>WordPress content will be stored in plain JSON files called <a href="explanation-of-terms.html#slice">slices</a>. <em>This gives you also the option to transform the content locally before re-importing them somewhere else.</em></p>
+</li>
+<li>
+<p>Blobs for attachments/media</p>
+<p>Attachments and media will be saved &quot;as is&quot; to the local filesystem. So if you have a <code>jpg</code> attachment in your WordPress installation it gets exported also as a <code>jpg</code> file beside its <a href="explanation-of-terms.html#slice">slice</a>.</p>
+</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-sh">impex-cli.php export \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://localhost:8888/wp-json \
+  -overwrite \
+  -profile=base \
+  ~/tmp
+</code></pre>
+<p>After execution the target directory contains a new directory with the exported data:</p>
+<pre><code>export-cm4all-wordpress-created-
+├── chunk-0001
+│   ├── slice-0000.json
+│   ├── slice-0001.json
+│   ├── slice-0001-logo-fabrics.png
+│   ├── slice-0002-johny-goerend-ou-GkKJm3fc-unsplash.jpg
+│   ├── slice-0002.json
+│   └── slice-0003.json
+...
+├── chunk-0006
+│   ├── slice-0000.json
+│   ├── slice-0001.json
+│   ├── slice-0002.json
+│   ├── slice-0003.json
+│   ├── slice-0004.json
+│   ├── slice-0005.json
+│   ├── slice-0006.json
+│   ├── slice-0007.json
+│   ├── slice-0008.json
+│   └── slice-0009.json
+└── chunk-0007
+    ├── slice-0000.json
+    └── slice-0001.json
+</code></pre>
+<blockquote>
+<p>All export data files are split over <code>chunk-*</code> directories) to prevent getting a single directory containing too much files slowing down file
+managers like Windows Explorer.</p>
+</blockquote>
+<h4 id="profile-option"><a class="header" href="#profile-option"><code>profile</code> option</a></h4>
+<p>An ImpEx export profile defines what data should be exported.</p>
+<blockquote>
+<p>To get a list of available ImpEx export profiles see impex-cli operation <a href="impex-cli.html#export-profiles"><code>export-profiles</code></a></p>
+</blockquote>
+<p>You will usually use the predefined 'base' export profile exporting pages/posts/attachments and all FSE data like templates/reusable blocks and stuff.</p>
+<h4 id="overwrite-flag"><a class="header" href="#overwrite-flag"><code>overwrite</code> flag</a></h4>
+<p>The export operation will abort in case of an existing ImpEx export directory. Using the <code>overwrite</code> flag you can force deletion of the existing directory before export.</p>
+<h4 id="directory-argument"><a class="header" href="#directory-argument"><code>directory</code> argument</a></h4>
+<p>The <code>directory</code> argument specifies the export target directory.
+The <code>export</code> operation will create a top-level directory in the specified directory and stores everything else in <a href="explanation-of-terms.html#chunk">chunk</a> subdirectories.</p>
+<h3 id="import-1"><a class="header" href="#import-1"><code>import</code></a></h3>
+<p>The <code>import</code> operation imports an ImpEx export from the specified directory into the remote WordPress installation.</p>
+<p>Example usage:</p>
+<pre><code class="language-sh">impex-cli.php import \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://localhost:8888/wp-json \
+  -options='{&quot;impex-import-option-cleanup_contents&quot; : true}'
+  ~/tmp/my-export
+</code></pre>
+<p>This snippet will </p>
+<ul>
+<li>upload the whole exported data in the directory </li>
+<li>import them using the <code>all</code> profile at the WordPress installation.
+<ul>
+<li>the <code>impex-import-option-cleanup_contents</code> option will cleanup existing post, page, media, block pattern, nav_menu and reusable block items right before starting the import.</li>
+</ul>
+</li>
+</ul>
+<h4 id="profile-option-1"><a class="header" href="#profile-option-1"><code>profile</code> option</a></h4>
+<p>An ImpEx import profile defines what data should be imported. If not provided, the import will fallback to default import profile <code>all</code>.</p>
+<blockquote>
+<p>To get a list of available ImpEx import profiles see impex-cli operation <a href="impex-cli.html#export-profiles"><code>import-profiles</code></a></p>
+</blockquote>
+<h4 id="directory-argument-1"><a class="header" href="#directory-argument-1"><code>directory</code> argument</a></h4>
+<p>The <code>directory</code> argument specifies the directory where the import data resides.</p>
+<blockquote>
+<p>The directory argument takes the directory path created by the <code>export</code> operation.</p>
+</blockquote>
+<h4 id="options-argument"><a class="header" href="#options-argument"><code>options</code> argument</a></h4>
+<p>The <code>options</code> argument let's you provide ImpEx import options. The <code>options</code> value is expected to be an associative JSON object. </p>
+<p>Valid options are : </p>
+<ul>
+<li>
+<p><code>impex-import-option-cleanup_contents</code></p>
+<p>You may want to cleanup your WordPress content right before import. That's what the <code>impex-import-option-cleanup_contents</code> option is made for. If this option is set to <code>true</code> ImpEx will remove any </p>
+<ul>
+<li>post</li>
+<li>page </li>
+<li>media</li>
+<li>block pattern</li>
+<li>nav_menu</li>
+<li>reusable block </li>
+</ul>
+<p>item right before starting the import.</p>
+</li>
+</ul>
+<h3 id="export-profiles"><a class="header" href="#export-profiles"><code>export-profiles</code></a></h3>
+<h4 id="list"><a class="header" href="#list"><code>list</code></a></h4>
+<p>Lists all available export profiles in JSON format.</p>
+<p>Example usage:</p>
+<pre><code>impex-cli.php \
+  export-profile \
+  list \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://localhost:8888/wp-json
+</code></pre>
+<p>Example output (<em>may vary for your installation</em>):</p>
+<pre><code class="language-json">[
+  {
+    &quot;name&quot;: &quot;base&quot;,
+    &quot;description&quot;: &quot;Exports posts/pages including media assets&quot;
+  },
+  {
+    &quot;name&quot;: &quot;cm4all-wordpress&quot;,
+    &quot;description&quot;: &quot;Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic] if these plugins are enabled&quot;
+  },
+  {
+    &quot;name&quot;: &quot;impex-export-profile-example&quot;,
+    &quot;description&quot;: &quot;Exports posts/pages/media-assets and plugin data of [cm4all-wordpress,complianz-gdpr,ninja-forms,ultimate-maps-by-supsystic] if these plugins are enabled&quot;
+  }
+]
+</code></pre>
+<h3 id="import-profiles"><a class="header" href="#import-profiles"><code>import-profiles</code></a></h3>
+<h4 id="list-1"><a class="header" href="#list-1"><code>list</code></a></h4>
+<p>Lists all available import profiles in JSON format.</p>
+<p>Example usage:</p>
+<pre><code class="language-sh">impex-cli.php \
+  import-profile \
+  list \
+  -username=&lt;adminuser&gt; -password='&lt;password&gt;' \
+  -rest-url=http://localhost:8888/wp-json
+</code></pre>
+<p>Example output (<em>may vary for your installation</em>):</p>
+<pre><code class="language-json">[
+  {
+    &quot;name&quot;: &quot;all&quot;,
+    &quot;description&quot;: &quot;Import everything&quot;
+  },
+  {
+    &quot;name&quot;: &quot;impex-import-profile-example&quot;,
+    &quot;description&quot;: &quot;Import everything example with event listener&quot;
+  }
+]
+</code></pre>
+<h3 id="help"><a class="header" href="#help"><code>help</code></a></h3>
+<p>Prints the impex-cli help.</p>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="migrating-content.html#migrating-content">Migrating content</a>
+<ul>
+<li><a href="migrating-content.html#preparation">Preparation</a></li>
+<li><a href="migrating-content.html#data-files">Data files</a>
+<ul>
+<li><a href="migrating-content.html#content-aka-wordpress-postspages">Content (aka WordPress posts/pages)</a></li>
+<li><a href="migrating-content.html#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a>
+<ul>
+<li><a href="migrating-content.html#adjusting-attachment-urls">Adjusting attachment urls</a></li>
+</ul>
+</li>
+<li><a href="migrating-content.html#other-data">Other data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="migrating-content"><a class="header" href="#migrating-content">Migrating content</a></h1>
+<p>Migrating existing content into WordPress is a very common task.</p>
+<p>ImpEx provides tooling support for migrating data to WordPress.</p>
+<h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
+<p>ImpEx imports data from a directory containing JSON files organized in <code>chunk-\*</code> sub-directories.</p>
+<pre><code>my-exported-website
+├── chunk-0001
+│   ├── slice-0001.json
+│   ├── slice-0002.json
+│   ├── slice-0003.json
+│   ├── slice-0004.json
+│   └── slice-0005.json
+├── chunk-0002
+│   ├── slice-0001.json
+│   ├── slice-0001-wes-walker-unsplash.jpg
+│   ├── slice-0002-greysen-johnson-unsplash.jpg
+│   ├── slice-0002.json
+│   ├── slice-0003-james-wheeler-unsplash.jpg
+│   └── slice-0003.json
+...
+</code></pre>
+<blockquote>
+<p>Why that <em>chunk-*</em> sub directory structure ?</p>
+<p>Organizing thousands of content documents and hundreds of images/videos in a single directory slows down file managers like Windows Explorer. That's the one and only reason for <code>chunk-\*</code> sub directories.</p>
+</blockquote>
+<p>Both <em>chunk-*</em> sub directories and the JSON files are suffixed by a 4 digit number.</p>
+<p>ImpEx imports slice files ordered by name. So the slices in sub directory <code>chunk-0001</code> will be imported first, then the slices in <code>chunk-0002</code> and so on.</p>
+<p>Same rule for <code>slice-*.json</code> files within the same <code>chunk-\*</code> sub directory : <code>slice-0001.json</code> will be imported before <code>slice-0002.json</code> and so on.</p>
+<blockquote>
+<p>Knowing that import order is important. If you import content referencing images/videos in the wrong order, you will get broken links in your posts. ImpEx will rewrite/fix media links in the content if you <strong>import content as first and media afterwards.</strong></p>
+</blockquote>
+<p>Have a look at this <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import">sample ImpEx export</a> provided by the ImpEx plugin to get a clue about a minimal working ImpEx export containing content and referencing images.</p>
+<h2 id="data-files"><a class="header" href="#data-files">Data files</a></h2>
+<p><code>slice-*.json</code> files are JSON files containing data.</p>
+<p>The real data is stored in the <code>data</code> property.</p>
+<p>The data might be anything expressed in textual form. Beside the data itself, each <code>slice-*.json</code> file contains some meta-data describing the contained data so that ImpEx knows how to import.</p>
+<p>An minimal slice file transporting a single WordPress post looks like this:</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;php&quot;,
+  &quot;tag&quot;: &quot;content-exporter&quot;,
+  &quot;meta&quot;: {
+    &quot;entity&quot;: &quot;content-exporter&quot;
+  },
+  &quot;data&quot;: {
+    &quot;posts&quot;: [
+      {
+        &quot;wp:post_id&quot;: 1,
+        &quot;wp:post_content&quot;: &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello from first imported post !&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;&quot;,
+        &quot;title&quot;: &quot;Hello first post!&quot;
+      }
+    ]
+  }
+}
+</code></pre>
+<p>As you can see the real content is located in the <code>data</code> property.</p>
+<p>Everything except the <code>data</code> property ist used for versioning and content identification.</p>
+<h3 id="content-aka-wordpress-postspages"><a class="header" href="#content-aka-wordpress-postspages">Content (aka WordPress posts/pages)</a></h3>
+<p>Content slice files wrap regular WordPress <em>posts</em> and <em>pages</em>.</p>
+<p>Content slices may also transport further content like comments, custom fields, terms, taxonomies, categories, FSE templates/template-parts, global styles and so on. But that's another story.</p>
+<blockquote>
+<p>To get a clue about the power of content slices by exporting a FSE enabled WordPress instance and inspecting the resulting <code>slice-_.json</code> files.</p>
+</blockquote>
+<p>Below is the <a href="https://json-schema.org/">JSON Schema</a> describing the content slice file format.</p>
+<p>Download <a href="https://json-schema.org/">JSON Schema</a> definition for content slices : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">slice-content.json</a></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema&quot;,
+  &quot;title&quot;: &quot;ImpEx Content Slice&quot;,
+  &quot;description&quot;: &quot;a ImpEx slice containing content&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;$schema&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;The JSON schema for this slice&quot;
+    },
+    &quot;version&quot;: {
+      &quot;title&quot;: &quot;ImpEx Provider content version&quot;,
+      &quot;description&quot;: &quot;Version will be used by ImpEx to know what data format to expect&quot;,
+      &quot;const&quot;: &quot;1.0.0&quot;
+    },
+    &quot;type&quot;: {
+      &quot;title&quot;: &quot;ImpEx slice type&quot;,
+      &quot;description&quot;: &quot;Value will be used by ImpEx to know the content type of the slice&quot;,
+      &quot;const&quot;: &quot;php&quot;
+    },
+    &quot;tag&quot;: {
+      &quot;title&quot;: &quot;ImpEx slice tag&quot;,
+      &quot;description&quot;: &quot;The ImpEx slice tag contains information about the responsible ImpEx provider for this slice&quot;,
+      &quot;const&quot;: &quot;content-exporter&quot;
+    },
+    &quot;meta&quot;: {
+      &quot;title&quot;: &quot;Metadata for the slice&quot;,
+      &quot;description&quot;: &quot;Metadata is a JSON object used to store additional information about the slice&quot;,
+      &quot;const&quot;: {
+        &quot;entity&quot;: &quot;content-exporter&quot;
+      }
+    },
+    &quot;data&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;posts&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/posts-item&quot;
+          },
+          &quot;minItems&quot;: 1,
+          &quot;$comment&quot;: &quot;@TODO: unique ids are not yet supported by jsonschema&quot;,
+          &quot;uniqueItems&quot;: true
+        }
+      },
+      &quot;title&quot;: &quot;Data portion of this ImpEx slice&quot;,
+      &quot;description&quot;: &quot;data contains the real ImpEx data.&quot;,
+      &quot;required&quot;: [&quot;posts&quot;]
+    }
+  },
+  &quot;additionalProperties&quot;: false,
+  &quot;required&quot;: [&quot;version&quot;, &quot;type&quot;, &quot;tag&quot;, &quot;meta&quot;, &quot;data&quot;],
+  &quot;definitions&quot;: {
+    &quot;posts-item&quot;: {
+      &quot;title&quot;: &quot;WordPress posts stored in this this ImpEx slice&quot;,
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;wp:post_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;minimum&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post_id&quot;,
+          &quot;description&quot;: &quot;The unique WordPress post id of the post&quot;
+        },
+        &quot;title&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;minLength&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post title&quot;,
+          &quot;description&quot;: &quot;The title of the WordPress post as it is stored in the database&quot;
+        },
+        &quot;wp:post_content&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;minLength&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post content&quot;,
+          &quot;description&quot;: &quot;The content of the WordPress post&quot;,
+          &quot;examples&quot;: [
+            &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello from first imported post !&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;&quot;,
+            &quot;&lt;!-- wp:paragraph --&gt;\n&lt;p&gt;Hello world&lt;/p&gt;\n&lt;!-- /wp:paragraph --&gt;\n\n&lt;!-- wp:html --&gt;\n&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;\n&lt;ul&gt;\n  &lt;li&gt;hi&lt;/li&gt;\n  &lt;li&gt;ho&lt;/li&gt;\n  &lt;li&gt;howdy&lt;/li&gt;\n&lt;/ul&gt;&lt;!-- /wp:html --&gt;&quot;
+          ]
+        },
+        &quot;wp:post_type&quot;: {
+          &quot;title&quot;: &quot;WordPress post type&quot;,
+          &quot;description&quot;: &quot;The type of the WordPress post.\nCcontent related post types are 'post' and 'page'.\nIf not declared, type 'post' will be assumed.&quot;,
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;post&quot;,
+            &quot;page&quot;,
+            &quot;nav_menu_item&quot;,
+            &quot;wp_template&quot;,
+            &quot;wp_template_part&quot;,
+            &quot;wp_block&quot;,
+            &quot;wp_global_styles&quot;
+          ],
+          &quot;default&quot;: &quot;page&quot;
+        },
+        &quot;wp:status&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;title&quot;: &quot;WordPress post status&quot;,
+          &quot;description&quot;: &quot;The WordPress post status (https://wordpress.org/support/article/post-status/)&quot;,
+          &quot;enum&quot;: [&quot;publish&quot;, &quot;future&quot;, &quot;draft&quot;, &quot;pending&quot;, &quot;private&quot;],
+          &quot;default&quot;: &quot;draft&quot;
+        },
+        &quot;wp:post_excerpt&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;title&quot;: &quot;WordPress excerpt&quot;,
+          &quot;description&quot;: &quot;The excerpt of the post.&quot;,
+          &quot;minLength&quot;: 1
+        },
+        &quot;wp:post_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;title&quot;: &quot;WordPress post slug&quot;,
+          &quot;description&quot;: &quot;Used to generate the permalink. If not given, the sanitized post title will be used instead.&quot;,
+          &quot;minLength&quot;: 1
+        },
+        &quot;wp:post_parent&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;minimum&quot;: 1,
+          &quot;title&quot;: &quot;WordPress post parent id&quot;,
+          &quot;description&quot;: &quot;The WordPress post id of the parent post.\n If not given, the post will be created as a top level post.&quot;
+        }
+      },
+      &quot;required&quot;: [&quot;wp:post_id&quot;, &quot;title&quot;, &quot;wp:post_content&quot;],
+      &quot;additionalProperties&quot;: false
+    }
+  }
+}
+</code></pre>
+<p>A content slice may contain any number of WordPress posts/pages/etc.</p>
+<blockquote>
+<p>When generating a content slice file, it's best to embed only a single page/post per <code>slice-_.json</code> file</p>
+</blockquote>
+<p>Each content document is identified by a unique <code>wp:post_id</code> property.</p>
+<p>The <code>title</code> property is used as the title.</p>
+<p><code>wp:post_content</code> transports the content.</p>
+<p><em>See the Content slice <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">JSONSchema definition</a> for all supported properties.</em></p>
+<p>Since WordPress expects <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">block-annotated HTML</a> you need to transform your HTML content into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">block-annotated HTML</a>.</p>
+<p>There are 2 options to do that :</p>
+<ul>
+<li>
+<p><strong>The gold solution</strong> : annotate almost every HTML tag with the matching <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Gutenberg block</a>.</p>
+<pre><code class="language-html">&lt;!-- wp:paragraph --&gt;
+&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;
+&lt;!-- /wp:paragraph --&gt;
+
+&lt;!-- wp:list --&gt;
+&lt;ul&gt;
+  &lt;li&gt;hi&lt;/li&gt;
+  &lt;li&gt;ho&lt;/li&gt;
+  &lt;li&gt;howdy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- /wp:list --&gt;
+
+&lt;!-- wp:image --&gt;
+&lt;figure class=&quot;wp-block-image&quot;&gt;
+  &lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+  &lt;figcaption&gt;Fly fishing&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- /wp:image --&gt;
+</code></pre>
+</li>
+<li>
+<p>the quick and dirty solution : wrap the whole html content into a WordPress <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Custom HTML block</a> :</p>
+<pre><code class="language-html">&lt;!-- wp:html --&gt;
+&lt;p&gt;A bit of custom html utilizing the Gutenberg html block&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;hi&lt;/li&gt;
+  &lt;li&gt;ho&lt;/li&gt;
+  &lt;li&gt;howdy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+  &lt;figcaption&gt;Fly fishing&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- /wp:html --&gt;
+</code></pre>
+<p><em>Why is this solution dirty ?</em></p>
+<p><em>=&gt; If you open up a page/post containing a - the quick and dirty solution : wrap the whole html content into a WordPress <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/">Custom HTML block</a> in the Gutenberg editor, you will see just the HTML content but its not rendered</em>. So the quick and dirty solution is actually a no-go from a designers perspective.</p>
+</li>
+</ul>
+<p>The HTML content must be encoded as JSON string in the slice file. See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/impex-cli/tests/fixtures/simple-import/chunk-0001/slice-0005.json">this example content slice</a>.</p>
+<p>See <a href="migrating-content.html#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a> for importing referenced media files.</p>
+<h3 id="attachments-like-pictures-and-videos"><a class="header" href="#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a></h3>
+<p>Attachments a binary files like images/videos or anything else stored in the WordPress <code>uploads</code> directory.</p>
+<p>Such binary data is handled a bit differently than textual - because it cannot be easily embedded into a JSON file.</p>
+<p>Below is a <a href="https://json-schema.org/">JSON Schema</a> describing the attachment slice file format.</p>
+<p>Download <a href="https://json-schema.org/">JSON Schema</a> definition for media files : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema/slice-content.json">slice-attachment.json</a></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema&quot;,
+  &quot;title&quot;: &quot;ImpEx Content Slice&quot;,
+  &quot;description&quot;: &quot;a ImpEx slice containing content&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;$schema&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;The JSON schema for this slice&quot;
+    },
+    &quot;version&quot;: {
+      &quot;title&quot;: &quot;ImpEx Provider content version&quot;,
+      &quot;description&quot;: &quot;Version will be used by ImpEx to know what data format to expect&quot;,
+      &quot;const&quot;: &quot;1.0.0&quot;
+    },
+    &quot;type&quot;: {
+      &quot;title&quot;: &quot;ImpEx slice type&quot;,
+      &quot;description&quot;: &quot;Value will be used by ImpEx to know the content type of the slice&quot;,
+      &quot;const&quot;: &quot;php&quot;
+    },
+    &quot;tag&quot;: {
+      &quot;title&quot;: &quot;ImpEx slice tag&quot;,
+      &quot;description&quot;: &quot;The ImpEx slice tag contains information about the responsible ImpEx provider for this slice&quot;,
+      &quot;const&quot;: &quot;attachment&quot;
+    },
+    &quot;meta&quot;: {
+      &quot;title&quot;: &quot;Metadata for the slice&quot;,
+      &quot;description&quot;: &quot;Metadata is a JSON object used to store additional information about the slice&quot;,
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;entity&quot;: {
+          &quot;title&quot;: &quot;Entity&quot;,
+          &quot;description&quot;: &quot;The entity type of this slice&quot;,
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;attachment&quot;,
+          &quot;enum&quot;: [&quot;attachment&quot;]
+        },
+        &quot;impex:post-references&quot;: {
+          &quot;title&quot;: &quot;Array of urls referencing this attachment in posts&quot;,
+          &quot;description&quot;: &quot;When the attachment was imported, all references in this array will be replaces by the url of the imported attachment&quot;,
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;minItems&quot;: 1,
+          &quot;$comment&quot;: &quot;@TODO: unique ids are not yet supported by jsonschema&quot;,
+          &quot;uniqueItems&quot;: true
+        }
+      }
+    },
+    &quot;data&quot;: {
+      &quot;format&quot;: &quot;uri-template&quot;,
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;title&quot;: &quot;Data portion of this ImpEx slice&quot;,
+      &quot;description&quot;: &quot;Attachment slice data is expected to be a URI to the attachment file.\nFor media it has to be the URI to the image.\nURI can be absolute or relative.&quot;,
+      &quot;examples&quot;: [
+        &quot;./media/image.jpg&quot;,
+        &quot;https://www.example.com/attachment.jpg&quot;
+      ]
+    }
+  },
+  &quot;additionalProperties&quot;: false,
+  &quot;required&quot;: [&quot;version&quot;, &quot;type&quot;, &quot;tag&quot;, &quot;meta&quot;, &quot;data&quot;]
+}
+</code></pre>
+<p>Let's say you have a reference to an image in your content :</p>
+<pre><code class="language-html">&lt;img src=&quot;./greysen-johnson-unsplash.jpg&quot; /&gt;
+</code></pre>
+<p>So you need to import the image into your WordPress instance. To do so, you need to</p>
+<ul>
+<li>
+<p>create a <code>slice-*json</code> file (let's name it <code>slice-0002.json</code>) declaring the attachment :</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;resource&quot;,
+  &quot;tag&quot;: &quot;attachment&quot;,
+  &quot;meta&quot;: {
+    &quot;entity&quot;: &quot;attachment&quot;
+  },
+  &quot;data&quot;: &quot;./greysen-johnson-unsplash.jpg&quot;
+}
+</code></pre>
+<p>As you can see, there is actually only the <code>data</code> property referencing the image. Rest of the slice file is just meta-data.</p>
+</li>
+<li>
+<p>provide the image in the same chunk directory as it's slice json file and <strong>prefixed</strong> with the slice json file name (<code>slice-0002.json</code>) :</p>
+<pre><code>slice-0002-greysen-johnson-unsplash.jpg
+</code></pre>
+</li>
+</ul>
+<p>If you import the slice file using ImpEx, the image will appear in the WordPress <code>uploads</code> directory and in the WordPress media page. If you referenced the image in your content, it will also appear in your imported pages/posts.</p>
+<blockquote>
+<p>Remember: Content slices referencing media files should <strong>ALWAYS</strong> be imported <strong>before</strong> the attachment slices.</p>
+<p>This can be achieved by naming content slicing with a lower number than the media slices or - much simpler - keeping the content slices in a lower numbered <code>chunk-*</code> directory than the attachments.</p>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/impex-cli/tests/fixtures/simple-import">simple-import</a> example for a full featured manually written import at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin GitHub repository</a>.</p>
+</blockquote>
+<h4 id="adjusting-attachment-urls"><a class="header" href="#adjusting-attachment-urls">Adjusting attachment urls</a></h4>
+<p>If you import posts referencing an image using relative paths, you will need to adjust the image url in your imported posts to the newly imported attachment.</p>
+<p>Suppose you have various posts referencing an image in different ways :</p>
+<pre><code class="language-html">&lt;!-- sub/page-one.html --&gt;
+...
+&lt;img src=&quot;../images/greysen-johnson-unsplash.jpg&quot; /&gt;
+
+&lt;!-- page-two.html --&gt;
+...
+&lt;img src=&quot;/images/greysen-johnson-unsplash.jpg&quot; /&gt;
+
+&lt;!-- page-tree.html --&gt;
+...
+&lt;img src=&quot;./images/greysen-johnson-unsplash.jpg&quot; /&gt;
+</code></pre>
+<p>After importing generated pages will reference exactly the same IMG <code>src</code> attribute, but the url of the imported image attachment will be different.</p>
+<p>In this case you can configure replacing the original with the url of the imported image using slice <code>meta</code> property <code>impex:post-references</code>. This property tells ImpEx that the given references should be replaced with the url of the imported attachment file.</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;resource&quot;,
+  &quot;tag&quot;: &quot;attachment&quot;,
+  &quot;meta&quot;: {
+    &quot;entity&quot;: &quot;attachment&quot;,
+    &quot;impex:post-references&quot;: [
+      &quot;../images/greysen-johnson-unsplash.jpg&quot;,
+      &quot;./images/greysen-johnson-unsplash.jpg&quot;
+      &quot;/images/greysen-johnson-unsplash.jpg&quot;,
+    ]
+  },
+  &quot;data&quot;: &quot;./greysen-johnson-unsplash.jpg&quot;
+}
+</code></pre>
+<h3 id="other-data"><a class="header" href="#other-data">Other data</a></h3>
+<p>Although ImpEx provides a simple way to import content and media, you may also want to import more advanced data like database tables or settings into WordPress.</p>
+<p>ImpEx provides built-in support for further data :</p>
+<ul>
+<li>
+<p>relational data like database tables</p>
+</li>
+<li>
+<p>key/value based settings (aka <code>wp_options</code>)</p>
+</li>
+</ul>
+<p>@TODO: Add JSONSchema / examples for other data.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="package-cm4all-wp-impexgenerator"><a class="header" href="#package-cm4all-wp-impexgenerator">Package <code>@cm4all-wp-impex/generator</code></a></h1>
+<p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> simplifies the conversion of any content or website to WordPress using <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress Plugin</a>.</p>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#details">Details</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#installation">Installation</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#development">Development</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#tests">tests</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#requirements">requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="cm4all-wp-impex-generator/index.html#usage">Usage</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#api">API</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#transforming-data-into-wordpress-content">Transforming data into WordPress content</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#impextransformersetup-options-"><code>ImpexTransformer.setup({/* options */})</code></a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#impextransformertransformdata--any--string"><code>ImpexTransformer.transform(data : any) : string</code></a></li>
+</ul>
+</li>
+<li><a href="cm4all-wp-impex-generator/index.html#encapsulate-gutenberg-block-annotated-html-in-impex-slice-json-data-structure">Encapsulate Gutenberg block annotated HTML in ImpEx slice JSON data structure</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#encapsulate-wordpress-content-into-impex-json">Encapsulate WordPress content into ImpEx JSON</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#encapsulate-wordpress-attachments-like-images-into-impex-json">Encapsulate WordPress attachments like images into ImpEx JSON</a></li>
+</ul>
+</li>
+<li><a href="cm4all-wp-impex-generator/index.html#generate-filenames-for-the-json-slice-data-in-impex-export-format">Generate filenames for the JSON slice data in ImpEx Export format</a></li>
+<li><a href="cm4all-wp-impex-generator/index.html#migrate-existing-impex-export">Migrate existing ImpEx export</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/index.html#example-migrate-usage">Example <code>migrate</code> usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>This package provides a foundation of JavaScript functions/classes for transforming almost any kind of data into WordPress content.</p>
+<p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> is especially useful for converting bare HTML content and website-builder/CMS generated HTML into WordPress content.</p>
+<p>The framework does not require a WordPress instance. It rather offers an extensible platform for generating WordPress content consumable by the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a>.</p>
+<blockquote>
+<p><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx</a> is a <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">Open Source WordPress plugin for importing / exporting WordPress data</a>.
+<em><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> is part of the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> project.</em></p>
+</blockquote>
+<p><a href="https://www.youtube.com/watch?v=pjG69RmULYo">Watch the tutorial on YouTube</a>:</p>
+<p><a href="https://www.youtube.com/watch?v=pjG69RmULYo"><img src="https://img.youtube.com/vi/pjG69RmULYo/2.jpg" alt="Watch the video" /></a></p>
+<h1 id="details"><a class="header" href="#details">Details</a></h1>
+<p>The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> specifies a <a href="https://www.json.org/">JSON</a> file <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">based import/export format for WordPress content</a>).</p>
+<p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> provides</p>
+<ul>
+<li>
+<p>functionality for transforming data into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a></p>
+</li>
+<li>
+<p>support for creating ImpEx JSON files containing <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages">WordPress content</a> (like pages/posts/templates/blocks/ patterns and so on) and <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">WordPress attachments</a> like images</p>
+</li>
+<li>
+<p>functions to <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">create file/folder structure expected</a> by the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a></p>
+</li>
+</ul>
+<p>Last but not least <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> includes a <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">full featured example transforming a complete static website into WordPress content</a> consumable by <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a>. The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">example</a> is the perfect starting point for creating your own WordPress content generator.</p>
+<h1 id="installation-1"><a class="header" href="#installation-1">Installation</a></h1>
+<p><code>npm install @cm4all-wp-impex/generator</code></p>
+<h1 id="development-1"><a class="header" href="#development-1">Development</a></h1>
+<ul>
+<li>
+<p>clone <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin Git repository</a> project : <code>git clone https://github.com/IONOS-WordPress/cm4all-wp-impex.git</code></p>
+</li>
+<li>
+<p>cd into the <code>@cm4all-wp-impex/generator</code> sub-project : <code>cd packages/@cm4all-wp-impex/generator</code></p>
+</li>
+<li>
+<p>ensure the correct NodeJS Version (see https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/.nvmrc) is installed : <code>nvm install</code></p>
+</li>
+<li>
+<p>install package dependencies : <code>npm ci</code></p>
+</li>
+<li>
+<p>run the tests : <code>npm run test</code></p>
+</li>
+</ul>
+<h2 id="tests"><a class="header" href="#tests">tests</a></h2>
+<h3 id="requirements"><a class="header" href="#requirements">requirements</a></h3>
+<p>tests require the <code>diff</code> command to be available.</p>
+<h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+<p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> exposes an API for generating WordPress content.</p>
+<h2 id="api-1"><a class="header" href="#api-1">API</a></h2>
+<p>To use the API just import the exposed API into your code.</p>
+<pre><code class="language-js">import { ImpexTransformer, traverseBlocks, ImpexSliceFactory, migrate } from `@cm4all-wp-impex/generator`;
+</code></pre>
+<h3 id="transforming-data-into-wordpress-content"><a class="header" href="#transforming-data-into-wordpress-content">Transforming data into WordPress content</a></h3>
+<p>Data transformation into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>
+is done by the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/src/impex-content-transform.js"><code>ImpexTransformer</code></a> singleton.</p>
+<p><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/src/impex-content-transform.js"><code>ImpexTransformer</code></a> can be configured by calling it's <code>setup(...)</code> function supporting various hooks for customizing the transformation.</p>
+<p><code>ImpexTransformer.transform(data)</code> transforms the content provided in the <code>data</code> argument into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>.</p>
+<h4 id="impextransformersetup-options-"><a class="header" href="#impextransformersetup-options-"><code>ImpexTransformer.setup({/* options */})</code></a></h4>
+<h5 id="options-1"><a class="header" href="#options-1">Options</a></h5>
+<ul>
+<li>
+<p><code>verbose</code> (boolean, default : <code>false</code>) enables verbose output for debugging purposes</p>
+</li>
+<li>
+<p><code>onLoad(data : any) : string</code> (function, default : undefined) callback executed by <code>transform(...)</code> function. <code>data</code> argument is the initial data to transform.</p>
+<p>This callback is intended to be used for converting the initial data into HTML.</p>
+<p>Example: If your initial <code>data</code> is markdown content this callback should transform it to HTML:</p>
+<pre><code class="language-js">...
+ImpexTransformer.setup({
+  onLoad(data) {
+    return markdown.toHTML(data);
+  }
+});
+...
+</code></pre>
+<p>If <code>onLoad</code> is not defined the <code>transform</code> function will assume the <code>data</code> argument is valid HTML.</p>
+</li>
+<li>
+<p><code>onDomReady(Document : document) : void</code> (function, default : undefined) callback executed when HTML is loaded and the DOM is ready.</p>
+<p>At this stage, you can use the HTML DOM manipulation API (<code>querySelector</code> for example) to rearrange the HTML DOM the way you need.</p>
+<blockquote>
+<p>The <code>Transformer</code> uses <a href="https://www.npmjs.com/package/global-jsdom">JSDOM</a> to provide DOM capabilities to NodeJS. So you can use everything you know about DOM manipulation in NodeJS.</p>
+</blockquote>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js">tests</a> for example usage.</p>
+</li>
+<li>
+<p><code>onRegisterCoreBlocks() : boolean</code> (function, default : undefined) callback to register Gutenberg blocks.</p>
+<p>This callback is the power horse transforming HTML to <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>.</p>
+<p><strong>Most transformation work is delegated to the <a href="https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/">Gutenberg Block Transforms API</a>. This API processes the given DOM and applies the Gutenberg Block transformations of all registered blocks. The result is valid <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a> as we want it.</strong></p>
+<p>Using the <code>onRegisterCoreBlocks</code> callback you can register your own Gutenberg blocks (including their <a href="https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/">transform rules</a>) or attach additional <a href="https://developer.wordpress.org/block-editor/reference-guides/block-api/block-transforms/">transform rules</a> to existing core Gutenberg blocks utilizing <a href="https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#blocks-registerblocktype">Gutenberg filter '<code>blocks.registerBlockType</code>'</a>.</p>
+<p>If your <code>onRegisterCoreBlocks</code> callback returns <code>true</code>, the <a href="https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-library/#registercoreblocks">core Gutenberg blocks</a> transform rules will be reset to its defaults.</p>
+<p>If <code>onRegisterCoreBlocks</code> is not given, <code>transform(...)</code> will assume that the <a href="https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-library/#registercoreblocks">core Gutenberg blocks</a> should be used as-is.</p>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js">tests</a> for example usage.</p>
+</li>
+<li>
+<p><code>onSerialize(blocks : array) : array</code> (function, default : undefined) callback executed after the <a href="https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-library/#registercoreblocks">Gutenberg block</a> transform rules have been applied.</p>
+<p>The resulting array of Gutenberg blocks is passed to the callback. The callback can modify the blocks array and is expected to return them.</p>
+<p>Example transforming all <a href="https://wordpress.org/support/article/image-block/">Gutenberg Image block</a> attributes into caption block attribute. This will result in a <code>&lt;figcaption&gt;</code> element inside the block output:</p>
+<pre><code class="language-js">ImpexTransformer.setup({
+  onSerialize(blocks) {
+    // takeover img[@title] as figcaption in every block
+    for (const block of traverseBlocks(blocks)) {
+      if (block.name === &quot;core/image&quot;) {
+        block.attributes.caption = block.attributes.title;
+        delete block.attributes.title;
+      }
+    }
+
+    return blocks;
+  },
+});
+</code></pre>
+<blockquote>
+<p><code>traverseBlocks</code> is a helper function exposed by this package to traverse the Gutenberg block hierarchy like a flat array.</p>
+</blockquote>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-10-transform-hooks.js">tests</a> for example usage.</p>
+</li>
+</ul>
+<h4 id="impextransformertransformdata--any--string"><a class="header" href="#impextransformertransformdata--any--string"><code>ImpexTransformer.transform(data : any) : string</code></a></h4>
+<p>The <code>transform</code> function transforms the given <code>data</code> into <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>.</p>
+<p>The <code>data</code> argument can be anything. All hooks configured using <code>ImpexTransformer.setup(...)</code> will take effect by executing this function.</p>
+<p>The returned string is valid <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a>.</p>
+<h3 id="encapsulate-gutenberg-block-annotated-html-in-impex-slice-json-data-structure"><a class="header" href="#encapsulate-gutenberg-block-annotated-html-in-impex-slice-json-data-structure">Encapsulate Gutenberg block annotated HTML in ImpEx slice JSON data structure</a></h3>
+<p>To import the generated <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block">Gutenberg block annotated HTML</a> into WordPress we need to generate <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> conform JSON files wrapping the content with WordPress meta-data.</p>
+<p>Class <code>ImpexSliceFactory</code> provides a simple way to generate <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">WordPress ImpEx Slice JSON structures</a>.</p>
+<p>At first we need to create an instance of <code>ImpexSliceFactory</code>:</p>
+<pre><code class="language-js">const sliceFactory = new ImpexSliceFactory({
+  /* options */
+});
+</code></pre>
+<p>There is just one (optional) option <code>next_post_id : integer</code> (default : 1) which might be used to provide a individual start <code>post_id</code>. <code>next_post_id</code> is only taken into account when creating <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">content slices for WordPress content</a> like <code>posts</code>/<code>pages</code> or media.</p>
+<p><em>The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> supports some more slice types (for exporting whole database tables and more) but in these cases <code>next_post_id</code> is not in use.</em></p>
+<p>Using the <code>ImpexSliceFactory</code> instance we've created we can now generate <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">WordPress ImpEx Slice JSON structures</a> for WordPress content or media by calling function <code>createSlice(sliceType : string, callback(factory, sliceJson : any) : any)</code>.</p>
+<p>The <code>sliceType</code> argument is the type of the slice to be created.</p>
+<p>The <code>callback</code> function is called with the <code>ImpexSliceFactory</code> instance and the generated slice JSON structure as parameters .</p>
+<h4 id="encapsulate-wordpress-content-into-impex-json"><a class="header" href="#encapsulate-wordpress-content-into-impex-json">Encapsulate WordPress content into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
+<p>Creating the JSON for a WordPress <code>post</code> is dead simple :</p>
+<pre><code class="language-js">const slice = sliceFactory.createSlice(&quot;content-exporter&quot;, (factory, slice) =&gt; {
+  slice.data.posts[0].title = &quot;Hello&quot;;
+  slice.data.posts[0][&quot;wp:post_content&quot;] =
+    &quot;&lt;!-- wp:paragraph --&gt;&lt;p&gt;my friend&lt;/p&gt;&lt;!-- /wp:paragraph --&gt;&quot;;
+  return slice;
+});
+</code></pre>
+<p>Creating a WordPress <code>page</code> with some additional WordPress meta-data works the same way:</p>
+<pre><code class="language-js">const slice = sliceFactory.createSlice(&quot;content-exporter&quot;, (factory, slice) =&gt; {
+  slice.data.posts[0].title = &quot;Hello&quot;;
+  slice.data.posts[0][&quot;wp:post_type&quot;] = &quot;page&quot;;
+  slice.data.posts[0][&quot;wp:post_excerpt&quot;] = &quot;A page about my friend&quot;;
+  slice.data.posts[0][&quot;wp:post_content&quot;] =
+    &quot;&lt;!-- wp:paragraph --&gt;&lt;p&gt;Hello my my friend&lt;/p&gt;&lt;!-- /wp:paragraph --&gt;&quot;;
+  return slice;
+});
+</code></pre>
+<h4 id="encapsulate-wordpress-attachments-like-images-into-impex-json"><a class="header" href="#encapsulate-wordpress-attachments-like-images-into-impex-json">Encapsulate WordPress attachments like images into <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx JSON</a></a></h4>
+<p>Creating the JSON for a WordPress <code>attachment</code> is even dead simple :</p>
+<pre><code class="language-js">// declares a attachment for image './foo.jpg'
+const slice = sliceFactory.createSlice(&quot;attachment&quot;, (factory, slice) =&gt; {
+  slice.data = &quot;./foo.jpg&quot;;
+
+  return slice;
+});
+</code></pre>
+<p>In most cases, our imported content (aka posts/pages) will reference the media in various ways like <code>/image/foo.jpg</code> or <code>../../images/foo.jpg</code> and so on.</p>
+<p><a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> will take care about replacing image references in <a href="https://developer.wordpress.org/block-editor/explanations/architecture/data-flow/#the-anatomy-of-a-serialized-block"> Gutenberg block annotated HTML</a> if we provide a replacement hint <code>impex:post-references</code> (see <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">Attachments (like Pictures and Videos)</a> for details).</p>
+<pre><code class="language-js">const slice = sliceFactory.createSlice(&quot;attachment&quot;, (factory, slice) =&gt; {
+  slice.data = &quot;./foo.jpg&quot;;
+  // will result in replacing all matching references in posts of the WordPress instance with the link to the imported image
+  slice.meta[&quot;impex:post-references&quot;] = [
+    &quot;/image/foo.jpg&quot;,
+    &quot;../../images/foo.jpg&quot;,
+  ];
+
+  return slice;
+});
+</code></pre>
+<h3 id="generate-filenames-for-the-json-slice-data-in-impex-export-format"><a class="header" href="#generate-filenames-for-the-json-slice-data-in-impex-export-format">Generate filenames for the JSON slice data in <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx Export format</a></a></h3>
+<p>The <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress plugin</a> imports and exports data into a directory structure according to the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html">ImpEx Export format</a>.</p>
+<p><a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> supports creating the correct paths by providing a static generator function <code>SliceFactory.PathGenerator()</code>.</p>
+<p>This function returns a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator">Generator</a> function yielding a new relative path each time it's <code>next()</code> function is called.</p>
+<p>The optional <code>SliceFactory.PathGenerator(max_slices_per_chunk : integer = 10)</code> function parameter may be used to limit the number of slices per chunk directory to a custom value.</p>
+<pre><code class="language-js">import { ImpexSliceFactory } from &quot;@cm4all-wp-impex/generator&quot;;
+...
+
+const pathGenerator = ImpexSliceFactory.PathGenerator();
+...
+
+// 2  =&gt; only 2 slice files per chunk directory
+const gen = SliceFactory.PathGenerator(2);
+
+console.log(gen.next().value); // =&gt; &quot;chunk-0001/slice-0001.json&quot;
+console.log(gen.next().value); // =&gt; &quot;chunk-0001/slice-0002.json&quot;);
+console.log(gen.next().value); // =&gt; &quot;chunk-0002/slice-0001.json&quot;);
+console.log(gen.next().value); // =&gt; &quot;chunk-0002/slice-0002.json&quot;);
+console.log(gen.next().value); // =&gt; &quot;chunk-0003/slice-0001.json&quot;);
+console.log(gen.next().value); // =&gt; &quot;chunk-0003/slice-0002.json&quot;);
+...
+
+</code></pre>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-30-slice-factory-pathgenerator.js">tests</a> and <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">static website transformation example</a> for real world usage.</p>
+<h3 id="migrate-existing-impex-export"><a class="header" href="#migrate-existing-impex-export">Migrate existing ImpEx export</a></h3>
+<p>The <code>migrate</code> export provides you the option to transform existing ImpEx export data with minimal boilerplate code.</p>
+<blockquote>
+<p>Example use case : Suppose you want to transform your WordPress pages created using a Pagebuilder like <a href="https://elementor.com/">Elementor</a> into 
+true Gutenberg pages ...</p>
+</blockquote>
+<ul>
+<li>
+<p>Import the migrate function from the package using the following snippet: </p>
+<pre><code class="language-js">import { migrate } from &quot;@cm4all-wp-impex/generator&quot;;
+</code></pre>
+</li>
+<li>
+<p>Synopsis : <code>async migrate(sourcePath, targetPath, sliceCallback, options = {})</code></p>
+<p>The function traverses all ImpEx chunk sub directories and delegates the found slice files to the given callback argument.</p>
+<p>Slice files will be delegated to the callback ordered by sub chunk directory name and slice file name.</p>
+<p>Arguments:</p>
+<ul>
+<li>
+<p><code>sourcePath</code> : string </p>
+<p>path to an ImpEx export directory containing the exported data to transform</p>
+</li>
+<li>
+<p><code>targetPath</code> : string</p>
+<p>Directory to write the transformed ImpEx export to. Will be created if it does not exist.</p>
+</li>
+<li>
+<p><code>sliceCallback</code> : function</p>
+<p>A callback function called for every ImpEx slice file.</p>
+<p>The provided callback can handle (transform its content into one or more target slice files or just suppress it) the slice file by itself and return a <em>truthy</em> value. </p>
+<p>Otherwise the <code>migrate</code> functions default mechanism will taken into account and the slice will be copied to the target directory including subsidiary file(s) in case of a attachment slice.</p>
+<p>A <code>async</code> callback as argument is also supported.</p>
+<p>Arguments:</p>
+<ul>
+<li>
+<p><code>slicePath</code> : string </p>
+<p>The absolute path to the the current slice file. It's up to the callback to load/parse/process the slice JSON file.</p>
+</li>
+<li>
+<p><code>pathGenerator</code> : <code>SliceFactory.PathGenerator</code></p>
+<p>An preconfigured instance of <code>SliceFactory.PathGenerator</code> provided by this package. Using the <code>pathGenerator</code> allows you to generate valid ImpEx target slice file paths. </p>
+</li>
+<li>
+<p><code>targetPath</code> : string</p>
+<p>The path of the resulting ImpEx export directory.</p>
+</li>
+<li>
+<p><code>options</code> : object</p>
+<p>The options object provided to the <code>migrate</code> function.</p>
+</li>
+</ul>
+<p>Return: </p>
+<ul>
+<li>
+<p><em>truthy</em> <code>migrate</code> assumes the slice was already consumed/processed by the callback </p>
+</li>
+<li>
+<p><em>falsy</em> the <code>migrate</code> alorithm will copy the slice (and associated files in case of a attachment slice) to the target directory</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>options</code> : object</p>
+<p>An optional argument to customize the <code>migrate</code> function behaviour. </p>
+<p>Keys : </p>
+<ul>
+<li>
+<p><code>onStart</code> : function</p>
+<p>Will be called right <strong>before</strong> <code>migrate</code> will call the <code>sliceCallback</code> the first time. </p>
+<p>If the ImpEx export is empty (=&gt; no slice files in the export directory) the <code>onStart</code> callback will never be called.</p>
+<p>A <code>async</code> function callback is supported.</p>
+</li>
+<li>
+<p><code>onFinish</code> : function</p>
+<p>Will be called <strong>after</strong> <code>migrate</code> has called the <code>sliceCallback</code> the last time. </p>
+<p>If the ImpEx export is empty (=&gt; no slice files in the export directory) the <code>onFinish</code> callback will never be called.</p>
+<p>A <code>async</code> function callback is supported.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="example-migrate-usage"><a class="header" href="#example-migrate-usage">Example <code>migrate</code> usage</a></h4>
+<ul>
+<li>strip out any content of an ImpEx export except attachment posts (Images/Videos) using <code>migrate</code>.</li>
+</ul>
+<pre><code class="language-js">await migrate(
+  './my-impex-export', 
+  './my-migrated-impex-export', 
+  async (slicePath) =&gt; {
+    const slice = JSON.parse(readFile(slicePath));
+
+    // return truthy for all slices except attachments
+    return slice.tag!=='attachment';
+  }
+);
+</code></pre>
+<p>Checkout the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/tests/test-impex-migrate.js">package test cases</a> for further usage examples.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="static-website-conversion-tutorial"><a class="header" href="#static-website-conversion-tutorial">Static website conversion tutorial</a></h1>
+<p>This chapter features the conversion of a static HTML website to a WordPress site using <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> and <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress Plugin</a>.</p>
+<p>The sources can be found at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">ImpEx WordPress plugin GitHub repository</a>.</p>
+<ul>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#about">About</a>
+<ul>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#watch-the-walk-trough-on-youtube">Watch the walk-trough on YouTube</a></li>
+</ul>
+</li>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#conversion-process">Conversion process</a></li>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#whats-missing-">Whats missing ?</a></li>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#local-development-using-cm4all-wp-impex">Local Development using cm4all-wp-impex</a></li>
+<li><a href="cm4all-wp-impex-generator/static-website-tutorial.html#full-conversion-script">Full conversion script</a></li>
+</ul>
+<h1 id="about-1"><a class="header" href="#about-1">About</a></h1>
+<p>This is a full featured example of converting a regular static website of a fictional german dentist to a WordPress site.</p>
+<p>The web site is available offline at directory <code>./homepage-dr-mustermann</code>.</p>
+<p>You can view the website by</p>
+<ul>
+<li>starting the PHP built-in webserver : <code>php -S localhost:8080 -t homepage-dr-mustermann/</code></li>
+<li>and open the website in your browser : <code>http://localhost:8080/</code>.</li>
+</ul>
+<h2 id="watch-the-walk-trough-on-youtube"><a class="header" href="#watch-the-walk-trough-on-youtube"><a href="https://img.youtube.com/vi/pjG69RmULYo/2.jpg">Watch the walk-trough on YouTube</a></a></h2>
+<p><a href="https://www.youtube.com/watch?v=pjG69RmULYo"><img src="https://img.youtube.com/vi/pjG69RmULYo/2.jpg" alt="Watch the video" /></a></p>
+<p><em>(German audio with english sub titles.)</em></p>
+<h1 id="conversion-process"><a class="header" href="#conversion-process">Conversion process</a></h1>
+<p>The conversion process is implemented in a single file <code>./index.js</code> :</p>
+<ul>
+<li>
+<p>scanning for html and media files from the filesystem using plain NodeJS</p>
+</li>
+<li>
+<p>converting the HTML files to <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages">ImpEx slice JSON</a> using <code>ImpexTransformer</code> and <code>ImpexSliceFactory</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>. The HTML transformation is customized in the <code>setup(...)</code> function.</p>
+</li>
+<li>
+<p>creating <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">ImpEx slice JSON</a> for the media files using <code>ImpexSliceFactory</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a></p>
+</li>
+<li>
+<p>saving the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx slice JSON</a> to the filesystem using paths generated by <code>ImpexSliceFactory.PathGenerator</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a></p>
+<ul>
+<li>the media files are saved to the filesystem using paths adapted from the <code>ImpexSliceFactory.PathGenerator</code> generated paths for the slice files (as expected by the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">ImpEx Export format</a>).</li>
+</ul>
+</li>
+</ul>
+<p>The conversion process is implemented in less than 240 lines of code thanks to package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>.</p>
+<p>You can run the conversion script by executing <code>./index.js</code> (can be found at the GitHub repository : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion\index.js</a></p>
+<blockquote>
+<p>Ensure the right nodejs version is active before using <code>nvm install</code> and to install the required NodeJS dependencies using <code>npm ci</code>.</p>
+</blockquote>
+<blockquote>
+<p>Ensure that you've installed the script dependencies by entering directory <code>cm4all-wp-impex/packages/@cm4all-wp-impex/generator</code> and executing <code>npm ci</code>.</p>
+</blockquote>
+<p>The result is a folder <code>generated-impex-import/</code> containing the generated <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx export folder layout</a> containing the ImpEx slice JSON files and media files.</p>
+<p>This export can now be imported into WordPress using <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html">ImpEx CLI</a> :</p>
+<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; ./generated-impex-export/
+</code></pre>
+<p><em>(Replace the <code>&lt;placeholder&gt;</code> with your own values.)</em></p>
+<blockquote>
+<p>Ensure your WordPress instance is empty (does not contain any pages/posts/media).</p>
+</blockquote>
+<p>After executing the command the website contents are imported into your WordPress instance.</p>
+<hr />
+<p>The example website and conversion script is intentionally simple.</p>
+<p>Since every website is different, the conversion process cannot be universal work for every website.</p>
+<p>By implementing additional transformation rules using the hooks known by <code>Transformer.setup(...)</code> function of <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> almost any detail of a website can be converted to a WordPress post/page.</p>
+<h1 id="whats-missing-"><a class="header" href="#whats-missing-">Whats missing ?</a></h1>
+<p>The example does not cover every detail of a website conversion, only the content. But that's intentional.</p>
+<p>Possible improvements:</p>
+<ul>
+<li>
+<p>The navigation bar could be converted to a custom WordPress nav_menu.</p>
+<p>Navigation is different handled in FSE and classic themes. In a FSE you would generate a <a href="https://wordpress.org/support/article/navigation-block/">Navigation block</a>, in a classic theme it works different. It depends on the target WordPress environment how to take over navigation.</p>
+</li>
+<li>
+<p>Styles are ignored in the example.</p>
+<p>Because it depends on the goal of the transformation. If the content should be styled completely by a WordPress theme providing the complete styling, this is not needed.</p>
+<p>But if needed, style properties like fonts and colors could be introspected and transformed to FSE theme.json settings.</p>
+</li>
+<li>
+<p>Contact form will be taken over as <code>core/html</code> block. Submitting the form does not work in the example.</p>
+<p>WordPress/Gutenberg does not provide a generic Form block. There is no option to convert the HTML form to something matching using plain WordPress / Gutenberg.</p>
+<p>But the form could be easily converted into a <a href="https://ninjaforms.com/">Ninja Form</a> or any other form builder plugin available for WordPress.</p>
+<p>To keep the example simple and working without depending on additional plugins like <a href="https://ninjaforms.com/">Ninja Forms</a> the example ist just converted to a <code>core/html</code> block.</p>
+<p><em>So it depends on your target WordPress environment (and available plugins) how the conversion will be implemented.</em></p>
+</li>
+<li>
+<p>The overall layout (header/footer/main section) is also ignored (but could be converted to <a href="https://developer.wordpress.org/themes/block-themes/templates-and-template-parts/">FSE part templates</a>).</p>
+<p>But : as you might guess - all these improvements may vary depending on the goal.</p>
+</li>
+</ul>
+<blockquote>
+<p>The important message is : <strong>Everything is possible, but because it's individual - it's up to you 💪</strong></p>
+</blockquote>
+<h1 id="local-development-using-cm4all-wp-impex"><a class="header" href="#local-development-using-cm4all-wp-impex">Local Development using cm4all-wp-impex</a></h1>
+<ul>
+<li>
+<p>(optional) cleanup local wp-env installation : <code>(cd $(git rev-parse --show-toplevel) &amp;&amp; make wp-env-clean)</code></p>
+</li>
+<li>
+<p>import using ImpEx cli : <code>$(git rev-parse --show-toplevel)/impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ./generated-impex-export/</code></p>
+</li>
+</ul>
+<h1 id="full-conversion-script"><a class="header" href="#full-conversion-script">Full conversion script</a></h1>
+<pre><code class="language-js">#!/usr/bin/env node
+
+/*
+ *  @cm4all-wp-impex/generator usage example converting a whole static homepage to an impex export
+ */
+
+import { resolve, join, extname, dirname, basename } from &quot;path&quot;;
+import { readdir, readFile, mkdir, rm, writeFile, copyFile } from &quot;fs/promises&quot;;
+import { ImpexTransformer, ImpexSliceFactory } from &quot;../../src/index.js&quot;;
+
+/**
+ * STATIC_HOMEPAGE_DIRECTORY is the directory containing the static homepage
+ */
+const STATIC_HOMEPAGE_DIRECTORY = new URL(
+  &quot;homepage-dr-mustermann&quot;,
+  import.meta.url
+).pathname;
+
+/**
+ * generator function yielding matched files recursively
+ *
+ * @param   {string}  dir directory to search
+ * @param   {boolean} recursive  whether to search recursively
+ * @param   {string|undefined}  extension file extension to match or null to match all files
+ *
+ * @yields  {string} path to file
+ */
+async function* getFiles(dir, recursive, extension) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const res = resolve(dir, entry.name);
+    if (entry.isDirectory()) {
+      yield* getFiles(res, recursive, extension);
+    } else if (!extension || entry.name.endsWith(extension)) {
+      yield res;
+    }
+  }
+}
+
+/**
+ * keeps track of images and their references from html files (aka pages)
+ * key is image path relative to STATIC_HOMEPAGE_DIRECTORY
+ * value is array of image references
+ */
+const img2imgSrc_mappings = {};
+
+/**
+ * set up the ImpexTransformer singleton
+ *
+ * @return  {ImpexSliceFactory}
+ */
+function setup() {
+  ImpexTransformer.setup({
+    onDomReady(document, options = { path: null }) {
+      // replace &lt;header&gt; elements with the &lt;ul&gt; child
+      for (const section of document.querySelectorAll(&quot;header&quot;)) {
+        const ul = document.querySelector(&quot;ul.pure-menu-list&quot;);
+        section.replaceWith(ul.cloneNode(true));
+      }
+
+      // replace &lt;section&gt; elements with its inner contents
+      for (const section of document.querySelectorAll(&quot;section&quot;)) {
+        for (const child of section.childNodes) {
+          section.parentNode.insertBefore(child.cloneNode(true), section);
+        }
+        section.remove();
+      }
+
+      // replace &lt;footer&gt; elements with &lt;p&gt;
+      for (const footer of document.querySelectorAll(&quot;footer&quot;)) {
+        const paragraph = document.createElement(&quot;p&quot;);
+        //paragraph.setAttribute(&quot;class&quot;, &quot;footer&quot;);
+        paragraph.innerHTML = footer.innerHTML;
+        footer.replaceWith(paragraph);
+      }
+
+      if (options?.path) {
+        // grab all image references and remember them for later processing
+        for (const img of document.querySelectorAll(&quot;img&quot;)) {
+          const src = img.getAttribute(&quot;src&quot;);
+
+          // compute image path relative to static webpage directory
+          const imgPath = resolve(
+            join(STATIC_HOMEPAGE_DIRECTORY, src)
+          ).substring(STATIC_HOMEPAGE_DIRECTORY);
+
+          // add reference to image path
+          (
+            img2imgSrc_mappings[imgPath] || (img2imgSrc_mappings[imgPath] = [])
+          ).push(src);
+        }
+      }
+    },
+  });
+  return new ImpexSliceFactory();
+}
+
+async function main() {
+  // setup ImpexTransformer singleton and get a ImpexSliceFactory instance
+  const impexSliceFactory = setup();
+
+  // group files by type (html or attachment)
+  const attachmentResources = [];
+  const htmlResources = [];
+
+  // iterate over all files recursively in STATIC_HOMEPAGE_DIRECTORY
+  for await (const res of getFiles(STATIC_HOMEPAGE_DIRECTORY, true)) {
+    const resource = res.toString();
+
+    switch (extname(res)) {
+      // stick HTML files into htmlResources
+      case &quot;.html&quot;:
+        htmlResources.push({ resource });
+        console.log(&quot;HTML %s&quot;, resource);
+        break;
+      // stick media files into attachmentResources
+      case &quot;.jpeg&quot;:
+      case &quot;.jpg&quot;:
+      case &quot;.gif&quot;:
+      case &quot;.png&quot;:
+        attachmentResources.push({ resource });
+        console.log(&quot;ATTACHMENT %s&quot;, resource);
+        break;
+    }
+  }
+
+  // get a generator function yielding ImpEx export format conformant paths
+  const slicePathGenerator = ImpexSliceFactory.PathGenerator();
+
+  // compute target directory
+  const IMPEX_EXPORT_DIR = new URL(&quot;generated-impex-export&quot;, import.meta.url)
+    .pathname;
+
+  // delete already existing directory if it exists
+  try {
+    await rm(IMPEX_EXPORT_DIR, { recursive: true });
+  } catch {}
+
+  // create target directory
+  await mkdir(IMPEX_EXPORT_DIR, { recursive: true });
+
+  // convert html files to gutenberg annotated block content
+  for (const htmlResource of htmlResources) {
+    // transform html body to gutenberg annotated block content
+    htmlResource.content = ImpexTransformer.transform(
+      await readFile(htmlResource.resource, &quot;utf8&quot;),
+      { path: htmlResource.resource }
+    );
+    // remember html metadata for later processing
+    htmlResource.title =
+      document.querySelector(&quot;head &gt; title&quot;)?.textContent ?? &quot;&quot;;
+    htmlResource.description =
+      document
+        .querySelector('head &gt; meta[name=&quot;description&quot;]')
+        ?.getAttribute(&quot;content&quot;) ?? &quot;&quot;;
+    htmlResource.keywords = (
+      document
+        .querySelector('head &gt; meta[name=&quot;keywords&quot;]')
+        .getAttribute(&quot;content&quot;) ?? &quot;&quot;
+    )
+      .toLowerCase()
+      .split(&quot; &quot;);
+
+    // create ImpEx slice json content for this html file
+    const slice = impexSliceFactory.createSlice(
+      &quot;content-exporter&quot;,
+      (factory, slice) =&gt; {
+        slice.data.posts[0][&quot;wp:post_type&quot;] = &quot;page&quot;;
+        slice.data.posts[0].title = htmlResource.title;
+        slice.data.posts[0][&quot;wp:post_excerpt&quot;] = htmlResource.title;
+        slice.data.posts[0][&quot;wp:post_content&quot;] = htmlResource.content;
+        // @TODO: categories (aka keywords)
+        // @TODO: add navigation
+        return slice;
+      }
+    );
+
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
+    await mkdir(dirname(slicePath), {
+      recursive: true,
+    });
+
+    // write json to file
+    await writeFile(slicePath, JSON.stringify(slice, null, 2));
+  }
+
+  // make media files available as ImpEx slices
+  for (const attachmentResource of attachmentResources) {
+    // create ImpEx slice json content for this media file
+    const slice = impexSliceFactory.createSlice(
+      &quot;attachment&quot;,
+      (factory, slice) =&gt; {
+        // apply relative path as content
+        slice.data = attachmentResource.resource.substring(
+          IMPEX_EXPORT_DIR.length + 1
+        );
+
+        // compute unique image file=&gt;[img[@src]] mapping for this attachment
+        let img2imgSrc_mapping = [
+          ...new Set(img2imgSrc_mappings[attachmentResource.resource] ?? []),
+        ];
+
+        // add mapping to slice metadata
+        slice.meta[&quot;impex:post-references&quot;] = img2imgSrc_mapping;
+
+        return slice;
+      }
+    );
+
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
+    await mkdir(dirname(slicePath), {
+      recursive: true,
+    });
+
+    // write slice json to file
+    await writeFile(slicePath, JSON.stringify(slice, null, 2));
+
+    // copy attachment file to target directory with ImpEx conform file name
+    await copyFile(
+      attachmentResource.resource,
+      slicePath.replace(&quot;.json&quot;, &quot;-&quot; + basename(attachmentResource.resource))
+    );
+  }
+
+  // JSDOM is preventing automatic process termination so we need to force it
+  process.exit(0);
+}
+
+main();
+</code></pre>
+<p>The script is also available at <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">ImpEx WordPress plugin GitHub repository</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="api-2"><a class="header" href="#api-2">API</a></h1>
+<h2 id="configuration"><a class="header" href="#configuration"><a href="api/./configuration.html">Configuration</a></a></h2>
+<h2 id="rest-api"><a class="header" href="#rest-api">REST API</a></h2>
+<p>All ImpEx features are exposed by it's WordPress REST API endpoint.</p>
+<p>See <a href="api/./cm4all-wp-impex-oas.html">ImpEx REST API documentation</a>.</p>
+<p>The REST API is also available as <a href="https://swagger.io/specification/v2/">OpenAPI Specification Format</a> : Download <a href="http://0.0.0.0:3000/api/cm4all-wp-impex-oas.json">ImpEx OpenAPI Specification</a> here.</p>
+<p>You can explore the ImpEx Rest API using any HTTP Rest API Client.</p>
+<blockquote>
+<p>Our favorite is the <a href="https://wordpress.org/plugins/wp-api-swaggerui/">&quot;WP API SwaggerUI&quot; WordPress Plugin</a> since it's perfectly integrated into WordPress.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="api/configuration.html#usage">Usage</a>
+<ul>
+<li><a href="api/configuration.html#configuration">Configuration</a></li>
+<li><a href="api/configuration.html#custom-profile-configuration">Custom profile configuration</a>
+<ul>
+<li><a href="api/configuration.html#export">Export</a></li>
+<li><a href="api/configuration.html#import">Import</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage-1"><a class="header" href="#usage-1">Usage</a></h1>
+<p>ImpEx supports <strong>out of the box</strong> the export/import of</p>
+<ul>
+<li>
+<p>content (posts/pages/nav_menu and media assets)</p>
+</li>
+<li>
+<p>FSE content (Full Site Editing assets like block patterns, templates, template parts, reusable blocks and theme settings)</p>
+</li>
+</ul>
+<p>For everything else (third-party plugin settings for example) you can provide custom export/import profile(s).</p>
+<h2 id="configuration-1"><a class="header" href="#configuration-1">Configuration</a></h2>
+<p>ImpEx can be customized by providing <strong>Profiles</strong>.</p>
+<p>An <strong>Export profile</strong> defines the WordPress data to export.</p>
+<p>An <strong>Import profile</strong> declares how and which export data could be imported.</p>
+<h2 id="custom-profile-configuration"><a class="header" href="#custom-profile-configuration">Custom profile configuration</a></h2>
+<p><strong>Profiles</strong> are configured and registered using a custom ImpEx <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress action</a> :</p>
+<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
+  // your ImpEx profile registration goes here
+  ...
+});
+</code></pre>
+<p>Using a <a href="https://developer.wordpress.org/plugins/hooks/actions/">WordPress action</a> for ImpEx profile registration guarantees that the action callback is only executed if the ImpEx plugin is activated.</p>
+<blockquote>
+<p>Implementing a ImpEx profile in your WordPress code does not make ImpEx a required dependency for your plugin since the code is only executed if ImpEx is installed and active.</p>
+</blockquote>
+<h3 id="export-2"><a class="header" href="#export-2">Export</a></h3>
+<p>Let's say you want to export the core WordPress contents (pages/posts/attachments and stuff) but also</p>
+<ul>
+<li>
+<p><a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form</a> contents and settings</p>
+</li>
+<li>
+<p><a href="https://wordpress.org/plugins/ultimate-maps-by-supsystic/">Ultimate Maps by Supsystic</a> contents and settings</p>
+</li>
+<li>
+<p><a href="https://wordpress.org/plugins/complianz-gdpr/">Complianz GDPR</a> contents and settings</p>
+</li>
+<li>
+<p>and a few options of your own plugin</p>
+</li>
+</ul>
+<p>To do so you need to create a <strong>Export profile</strong>.</p>
+<p>Fortunately ImpEx already provides some low level building blocks called <strong>ExportProvider</strong> to make our ImpEx Profile declaration piece of cake :</p>
+<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
+  // ensure admin plugin functions are available
+  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+  // register a new export profile with a unique name
+  $profile = Impex::getInstance()-&gt;Export-&gt;addProfile('impex-export-profile-example');
+  // give the profile a senseful description
+  $profile-&gt;setDescription('Exports posts/pages/media-assets and plugin data of complianz-gdpr,ninja-forms and ultimate-maps-by-supsystic');
+
+  // export pages/posts/comments/block patterns/templates/template parts/reusable blocks
+  $profile-&gt;addTask(
+    'wordpress content',
+    cm4all\wp\impex\ContentExporter::PROVIDER_NAME
+  );
+
+  // export media
+  $profile-&gt;addTask(
+    'wordpress attachments (uploads)',
+    cm4all\wp\impex\AttachmentsExporter::PROVIDER_NAME
+  );
+
+  // export ninja-forms related tables/options if active
+  $plugin_ninjaforms_disabled = !is_plugin_active(&quot;ninja-forms/ninja-forms.php&quot;);
+  $profile-&gt;addTask(
+    &quot;ninja-forms db tables (nf3_*)&quot;,
+    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
+    // ninja-forms stores data in custom tables prefixed with 'nf_3'
+    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR =&gt; 'nf3_*']
+  )-&gt;disabled = $plugin_ninjaforms_disabled;
+  $profile-&gt;addTask(
+    'ninja-forms wp_options',
+    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
+    // ninja-forms stores it options prefixed with 'ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*'
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['ninja_*', 'nf_*', 'wp_nf_*', 'widget_ninja_*']
+    ]
+  )-&gt;disabled = $plugin_ninjaforms_disabled;
+
+  // export ultimate_maps related tables/options
+  $plugin_ultimatemaps_disabled = !is_plugin_active(&quot;ultimate-maps-by-supsystic/ums.php&quot;);
+  $profile-&gt;addTask(
+    &quot;ultimate_maps db tables (ums_*)&quot;,
+    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
+    // ultimate maps stores data in custom tables prefixed with 'ums_'
+    [cm4all\wp\impex\DbTablesExporter::OPTION_SELECTOR =&gt; 'ums_*']
+  )-&gt;disabled = $plugin_ultimatemaps_disabled;
+  $profile-&gt;addTask(
+    'ultimate_maps wp_options',
+    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
+    // ultimate maps stores data in wp options prefixed with 'ums_*', 'wp_ums_*'
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['ums_*', 'wp_ums_*']
+    ]
+  )-&gt;disabled = $plugin_ultimatemaps_disabled;
+
+  // export complianz related tables/options
+  $plugin_complianz_disabled = !is_plugin_active(&quot;complianz-gdpr/complianz-gpdr.php&quot;);
+  $profile-&gt;addTask(
+    &quot;complianz-gdpr db tables&quot;,
+    cm4all\wp\impex\DbTablesExporter::PROVIDER_NAME,
+    // complianz stores data in custom tables prefixed with 'cmplz_*'
+    [DbTablesExporter::OPTION_SELECTOR =&gt; 'cmplz_*',]
+  )-&gt;disabled = $plugin_complianz_disabled;
+  $profile-&gt;addTask(
+    'complianz-gdpr wp_options',
+    cm4all\wp\impex\WpOptionsExporter::PROVIDER_NAME,
+    // complianz stores data in wp options prefixed with 'cmplz_*', 'complianz_*'
+    [
+      cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR =&gt; ['cmplz_*', 'complianz_*']
+    ]
+  )-&gt;disabled = $plugin_complianz_disabled;
+});
+</code></pre>
+<blockquote>
+<p>Caveat: Do not provide the WordPress database table prefix (default is <code>wp_</code>) to the <code>cm4all\wp\impex\WpOptionsExporter::OPTION_SELECTOR</code> option since it may vary on installations. the <code>cm4all\wp\impex\WpOptionsExporter</code> will take care of that.</p>
+</blockquote>
+<p>That's it !</p>
+<p>Now you can trigger the export using this ImpEx export configuration in the ImpEx screen at WP dashboard (or even using the <a href="api/./impex-cli.html">ImpEx CLI</a>)</p>
+<h3 id="import-2"><a class="header" href="#import-2">Import</a></h3>
+<p>Thanks to ImpEx architecture you normally don't need to define a custom import configuration.</p>
+<p>ImpEx sports a generic <code>all</code> import provider and profile importing <strong>anything</strong> exported using the ImpEx building blocks.</p>
+<blockquote>
+<p>As long as you use the <strong>Exporter</strong> provided by ImpEx in your custom Export profile, you don't need to define an matching custom import profile.</p>
+</blockquote>
+<p>In rare cases you need to execute PHP code after the import to get everything working.</p>
+<p>In our export profile example above we implemented support for <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form</a>. Unfortunately the forms will be in maintenance mode after importing them.</p>
+<p>To fix this we need to execute some PHP code (<code>WPN_Helper::set_forms_maintenance_mode(0)</code> from the <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms Contact Form Plugin</a>) after the import.</p>
+<p>ImpEx provides <strong>Events</strong> for exactly that purpose :</p>
+<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
+  // ensure admin plugin functions are available
+  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+  // get the 'all' profile
+  $profile = Impex::getInstance()-&gt;Import-&gt;getProfile('all');
+
+  // attach a listener callback for the `EVENT_IMPORT_END` event
+  $profile-&gt;events(ImpexImport::EVENT_IMPORT_END)-&gt;addListener(
+    'reset ninja forms mainentance mode',
+    fn () =&gt; method_exists('WPN_Helper', 'set_forms_maintenance_mode') &amp;&amp; WPN_Helper::set_forms_maintenance_mode(0)
+  );
+});
+</code></pre>
+<p>Tada - that's it !</p>
+<p>There ist just one caveat ... what if the ImpEx 'all' profile gets disabled by someone else ?
+To work around this we can also introduce a custom import profile utilizing the 'all' import provider:</p>
+<pre><code class="language-php">\add_action('cm4all_wp_impex_register_profiles', function () {
+  // ensure admin plugin functions are available
+  require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+  // create a new import profile
+  $profile = Impex::getInstance()-&gt;Import-&gt;addProfile('impex-import-profile-example');
+  $profile-&gt;setDescription('Import everything example with event listener');
+
+  // reuse the 'all' import provider registered by the 'all' import profile
+  $profile-&gt;addTask('main', Impex::getInstance()-&gt;Import-&gt;getProvider('all')-&gt;name);
+
+  // attach a listener callback for the `EVENT_IMPORT_END` event
+  $profile-&gt;events(ImpexImport::EVENT_IMPORT_END)-&gt;addListener(
+    'reset ninja forms mainentance mode',
+    fn () =&gt; method_exists('WPN_Helper', 'set_forms_maintenance_mode') &amp;&amp; WPN_Helper::set_forms_maintenance_mode(0)
+  );
+});
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="api/filters.html#wordpress-filters">WordPress Filters</a>
+<ul>
+<li><a href="api/filters.html#import">Import</a>
+<ul>
+<li><a href="api/filters.html#impex_import_filter_profiles"><code>impex_import_filter_profiles</code></a></li>
+</ul>
+</li>
+<li><a href="api/filters.html#export">Export</a>
+<ul>
+<li><a href="api/filters.html#impex_export_filter_profiles"><code>impex_export_filter_profiles</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="wordpress-filters"><a class="header" href="#wordpress-filters">WordPress Filters</a></h1>
+<p>ImpEx supports various WordPress filters for customizing ImpEx.</p>
+<h2 id="import-3"><a class="header" href="#import-3">Import</a></h2>
+<h3 id="impex_import_filter_profiles"><a class="header" href="#impex_import_filter_profiles"><code>impex_import_filter_profiles</code></a></h3>
+<p>Using this filter you can hide ImpEx import profiles from the user.</p>
+<p>An example : To hide the ImpEx import profile <code>all</code> you need to add the following WordPress filter to your sources :</p>
+<pre><code class="language-php:">\add_filter( 
+  'impex_import_filter_profiles', 
+  fn( $profiles ) =&gt; array_filter(
+    $profiles, 
+    fn($profile) =&gt; $profile-&gt;name !== 'all'
+  ),
+);
+</code></pre>
+<h2 id="export-3"><a class="header" href="#export-3">Export</a></h2>
+<h3 id="impex_export_filter_profiles"><a class="header" href="#impex_export_filter_profiles"><code>impex_export_filter_profiles</code></a></h3>
+<p>Using this filter you can hide ImpEx export profiles from the user.</p>
+<p>An example : To hide the ImpEx export profile <code>base</code> you need to add the following WordPress filter to your sources :</p>
+<pre><code class="language-php:">\add_filter( 
+  'impex_export_filter_profiles', 
+  fn( $profiles ) =&gt; array_filter(
+    $profiles, 
+    fn($profile) =&gt; $profile-&gt;name !== 'base'
+  ),
+);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cm4all-wp-impex-rest-api"><a class="header" href="#cm4all-wp-impex-rest-api">cm4all-wp-impex REST API</a></h1>
+<blockquote>
+<p>Version v1</p>
+</blockquote>
+<h2 id="path-table"><a class="header" href="#path-table">Path Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofileschema">/cm4all-wp-impex/v1/export/profile/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofile">/cm4all-wp-impex/v1/export/profile</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportprofilename">/cm4all-wp-impex/v1/export/profile/{name}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofileschema">/cm4all-wp-impex/v1/import/profile/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofile">/cm4all-wp-impex/v1/import/profile</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importprofilename">/cm4all-wp-impex/v1/import/profile/{name}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportschema">/cm4all-wp-impex/v1/export/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1export">/cm4all-wp-impex/v1/export</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1export">/cm4all-wp-impex/v1/export</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>DELETE</td><td><a href="api/cm4all-wp-impex-oas.html#deletecm4all-wp-impexv1exportid">/cm4all-wp-impex/v1/export/{id}</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1exportidslice">/cm4all-wp-impex/v1/export/{id}/slice</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importschema">/cm4all-wp-impex/v1/import/schema</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1import">/cm4all-wp-impex/v1/import</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1import">/cm4all-wp-impex/v1/import</a></td><td></td></tr>
+<tr><td>GET</td><td><a href="api/cm4all-wp-impex-oas.html#getcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>DELETE</td><td><a href="api/cm4all-wp-impex-oas.html#deletecm4all-wp-impexv1importid">/cm4all-wp-impex/v1/import/{id}</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importidslice">/cm4all-wp-impex/v1/import/{id}/slice</a></td><td></td></tr>
+<tr><td>POST</td><td><a href="api/cm4all-wp-impex-oas.html#postcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+<tr><td>PUT</td><td><a href="api/cm4all-wp-impex-oas.html#putcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+<tr><td>PATCH</td><td><a href="api/cm4all-wp-impex-oas.html#patchcm4all-wp-impexv1importidconsume">/cm4all-wp-impex/v1/import/{id}/consume</a></td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="reference-table"><a class="header" href="#reference-table">Reference Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Path</th><th>Description</th></tr></thead><tbody>
+<tr><td>postCm4allWpImpexV1Import</td><td><a href="api/cm4all-wp-impex-oas.html#componentsrequestbodiespostcm4allwpimpexv1import">#/components/requestBodies/postCm4allWpImpexV1Import</a></td><td></td></tr>
+<tr><td>postCm4allWpImpexV1Export</td><td><a href="api/cm4all-wp-impex-oas.html#componentsrequestbodiespostcm4allwpimpexv1export">#/components/requestBodies/postCm4allWpImpexV1Export</a></td><td></td></tr>
+<tr><td>basic</td><td><a href="api/cm4all-wp-impex-oas.html#componentssecurityschemesbasic">#/components/securitySchemes/basic</a></td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="path-details"><a class="header" href="#path-details">Path Details</a></h2>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofileschema"><a class="header" href="#getcm4all-wp-impexv1exportprofileschema">[GET]/cm4all-wp-impex/v1/export/profile/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses"><a class="header" href="#responses">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofile"><a class="header" href="#getcm4all-wp-impexv1exportprofile">[GET]/cm4all-wp-impex/v1/export/profile</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-1"><a class="header" href="#responses-1">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportprofilename"><a class="header" href="#getcm4all-wp-impexv1exportprofilename">[GET]/cm4all-wp-impex/v1/export/profile/{name}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery"><a class="header" href="#parametersquery">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-2"><a class="header" href="#responses-2">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofileschema"><a class="header" href="#getcm4all-wp-impexv1importprofileschema">[GET]/cm4all-wp-impex/v1/import/profile/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-3"><a class="header" href="#responses-3">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofile"><a class="header" href="#getcm4all-wp-impexv1importprofile">[GET]/cm4all-wp-impex/v1/import/profile</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-4"><a class="header" href="#responses-4">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importprofilename"><a class="header" href="#getcm4all-wp-impexv1importprofilename">[GET]/cm4all-wp-impex/v1/import/profile/{name}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-1"><a class="header" href="#parametersquery-1">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-5"><a class="header" href="#responses-5">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportschema"><a class="header" href="#getcm4all-wp-impexv1exportschema">[GET]/cm4all-wp-impex/v1/export/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-6"><a class="header" href="#responses-6">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1export"><a class="header" href="#getcm4all-wp-impexv1export">[GET]/cm4all-wp-impex/v1/export</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-7"><a class="header" href="#responses-7">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1export"><a class="header" href="#postcm4all-wp-impexv1export">[POST]/cm4all-wp-impex/v1/export</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody"><a class="header" href="#requestbody">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h4 id="responses-8"><a class="header" href="#responses-8">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportid"><a class="header" href="#getcm4all-wp-impexv1exportid">[GET]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-2"><a class="header" href="#parametersquery-2">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-9"><a class="header" href="#responses-9">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1exportid"><a class="header" href="#postcm4all-wp-impexv1exportid">[POST]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-1"><a class="header" href="#requestbody-1">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h4 id="responses-10"><a class="header" href="#responses-10">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1exportid"><a class="header" href="#putcm4all-wp-impexv1exportid">[PUT]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-3"><a class="header" href="#parametersquery-3">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-11"><a class="header" href="#responses-11">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1exportid"><a class="header" href="#patchcm4all-wp-impexv1exportid">[PATCH]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-4"><a class="header" href="#parametersquery-4">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-12"><a class="header" href="#responses-12">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="deletecm4all-wp-impexv1exportid"><a class="header" href="#deletecm4all-wp-impexv1exportid">[DELETE]/cm4all-wp-impex/v1/export/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-5"><a class="header" href="#parametersquery-5">Parameters(Query)</a></h4>
+<pre><code class="language-ts">force?: string
+</code></pre>
+<h4 id="responses-13"><a class="header" href="#responses-13">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1exportidslice"><a class="header" href="#getcm4all-wp-impexv1exportidslice">[GET]/cm4all-wp-impex/v1/export/{id}/slice</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-6"><a class="header" href="#parametersquery-6">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string[]
+</code></pre>
+<pre><code class="language-ts">page?: string
+</code></pre>
+<pre><code class="language-ts">per_page?: string
+</code></pre>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<h4 id="responses-14"><a class="header" href="#responses-14">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importschema"><a class="header" href="#getcm4all-wp-impexv1importschema">[GET]/cm4all-wp-impex/v1/import/schema</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-15"><a class="header" href="#responses-15">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1import"><a class="header" href="#getcm4all-wp-impexv1import">[GET]/cm4all-wp-impex/v1/import</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="responses-16"><a class="header" href="#responses-16">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1import"><a class="header" href="#postcm4all-wp-impexv1import">[POST]/cm4all-wp-impex/v1/import</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-2"><a class="header" href="#requestbody-2">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h4 id="responses-17"><a class="header" href="#responses-17">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="getcm4all-wp-impexv1importid"><a class="header" href="#getcm4all-wp-impexv1importid">[GET]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-7"><a class="header" href="#parametersquery-7">Parameters(Query)</a></h4>
+<pre><code class="language-ts">context?: string
+</code></pre>
+<h4 id="responses-18"><a class="header" href="#responses-18">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importid"><a class="header" href="#postcm4all-wp-impexv1importid">[POST]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-3"><a class="header" href="#requestbody-3">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h4 id="responses-19"><a class="header" href="#responses-19">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1importid"><a class="header" href="#putcm4all-wp-impexv1importid">[PUT]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-8"><a class="header" href="#parametersquery-8">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-20"><a class="header" href="#responses-20">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1importid"><a class="header" href="#patchcm4all-wp-impexv1importid">[PATCH]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-9"><a class="header" href="#parametersquery-9">Parameters(Query)</a></h4>
+<pre><code class="language-ts">options?: string
+</code></pre>
+<pre><code class="language-ts">profile?: string
+</code></pre>
+<pre><code class="language-ts">name?: string
+</code></pre>
+<pre><code class="language-ts">description?: string
+</code></pre>
+<h4 id="responses-21"><a class="header" href="#responses-21">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="deletecm4all-wp-impexv1importid"><a class="header" href="#deletecm4all-wp-impexv1importid">[DELETE]/cm4all-wp-impex/v1/import/{id}</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-10"><a class="header" href="#parametersquery-10">Parameters(Query)</a></h4>
+<pre><code class="language-ts">force?: string
+</code></pre>
+<h4 id="responses-22"><a class="header" href="#responses-22">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importidslice"><a class="header" href="#postcm4all-wp-impexv1importidslice">[POST]/cm4all-wp-impex/v1/import/{id}/slice</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-4"><a class="header" href="#requestbody-4">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // slice position column in database
+  position: string
+}
+</code></pre>
+<h4 id="responses-23"><a class="header" href="#responses-23">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="postcm4all-wp-impexv1importidconsume"><a class="header" href="#postcm4all-wp-impexv1importidconsume">[POST]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="requestbody-5"><a class="header" href="#requestbody-5">RequestBody</a></h4>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // Offset at which to start consuming
+  offset?: string
+  // Lmit at which to end consuming
+  limit?: string
+}
+</code></pre>
+<h4 id="responses-24"><a class="header" href="#responses-24">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="putcm4all-wp-impexv1importidconsume"><a class="header" href="#putcm4all-wp-impexv1importidconsume">[PUT]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-11"><a class="header" href="#parametersquery-11">Parameters(Query)</a></h4>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<pre><code class="language-ts">limit?: string
+</code></pre>
+<h4 id="responses-25"><a class="header" href="#responses-25">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<hr />
+<h3 id="patchcm4all-wp-impexv1importidconsume"><a class="header" href="#patchcm4all-wp-impexv1importidconsume">[PATCH]/cm4all-wp-impex/v1/import/{id}/consume</a></h3>
+<ul>
+<li>Security<br />
+basic</li>
+</ul>
+<h4 id="parametersquery-12"><a class="header" href="#parametersquery-12">Parameters(Query)</a></h4>
+<pre><code class="language-ts">offset?: string
+</code></pre>
+<pre><code class="language-ts">limit?: string
+</code></pre>
+<h4 id="responses-26"><a class="header" href="#responses-26">Responses</a></h4>
+<ul>
+<li>
+<p>200 OK</p>
+</li>
+<li>
+<p>400 Bad Request</p>
+</li>
+<li>
+<p>404 Not Found</p>
+</li>
+</ul>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<h3 id="componentsrequestbodiespostcm4allwpimpexv1import"><a class="header" href="#componentsrequestbodiespostcm4allwpimpexv1import">#/components/requestBodies/postCm4allWpImpexV1Import</a></h3>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the import.
+  options?: string
+  // The name of the import profile to use.
+  profile?: string
+  // The name of the import
+  name?: string
+  // The description of the import
+  description?: string
+}
+</code></pre>
+<h3 id="componentsrequestbodiespostcm4allwpimpexv1export"><a class="header" href="#componentsrequestbodiespostcm4allwpimpexv1export">#/components/requestBodies/postCm4allWpImpexV1Export</a></h3>
+<ul>
+<li>multipart/form-data</li>
+</ul>
+<pre><code class="language-ts">{
+  // The options used to create the export.
+  options?: string
+  // The name of the export profile to use.
+  profile?: string
+  // The human readable name of the export
+  name?: string
+  // The human readable description of the export
+  description?: string
+}
+</code></pre>
+<h3 id="componentssecurityschemesbasic"><a class="header" href="#componentssecurityschemesbasic">#/components/securitySchemes/basic</a></h3>
+<pre><code class="language-ts">{
+  &quot;type&quot;: &quot;http&quot;,
+  &quot;scheme&quot;: &quot;basic&quot;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li><a href="explanation-of-terms.html#explanation-of-terms">Explanation of terms</a>
+<ul>
+<li><a href="explanation-of-terms.html#impex">ImpEx</a></li>
+<li><a href="explanation-of-terms.html#snapshot">Snapshot</a></li>
+<li><a href="explanation-of-terms.html#provider">Provider</a>
+<ul>
+<li><a href="explanation-of-terms.html#export-provider">Export Provider</a></li>
+<li><a href="explanation-of-terms.html#import-provider">Import Provider</a></li>
+</ul>
+</li>
+<li><a href="explanation-of-terms.html#profile">Profile</a></li>
+<li><a href="explanation-of-terms.html#chunk">Chunk</a></li>
+<li><a href="explanation-of-terms.html#slice">Slice</a></li>
+<li><a href="explanation-of-terms.html#transformationcontext">TransformationContext</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="explanation-of-terms"><a class="header" href="#explanation-of-terms">Explanation of terms</a></h1>
+<p>ImpEx documentation often refers to special terms.</p>
+<p>This page will clarify their meaning.</p>
+<h2 id="impex"><a class="header" href="#impex">ImpEx</a></h2>
+<p>The name of the plugin stands for <strong>Imp</strong>ort / <strong>Ex</strong>port =&gt; in short <strong>ImpEx</strong>.</p>
+<h2 id="snapshot"><a class="header" href="#snapshot">Snapshot</a></h2>
+<p>A snapshot is a copy of the content to be imported/exported.</p>
+<p>It resides in a separate WordPress database table managed by the ImpEx plugin.</p>
+<blockquote>
+<p>Attachments/media will be saved in a private sub-directory of the WordPress uploads folder.</p>
+</blockquote>
+<p>You can imagine a snapshot like a server side copy of the content.</p>
+<p>You can import / export as many snapshots as you want.</p>
+<h2 id="provider"><a class="header" href="#provider">Provider</a></h2>
+<p>Provider handle content for ImpEx. They are used to load (import) or extract (export) data for ImpEx.</p>
+<p>There exist a set of standard providers brought by ImpEx for common WordPress data like <code>posts</code>, <code>attachments</code>, <code>wp_options</code> and <code>database tables</code>. Custom providers can be registered by the user.</p>
+<p>ImpEx provider are basically callback functions called by ImpEx.</p>
+<p>A provider gets registered with a unique name. The name is used to reference providers in a <a href="explanation-of-terms.html#profile">ImpEx profile</a>.</p>
+<p>There are two types of providers: Import and Export provider.</p>
+<h3 id="export-provider"><a class="header" href="#export-provider">Export Provider</a></h3>
+<p>Export provider expose data as <a href="explanation-of-terms.html#slice">slices</a> to ImpEx.</p>
+<p>Because an Export provider may need to produce more than one <a href="explanation-of-terms.html#slice">slice</a> per execution, the callback interface is designed as <a href="https://www.php.net/manual/en/language.generators.overview.php">generator function</a>.</p>
+<p>In other words, an Export provider callback function gets called with a configuration and <a href="https://www.php.net/manual/en/language.generators.syntax.php">yields</a> as many slices as needed. The configuration controls <em>which</em> data should be exported.</p>
+<p><em>Take a look at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-export-extension-wp-options.php"><code>**WpOptionsExporterProviderCallback</code></a> to see an example.</em></p>
+<h3 id="import-provider"><a class="header" href="#import-provider">Import Provider</a></h3>
+<p>Import provider consume <a href="explanation-of-terms.html#slice">slices</a> from ImpEx.</p>
+<p>They work similarly to Export provider and get called with a configuration (controling <em>what</em> data should be imported from a <a href="explanation-of-terms.html#slice">slice</a>) and a <a href="explanation-of-terms.html#slice">slice</a> as parameter.</p>
+<p>Since ImpEx does not know about how to handle a <a href="explanation-of-terms.html#slice">slice</a> by itself, it delegates this task to the Import provider.</p>
+<p>So an Import Provider checks if it can handle a <a href="explanation-of-terms.html#slice">slice</a> by introspecting the <a href="explanation-of-terms.html#slice">slice</a> meta-data. If it does, it handles the <a href="explanation-of-terms.html#slice">slice</a> data and returns <code>true</code> if the slice was successfully imported.</p>
+<p><em>In all other cases it returns <code>false</code>.</em> In this case ImpEx will take the next Import provider in charge.</p>
+<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/inc/impex-import-extension-wp-options.php"><code>__WpOptionsImportProviderCallback</code></a> as an example</em></p>
+<h2 id="profile"><a class="header" href="#profile">Profile</a></h2>
+<p>A profile consists of a list of <em>tasks</em> that are executed in the order they are registered.</p>
+<p>Each <em>task</em> will reference a <em>provider</em> and it's <em>configuration</em>.</p>
+<blockquote>
+<p>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex/profiles/export-profile-base.php"><code>base</code> Export profile</a> as example.</p>
+</blockquote>
+<p>Profiles are used to <em>programmatically compose</em> the data to export (Export Profile) or to <em>consume</em> the data to import (Import Profile).</p>
+<p>Furthermore a profile can configure event handler to be triggered in certain situations (like when the import was finished).</p>
+<p><em>See <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/plugins/cm4all-wp-impex-example/inc/impex-import-profile-example.php"><code>ImpexImport::EVENT_IMPORT_END</code> event usage</a> for example</em></p>
+<h2 id="chunk"><a class="header" href="#chunk">Chunk</a></h2>
+<p>When exporting a huge WordPress site with hundreds of posts and images, the result would be a directory with hundreds of files. To prevent File managers of crashing due to the amount of files, ImpEx splits the exported <a href="explanation-of-terms.html#slice">slice</a> files into sub-directory chunks.</p>
+<p>A chunk is sub-directory keeping a configurable unit of <a href="explanation-of-terms.html#slice">slices</a> below the top level export directory. See <a href="migrating-content.html#preparation">an example export directory layout</a>.</p>
+<h2 id="slice"><a class="header" href="#slice">Slice</a></h2>
+<p>A slice is a self-containing JSON data structure of both data and its description (aka meta-data).</p>
+<blockquote>
+<p>An example: a slice of WordPress posts will contain the posts (=&gt; data) and the information thats needed to import the posts (=&gt; meta-data like post title, author, ...).</p>
+</blockquote>
+<p>The slice meta-data consist of a static part (semantic version, type of slice, ...) and a content related part contributed by the <a href="explanation-of-terms.html#provider">Export provider</a> (entity type, any other meta data relevant for importing the data).</p>
+<blockquote>
+<p>There is one <em>special</em> exception to the rule that a slice is self-contained : Attachment slices. Attachment slices are not self-contained because they contain binary data which cannot effectively stored within JSON.</p>
+</blockquote>
+<p>The slice data are completely contributed by the <a href="explanation-of-terms.html#provider">Export provider</a>.</p>
+<p>See the <a href="migrating-content.html#data-files">Data files</a> chapter for more information about the structure of a slice.</p>
+<p><em>Slice files are strongly typed JSON structures. See the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/docs/gh-pages/src/jsonschema">JSON schema definitions for standard ImpEx slice types in the ImpEx GitHub repository</a>.</em></p>
+<h2 id="transformationcontext"><a class="header" href="#transformationcontext">TransformationContext</a></h2>
+<p>TransformationContext transports contextual information's about the current import/export process. It's used to pass information from ImpEx to the <a href="explanation-of-terms.html#provider">Provider</a>.</p>
+<p><em>A TransformationContext is an internal data structure.</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="why-is-the-impex-ui-not-yet-working-in-firefox--brave-"><a class="header" href="#why-is-the-impex-ui-not-yet-working-in-firefox--brave-">Why is the ImpEx UI not (yet) working in Firefox / Brave ?</a></h2>
+<p>The ImpEx UI uses the <a href="https://web.dev/file-system-access/">File System Access API</a> to export and import data to the local filesystem. This browser feature is mandatory.</p>
+<p>Right now Chromium based browsers (except of Brave who disabled this feature) and Safari supporting the <a href="https://web.dev/file-system-access/">File System Access API</a>. </p>
+<blockquote>
+<p>As of now, it's unclear if and when Firefox will support the <a href="https://web.dev/file-system-access/">File System Access API</a>. </p>
+</blockquote>
+<p>As an alternative you can use the <a href="./impex-cli.html">ImpEx CLI</a> to trigger import/export operations on the commandline.</p>
+<h2 id="ouch--your-browser-does-not-support-the-crypto-api"><a class="header" href="#ouch--your-browser-does-not-support-the-crypto-api"><code>Ouch -your browser does not support the Crypto API</code></a></h2>
+<p>Same same as with the <a href="https://web.dev/file-system-access/">File System Access API</a> API ... depending on your browser version the Crypto API feature we use (<code>window.crypto.randomUUID</code>) may not be supported by your browser. </p>
+<p>As of now, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID">all &quot;green&quot; browser support it</a>. </p>
+<p>But if you use an older version of a browser it might happen that Impex will not work since the browser feature is not available in your browser.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="mermaid.min.js"></script>
+        <script type="text/javascript" src="mermaid-init.js"></script>
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
