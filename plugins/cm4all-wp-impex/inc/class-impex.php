@@ -85,7 +85,7 @@ class Impex
     };
   }
 
-  public function __uninstall(): void 
+  public function __uninstall(): void
   {
     $timestamp = \wp_next_scheduled( self::CRON_JOB_CLEANUP_NAME );
     \wp_unschedule_event( $timestamp, self::CRON_JOB_CLEANUP_NAME );
@@ -129,7 +129,7 @@ class Impex
         url varchar(100) DEFAULT '' NOT NULL,
         PRIMARY KEY  (id)
       );";
-  
+
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
       dbDelta($sql);
       */
@@ -171,7 +171,7 @@ class Impex
 Impex::getInstance();
 
 /*
-  to debug the cleanup cronjob 
+  to debug the cleanup cronjob
   - add the following snippet to the head of plugin.php
     if ( ! defined( 'WP_CRON_LOCK_TIMEOUT' ) ) {
       define( 'WP_CRON_LOCK_TIMEOUT', 10 );
@@ -188,7 +188,7 @@ Impex::getInstance();
 
 /**
  * cron triggered action to cleanup deprecated import/export snapshots
- * 
+ *
  * such snapshots may be a result of a failed or aborted import or export operations
  */
 \add_action(Impex::CRON_JOB_CLEANUP_NAME, function() {
@@ -197,7 +197,7 @@ Impex::getInstance();
     if(str_starts_with($export['name'], 'transient-')) {
       $created = strtotime($export['created']);
       $current = time();
-      
+
       $hoursSinceCreation = ($current - $created)/60/60;
       // if the snapshot was created more than 36 hours ago
       if($hoursSinceCreation > 36) {
@@ -211,7 +211,7 @@ Impex::getInstance();
     if(str_starts_with($import['name'], 'transient-')) {
       $created = strtotime($import['created']);
       $current = time();
-      
+
       $hoursSinceCreation = ($current - $created)/60/60;
       // if the snapshot was created more than 36 hours ago
       if($hoursSinceCreation > 36) {

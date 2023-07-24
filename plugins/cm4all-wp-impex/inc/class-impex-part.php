@@ -54,7 +54,7 @@ abstract class ImpexPart
   }
 
   /**
-   * @return \Generator 
+   * @return \Generator
    */
   public function getProviders()
   {
@@ -81,7 +81,7 @@ abstract class ImpexPart
     return $this->_profiles->has($name);
   }
 
-  public function getProfiles() 
+  public function getProfiles()
   {
     $profiles = iterator_to_array($this->_profiles);
 
@@ -101,7 +101,7 @@ abstract class ImpexPart
   }
 
   /*
-    make it not serializable 
+    make it not serializable
   */
   protected function __clone()
   {

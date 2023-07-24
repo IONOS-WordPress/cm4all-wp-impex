@@ -419,7 +419,7 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
 
   /**
    * @TODO: finalize schema configuration using https://wordpress.org/plugins/wp-api-swaggerui/
-   * 
+   *
    * @link https://wp-plugin-erstellen.de/ebook/rest-api/erweitern/controller-klassen/wp-rest-controller/
    * @link https://github.com/WordPress-Plugin-Programmierer/ebook-snippets/blob/master/20.4.6-track-external-links/inc/rest.php
    */
@@ -443,7 +443,7 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
         ],
         'options' => [
           'description' => __('The options used to create the import.', 'cm4all-wp-impex'),
-          // its actually an array butt needs to be declared as object 
+          // its actually an array butt needs to be declared as object
           // according to https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#type-juggling
           'type'        => 'object',
           'context'     => ['view', 'edit'],
@@ -454,7 +454,7 @@ class ImpexImportRESTController extends \WP_REST_Controller implements ImpexRest
           'type'        => 'string',
           'context'     => ['view', 'edit'],
           /*
-          // @TODO: example doesnt work that perfect in swagger ... 
+          // @TODO: example doesnt work that perfect in swagger ...
           'example'     => \wp_list_pluck( iterator_to_array(Impex::getInstance()->Import->getProfiles()), 'name)),
           */
         ],

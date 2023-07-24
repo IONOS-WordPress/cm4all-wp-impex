@@ -49,7 +49,7 @@ function __WpOptionsExporterProviderCallback(array $options, ImpexExportTransfor
       // CAVEAT: we cannot use $wpOptionValue since its not automagically deserialized
       // $wpOptionValue transports just the plain serialization string, so we need to utilize
       // \get_option to get the correct value
-      // otherwise array and object values will not be correctly exported 
+      // otherwise array and object values will not be correctly exported
       $current_chunk[$wpOptionName] = \get_option($wpOptionName);
 
       if (count($current_chunk) === $chunk_max_items) {

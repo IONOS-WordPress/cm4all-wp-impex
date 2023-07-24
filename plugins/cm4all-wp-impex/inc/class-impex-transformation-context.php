@@ -14,7 +14,7 @@ require_once __DIR__ . '/class-impex-runtime-exception.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
 /**
  * ImpexTransformationContext is a superset of ImpexImportTransformationContext and ImpexExportTransformationContext
- * 
+ *
  * @property-read string $id
  * @property-read string $name
  * @property-read string $description
@@ -57,7 +57,7 @@ abstract class ImpexTransformationContext implements \JsonSerializable
     $this->_profile_name = $profile_name;
 
     $this->_id = $id ?? \wp_generate_uuid4();
-    // we take this date format to be wordpress rest api (format='date-time') compliant 
+    // we take this date format to be wordpress rest api (format='date-time') compliant
     $this->_created = $created ?? date(DATE_RFC3339);
 
     $this->_user_login ??= $user_login ?? \wp_get_current_user()->user_login;

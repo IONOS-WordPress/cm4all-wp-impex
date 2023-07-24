@@ -23,7 +23,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
       throw new ImpexImportRuntimeException(sprintf('Dont know how to import slice(tag="%s", version="%s") : unsupported version. current version is "%s"', DbTablesExporter::SLICE_TAG, $slice[Impex::SLICE_VERSION], DbTablesExporter::VERSION));
     }
 
-    // @TODO: assume same database server/connection for now 
+    // @TODO: assume same database server/connection for now
     $target_wpdb = $wpdb;
 
     $option_db_tableprefix = $options[DbTableImporter::OPTION_SELECTORPREFIX] ?? $wpdb->prefix;
@@ -70,7 +70,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
 
               $log(sprintf('%s : %s', $target_wpdb->last_query, $queryRetval));
 
-              // (optional) truncate data 
+              // (optional) truncate data
               if (!$option_db_overwrite_definition && $option_db_truncate) {
                 $queryRetval = $target_wpdb->query($target_wpdb->prepare('TRUNCATE TABLE %s', $target_table_name));
                 if ($queryRetval === false) {
@@ -83,7 +83,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
               /* @TODO: check later if the snippet below makes sense in our case
                 // we could copy the values "in place" using sql
 
-                // use CREATE TABLE ... LIKE ... to keep keys, defaults, ... 
+                // use CREATE TABLE ... LIKE ... to keep keys, defaults, ...
                 $ret = $target_wpdb->query(
                   'CREATE TABLE ' .
                     $task->arguments->target_table .
@@ -92,7 +92,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
                 );
                 */
 
-              // should we copy data in place from table to table ? 
+              // should we copy data in place from table to table ?
               if (isset($options[DbTableImporter::OPTION_COPY_DATA_FROM_TABLE_WITH_PREFIX])) {
                 $queryRetval = $target_wpdb->query(strtr(
                   'INSERT INTO %target_table% SELECT * FROM %source_table%',
@@ -132,11 +132,11 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
             if (count($rows) > 0) {
               $table_column_names = implode('`, `', array_keys((array)$rows[0]));
 
-              /* 
+              /*
                 see https://thispointer.com/insert-into-a-mysql-table-or-update-if-exists/#three
-                
-                > REPLACE works similar to INSERT. The difference is: If the new row to be inserted has the same value 
-                of the PRIMARY KEY or the UNIQUE index as the existing row, in that case, the old row gets deleted first 
+
+                > REPLACE works similar to INSERT. The difference is: If the new row to be inserted has the same value
+                of the PRIMARY KEY or the UNIQUE index as the existing row, in that case, the old row gets deleted first
                 before inserting the new one.
 
                 REPLACE INTO customer_data(customer_id, customer_name, customer_place) VALUES(2, "Hevika","Atlanta");
@@ -150,7 +150,7 @@ function __DbTableImportProviderCallback(array $slice, array $options, ImpexImpo
               ]);
 
               foreach ($rows as $row) {
-                // @TODO: consider using https://developer.wordpress.org/reference/classes/wpdb/#replace-row 
+                // @TODO: consider using https://developer.wordpress.org/reference/classes/wpdb/#replace-row
                 // instead of populating a sql statement manually - it seems much shorter and easier to read
                 $preparedStatement = $target_wpdb->prepare($dml, (array)$row);
 

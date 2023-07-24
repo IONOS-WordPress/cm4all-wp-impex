@@ -77,7 +77,7 @@ function __ImportContentProviderProviderCallback(array $slice, array $options, I
         // $this->backfill_attachment_urls();
         // $this->remap_featured_images();
       } catch (ImpexImportRuntimeException $ex) {
-        // @TODO: what should happen in case of an error ? 
+        // @TODO: what should happen in case of an error ?
         throw new ImpexImportRuntimeException(
           message: 'Importing content failed.',
           context: ['options' => $options, 'export' => $export],
@@ -142,7 +142,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
       continue;
     }
 
-    // delegate import 
+    // delegate import
     if ('nav_menu_item' == $post[ContentExporter::SLICE_DATA_POSTS_TYPE]) {
       $result = _process_menu_item($post, $processed_terms, $processed_posts, $missing_menu_items, $processed_menu_items, $menu_item_orphans);
       if($result) {
@@ -157,7 +157,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
     $post_exists = \post_exists($post[ContentExporter::SLICE_DATA_POSTS_TITLE], '', $post[ContentExporter::SLICE_DATA_POSTS_DATE]);
 
     /**
-     * @TODO: should we do it ? 
+     * @TODO: should we do it ?
      * Filter ID of the existing post corresponding to post currently importing.
      *
      * Return 0 to force the post to be imported. Filter the ID to be something else
@@ -172,7 +172,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
     $post_exists = \apply_filters('wp_import_existing_post', $post_exists, $post);
 
     if ($post_exists && \get_post_type($post_exists) == $post[ContentExporter::SLICE_DATA_POSTS_TYPE]) {
-      // @TODO: log notice post(type=$post_type_object->labels->singular_name}, title={$post['post_title']}) alread exists 
+      // @TODO: log notice post(type=$post_type_object->labels->singular_name}, title={$post['post_title']}) alread exists
       // => skip post import
 
       $transformationContext->warn(
@@ -363,7 +363,7 @@ function _import_posts(array $options, array $slice, array $author_mapping, arra
       }
     }
 
-    // @TODO: do we need that ? 
+    // @TODO: do we need that ?
     unset($newcomments, $inserted_comments);
 
     // @TODO: should we do it (adapted from wp importer) ?
@@ -686,12 +686,12 @@ function _process_termmeta(array $term, int $term_id)
 {
   $term[ContentExporter::SLICE_DATA_TERMS_META] ??= [];
 
-  // TODO: should we take this over as is ? 
+  // TODO: should we take this over as is ?
   // adapted from https://github.com/WordPress/wordpress-importer/blob/e05f678835c60030ca23c9a186f50999e198a360/src/class-wp-import.php#L580
   $term[ContentExporter::SLICE_DATA_TERMS_META] = \apply_filters('wp_import_term_meta', $term[ContentExporter::SLICE_DATA_TERMS_META], $term_id, $term);
 
   foreach ($term[ContentExporter::SLICE_DATA_TERMS_META] as $meta) {
-    // TODO: should we take this over as is ? 
+    // TODO: should we take this over as is ?
     // adapted from https://github.com/WordPress/wordpress-importer/blob/e05f678835c60030ca23c9a186f50999e198a360/src/class-wp-import.php#L596
     $key = \apply_filters('import_term_meta_key', $meta[ContentExporter::SLICE_DATA_TERMS_META_KEY], $term_id, $term);
     if (!$key) {
@@ -703,7 +703,7 @@ function _process_termmeta(array $term, int $term_id)
 
     \add_term_meta($term_id, \wp_slash($key), \wp_slash($value));
 
-    // TODO: should we take this over as is ? 
+    // TODO: should we take this over as is ?
     // adapted from https://github.com/WordPress/wordpress-importer/blob/e05f678835c60030ca23c9a186f50999e198a360/src/class-wp-import.php#L615
     \do_action('import_term_meta', $term_id, $key, $value);
   }
@@ -765,7 +765,7 @@ function _import_authors(array $options, array $slice, ImpexImportTransformation
       }
     } else if (gettype($map) === 'integer') {
       // map to user "by id"
-      $user_id = \get_user_by('id', $map)?->ID ?? false; // ensure user with ID exists 
+      $user_id = \get_user_by('id', $map)?->ID ?? false; // ensure user with ID exists
       if ($user_id === false) {
         throw new ImpexImportRuntimeException("Invalid user mapping : Failed to find expected user(id==={$map})");
       }
@@ -786,7 +786,7 @@ function _import_authors(array $options, array $slice, ImpexImportTransformation
  * An imported post's parent may not have been imported when it was first created
  * so try again. Similarly for child menu items and menu items which were missing
  * the object (e.g. post) they represent in the menu
- * 
+ *
  * @see https://github.com/WordPress/wordpress-importer/blob/e05f678835c60030ca23c9a186f50999e198a360/src/class-wp-import.php#L1219
  */
 function _backfill_parents(array $processed_posts, array $post_orphans, array $processed_terms, array $missing_menu_items, array $processed_menu_items, array $menu_item_orphans)

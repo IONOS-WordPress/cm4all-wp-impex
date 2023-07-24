@@ -1,7 +1,7 @@
 <?php
 
 /**
- * caveat : wildcard selectors will work only for regular (non-temporary) tables. 
+ * caveat : wildcard selectors will work only for regular (non-temporary) tables.
  * you can workaround this by providing the explizit table/view names instead of a wildcard
  */
 
@@ -61,7 +61,7 @@ function __dbTableProvider(array $options): \Generator
   $table_ddl = $wpdb->get_var("SHOW CREATE TABLE {$wpdb->prefix}$table", 1,);
   // normalize table name
   $table_ddl = str_replace($wpdb->prefix, '%prefix%', $table_ddl,);
-  // inject table create failover 
+  // inject table create failover
   $table_ddl = str_replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS', $table_ddl,);
 
   // yield tabel ddl chunk
