@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.8...1.5.9) (2023-07-24)
+
+
+### Bug Fixes
+
+* corrected indentation ([c609c48](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c609c486da216fbe962cbdd2466074b61f611a5e))
+
 ## [1.5.8](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.7...1.5.8) (2023-06-21)
 
 
