@@ -105,7 +105,7 @@ function __registerAttachmentsExportProvider()
   function ($client_asset_handle, $in_footer) {
     \cm4all\wp\impex\wp_enqueue_script(
       strtolower(str_replace('\\', '-', AttachmentsExporter::PROVIDER_NAME)),
-      'dist/wp.impex.extension.export.attachments.js',
+      'build/wp.impex.extension.export.attachments.js',
       [$client_asset_handle, $client_asset_handle . '-debug'],
       in_footer: $in_footer
     );

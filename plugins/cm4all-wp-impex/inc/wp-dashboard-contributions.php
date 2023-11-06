@@ -82,7 +82,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
         $IMPEX_CLIENT_HANDLE = enqueueClientAssets($IN_FOOTER);
         \cm4all\wp\impex\wp_enqueue_script(
           IMPEX_SCREEN_PAGE_SLUG,
-          'dist/wp.impex.dashboard.js',
+          'build/wp.impex.dashboard.js',
           [$IMPEX_CLIENT_HANDLE, 'wp-element', 'wp-api-fetch', 'wp-url', 'wp-i18n', 'wp-components', 'wp-data', 'wp-core-data'],
           $IN_FOOTER
         );
@@ -94,7 +94,7 @@ const SCREEN_OPTION_VERBOSE = IMPEX_SCREEN_PAGE_SLUG . '_' . 'verbose_page';
 
         \cm4all\wp\impex\wp_enqueue_style(
           IMPEX_SCREEN_PAGE_SLUG,
-          'dist/wp.impex.dashboard.css',
+          'build/wp.impex.dashboard.css',
           [$IMPEX_CLIENT_HANDLE, 'wp-components']
         );
 

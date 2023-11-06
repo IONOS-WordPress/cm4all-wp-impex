@@ -38,7 +38,7 @@ endif
 _NVMRC_NODE_VERSION := $(file < $(_NVMRC))
 CURRENT_NODE_VERSION != node --version 2>/dev/null || echo 'not installed'
 # if current node version does not matches nvmrc noted version
-ifneq ($(_NVMRC_NODE_VERSION), $(CURRENT_NODE_VERSION)) 
+ifneq ($(_NVMRC_NODE_VERSION), $(CURRENT_NODE_VERSION))
   $(error expected node version "$(_NVMRC_NODE_VERSION)" not installed (detected version: "$(CURRENT_NODE_VERSION)". Consider calling "nvm use" :-))
 endif
 
@@ -47,7 +47,7 @@ ifeq (,$(shell which npm))
   $(error 'Could not find npm')
 endif
 
-# prepend [project]/bin, node_modules/.bin and composer/bin PATH environment 
+# prepend [project]/bin, node_modules/.bin and composer/bin PATH environment
 PATH := ./bin:$(shell npm bin):./plugins/cm4all-wp-impex/vendor/bin:$(PATH)
 
 # needs to be exported to be automatically available in wp-env calls
@@ -72,9 +72,9 @@ WORDPRESS_ORG_SVN_DIR := dist/wordpress.org-svn
 # plugin name prefix for the downgraded impex version uploaded at wordpress.org
 DOWNGRADED_PLUGIN_DIR := dist/cm4all-wp-impex-php7.4.0
 
-# javascript 
+# javascript
 SCRIPT_SOURCES := $(wildcard $(IMPEX_PLUGIN_DIR)/src/*.mjs)
-SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
+SCRIPT_TARGETS := $(subst /src/,/build/,$(SCRIPT_SOURCES:.mjs=.js))
 
 PHP_SOURCES != find $(IMPEX_PLUGIN_DIR)/ -not -path "*/vendor/*" -not -path "*/tests/*" -name "*.php"
 
@@ -86,7 +86,7 @@ MO_TARGETS := $(PO_SOURCES:.po=.mo)
 # not used right now
 # # css
 # CSS_SOURCES := $(wildcard plugins/cm4all-wp-impex/src/*.?css)
-# CSS_TARGETS := $(subst /src/,/dist/,$(CSS_SOURCES:.scss=.css))
+# CSS_TARGETS := $(subst /src/,/build/,$(CSS_SOURCES:.scss=.css))
 
 DOCS_MARKDOWN_FILES := docs/*.md
 DOCS_MARKDOWN_TARGETS := $(patsubst %.md,dist/%.pdf,$(wildcard $(DOCS_MARKDOWN_FILES)))
@@ -99,74 +99,74 @@ RECTOR_CONFIG := $(shell pwd)/rector.php
 
 .ONESHELL:
 
-.PHONY: all 
+.PHONY: all
 #HELP: * build sources and spin up wp-env instance
-all: $(WP_ENV_HOME) build 
+all: $(WP_ENV_HOME) build
 
 PHONY: build
-#HELP: build sources 
-build: $(SCRIPT_TARGETS) 
-# plugins/cm4all-wp-impex/vendor/autoload.php 
+#HELP: build sources
+build: $(SCRIPT_TARGETS)
+# plugins/cm4all-wp-impex/vendor/autoload.php
 
 plugins/cm4all-wp-impex/vendor/autoload.php : tmp/composer.phar
 # wordpress unit testing with php 8 ist broken right now : https://core.trac.wordpress.org/ticket/46149#comment:49
-# since we mashed phpunit 7.5.* into composer{.json,.lock} (required by wp unit testcase) which is incompatible with php 8 we need to 
+# since we mashed phpunit 7.5.* into composer{.json,.lock} (required by wp unit testcase) which is incompatible with php 8 we need to
 # tell composer to ignore the platform requirements (--ignore-platform-reqs)
-# install phunit 7 into php 8 environment without hassle: 
+# install phunit 7 into php 8 environment without hassle:
 # php ../../tmp/composer.phar require --dev --ignore-platform-reqs --no-interaction --no-scripts --update-with-all-dependencies phpunit/phpunit:^7.5
 > cd plugins/cm4all-wp-impex && php ../../tmp/composer.phar install --no-interaction --ignore-platform-reqs --quiet
 
-tmp/composer.phar : 
+tmp/composer.phar :
 > mkdir -p $(@D)
 > cd $(@D) && curl -sS https://getcomposer.org/installer | php
 
-plugins/cm4all-wp-impex/dist/%.js : plugins/cm4all-wp-impex/src/%.mjs
+plugins/cm4all-wp-impex/build/%.js : plugins/cm4all-wp-impex/src/%.mjs
 # create variable at execution time : (see https://stackoverflow.com/questions/1909188/define-make-variable-at-rule-execution-time)
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
 # if make was called from GitHub action we need to run cm4all-wp-bundle using --user root to have write permissions to checked out repository
 # (the cm4all-wp-bundle image will by default use user "node" instead of "root" for security purposes)
 > GITHUB_ACTION_DOCKER_USER=$$( [ "$${GITHUB_ACTIONS:-false}" == "true" ] && echo '--user root' || echo '')
 # development version
-> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $<
-> { 
->	  "wordpress" : { 
->      "mappings" : { 
->        "@cm4all-impex/debug" : "wp.impex.debug", 
+> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/build $<
+> {
+>	  "wordpress" : {
+>      "mappings" : {
+>        "@cm4all-impex/debug" : "wp.impex.debug",
 >        "@cm4all-impex/store" : "wp.impex.store",
->        "@cm4all-impex/filters" : "wp.impex.filters", 
->        "React": "window.React" 
+>        "@cm4all-impex/filters" : "wp.impex.filters",
+>        "React": "window.React"
 >      }
 >   }
 > }
 > EOF
 # production version
-> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=production --outdir=plugins/cm4all-wp-impex/dist $<
-> { 
->	  "wordpress" : { 
->      "mappings" : { 
->        "@cm4all-impex/debug" : "wp.impex.debug", 
+> cat << EOF | docker run -i --rm $$GITHUB_ACTION_DOCKER_USER --mount type=bind,source=$$(pwd),target=/app $(DOCKER_CMALL-WP-BUNDLE_IMAGE) --analyze --global-name='$($@_GLOBAL_NAME)' --mode=production --outdir=plugins/cm4all-wp-impex/build $<
+> {
+>	  "wordpress" : {
+>      "mappings" : {
+>        "@cm4all-impex/debug" : "wp.impex.debug",
 >        "@cm4all-impex/store" : "wp.impex.store",
->        "@cm4all-impex/filters" : "wp.impex.filters", 
->        "React": "window.React" 
+>        "@cm4all-impex/filters" : "wp.impex.filters",
+>        "React": "window.React"
 >      }
 >   }
 > }
 > EOF
-# if runned in GitHub action touch will not work because of wrong permissions 
-# as a result of the docker invocation using --user root before 
-# => which was needed to have write access to the checkout out repository 
+# if runned in GitHub action touch will not work because of wrong permissions
+# as a result of the docker invocation using --user root before
+# => which was needed to have write access to the checkout out repository
 > if [ "$${GITHUB_ACTIONS:-false}" == "false" ]; then
 >		touch -m $@ $(@:.js=.min.js)
 > fi
 
 # not used right now
-# plugins/cm4all-wp-impex/dist/%.css : plugins/cm4all-wp-impex/src/%.scss
+# plugins/cm4all-wp-impex/build/%.css : plugins/cm4all-wp-impex/src/%.scss
 # # production version
 # >  sass --style=compressed --no-source-map $< $(@:.css=-min.css)
 # # development version
 # >  sass --embed-sources --embed-source-map $< $@
 
-$(WP_ENV_HOME): node_modules 
+$(WP_ENV_HOME): node_modules
 > mkdir -p $(DOWNGRADED_PLUGIN_DIR)
 > cat << EOF > $(DOWNGRADED_PLUGIN_DIR)/plugin.php
 > <?php
@@ -189,7 +189,7 @@ $(WP_ENV_HOME): node_modules
 > mkdir -p "$$WORDPRESS_DIR/wp-content/upgrade"
 > cat >$$WORDPRESS_DIR/.htaccess <<'EOL'
 > # file generated by Makefile target wp-env-setup
-> 
+>
 > # BEGIN WordPress
 > php_value upload_max_filesize 64M
 > php_value post_max_size 64M
@@ -209,26 +209,26 @@ $(WP_ENV_HOME): node_modules
 > RewriteCond %{REQUEST_FILENAME} !-d
 > RewriteRule . /index.php [L]
 > </IfModule>
-> 
+>
 > # END WordPress
-> 
+>
 > EOL
 >
 > cp $$WORDPRESS_DIR/.htaccess $$(echo wp-env-home/*)/tests-WordPress/
 >
 > for instance_prefix in '' 'tests-' ; do
->   CLI_CONTAINER="$${instance_prefix}cli" 
->   WORDPRESS_CONTAINER="$${instance_prefix}wordpress" 
+>   CLI_CONTAINER="$${instance_prefix}cli"
+>   WORDPRESS_CONTAINER="$${instance_prefix}wordpress"
 >
 >   wp-env run $$CLI_CONTAINER rewrite flush
 >   wp-env run $$CLI_CONTAINER rewrite structure '/%postname%'
->  
+>
 >   wp-env run $$WORDPRESS_CONTAINER 'bash -c "chown www-data wp-content/{upgrade,themes,plugins} || true"'
 > done
 >
 > WP_ENV_OVERRIDE_MAPPINGS=$$(test -f .wp-env.override.json && jq '.mappings' .wp-env.override.json)
 > if [ "$$WP_ENV_OVERRIDE_MAPPINGS" != "null" ]; then
-# - the sed command deletes the trailing lines (containing a "{" or "}" 
+# - the sed command deletes the trailing lines (containing a "{" or "}"
 #   and substitute '"wp-content' with '"/var/www/html/wp-content'
 >   WP_ENV_OVERRIDE_MAPPINGS="$$(echo "$$WP_ENV_OVERRIDE_MAPPINGS" | sed '/{/d;/}/d;s/"wp-content/\t\t\t"\/var\/www\/html\/wp-content/g;'),"
 > else
@@ -249,7 +249,7 @@ resume: node_modules
 
 node_modules: package-lock.json
 > npm -q ci
-# fixes repeated installation of node_modules again and again 
+# fixes repeated installation of node_modules again and again
 # (https://gist.github.com/hallettj/29b8e7815b264c88a0a0ee9dcddb6210)
 > @touch -m node_modules
 
@@ -285,7 +285,7 @@ dist/cm4all-wp-impex-gh-pages: docs/gh-pages/book/
 
 $(DOCS_MARKDOWN_TARGETS): $(DOCS_MARKDOWN_FILES)
 # --no-stdin option prevents hanging here when called from a github action (see https://github.com/marp-team/marp-cli/pull/94)
-> marp $< --no-stdin --allow-local-files --theme docs/theme/marp-theme-we22.css -o $@ 
+> marp $< --no-stdin --allow-local-files --theme docs/theme/marp-theme-we22.css -o $@
 
 $(DOCS_MERMAID_TARGETS) : $(DOCS_MERMAID_FILES)
 > mkdir -p $(dir $@) && mmdc -i $< -o $@
@@ -295,20 +295,20 @@ $(DOCS_MERMAID_TARGETS) : $(DOCS_MERMAID_FILES)
 clean:
 > if [ -d "$$WP_ENV_HOME" ] && [ -d "node_modules/" ]; then
 >   for instance_prefix in '' 'tests-' ; do
->     WORDPRESS_CONTAINER="$${instance_prefix}wordpress" 
+>     WORDPRESS_CONTAINER="$${instance_prefix}wordpress"
 >
 >     wp-env run $$WORDPRESS_CONTAINER 'bash -c "chmod -R a+w /var/www/html/wp-content/{themes,plugins,upgrade,uploads} || true"'
 >   done
-# cleanup wp-env environment (docker images/containers and stuff)   
+# cleanup wp-env environment (docker images/containers and stuff)
 >   command -v wp-env 2>/dev/null 1>&2 && echo 'y' | wp-env destroy -f || true
 > fi
 # remove everything matching .gitignore entries (-f is force, you can add -q to suppress command output, exclude node_modules and node_modules/**)
-# -ff is for plugins/cm4all-wp-impex/vendor/anthonykgross/dependency-resolver which is a git repository: 
+# -ff is for plugins/cm4all-wp-impex/vendor/anthonykgross/dependency-resolver which is a git repository:
 #   => If an untracked directory is managed by a different git repository, it is not removed by default. Use -f option twice if you really want to remove such a directory.
 > git clean -Xffd -e '!/Makefile-wp-env.postinit.sh' -e '!/Makefile-wp-env.preinit.sh' -e '!/*.code-workspace' -e '!/node_modules/' -e '!/node_modules/**' -e '!/.wp-env.override.json' -e '!/cm4all-wp-impex.code-workspace'
 
 # delete all files in the current directory (or created by this makefile) that are created by configuring or building the program.
-# see https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html 
+# see https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html
 .PHONY: distclean
 #HELP: cleanup node_modules, package-lock.json and docker container/images
 distclean: clean
@@ -317,35 +317,35 @@ distclean: clean
 > docker image rm $$(docker images -q $(DOCKER_PHPUNIT_IMAGE)) 2>/dev/null || true
 > docker image rm $$(docker images -q $(DOCKER_MDBOOK_IMAGE)) 2>/dev/null || true
 
-# not in use 
-# .PHONY: lint-php 
-# lint-php: plugins/cm4all-wp-impex/vendor/autoload.php ## lint php sources
-#   phpcs --runtime-set ignore_warnings_on_exit 1  
-
-# not in use 
-# .PHONY: lint-php 
-# lint: lint-php ## lint sources
-  
 # not in use
-# .PHONY: lint-fix-php 
-# lint-fix-php: plugins/cm4all-wp-impex/vendor/autoload.php ## fix linter problems in php sources 
+# .PHONY: lint-php
+# lint-php: plugins/cm4all-wp-impex/vendor/autoload.php ## lint php sources
+#   phpcs --runtime-set ignore_warnings_on_exit 1
+
+# not in use
+# .PHONY: lint-php
+# lint: lint-php ## lint sources
+
+# not in use
+# .PHONY: lint-fix-php
+# lint-fix-php: plugins/cm4all-wp-impex/vendor/autoload.php ## fix linter problems in php sources
 #   phpcbf --report-summary --report-source
 
 # not in use
-# .PHONY: lint-fix 
+# .PHONY: lint-fix
 # lint-fix: lint-fix-php ## fix linter problems in sources
 
 .PHONY: test-cm4all-wp-impex-generator
 #HELP: execute @cm4all-wp-impex/generator tests
 test-cm4all-wp-impex-generator: node_modules
-> cd packages/@cm4all-wp-impex/generator 
+> cd packages/@cm4all-wp-impex/generator
 > test -d "node_modules" || npm ci
 > npm run test
 
 .PHONY: test-impex-cli
 #HELP: execute impexcli phpunit tests\n Parameter ARGS can be used to pass parameters to phpunit\n Example: make test-impexcli ARGS="--verbose --debug --filter=ImportProfileTest"
 test-impex-cli: node_modules $(WP_ENV_HOME)
-# build impex cli docker image if needed 
+# build impex cli docker image if needed
 > if [[ "$$(docker images -q $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE))" == "" ]]; then
 >   cd impex-cli/tests && DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMPEXCLI_PHPUNIT_IMAGE) .
 > fi
@@ -371,10 +371,10 @@ test-phpunit-single-test: node_modules $(WP_ENV_HOME) plugins/cm4all-wp-impex/ve
 #HELP: execute phpunit tests\n Example: run filtered tests\n make test-phpunit ARGS='--verbose --filter=TestImpexExportAdapterDb'\n Example : run filtered tests with phpunit debug information\n make test-phpunit ARGS='--debug --filter=TestImpexExportAdapterDb::test_wordpress_and_plugin_are_loaded'
 test-phpunit: node_modules $(WP_ENV_HOME) plugins/cm4all-wp-impex/vendor/autoload.php
 # test if local phphunit image already has xdebug injected
-ifneq ($(shell docker image inspect --format='' $(DOCKER_PHPUNIT_IMAGE) 2> /dev/null | jq '.[0].Config.Labels.xdebug_enabled'),"true") 
+ifneq ($(shell docker image inspect --format='' $(DOCKER_PHPUNIT_IMAGE) 2> /dev/null | jq '.[0].Config.Labels.xdebug_enabled'),"true")
 > $(info inject xdebug support into $(DOCKER_PHPUNIT_IMAGE))
 > docker build plugins/cm4all-wp-impex/tests/phpunit -t $(DOCKER_PHPUNIT_IMAGE)
-endif  
+endif
 # for whatever reason we need to force php to load xdebug by commandline
 # (actually xdebug should be configured by `docker-php-ext-enable xdebug` in the Dockerfile but it is'nt ...)
 > wp-env --debug run phpunit 'php -dzend_extension=xdebug.so /var/www/html/wp-content/plugins/cm4all-wp-impex/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/cm4all-wp-impex/tests/phpunit/phpunit.xml $(ARGS)'
@@ -382,19 +382,19 @@ endif
 .PHONY: test
 #HELP: * run all tests
 test: test-phpunit test-impex-cli test-cm4all-wp-impex-generator
-  
+
 .PHONY: dev-marp
 #HELP: * watch/rebuild marp slides on change
-dev-marp: node_modules  
+dev-marp: node_modules
 > PORT=5000 marp --allow-local-files --theme docs/theme/marp-theme-we22.css -s docs
 
 .PHONY: $(DOCKER_MDBOOK_IMAGE)
-$(DOCKER_MDBOOK_IMAGE): 
+$(DOCKER_MDBOOK_IMAGE):
 > docker pull $(DOCKER_MDBOOK_IMAGE):latest
 
 .PHONY: mdbook-image
 #HELP: * build mdbook docker image
-mdbook-image: 
+mdbook-image:
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
 > 	>&2 echo "build docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
 >   exit 1
@@ -422,7 +422,7 @@ mdbook-image:
 
 .PHONY: mdbook-image-push
 #HELP: * push mdbook docker image to docker hub\n(docker login using token or password required before)
-mdbook-image-push: mdbook-image 
+mdbook-image-push: mdbook-image
 > if [ "$${GITHUB_ACTIONS:-false}" == "true" ]; then
 > 	>&2 echo "deploy docker image '$(DOCKER_MDBOOK_IMAGE)' can only be done locally"
 >   exit 1
@@ -470,7 +470,7 @@ dev-js: node_modules
 
 .PHONY: wp-env-mysql-dump
 #HELP: export (diffable) dump from wp-env DB container to "tmp/wp-env-wordpress.sql"\n Example: Dump to a different file\n make wp-env-mysql-export file=tmp/foo.sql"
-wp-env-mysql-dump: $(WP_ENV_HOME) ## create a mysql dump (default "tmp/wp-env-wordpress.sql") usable for diff. 
+wp-env-mysql-dump: $(WP_ENV_HOME) ## create a mysql dump (default "tmp/wp-env-wordpress.sql") usable for diff.
 > $(eval file ?= tmp/wp-env-wordpress-dump.sql)
 > docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml exec -T mysql \
 >   sh -c 'mysqldump --compact --skip-comments --skip-extended-insert --password="$$MYSQL_ROOT_PASSWORD" $$MYSQL_DATABASE' \
@@ -486,7 +486,7 @@ wp-env-mysql-export: $(WP_ENV_HOME) ## export a mysql dump (default dump file "t
 
 .PHONY: wp-env-mysql-import
 #HELP: import dump "tmp/wp-env-wordpress.sql" in wp-env DB container\n Example: import dump from "tmp/foo.sql"\n make wp-env-mysql-import file=tmp/foo.sql"
-wp-env-mysql-import: $(WP_ENV_HOME) 
+wp-env-mysql-import: $(WP_ENV_HOME)
 > $(eval file ?= tmp/wp-env-wordpress.sql)
 > docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml exec -T mysql \
 >   sh -c 'mysql --password="$$MYSQL_ROOT_PASSWORD" $$MYSQL_DATABASE' \
@@ -512,10 +512,10 @@ wp-env-clean: $(WP_ENV_HOME)
 > for instance_prefix in '' 'tests-' ; do
 > 	wp-env run --debug=false "$${instance_prefix}cli" bash <<-EOF
 #> 		wp post list --post_type=attachment,post,page,wp_block --format=ids | xargs wp post delete --force 1>/dev/null || :
-#> 		wp post list --post_status=trash --format=ids | xargs wp post delete --force 1>/dev/null || :  
+#> 		wp post list --post_status=trash --format=ids | xargs wp post delete --force 1>/dev/null || :
 > 		wp db query --silent "select id from wp_posts;" | xargs wp post delete --force 1>/dev/null || :
-> 		wp option update fresh_site '1' || : 
-> 		wp menu list --format=ids | xargs wp menu delete --force 1>/dev/null || : 
+> 		wp option update fresh_site '1' || :
+> 		wp menu list --format=ids | xargs wp menu delete --force 1>/dev/null || :
 > 	EOF
 > done
 
@@ -542,10 +542,10 @@ wp-env-wp-restore: $(WP_ENV_HOME)
 > fi
 
 # see https://developer.wordpress.org/block-editor/how-to-guides/internationalization/#create-translation-file
-$(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot: $(WP_ENV_HOME) $(SCRIPT_TARGETS) $(PHP_SOURCES) 
-> mkdir -p $(I18N_DIRECTORY) 
+$(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot: $(WP_ENV_HOME) $(SCRIPT_TARGETS) $(PHP_SOURCES)
+> mkdir -p $(I18N_DIRECTORY)
 # npm run wp-env run cli is called with user www-data, therefore ensure write access
-> chmod go+w $(I18N_DIRECTORY) 
+> chmod go+w $(I18N_DIRECTORY)
 # > [ -f "$(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot" ] && chmod go+w $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME).pot
 > wp-env run cli \
 >   'sh -c "cd ./wp-content/plugins/$(IMPEX_PLUGIN_NAME) && wp i18n make-pot --debug --exclude=tests/,*-min.js,vendor/ ./ languages/$(IMPEX_PLUGIN_NAME).pot && chmod go+w languages/$(IMPEX_PLUGIN_NAME).pot"'
@@ -569,7 +569,7 @@ i18n: $(MO_TARGETS) # $(I18N_DIRECTORY)/$(IMPEX_PLUGIN_NAME)-de_DE.mo
 
 .PHONY: wp-env-mysql-shell
 #HELP: open shell in wp-env DB container
-wp-env-mysql-shell: $(WP_ENV_HOME) 
+wp-env-mysql-shell: $(WP_ENV_HOME)
 > docker-compose -f $(WP_ENV_HOME)/*/docker-compose.yml exec mysql sh -c 'mysql --password="$$MYSQL_ROOT_PASSWORD" "$$MYSQL_DATABASE"'
 
 .PHONY: wp-env-tests-mysql-shell
@@ -592,7 +592,7 @@ dist/cm4all-wp-impex-cli : tmp/rector
 > cp impex-cli/impex-cli.php $@/
 > cp impex-cli/impex-cli.php $@/impex-cli-php7.4.0.php
 > sed -i 's/Requires PHP:[[:space:]]\+8.0/Requires PHP: 7.4/' $@/impex-cli-php7.4.0.php
-# test generated php 7.4 script using: 
+# test generated php 7.4 script using:
 # docker run -it --network host --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.4-cli php ./dist/cm4all-wp-impex-cli/impex-cli-php7.4.0.php export-profile list -username=admin -password=password -rest-url=http://localhost:8888/wp-json
 # > tmp/rector/vendor/bin/rector --clear-cache --working-dir $@ --config ./rector.php --no-progress-bar process impex-cli-php7.4.0.php
 > cd '$@' && $(RECTOR) --clear-cache --config '$(RECTOR_CONFIG)' --no-progress-bar process impex-cli-php7.4.0.php
@@ -610,7 +610,7 @@ $(DOWNGRADED_PLUGIN_DIR): dist/cm4all-wp-impex tmp/rector
 
 .PHONY: deploy-to-wordpress
 #HELP: * package and deploy impex plugin to wordpress.org
-deploy-to-wordpress: 
+deploy-to-wordpress:
 # see https://github.com/10up/action-wordpress-plugin-deploy/blob/develop/deploy.sh
 ifndef SVN_TAG
 >	  $(error "$(@) : SVN_TAG is not set")
@@ -656,9 +656,9 @@ endif
 dist/cm4all-wp-impex: build
 # optimization : create build/[plugin-name] directory and languages subdir at once
 > mkdir -p '$@/languages'
-> rsync -rupE plugins/cm4all-wp-impex/{plugin.php,inc,dist,profiles} $@/
+> rsync -rupE plugins/cm4all-wp-impex/{plugin.php,inc,build,profiles} $@/
 > rsync -rupE plugins/cm4all-wp-impex/languages/{*.mo,*.json} $@/languages/
-# 
+#
 > export CONTRIBUTORS="cm4all" # comma separated list of contributors
 > export CHANGELOG=$$(sed 's/^### \(.*\)/*\1*/g;s/^## \(.*\)/= \1 =/g;' CHANGELOG.md)
 # > export TAGS="import,export,migration" # provide default tags if not defined in plugin.php
@@ -682,7 +682,7 @@ dist/cm4all-wp-impex-example: build
 > rsync -rupE plugins/cm4all-wp-impex-example/{plugin.php,inc} $@/
 
 # create cm4all-wp-impex-[version].zip file
-dist/%.zip: dist/% 
+dist/%.zip: dist/%
 # see https://chriswiegman.com/2021/08/three-uses-for-make-in-wordpress-development/
 > PLUGIN_VERSION=$$(grep '^ \* Version:' plugins/cm4all-wp-impex/plugin.php | awk -F' ' '{print $$3}' | sed 's/ //g')
 > ARCHIVE_NAME="$$(basename $<)-v$${PLUGIN_VERSION}.zip"
@@ -691,17 +691,17 @@ dist/%.zip: dist/%
 # see https://gist.github.com/Olshansk/689fc2dee28a44397c6e31a0776ede30
 .PHONY: help
 #HELP: * prints this screen
-help: 
+help:
 > @printf "Available targets\n\n"
-> awk '/^[a-zA-Z\-_0-9]+:/ { 
->   helpMessage = match(lastLine, /^#HELP: (.*)/); 
->   if (helpMessage) { 
->     helpCommand = substr($$1, 0, index($$1, ":")-1); 
->     helpMessage = substr(lastLine, RSTART + 6, RLENGTH); 
+> awk '/^[a-zA-Z\-_0-9]+:/ {
+>   helpMessage = match(lastLine, /^#HELP: (.*)/);
+>   if (helpMessage) {
+>     helpCommand = substr($$1, 0, index($$1, ":")-1);
+>     helpMessage = substr(lastLine, RSTART + 6, RLENGTH);
 >     gsub(/\\n/, "\n", helpMessage);
 >     printf "\033[36m%-30s\033[0m %s\n", helpCommand, helpMessage;
->   } 
-> } 
+>   }
+> }
 > { lastLine = $$0 }' $(MAKEFILE_LIST)
 
 # you can dry run semantic-release on any branch using 'npx semantic-release --no-ci --dry-run --branches [branch]'

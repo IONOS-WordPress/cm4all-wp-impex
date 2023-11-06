@@ -1,10 +1,11 @@
 /node_modules
 dist
+build
 tmp
 /docs/**/*.mmd.svg
 /plugins/*
 !/plugins/cm4all-wp-impex
-!/plugins/cm4all-wp-impex-example  
+!/plugins/cm4all-wp-impex-example
 /plugins/cm4all-wp-impex/vendor/*
 /plugins/cm4all-wp-impex/languages/*.pot
 /plugins/cm4all-wp-impex/languages/*.json
