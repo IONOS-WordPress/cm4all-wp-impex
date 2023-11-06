@@ -102,7 +102,7 @@ function enqueueClientAssets(bool $in_footer): string
       function ($client_asset_handle, $in_footer) {
         \cm4all\wp\impex\wp_enqueue_script(
           $client_asset_handle,
-          'dist/wp.impex.js',
+          'build/wp.impex.js',
           [],
           $in_footer
         );
@@ -110,7 +110,7 @@ function enqueueClientAssets(bool $in_footer): string
         $DEBUG_HANDLE = $client_asset_handle . '-debug';
         \cm4all\wp\impex\wp_enqueue_script(
           $DEBUG_HANDLE,
-          'dist/wp.impex.debug.js',
+          'build/wp.impex.debug.js',
           [$client_asset_handle],
           $in_footer
         );
@@ -118,7 +118,7 @@ function enqueueClientAssets(bool $in_footer): string
         $STORE_HANDLE = $client_asset_handle . '-store';
         \cm4all\wp\impex\wp_enqueue_script(
           $STORE_HANDLE,
-          'dist/wp.impex.store.js',
+          'build/wp.impex.store.js',
           [$client_asset_handle, $DEBUG_HANDLE, 'wp-api-fetch', 'wp-data', 'wp-hooks'],
           $in_footer
         );
@@ -189,7 +189,7 @@ function enqueueClientAssets(bool $in_footer): string
     // register dummy style
     wp_register_style(
       $CLIENT_ASSET_HANDLE,
-      'dist/wp.impex.css'
+      'build/wp.impex.css'
     );
   }
 

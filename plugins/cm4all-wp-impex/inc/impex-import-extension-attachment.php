@@ -359,7 +359,7 @@ class __AttachmentImporter
     $HANDLE = strtolower(str_replace('\\', '-', AttachmentImporter::PROVIDER_NAME));
     \cm4all\wp\impex\wp_enqueue_script(
       $HANDLE,
-      'dist/wp.impex.extension.import.attachment.js',
+      'build/wp.impex.extension.import.attachment.js',
       [$client_asset_handle, $client_asset_handle . '-debug'],
       $in_footer
     );
