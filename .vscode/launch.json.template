@@ -51,8 +51,7 @@
       //"stopOnEntry": true,
       //"log": true,
       "pathMappings": {
-        // imported from .wp-env.override.json by Makefile
-        // (replace "../" with "${workspaceRoot}/../" for paths outside the project directory)
+        // imported mappings from .wp-env.override.json by Makefile
   $WP_ENV_OVERRIDE_MAPPINGS
         // --
   			"/var/www/html/wp-content/plugins/cm4all-wp-impex": "${workspaceRoot}/plugins/cm4all-wp-impex",

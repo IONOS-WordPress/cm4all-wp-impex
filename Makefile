@@ -230,7 +230,9 @@ $(WP_ENV_HOME): node_modules
 > if [ "$$WP_ENV_OVERRIDE_MAPPINGS" != "null" ]; then
 # - the sed command deletes the trailing lines (containing a "{" or "}"
 #   and substitute '"wp-content' with '"/var/www/html/wp-content'
->   WP_ENV_OVERRIDE_MAPPINGS="$$(echo "$$WP_ENV_OVERRIDE_MAPPINGS" | sed '/{/d;/}/d;s/"wp-content/\t\t\t"\/var\/www\/html\/wp-content/g;'),"
+>   WP_ENV_OVERRIDE_MAPPINGS="$$(echo "$$WP_ENV_OVERRIDE_MAPPINGS" | sed '/{/d;/}/d;s/"wp-content/\t\t\t"\/var\/www\/html\/wp-content/g;')"
+# replace mapped paths starting with "./" or "../" with the current workspaceRoot to get debugging wü-env in vscode working
+>   WP_ENV_OVERRIDE_MAPPINGS="$$(echo "$$WP_ENV_OVERRIDE_MAPPINGS" | sed -E 's/: "(\.\.?\/)/: "$${workspaceRoot}\/\1/g;'),"
 > else
 >  @WP_ENV_OVERRIDE_MAPPINGS=""
 > fi
