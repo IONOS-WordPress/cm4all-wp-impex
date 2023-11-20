@@ -32,6 +32,7 @@ $profile->addTask(
     'blogname',       // aka website title
     'blogdescription',
     'site_logo',       // website logo
-    'site_icon'       // website icon
+    'site_icon',       // website icon
+    'wp_attachment_pages_enabled', // enable/disable attachment pages (see https://make.wordpress.org/core/2023/10/16/changes-to-attachment-pages/)
   ],],
 );
