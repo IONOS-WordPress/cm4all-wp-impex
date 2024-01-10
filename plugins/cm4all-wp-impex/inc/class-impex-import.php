@@ -319,7 +319,9 @@ abstract class ImpexImport extends ImpexPart
     }
 
     // check/fix menus of current theme
-    $nav_menu_locations = \get_theme_mod('nav_menu_locations') ?: [];
+    $theme_slug = \get_option('stylesheet');
+    $theme_mods = \get_option('theme_mods_${theme_slug}');
+    $nav_menu_locations = $theme_mods['nav_menu_locations'] ?: [];
     // https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
 
     $nav_menus = \wp_get_nav_menus();
@@ -334,8 +336,7 @@ abstract class ImpexImport extends ImpexPart
         }
       }
     }
-
-    set_theme_mod('nav_menu_locations', $nav_menu_locations);
+    \set_theme_mod('nav_menu_locations', $nav_menu_locations);
 
     foreach ($posts as $old_post_id => $post_id) {
       $post = \get_post($post_id);

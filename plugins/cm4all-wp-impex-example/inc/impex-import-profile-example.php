@@ -39,15 +39,15 @@ $profile->events(ImpexImport::EVENT_IMPORT_END)->addListener(
         $theme_mods_trinity_core['custom_css_post_id'] = $imported['posts'][$custom_css_post_id];
       }
       // remap nav_menu_locations if set
-      $nav_menu_locations = $theme_mods_trinity_core['nav_menu_locations'] ?? null;
-      if($theme_mods_trinity_core['nav_menu_locations'] !== false) {
-        foreach ($nav_menu_locations as $nav_menu_name => $old_nav_menu_term_id) {
-          if(array_key_exists($old_nav_menu_term_id, $imported['terms'])) {
-            $nav_menu_locations[$nav_menu_name] = $imported['terms'][$old_nav_menu_term_id];
-          }
+      $nav_menu_locations = $theme_mods_trinity_core['nav_menu_locations'] ?: [];
+      foreach ($nav_menu_locations as $nav_menu_name => $old_nav_menu_term_id) {
+        if (array_key_exists($old_nav_menu_term_id, $imported['terms'])) {
+          $nav_menu_locations[$nav_menu_name] = $imported['terms'][$old_nav_menu_term_id];
         }
       }
-      
+      // re-assign modified nav_menu_locations
+      $theme_mods_trinity_core['nav_menu_locations'] = $nav_menu_locations;
+
       \update_option('theme_mods_trinity-core', $theme_mods_trinity_core);
     }
   },
