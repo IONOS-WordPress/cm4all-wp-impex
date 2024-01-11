@@ -209,19 +209,16 @@ function __registerDbTableImportProvider()
 {
   $provider = Impex::getInstance()->Import->addProvider(DbTableImporter::PROVIDER_NAME, __NAMESPACE__ . '\__DbTableImportProviderCallback');
 
+  // we need to replace legacy utf8 encodings with just utf8 and the matching collation in create table statements when importing tables from a mysqldb export to mariadb
+  // see https://tecadmin.net/resolved-unknown-collation-utf8mb4_0900_ai_ci/
   global $wpdb;
-  $db_version = $wpdb->get_row('SHOW VARIABLES LIKE "version_comment"', ARRAY_A)['Value'] ?? 'MySQL';
+  $collation = $wpdb->get_charset_collate();
 
-  if (stripos($db_version, 'mariadb') !== false) {
-    // we need to replace legacy utf8 encodings with just utf8 and the matching collation in create table statements when importing tables from a mysqldb export to mariadb
-    // see https://tecadmin.net/resolved-unknown-collation-utf8mb4_0900_ai_ci/
-    \add_filter('query', function (string $sql) {
-      $sql = str_replace('utf8mb4_0900_ai_ci', 'utf8_general_ci', $sql);
-      $sql = str_replace('utf8mb4', 'utf8', $sql);
+  \add_filter('query', function (string $sql) use ($collation) {
+    $sql = preg_replace("/DEFAULT CHARSET=[^;\$\\\"]+/", $collation, $sql);
 
-      return $sql;
-    });
-  }
+    return $sql;
+  });
 
   return $provider;
 }
