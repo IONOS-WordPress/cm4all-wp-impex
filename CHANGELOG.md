@@ -1,3 +1,15 @@
+## [1.5.10](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.9...1.5.10) (2024-01-11)
+
+
+### Bug Fixes
+
+* added wp_attachment_pages_enabled option to export ([bf39694](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/bf39694920d725a1eb12e64b9a3112d98e43210b))
+* fixed launch.json generation for successful 3rd-party plugin debugging ([5f07e44](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/5f07e44101fa88682a410fc6135ebc9aa7c8ba92))
+* **import:** fix mysql/mariadb charset/collation issue ([fb5543f](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/fb5543f3a93c5879e697d788ac8e4619e80b1e48))
+* importing mysql db tables into mariadb/wp-env ([a1a21a8](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/a1a21a8680d877a4ac5de8e13081165b2d7a1b22))
+* menu id reassignment fixed ([ac7d0f5](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/ac7d0f5ad12e43a4c56319bb34150534586e24cc))
+* upgraded rector config to work with latest rector release ([406283e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/406283e1363a4d5178496b5616fd6ddfda2593e8))
+
 ## [1.5.9](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.8...1.5.9) (2023-07-24)
 
 
