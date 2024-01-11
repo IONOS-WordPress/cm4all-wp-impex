@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.10...1.5.11) (2024-01-11)
+
+
+### Bug Fixes
+
+* final fix for menu id reassociation ([a752c5e](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/a752c5e0021e7d88499bf29daa2c9d6ffcdd141b))
+
 ## [1.5.10](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.9...1.5.10) (2024-01-11)
 
 
