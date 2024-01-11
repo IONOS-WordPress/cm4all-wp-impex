@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Static website conversion tutorial</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About</a></li><li class="chapter-item expanded affix "><li class="part-title">Blog</li><li class="chapter-item expanded "><a href="../blog/2022/index.html">2022</a></li><li class="chapter-item expanded affix "><li class="part-title">Documentation</li><li class="chapter-item expanded "><a href="../features.html">Features</a></li><li class="chapter-item expanded "><a href="../basic-usage.html">Basic usage</a></li><li class="chapter-item expanded "><a href="../impex-cli.html">CLI</a></li><li class="chapter-item expanded "><a href="../migrating-content.html">Migrating content</a></li><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/index.html">Package @cm4all-wp-impex/generator</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cm4all-wp-impex-generator/static-website-tutorial.html" class="active">Static website conversion tutorial</a></li></ol></li><li class="chapter-item expanded "><a href="../api/index.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="../api/filters.html">Filters</a></li><li class="chapter-item expanded "><a href="../api/cm4all-wp-impex-oas.html">REST API</a></li></ol></li><li class="chapter-item expanded "><a href="../explanation-of-terms.html">Explanation of terms</a></li><li class="chapter-item expanded "><a href="../faq.html">FAQ</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/edit/develop/docs/gh-pages/src/cm4all-wp-impex-generator/static-website-tutorial.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="static-website-conversion-tutorial"><a class="header" href="#static-website-conversion-tutorial">Static website conversion tutorial</a></h1>
+<p>This chapter features the conversion of a static HTML website to a WordPress site using <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> and <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex">ImpEx WordPress Plugin</a>.</p>
+<p>The sources can be found at the <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/tree/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion">ImpEx WordPress plugin GitHub repository</a>.</p>
+<ul>
+<li><a href="#about">About</a>
+<ul>
+<li><a href="#watch-the-walk-trough-on-youtube">Watch the walk-trough on YouTube</a></li>
+</ul>
+</li>
+<li><a href="#conversion-process">Conversion process</a></li>
+<li><a href="#whats-missing-">Whats missing ?</a></li>
+<li><a href="#local-development-using-cm4all-wp-impex">Local Development using cm4all-wp-impex</a></li>
+<li><a href="#full-conversion-script">Full conversion script</a></li>
+</ul>
+<h1 id="about"><a class="header" href="#about">About</a></h1>
+<p>This is a full featured example of converting a regular static website of a fictional german dentist to a WordPress site.</p>
+<p>The web site is available offline at directory <code>./homepage-dr-mustermann</code>.</p>
+<p>You can view the website by</p>
+<ul>
+<li>starting the PHP built-in webserver : <code>php -S localhost:8080 -t homepage-dr-mustermann/</code></li>
+<li>and open the website in your browser : <code>http://localhost:8080/</code>.</li>
+</ul>
+<h2 id="watch-the-walk-trough-on-youtube"><a class="header" href="#watch-the-walk-trough-on-youtube"><a href="https://img.youtube.com/vi/pjG69RmULYo/2.jpg">Watch the walk-trough on YouTube</a></a></h2>
+<p><a href="https://www.youtube.com/watch?v=pjG69RmULYo"><img src="https://img.youtube.com/vi/pjG69RmULYo/2.jpg" alt="Watch the video" /></a></p>
+<p><em>(German audio with english sub titles.)</em></p>
+<h1 id="conversion-process"><a class="header" href="#conversion-process">Conversion process</a></h1>
+<p>The conversion process is implemented in a single file <code>./index.js</code> :</p>
+<ul>
+<li>
+<p>scanning for html and media files from the filesystem using plain NodeJS</p>
+</li>
+<li>
+<p>converting the HTML files to <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#content-aka-wordpress-postspages">ImpEx slice JSON</a> using <code>ImpexTransformer</code> and <code>ImpexSliceFactory</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>. The HTML transformation is customized in the <code>setup(...)</code> function.</p>
+</li>
+<li>
+<p>creating <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">ImpEx slice JSON</a> for the media files using <code>ImpexSliceFactory</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a></p>
+</li>
+<li>
+<p>saving the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#data-files">ImpEx slice JSON</a> to the filesystem using paths generated by <code>ImpexSliceFactory.PathGenerator</code> from package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a></p>
+<ul>
+<li>the media files are saved to the filesystem using paths adapted from the <code>ImpexSliceFactory.PathGenerator</code> generated paths for the slice files (as expected by the <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#attachments-like-pictures-and-videos">ImpEx Export format</a>).</li>
+</ul>
+</li>
+</ul>
+<p>The conversion process is implemented in less than 240 lines of code thanks to package <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a>.</p>
+<p>You can run the conversion script by executing <code>./index.js</code> (can be found at the GitHub repository : <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">packages/@cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion\index.js</a></p>
+<blockquote>
+<p>Ensure the right nodejs version is active before using <code>nvm install</code> and to install the required NodeJS dependencies using <code>npm ci</code>.</p>
+</blockquote>
+<blockquote>
+<p>Ensure that you've installed the script dependencies by entering directory <code>cm4all-wp-impex/packages/@cm4all-wp-impex/generator</code> and executing <code>npm ci</code>.</p>
+</blockquote>
+<p>The result is a folder <code>generated-impex-import/</code> containing the generated <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/migrating-content.html#preparation">ImpEx export folder layout</a> containing the ImpEx slice JSON files and media files.</p>
+<p>This export can now be imported into WordPress using <a href="https://ionos-wordpress.github.io/cm4all-wp-impex/impex-cli.html">ImpEx CLI</a> :</p>
+<pre><code class="language-sh">impex-cli.php import -username=&lt;adminusername&gt; -password=&lt;adminpassword&gt; -rest-url=&lt;your-wordpress-rest-api-endpoint&gt; ./generated-impex-export/
+</code></pre>
+<p><em>(Replace the <code>&lt;placeholder&gt;</code> with your own values.)</em></p>
+<blockquote>
+<p>Ensure your WordPress instance is empty (does not contain any pages/posts/media).</p>
+</blockquote>
+<p>After executing the command the website contents are imported into your WordPress instance.</p>
+<hr />
+<p>The example website and conversion script is intentionally simple.</p>
+<p>Since every website is different, the conversion process cannot be universal work for every website.</p>
+<p>By implementing additional transformation rules using the hooks known by <code>Transformer.setup(...)</code> function of <a href="https://www.npmjs.com/@cm4all-wp-impex/generator"><code>@cm4all-wp-impex/generator</code></a> almost any detail of a website can be converted to a WordPress post/page.</p>
+<h1 id="whats-missing-"><a class="header" href="#whats-missing-">Whats missing ?</a></h1>
+<p>The example does not cover every detail of a website conversion, only the content. But that's intentional.</p>
+<p>Possible improvements:</p>
+<ul>
+<li>
+<p>The navigation bar could be converted to a custom WordPress nav_menu.</p>
+<p>Navigation is different handled in FSE and classic themes. In a FSE you would generate a <a href="https://wordpress.org/support/article/navigation-block/">Navigation block</a>, in a classic theme it works different. It depends on the target WordPress environment how to take over navigation.</p>
+</li>
+<li>
+<p>Styles are ignored in the example.</p>
+<p>Because it depends on the goal of the transformation. If the content should be styled completely by a WordPress theme providing the complete styling, this is not needed.</p>
+<p>But if needed, style properties like fonts and colors could be introspected and transformed to FSE theme.json settings.</p>
+</li>
+<li>
+<p>Contact form will be taken over as <code>core/html</code> block. Submitting the form does not work in the example.</p>
+<p>WordPress/Gutenberg does not provide a generic Form block. There is no option to convert the HTML form to something matching using plain WordPress / Gutenberg.</p>
+<p>But the form could be easily converted into a <a href="https://ninjaforms.com/">Ninja Form</a> or any other form builder plugin available for WordPress.</p>
+<p>To keep the example simple and working without depending on additional plugins like <a href="https://ninjaforms.com/">Ninja Forms</a> the example ist just converted to a <code>core/html</code> block.</p>
+<p><em>So it depends on your target WordPress environment (and available plugins) how the conversion will be implemented.</em></p>
+</li>
+<li>
+<p>The overall layout (header/footer/main section) is also ignored (but could be converted to <a href="https://developer.wordpress.org/themes/block-themes/templates-and-template-parts/">FSE part templates</a>).</p>
+<p>But : as you might guess - all these improvements may vary depending on the goal.</p>
+</li>
+</ul>
+<blockquote>
+<p>The important message is : <strong>Everything is possible, but because it's individual - it's up to you 💪</strong></p>
+</blockquote>
+<h1 id="local-development-using-cm4all-wp-impex"><a class="header" href="#local-development-using-cm4all-wp-impex">Local Development using cm4all-wp-impex</a></h1>
+<ul>
+<li>
+<p>(optional) cleanup local wp-env installation : <code>(cd $(git rev-parse --show-toplevel) &amp;&amp; make wp-env-clean)</code></p>
+</li>
+<li>
+<p>import using ImpEx cli : <code>$(git rev-parse --show-toplevel)/impex-cli/impex-cli.php import -username=admin -password=password -rest-url=http://localhost:8888/wp-json -profile=all ./generated-impex-export/</code></p>
+</li>
+</ul>
+<h1 id="full-conversion-script"><a class="header" href="#full-conversion-script">Full conversion script</a></h1>
+<pre><code class="language-js">#!/usr/bin/env node
+
+/*
+ *  @cm4all-wp-impex/generator usage example converting a whole static homepage to an impex export
+ */
+
+import { resolve, join, extname, dirname, basename } from &quot;path&quot;;
+import { readdir, readFile, mkdir, rm, writeFile, copyFile } from &quot;fs/promises&quot;;
+import { ImpexTransformer, ImpexSliceFactory } from &quot;../../src/index.js&quot;;
+
+/**
+ * STATIC_HOMEPAGE_DIRECTORY is the directory containing the static homepage
+ */
+const STATIC_HOMEPAGE_DIRECTORY = new URL(
+  &quot;homepage-dr-mustermann&quot;,
+  import.meta.url
+).pathname;
+
+/**
+ * generator function yielding matched files recursively
+ *
+ * @param   {string}  dir directory to search
+ * @param   {boolean} recursive  whether to search recursively
+ * @param   {string|undefined}  extension file extension to match or null to match all files
+ *
+ * @yields  {string} path to file
+ */
+async function* getFiles(dir, recursive, extension) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const res = resolve(dir, entry.name);
+    if (entry.isDirectory()) {
+      yield* getFiles(res, recursive, extension);
+    } else if (!extension || entry.name.endsWith(extension)) {
+      yield res;
+    }
+  }
+}
+
+/**
+ * keeps track of images and their references from html files (aka pages)
+ * key is image path relative to STATIC_HOMEPAGE_DIRECTORY
+ * value is array of image references
+ */
+const img2imgSrc_mappings = {};
+
+/**
+ * set up the ImpexTransformer singleton
+ *
+ * @return  {ImpexSliceFactory}
+ */
+function setup() {
+  ImpexTransformer.setup({
+    onDomReady(document, options = { path: null }) {
+      // replace &lt;header&gt; elements with the &lt;ul&gt; child
+      for (const section of document.querySelectorAll(&quot;header&quot;)) {
+        const ul = document.querySelector(&quot;ul.pure-menu-list&quot;);
+        section.replaceWith(ul.cloneNode(true));
+      }
+
+      // replace &lt;section&gt; elements with its inner contents
+      for (const section of document.querySelectorAll(&quot;section&quot;)) {
+        for (const child of section.childNodes) {
+          section.parentNode.insertBefore(child.cloneNode(true), section);
+        }
+        section.remove();
+      }
+
+      // replace &lt;footer&gt; elements with &lt;p&gt;
+      for (const footer of document.querySelectorAll(&quot;footer&quot;)) {
+        const paragraph = document.createElement(&quot;p&quot;);
+        //paragraph.setAttribute(&quot;class&quot;, &quot;footer&quot;);
+        paragraph.innerHTML = footer.innerHTML;
+        footer.replaceWith(paragraph);
+      }
+
+      if (options?.path) {
+        // grab all image references and remember them for later processing
+        for (const img of document.querySelectorAll(&quot;img&quot;)) {
+          const src = img.getAttribute(&quot;src&quot;);
+
+          // compute image path relative to static webpage directory
+          const imgPath = resolve(
+            join(STATIC_HOMEPAGE_DIRECTORY, src)
+          ).substring(STATIC_HOMEPAGE_DIRECTORY);
+
+          // add reference to image path
+          (
+            img2imgSrc_mappings[imgPath] || (img2imgSrc_mappings[imgPath] = [])
+          ).push(src);
+        }
+      }
+    },
+  });
+  return new ImpexSliceFactory();
+}
+
+async function main() {
+  // setup ImpexTransformer singleton and get a ImpexSliceFactory instance
+  const impexSliceFactory = setup();
+
+  // group files by type (html or attachment)
+  const attachmentResources = [];
+  const htmlResources = [];
+
+  // iterate over all files recursively in STATIC_HOMEPAGE_DIRECTORY
+  for await (const res of getFiles(STATIC_HOMEPAGE_DIRECTORY, true)) {
+    const resource = res.toString();
+
+    switch (extname(res)) {
+      // stick HTML files into htmlResources
+      case &quot;.html&quot;:
+        htmlResources.push({ resource });
+        console.log(&quot;HTML %s&quot;, resource);
+        break;
+      // stick media files into attachmentResources
+      case &quot;.jpeg&quot;:
+      case &quot;.jpg&quot;:
+      case &quot;.gif&quot;:
+      case &quot;.png&quot;:
+        attachmentResources.push({ resource });
+        console.log(&quot;ATTACHMENT %s&quot;, resource);
+        break;
+    }
+  }
+
+  // get a generator function yielding ImpEx export format conformant paths
+  const slicePathGenerator = ImpexSliceFactory.PathGenerator();
+
+  // compute target directory
+  const IMPEX_EXPORT_DIR = new URL(&quot;generated-impex-export&quot;, import.meta.url)
+    .pathname;
+
+  // delete already existing directory if it exists
+  try {
+    await rm(IMPEX_EXPORT_DIR, { recursive: true });
+  } catch {}
+
+  // create target directory
+  await mkdir(IMPEX_EXPORT_DIR, { recursive: true });
+
+  // convert html files to gutenberg annotated block content
+  for (const htmlResource of htmlResources) {
+    // transform html body to gutenberg annotated block content
+    htmlResource.content = ImpexTransformer.transform(
+      await readFile(htmlResource.resource, &quot;utf8&quot;),
+      { path: htmlResource.resource }
+    );
+    // remember html metadata for later processing
+    htmlResource.title =
+      document.querySelector(&quot;head &gt; title&quot;)?.textContent ?? &quot;&quot;;
+    htmlResource.description =
+      document
+        .querySelector('head &gt; meta[name=&quot;description&quot;]')
+        ?.getAttribute(&quot;content&quot;) ?? &quot;&quot;;
+    htmlResource.keywords = (
+      document
+        .querySelector('head &gt; meta[name=&quot;keywords&quot;]')
+        .getAttribute(&quot;content&quot;) ?? &quot;&quot;
+    )
+      .toLowerCase()
+      .split(&quot; &quot;);
+
+    // create ImpEx slice json content for this html file
+    const slice = impexSliceFactory.createSlice(
+      &quot;content-exporter&quot;,
+      (factory, slice) =&gt; {
+        slice.data.posts[0][&quot;wp:post_type&quot;] = &quot;page&quot;;
+        slice.data.posts[0].title = htmlResource.title;
+        slice.data.posts[0][&quot;wp:post_excerpt&quot;] = htmlResource.title;
+        slice.data.posts[0][&quot;wp:post_content&quot;] = htmlResource.content;
+        // @TODO: categories (aka keywords)
+        // @TODO: add navigation
+        return slice;
+      }
+    );
+
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
+    await mkdir(dirname(slicePath), {
+      recursive: true,
+    });
+
+    // write json to file
+    await writeFile(slicePath, JSON.stringify(slice, null, 2));
+  }
+
+  // make media files available as ImpEx slices
+  for (const attachmentResource of attachmentResources) {
+    // create ImpEx slice json content for this media file
+    const slice = impexSliceFactory.createSlice(
+      &quot;attachment&quot;,
+      (factory, slice) =&gt; {
+        // apply relative path as content
+        slice.data = attachmentResource.resource.substring(
+          IMPEX_EXPORT_DIR.length + 1
+        );
+
+        // compute unique image file=&gt;[img[@src]] mapping for this attachment
+        let img2imgSrc_mapping = [
+          ...new Set(img2imgSrc_mappings[attachmentResource.resource] ?? []),
+        ];
+
+        // add mapping to slice metadata
+        slice.meta[&quot;impex:post-references&quot;] = img2imgSrc_mapping;
+
+        return slice;
+      }
+    );
+
+    // compute ImpEx conform slice json file path
+    const slicePath = join(IMPEX_EXPORT_DIR, slicePathGenerator.next().value);
+    await mkdir(dirname(slicePath), {
+      recursive: true,
+    });
+
+    // write slice json to file
+    await writeFile(slicePath, JSON.stringify(slice, null, 2));
+
+    // copy attachment file to target directory with ImpEx conform file name
+    await copyFile(
+      attachmentResource.resource,
+      slicePath.replace(&quot;.json&quot;, &quot;-&quot; + basename(attachmentResource.resource))
+    );
+  }
+
+  // JSDOM is preventing automatic process termination so we need to force it
+  process.exit(0);
+}
+
+main();
+</code></pre>
+<p>The script is also available at <a href="https://github.com/IONOS-WordPress/cm4all-wp-impex/blob/develop/packages/%40cm4all-wp-impex/generator/examples/impex-complete-static-homepage-conversion/index.js">ImpEx WordPress plugin GitHub repository</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../cm4all-wp-impex-generator/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../api/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../cm4all-wp-impex-generator/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../api/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../mermaid.min.js"></script>
+        <script type="text/javascript" src="../mermaid-init.js"></script>
+
+
+    </body>
+</html>
