@@ -320,8 +320,8 @@ abstract class ImpexImport extends ImpexPart
 
     // check/fix menus of current theme
     $theme_slug = \get_option('stylesheet');
-    $theme_mods = \get_option("theme_mods_${theme_slug}");
-    $nav_menu_locations = $theme_mods['nav_menu_locations'] ?: [];
+    $theme_mods = \get_option("theme_mods_${theme_slug}", \get_theme_mods());
+    $nav_menu_locations = $theme_mods['nav_menu_locations'] ?? [];
     // https://wordpress.stackexchange.com/questions/124658/setting-a-default-theme-location-when-creating-a-menu
 
     $nav_menus = \wp_get_nav_menus();
