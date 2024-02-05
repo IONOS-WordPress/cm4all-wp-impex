@@ -33,9 +33,13 @@ abstract class ImpexImport extends ImpexPart
 
   const WP_FILTER_PROFILES = 'impex_import_filter_profiles';
 
-  // post, media, block pattern, nav_menu an reusable block items
+  // cleanup post, block pattern, nav_menu an reusable block items
   const OPTION_CLEANUP_CONTENTS = 'impex-import-option-cleanup_contents';
   const OPTION_CLEANUP_CONTENTS_DEFAULT = false;
+
+  // cleanup media items
+  const OPTION_CLEANUP_MEDIA = 'impex-import-option-cleanup_media';
+  const OPTION_CLEANUP_MEDIA_DEFAULT = false;
 
   protected function _createProvider(string $name, callable $cb): ImpexImportProvider
   {
@@ -174,7 +178,7 @@ abstract class ImpexImport extends ImpexPart
 
     // do clean up before importing first slices
     if($offset===0) {
-      if(($options[self::OPTION_CLEANUP_CONTENTS] ?? false) == true) {
+      if(($options[self::OPTION_CLEANUP_CONTENTS] ?? self::OPTION_CLEANUP_CONTENTS_DEFAULT) == true) {
         $menus = \wp_get_nav_menus(['fields' => 'ids' ]);
         foreach ($menus as $menu) {
           \wp_delete_nav_menu( $menu);
@@ -184,14 +188,18 @@ abstract class ImpexImport extends ImpexPart
         foreach ($postsToDelete as $postToDelete) {
           \wp_delete_post( $postToDelete, true );
         }
+      }
 
+      if(($options[self::OPTION_CLEANUP_MEDIA] ?? self::OPTION_CLEANUP_MEDIA_DEFAULT) == true) {
         $attachmentsToDelete= \get_posts( ['post_type'=>'attachment','numberposts'=>-1,'fields' => 'ids'] );
         foreach ($attachmentsToDelete as $attachmentToDelete) {
           \wp_delete_attachment($attachmentToDelete, true);
         }
-      } else {
-        $this->_delete_transient_import_metadata();
       }
+
+      /*else {
+        $this->_delete_transient_import_metadata();
+      }*/
     }
 
     foreach ($this->get_slices($transformationContext->id, $limit, $offset) as $slice) {
@@ -257,22 +265,6 @@ abstract class ImpexImport extends ImpexPart
         },
         [],
         );
-      /*
-      array_reduce(
-        \get_posts([
-          'fields' => 'ids',
-          'numberposts'=>-1,
-          'post_type' => 'any',
-          'meta_query' => [
-            ['key' => self::KEY_TRANSIENT_IMPORT_METADATA, 'compare' => 'EXISTS', ],
-          ],
-        ]),
-        function($accu, $post_id) {
-          $accu[(int)\get_post_meta($post_id, self::KEY_TRANSIENT_IMPORT_METADATA, true)] = $post_id;
-          return $accu;
-        },
-        [],
-      );*/
 
       $imported = [
         'terms'   => &$imported_term_ids,

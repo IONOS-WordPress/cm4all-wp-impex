@@ -53,6 +53,7 @@ export default function Import() {
   const [importProfile, setImportProfile] = element.useState();
 
   const [cleanupContent, setCleanupContent] = element.useState(true);
+  const [cleanupMedia, setCleanupMedia] = element.useState(true);
 
   element.useEffect(() => {
     if (importProfiles.length === 1) {
@@ -75,17 +76,17 @@ export default function Import() {
       ),
     });
 
-    await consumeImport(_import.id, { 
+    await consumeImport(_import.id, {
         // @see PHP class ImpexExport::OPTION_CLEANUP_CONTENTS
         'impex-import-option-cleanup_contents' : cleanupContent,
-      }, 
-      null, 
+      },
+      null,
       null
     );
 
     setProgress();
   };
-  
+
   const onUpload = async () => {
     let importDirHandle = null;
     // showDirectoryPicker will throw a DOMException in case the user pressed cancel
@@ -158,12 +159,19 @@ export default function Import() {
           className="import-options-form"
         >
           <components.ToggleControl
-            help={ cleanupContent ? __("Clean up existing post, page, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, media, block pattern, nav_menu an reusable block items. Media might be partly overwritten by export", "cm4all-wp-impex") }
+            help={ cleanupContent ? __("Clean up existing post, page, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, block pattern, nav_menu an reusable block items.", "cm4all-wp-impex") }
             checked={ cleanupContent }
-            disabled={ !imports.length }
             onChange={ setCleanupContent }
             label={__("Remove existing content before importing uploaded snapshot", "cm4all-wp-impex")}
           >
+          </components.ToggleControl>
+          <components.ToggleControl
+                help={ cleanupMedia ? __("Clean up existing media like images and videos (located at WordPress uploads)", "cm4all-wp-impex") : __("Keep existing media items. Media might be partly overwritten by export", "cm4all-wp-impex") }
+                checked={ cleanupMedia }
+                disabled={ !imports.length }
+                onChange={ setCleanupMedia }
+                label={__("Remove existing media before import", "cm4all-wp-impex")}
+              >
           </components.ToggleControl>
         </components.PanelBody>
         {imports.map((_, index) => (

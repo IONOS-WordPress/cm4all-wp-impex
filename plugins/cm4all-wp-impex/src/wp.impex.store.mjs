@@ -33,9 +33,9 @@ export default async function (settings) {
 
   const actions = {
     // this is a redux thunk (see https://make.wordpress.org/core/2021/10/29/thunks-in-gutenberg/)
-    createAndUploadConsumeImport : (importProfile, cleanupContent, screenContext) =>
+    createAndUploadConsumeImport : (importProfile, importOptions, screenContext) =>
       async function* ({ dispatch, registry, resolveSelect, select }) {
-        debug({importProfile, cleanupContent});
+        debug({importProfile, importOptions});
 
         let importDirHandle = null;
         // showDirectoryPicker will throw a DOMException in case the user pressed cancel
@@ -62,7 +62,7 @@ export default async function (settings) {
           importProfile, { }))
           .payload;
 
-        
+
         try {
           yield {
             type: "progress",
@@ -82,12 +82,9 @@ export default async function (settings) {
 
 
           await dispatch.consumeImport(
-            createdImport.id, 
-            {
-              // @see PHP class ImpexExport::OPTION_CLEANUP_CONTENTS
-              'impex-import-option-cleanup_contents' : cleanupContent,
-            }, 
-            null, 
+            createdImport.id,
+            importOptions,
+            null,
             null
           );
 
@@ -179,10 +176,10 @@ export default async function (settings) {
         );
 
         debug({ exportDirHandle });
-        
+
         let createdExport = null;
 
-        try { 
+        try {
           // const exports = select.getExports();
           // debug({ exports });
 
@@ -356,14 +353,14 @@ export default async function (settings) {
         data: { options },
       });
 
-      // process returned callbacks 
+      // process returned callbacks
       const postConsumeCallbacks = callbacks.map(
         callback => apiFetch({
           path : `${settings.base_uri}/${callback.path}`,
           method: callback.method,
           data: callback.data,
         }).catch(error => {
-          // silently ignore errors from timed out metadata updates 
+          // silently ignore errors from timed out metadata updates
           if(error.code==='fetch_error') {
             log.push({
               type: 'warning',

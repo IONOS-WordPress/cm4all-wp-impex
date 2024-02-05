@@ -54,7 +54,7 @@ async function ImportExportGeneratorConsumer(gen, setProgress, defaultErrorPopup
             ),
           });
           break;
-        case "info": 
+        case "info":
           gen.next(new Promise((resolve) => {
             setProgress({
               component: (
@@ -124,10 +124,20 @@ function SimpleTab() {
 
   const [progress, setProgress] = element.useState(null);
   const [cleanupContent, setCleanupContent] = element.useState(true);
+  const [cleanupMedia, setCleanupMedia] = element.useState(true);
 
   const _createAndUploadConsumeImport = async () => {
     console.log({ importProfile, screenContext });
-    const gen = await createAndUploadConsumeImport(importProfile, cleanupContent, screenContext);
+    const gen = await createAndUploadConsumeImport(
+      importProfile,
+      {
+        // @see PHP class ImpexExport::OPTION_CLEANUP_CONTENTS
+        'impex-import-option-cleanup_contents' : cleanupContent,
+        // @see PHP class ImpexExport::OPTION_CLEANUP_MEDIA
+        'impex-import-option-cleanup_media' : cleanupMedia,
+      },
+      screenContext
+    );
 
     await ImportExportGeneratorConsumer(gen, setProgress, __("Import failed", "cm4all-wp-impex"));
   };
@@ -170,14 +180,21 @@ function SimpleTab() {
                 onChange={setImportProfile}
               />
               <components.ToggleControl
-                help={ cleanupContent ? __("Clean up existing post, page, media, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, media, block pattern, nav_menu an reusable block items. Media might be partly overwritten by export", "cm4all-wp-impex") }
+                help={ cleanupContent ? __("Clean up existing post, page, block pattern, nav_menu an reusable block items", "cm4all-wp-impex") : __("Keep existing post, page, block pattern, nav_menu an reusable block items.", "cm4all-wp-impex") }
                 checked={ cleanupContent }
                 onChange={ setCleanupContent }
                 label={__("Remove existing content before import", "cm4all-wp-impex")}
               >
               </components.ToggleControl>
+              <components.ToggleControl
+                help={ cleanupMedia ? __("Clean up existing media like images and videos (located at WordPress uploads)", "cm4all-wp-impex") : __("Keep existing items. Media might be partly overwritten by export", "cm4all-wp-impex") }
+                checked={ cleanupMedia }
+                onChange={ setCleanupMedia }
+                label={__("Remove existing media before import", "cm4all-wp-impex")}
+              >
+              </components.ToggleControl>
               <components.Button
-                isDestructive 
+                isDestructive
                 isPrimary
                 disabled={!importProfile}
                 onClick={_createAndUploadConsumeImport}
