@@ -1,3 +1,16 @@
+## [1.6.0](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.11...1.6.0) (2024-02-12)
+
+
+### Features
+
+* new option "cleanup media" added ([6e351ad](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/6e351ad7f0b2fc2c964b90856fb05cee543c1252))
+
+
+### Bug Fixes
+
+* made theme mods access safe ([c50f841](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/c50f84140b6f59fd2e75a47ceb4d256a9ae17a80))
+* updated rector configuration to be rector 1.0 compatible ([246b60d](https://github.com/IONOS-WordPress/cm4all-wp-impex/commit/246b60dc4cea5077d87fff7aac0c505a2510ab5e))
+
 ## [1.5.11](https://github.com/IONOS-WordPress/cm4all-wp-impex/compare/1.5.10...1.5.11) (2024-01-11)
 
 
